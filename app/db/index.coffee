@@ -4,8 +4,11 @@ import {getUID, getHash} from "./util"
 import {getJSON} from "../util"
 
 if PLATFORM == ELECTRON
+  {PROJECT_DIR} = process.env
+  if not PROJECT_DIR?
+    throw "Environment variable PROJECT_DIR must be defined."
   {db, storedProcedure, serializableQueries} = require './backend'
-  QUERY_DIRECTORY = join(process.env.PROJECT_DIR,"versioned","Products","webroot","queries")
+  QUERY_DIRECTORY = join(PROJECT_DIR,"versioned","Products","webroot","queries")
 else
   QUERY_DIRECTORY = join(BASE_URL,"queries")
 
@@ -41,4 +44,3 @@ export {
   storedProcedure
   db
 }
-
