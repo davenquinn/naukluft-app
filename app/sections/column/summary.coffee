@@ -4,12 +4,12 @@ import "d3-selection-multi"
 import {Component, createElement, createRef} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
-import {SectionAxis} from "./axis"
+import {SectionAxis} from "@macrostrat/column-components/src/axis"
 import {PlatformConsumer} from "../../platform"
-import {SymbolColumn} from "./symbol-column"
-import {FloodingSurface, TriangleBars} from "./flooding-surface"
-import {IntervalEditor} from "./editor"
-import {LithologyColumn, GeneralizedSectionColumn} from "./lithology"
+import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
+import {IntervalEditor} from "@macrostrat/column-components/src/editor"
+import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/src/lithology"
 import {Popover, Position} from "@blueprintjs/core"
 import {withRouter} from "react-router-dom"
 import {Notification} from "../../notify"
@@ -17,11 +17,11 @@ import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {db, storedProcedure, query} from "../db"
-import {ColumnProvider, ColumnContext} from './context'
+import {ColumnProvider, ColumnContext} from '@macrostrat/column-components/src/context'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
-        LithologyColumnInner} from './lithology'
-import {DivisionEditOverlay} from './edit-overlay'
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from './data-source'
+        LithologyColumnInner} from '@macrostrat/column-components/src/lithology'
+import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from '@macrostrat/column-components/src/data-source'
 import T from 'prop-types'
 
 fmt = d3.format('.1f')

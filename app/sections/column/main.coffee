@@ -2,28 +2,28 @@ import {findDOMNode} from "react-dom"
 import {format} from "d3-format"
 import {Component, createElement} from "react"
 import h from "react-hyperscript"
-import {SectionAxis} from "./axis"
-import SectionImages from "./images"
-import {NotesColumn} from "./notes"
-import "./main.styl"
+import {SectionAxis} from "@macrostrat/column-components/src/axis"
+import SectionImages from "@macrostrat/column-components/src/images"
+import {NotesColumn} from "@macrostrat/column-components/src/notes"
+import "@macrostrat/column-components/src/main.styl"
 import {Intent} from "@blueprintjs/core"
 import {Notification} from "../../notify"
-import {GrainsizeScale} from "./grainsize"
-import {SymbolColumn} from "./symbol-column"
-import {ModalEditor} from "./editor"
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from "./data-source"
+import {GrainsizeScale} from "@macrostrat/column-components/src/grainsize"
+import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
+import {ModalEditor} from "@macrostrat/column-components/src/editor"
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from "@macrostrat/column-components/src/data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
-import Samples from "./samples"
-import {FloodingSurface, TriangleBars} from "./flooding-surface"
-import {ColumnProvider, ColumnContext} from './context'
+import Samples from "@macrostrat/column-components/src/samples"
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
+import {ColumnProvider, ColumnContext} from '@macrostrat/column-components/src/context'
 import {
   LithologyColumn,
   GeneralizedSectionColumn,
   SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
   LithologyColumnInner
-} from "./lithology"
+} from "@macrostrat/column-components/src/lithology"
 import {SequenceStratConsumer} from "../sequence-strat-context"
-import {DivisionEditOverlay} from './edit-overlay'
+import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
 import {db, storedProcedure, query} from "../db"
 import {dirname} from "path"
 import update from "immutability-helper"

@@ -6,11 +6,11 @@ import "d3-selection-multi"
 import {Component, createElement} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
-import {SectionAxis} from "../column/axis"
+import {SectionAxis} from "@macrostrat/column-components/src/axis"
 import {query} from "../db"
 import {sectionSurfaceProps} from "./link-overlay"
 import {SVGNamespaces} from "../util"
-import classNames from "class-names"
+import classNames from "classnames"
 import chroma from "chroma-js"
 
 fmt = d3.format('.1f')

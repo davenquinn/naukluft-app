@@ -7,17 +7,17 @@ import {Component, createElement, createRef} from "react"
 import classNames from "classnames"
 
 import {BaseSVGSectionComponent} from "./summary"
-import {SectionAxis} from "./axis"
-import {ClipToFrame} from "./frame"
+import {SectionAxis} from "@macrostrat/column-components/src/axis"
+import {ClipToFrame} from "@macrostrat/column-components/src/frame"
 import {
   FaciesColumnInner,
   LithologyColumnInner, symbolIndex
-} from "./lithology"
+} from "@macrostrat/column-components/src/lithology"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces} from "../util"
 import {SequenceStratConsumer} from "../sequence-strat-context"
-import {TriangleBars} from "./flooding-surface"
-import {ColumnProvider} from "./context"
+import {TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
+import {ColumnProvider} from "@macrostrat/column-components/src/context"
 
 resolveID = (d)->
   {pattern} = d
