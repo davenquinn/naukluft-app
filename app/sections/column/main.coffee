@@ -8,7 +8,7 @@ import {NotesColumn} from "@macrostrat/column-components/src/notes"
 import "@macrostrat/column-components/src/main.styl"
 import {Intent} from "@blueprintjs/core"
 import {Notification} from "../../notify"
-import {GrainsizeScale} from "@macrostrat/column-components/src/grainsize"
+import {GrainsizeAxis} from "@macrostrat/column-components/src/grainsize"
 import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
 import {ModalEditor} from "@macrostrat/column-components/src/editor"
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from "./data-source"
@@ -163,6 +163,8 @@ class SectionComponent extends KnownSizeComponent
           height
           divisions
           pixelsPerMeter
+          width: @props.innerWidth
+          grainsizeScaleStart: 80
         }, (
           h ScrollToHeightComponent, {
             scrollToHeight: parseFloat(scrollToHeight)
@@ -255,7 +257,7 @@ class SectionComponent extends KnownSizeComponent
           h CoveredOverlay, {width: lithologyWidth}
           h LithologyColumnInner, {width: lithologyWidth}
         ]
-        h GrainsizeScale, {range}
+        h GrainsizeAxis, {range}
         @renderGeneralized({range})
         @renderCarbonIsotopes()
         @renderFloodingSurfaces()
