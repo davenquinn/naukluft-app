@@ -1,8 +1,7 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import {db, storedProcedure, query} from "../../db"
-
-FaciesContext = createContext {facies:[],onColorChanged: ->}
+import {FaciesContext} from '@macrostrat/column-components/src/context'
 
 class FaciesProvider extends Component
   constructor: (props)->

@@ -256,6 +256,8 @@ class BaseSVGSectionComponent extends KnownSizeComponent
           zoom
           pixelsPerMeter
           divisions
+          width: innerWidth
+          grainsizeScaleStart
         }, [
           @renderEditOverlay({left, top})
           h "svg.section", {
@@ -264,10 +266,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
           }, [
             h 'g.backdrop', {transform}, [
               @renderWhiteUnderlay()
-              h GeneralizedSectionColumn, {
-                width: innerWidth
-                grainsizeScaleStart
-              }, [
+              h GeneralizedSectionColumn, [
                 if showFacies then h(FaciesColumnInner, {width: innerWidth}) else null
                 h CoveredOverlay, {width: innerWidth}
                 h SimplifiedLithologyColumn, {width: innerWidth}
