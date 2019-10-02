@@ -7,7 +7,6 @@ import {Component, createElement, createRef} from "react"
 import classNames from "classnames"
 
 import {BaseSVGSectionComponent} from "./summary"
-import {SectionAxis} from "@macrostrat/column-components/src/axis"
 import {ClipToFrame} from "@macrostrat/column-components/src/frame"
 import {
   FaciesColumnInner,

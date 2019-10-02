@@ -2,7 +2,7 @@ import {findDOMNode} from "react-dom"
 import {format} from "d3-format"
 import {Component, createElement} from "react"
 import h from "react-hyperscript"
-import {SectionAxis} from "@macrostrat/column-components/src/axis"
+import {ColumnAxis} from "@macrostrat/column-components/src/axis"
 import SectionImages from "@macrostrat/column-components/src/images"
 import {NotesColumn} from "@macrostrat/column-components/src/notes"
 import "@macrostrat/column-components/src/main.styl"
@@ -11,7 +11,7 @@ import {Notification} from "../../notify"
 import {GrainsizeScale} from "@macrostrat/column-components/src/grainsize"
 import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
 import {ModalEditor} from "@macrostrat/column-components/src/editor"
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from "@macrostrat/column-components/src/data-source"
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from "./data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import Samples from "@macrostrat/column-components/src/samples"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
@@ -249,7 +249,7 @@ class SectionComponent extends KnownSizeComponent
       h 'g.backdrop', {
         transform: "translate(#{@props.padding.left} #{@props.padding.top})"
       }, [
-        h SectionAxis, {ticks}
+        h ColumnAxis, {ticks}
         h LithologyColumn, {width: lithologyWidth}, [
           @renderFacies()
           h CoveredOverlay, {width: lithologyWidth}

@@ -4,7 +4,7 @@ import "d3-selection-multi"
 import {Component, createElement, createRef} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
-import {SectionAxis} from "@macrostrat/column-components/src/axis"
+import {ColumnAxis} from "@macrostrat/column-components/src/axis"
 import {PlatformConsumer} from "../../platform"
 import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
@@ -21,7 +21,7 @@ import {ColumnProvider, ColumnContext} from '@macrostrat/column-components/src/c
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner} from '@macrostrat/column-components/src/lithology'
 import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from '@macrostrat/column-components/src/data-source'
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from './data-source'
 import T from 'prop-types'
 
 fmt = d3.format('.1f')
@@ -281,7 +281,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
               }
               @renderFloodingSurfaces()
               @renderTriangleBars()
-              h SectionAxis, {scale, ticks: nticks}
+              h ColumnAxis, {scale, ticks: nticks}
             ]
           ]
         ]
