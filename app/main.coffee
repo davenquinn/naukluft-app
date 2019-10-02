@@ -1,6 +1,6 @@
-import "~/node_modules/@macrostrat/ui-components/init.js"
 requireFoolWebpack = require 'require-fool-webpack'
 # Because webpack is super annoying
+import '@babel/polyfill' # this seems suspect
 
 import {PlatformContext, PlatformProvider} from "./platform"
 import React from "react"
@@ -19,7 +19,9 @@ import CarbonIsotopesPage from "./carbon-isotopes"
 import LateralVariation from "./lateral-variation/component"
 import {MapView} from "./map-viewer"
 import {HotkeysTarget, Hotkeys, Hotkey} from "@blueprintjs/core"
-import "~/node_modules/@blueprintjs/core/lib/css/blueprint.css"
+import "@blueprintjs/core/lib/css/blueprint.css"
+import "@blueprintjs/icons/lib/css/blueprint-icons.css"
+#import "@macrostrat/ui-components/lib/index.css"
 
 wrapNavBar = (component)->
   class NavBarPage extends React.Component
