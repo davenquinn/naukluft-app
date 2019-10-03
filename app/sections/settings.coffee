@@ -4,46 +4,12 @@ import {CSSTransition} from "react-transition-group"
 import {Switch, Slider, Button} from "@blueprintjs/core"
 import {format, select} from "d3"
 import {PlatformConsumer} from "../platform"
+import {PickerControl} from "@macrostrat/column-components/src/editor/picker-base"
 import {SequenceStratConsumer} from "./sequence-strat-context"
 import {FaciesDescriptionSmall} from "./facies"
 import classNames from "classnames"
 
 import "./settings.styl"
-
-
-class PickerControl extends Component
-  @defaultProps: {
-    states : [
-      {label: 'State 1', value: 'state1'}
-      {label: 'State 2', value: 'state2'}
-    ]
-    vertical: true
-    isNullable: false
-  }
-  render: ->
-    {states, activeState, vertical} = @props
-    className = classNames('bp3-button-group', 'bp3-fill', {
-      'bp3-vertical': vertical
-      'bp3-align-left': vertical
-    })
-
-    h 'div.picker-control', [
-      h 'div', {className}, states.map (d)=>
-        className = classNames('bp3-button', {
-          'bp3-active': @props.activeState == d.value
-        })
-        h 'button', {
-          type: 'button'
-          className
-          onClick: @onUpdate(d.value)
-        }, d.label
-    ]
-  onUpdate: (value)=> =>
-    if value == @props.activeState
-      return unless @props.isNullable
-      value = null
-    return unless @props.onUpdate?
-    @props.onUpdate(value)
 
 fmt = format('.2f')
 
