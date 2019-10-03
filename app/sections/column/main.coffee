@@ -15,11 +15,13 @@ import {ColumnSurfacesProvider, ColumnSurfacesContext} from "./data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import Samples from "@macrostrat/column-components/src/samples"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
-import {ColumnProvider, ColumnContext} from '@macrostrat/column-components/src/context'
+import {ColumnProvider, ColumnContext} from '@macrostrat/column-components'
 import {
   LithologyColumn,
   GeneralizedSectionColumn,
-  SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
+  SimplifiedLithologyColumn,
+  CoveredOverlay,
+  FaciesColumnInner,
   LithologyColumnInner
 } from "@macrostrat/column-components/src/lithology"
 import {SequenceStratConsumer} from "../sequence-strat-context"
@@ -147,10 +149,15 @@ class SectionComponent extends KnownSizeComponent
   render: ->
     {divisions} = @context
     {id, zoom, pixelsPerMeter,
-     scrollToHeight, height, skeletal, range} = @props
+     scrollToHeight, height, skeletal, range, lithologyWidth} = @props
+
     # Set text of header for appropriate zoom level
     txt = if zoom > 0.5 then "Section " else ""
     txt += id
+
+    grainsizeScaleRange = [88,168]
+      .map (d)->d*zoom
+      .map (d)->d+lithologyWidth
 
     h "div#section-pane", [
       h "div.section-container", {
@@ -163,8 +170,8 @@ class SectionComponent extends KnownSizeComponent
           height
           divisions
           pixelsPerMeter
-          width: @props.innerWidth
-          grainsizeScaleStart: 80
+          width: grainsizeScaleRange[1]
+          grainsizeScaleStart: grainsizeScaleRange[0]
         }, (
           h ScrollToHeightComponent, {
             scrollToHeight: parseFloat(scrollToHeight)
@@ -257,7 +264,7 @@ class SectionComponent extends KnownSizeComponent
           h CoveredOverlay, {width: lithologyWidth}
           h LithologyColumnInner, {width: lithologyWidth}
         ]
-        h GrainsizeAxis, {range}
+        h GrainsizeAxis
         @renderGeneralized({range})
         @renderCarbonIsotopes()
         @renderFloodingSurfaces()
