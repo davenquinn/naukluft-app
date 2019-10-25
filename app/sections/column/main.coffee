@@ -15,7 +15,7 @@ import {ColumnSurfacesProvider, ColumnSurfacesContext} from "./data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import Samples from "@macrostrat/column-components/src/samples"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
-import {ColumnProvider, ColumnContext} from '@macrostrat/column-components'
+import {ColumnProvider, ColumnContext, GrainsizeLayoutProvider} from '@macrostrat/column-components'
 import {
   LithologyColumn,
   GeneralizedSectionColumn,
@@ -26,10 +26,11 @@ import {
 } from "@macrostrat/column-components/src/lithology"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
-import {db, storedProcedure, query} from "../db"
+import {db, storedProcedure, query} from "app/sections/db"
 import {dirname} from "path"
 import update from "immutability-helper"
 import T from "prop-types"
+import {StatefulComponent} from '@macrostrat/ui-components'
 
 fmt = format(".1f")
 baseDir = dirname require.resolve '..'
@@ -61,6 +62,28 @@ class ScrollToHeightComponent extends Component
       intent: Intent.PRIMARY
     }
     @setState {loaded: true}
+
+class ManagedNotesColumn extends StatefulComponent
+  constructor: (props)->
+    super props
+    @state = {notes: []}
+
+  componentDidMount: =>
+    @updateNotes()
+
+  updateNotes: =>
+    {type, id, width} = @props
+    {scale, zoom, pixelHeight: height} = @context
+
+    notes = await query 'log-notes', [id]
+    #processor = processNotesData({scale, height, width})
+    #notes = processor(data)
+
+    @setState {notes}
+
+  render: ->
+    {notes} = @state
+    h NotesColumn, {notes, @props...}
 
 class SectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
@@ -118,10 +141,9 @@ class SectionComponent extends KnownSizeComponent
 
   renderInnerElements: =>
     {divisions} = @context
-    {lithologyWidth, id, padding} = @props
+    {lithologyWidth, zoom, id, padding} = @props
     {editingInterval} = @state
     interval = divisions.find (d)-> d.id == editingInterval.id
-    console.log interval
 
     h 'div.section', [
       h ModalEditor, {
@@ -135,7 +157,12 @@ class SectionComponent extends KnownSizeComponent
         removeInterval: @removeInterval
         onUpdate: @onIntervalUpdated
       }
-      @renderOverlaySVG()
+      h GrainsizeLayoutProvider, {
+        width: 168*zoom+lithologyWidth,
+        grainsizeScaleStart: 88*zoom
+      }, [
+        @renderOverlaySVG()
+      ]
       @renderSectionImages()
       h DivisionEditOverlay, {
         onClick: @onEditInterval
@@ -186,7 +213,7 @@ class SectionComponent extends KnownSizeComponent
   renderNotesColumn: =>
     {zoom, innerWidth, id, showNotes, logWidth, isEditable} = @props
     return null unless showNotes and zoom > 0.50
-    h NotesColumn, {
+    h ManagedNotesColumn, {
       visible: true
       id
       width: logWidth*zoom

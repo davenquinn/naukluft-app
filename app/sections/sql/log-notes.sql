@@ -9,8 +9,8 @@ WITH __photo_notes AS (
 )
 SELECT
   id,
-  start_height::float,
-  end_height::float,
+  start_height::float height,
+  end_height::float top_height,
   coalesce(end_height-start_height, 0)::float span,
   coalesce(end_height > start_height, false) has_span,
   symbol,
