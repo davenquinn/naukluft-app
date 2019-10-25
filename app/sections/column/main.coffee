@@ -72,13 +72,8 @@ class ManagedNotesColumn extends StatefulComponent
     @updateNotes()
 
   updateNotes: =>
-    {type, id, width} = @props
-    {scale, zoom, pixelHeight: height} = @context
-
+    {id} = @props
     notes = await query 'log-notes', [id]
-    #processor = processNotesData({scale, height, width})
-    #notes = processor(data)
-
     @setState {notes}
 
   render: ->
@@ -127,27 +122,17 @@ class SectionComponent extends KnownSizeComponent
       editingInterval: {id: null, height: null}
     }
 
-  renderSectionImages: =>
-    {zoom} = @props
-    skeletal = false
-    return if zoom < 0.25
-    h ColumnImages, {
-      padding: @props.padding
-      lithologyWidth: @props.lithologyWidth
-      imageFiles: @props.imageFiles
-      extraSpace: if @zoom > 0.5 then 2.5*zoom else 0
-      skeletal: skeletal or @props.activeDisplayMode != 'image'
-    }
-
-
 
   render: ->
     {divisions} = @context
     {id, zoom, pixelsPerMeter,
      scrollToHeight, height,
      skeletal, range,
-     lithologyWidth, padding} = @props
+     lithologyWidth, padding
+    } = @props
     {lithologyWidth, zoom, id, padding} = @props
+    {logWidth, isEditable} = @props
+
     {editingInterval} = @state
     interval = divisions.find (d)-> d.id == editingInterval.id
     # Set text of header for appropriate zoom level
@@ -167,6 +152,10 @@ class SectionComponent extends KnownSizeComponent
     outerWidth = innerWidth+(left+right)
 
     ticks = height/10
+
+    shouldRenderGeneralized = @props.activeDisplayMode == 'generalized'
+
+    order = @props.sequenceStratOrder
 
     h "div#section-pane", [
       h "div.section-container", {
@@ -212,7 +201,7 @@ class SectionComponent extends KnownSizeComponent
                   }, [
                     h ColumnAxis, {ticks}
                     h LithologyColumn, {width: lithologyWidth}, [
-                      @renderFacies()
+                      h.if(@props.showFacies) FaciesColumnInner, {width: lithologyWidth}
                       h CoveredOverlay, {width: lithologyWidth}
                       h LithologyColumnInner, {width: lithologyWidth}
                     ]
@@ -221,17 +210,33 @@ class SectionComponent extends KnownSizeComponent
                       grainsizeScaleStart
                     }, [
                       h GrainsizeAxis
-                      @renderGeneralized({range: grainsizeRange})
-                      @renderCarbonIsotopes()
-                      @renderFloodingSurfaces()
-                      @renderTriangleBars()
-                      @renderSymbolColumn()
-                      @renderNotesColumn()
+                      h.if(shouldRenderGeneralized) GeneralizedSectionColumn, {range: grainsizeRange}, (
+                        h LithologyColumnInner, {width: grainsizeRange[1]}
+                      )
+                      h.if(@props.showCarbonIsotopes) Samples, {id}
+                      h.if(@props.showFloodingSurfaces) FloodingSurface
+                      h.if(@props.showTriangleBars) TriangleBars, {
+                        offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
+                      }
+                      h.if(@props.showSymbols) SymbolColumn, {id, left: 215}
+                      h.if(@props.showNotes and zoom > 0.50) ManagedNotesColumn, {
+                        visible: true
+                        id
+                        width: @props.logWidth*zoom
+                        inEditMode: @props.isEditable
+                        transform: "translate(#{@props.innerWidth})"
+                      }
                     ]
                   ]
                 ]
               ]
-              @renderSectionImages()
+              h.if(zoom >= 0.25) ColumnImages, {
+                padding: @props.padding
+                lithologyWidth: @props.lithologyWidth
+                imageFiles: @props.imageFiles
+                extraSpace: if zoom > 0.5 then 2.5*zoom else 0
+                skeletal: false
+              }
               h DivisionEditOverlay, {
                 onClick: @onEditInterval
                 width: lithologyWidth
@@ -245,17 +250,6 @@ class SectionComponent extends KnownSizeComponent
       ]
     ]
 
-  renderNotesColumn: =>
-    {zoom, innerWidth, id, showNotes, logWidth, isEditable} = @props
-    return null unless showNotes and zoom > 0.50
-    h ManagedNotesColumn, {
-      visible: true
-      id
-      width: logWidth*zoom
-      inEditMode: isEditable
-      transform: "translate(#{innerWidth})"
-    }
-
   onEditInterval: ({division, height})=>
     if not (@props.isEditable and division?)
       Notification.show {
@@ -264,39 +258,6 @@ class SectionComponent extends KnownSizeComponent
       return
     {id} = division
     @setState {editingInterval: {id, height}}
-
-  renderSymbolColumn: =>
-    {id} = @props
-    return null unless @props.showSymbols
-    h SymbolColumn, {id, left: 215}
-
-  renderTriangleBars: =>
-    return null unless @props.showTriangleBars
-    order = @props.sequenceStratOrder
-    h TriangleBars, {
-      offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
-    }
-
-  renderFloodingSurfaces: =>
-    return null unless @props.showFloodingSurfaces
-    h FloodingSurface
-
-  renderCarbonIsotopes: =>
-    return null unless @props.showCarbonIsotopes
-    {id} = @props
-    h Samples, {id}
-
-  renderGeneralized: ({range})=>
-    return null unless @props.activeDisplayMode == 'generalized'
-    {lithologyWidth} = @props
-    h GeneralizedSectionColumn, {range}, (
-      h LithologyColumnInner, {width: range[1]}
-    )
-
-  renderFacies: =>
-    {lithologyWidth, showFacies} = @props
-    return null unless showFacies
-    h FaciesColumnInner, {width: lithologyWidth}
 
   onIntervalUpdated: =>
     # Could potentially make this fetch less
