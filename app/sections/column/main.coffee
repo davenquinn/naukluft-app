@@ -3,7 +3,7 @@ import {format} from "d3-format"
 import {Component, createElement} from "react"
 import h from "react-hyperscript"
 import {ColumnAxis} from "@macrostrat/column-components/src/axis"
-import SectionImages from "@macrostrat/column-components/src/images"
+import {ColumnImages} from "@macrostrat/column-components/src/images"
 import {NotesColumn} from "@macrostrat/column-components/src/notes"
 import "@macrostrat/column-components/src/main.styl"
 import {Intent} from "@blueprintjs/core"
@@ -108,7 +108,7 @@ class SectionComponent extends KnownSizeComponent
     {zoom} = @props
     skeletal = false
     return if zoom < 0.25
-    h SectionImages, {
+    h ColumnImages, {
       padding: @props.padding
       lithologyWidth: @props.lithologyWidth
       imageFiles: @props.imageFiles

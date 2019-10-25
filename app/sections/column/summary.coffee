@@ -4,6 +4,7 @@ import "d3-selection-multi"
 import {Component, createElement, createRef} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
+import {GrainsizeLayoutProvider} from '@macrostrat/column-components'
 import {ColumnAxis} from "@macrostrat/column-components/src/axis"
 import {PlatformConsumer} from "../../platform"
 import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
@@ -259,28 +260,33 @@ class BaseSVGSectionComponent extends KnownSizeComponent
           width: innerWidth
           grainsizeScaleStart
         }, [
-          @renderEditOverlay({left, top})
-          h "svg.section", {
-            SVGNamespaces...
-            style
+          h GrainsizeLayoutProvider, {
+            width: innerWidth,
+            grainsizeScaleStart
           }, [
-            h 'g.backdrop', {transform}, [
-              @renderWhiteUnderlay()
-              h GeneralizedSectionColumn, [
-                if showFacies then h(FaciesColumnInner, {width: innerWidth}) else null
-                h CoveredOverlay, {width: innerWidth}
-                h SimplifiedLithologyColumn, {width: innerWidth}
+            @renderEditOverlay({left, top})
+            h "svg.section", {
+              SVGNamespaces...
+              style
+            }, [
+              h 'g.backdrop', {transform}, [
+                @renderWhiteUnderlay()
+                h GeneralizedSectionColumn, [
+                  if showFacies then h(FaciesColumnInner, {width: innerWidth}) else null
+                  h CoveredOverlay, {width: innerWidth}
+                  h SimplifiedLithologyColumn, {width: innerWidth}
+                ]
+                h SymbolColumn, {
+                  scale
+                  height: innerHeight
+                  left: 90
+                  id
+                  zoom
+                }
+                @renderFloodingSurfaces()
+                @renderTriangleBars()
+                h ColumnAxis, {scale, ticks: nticks}
               ]
-              h SymbolColumn, {
-                scale
-                height: innerHeight
-                left: 90
-                id
-                zoom
-              }
-              @renderFloodingSurfaces()
-              @renderTriangleBars()
-              h ColumnAxis, {scale, ticks: nticks}
             ]
           ]
         ]
