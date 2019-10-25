@@ -1,7 +1,7 @@
 import {findDOMNode} from "react-dom"
 import {format} from "d3-format"
 import {Component, createElement} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
 import {ColumnAxis} from "@macrostrat/column-components/src/axis"
 import {ColumnImages} from "@macrostrat/column-components/src/images"
 import {NotesColumn} from "@macrostrat/column-components/src/notes"
@@ -139,52 +139,34 @@ class SectionComponent extends KnownSizeComponent
       skeletal: skeletal or @props.activeDisplayMode != 'image'
     }
 
-  renderInnerElements: =>
-    {divisions} = @context
-    {lithologyWidth, zoom, id, padding} = @props
-    {editingInterval} = @state
-    interval = divisions.find (d)-> d.id == editingInterval.id
 
-    h 'div.section', [
-      h ModalEditor, {
-        isOpen: editingInterval.id?
-        interval
-        height: editingInterval.height
-        section: id
-        closeDialog: =>
-          @setState {editingInterval: {id:null}}
-        addInterval: @addInterval
-        removeInterval: @removeInterval
-        onUpdate: @onIntervalUpdated
-      }
-      h GrainsizeLayoutProvider, {
-        width: 168*zoom+lithologyWidth,
-        grainsizeScaleStart: 88*zoom
-      }, [
-        @renderOverlaySVG()
-      ]
-      @renderSectionImages()
-      h DivisionEditOverlay, {
-        onClick: @onEditInterval
-        width: lithologyWidth
-        top: padding.top
-        left: padding.left
-        allowEditing: true
-      }
-    ]
 
   render: ->
     {divisions} = @context
     {id, zoom, pixelsPerMeter,
-     scrollToHeight, height, skeletal, range, lithologyWidth} = @props
-
+     scrollToHeight, height,
+     skeletal, range,
+     lithologyWidth, padding} = @props
+    {lithologyWidth, zoom, id, padding} = @props
+    {editingInterval} = @state
+    interval = divisions.find (d)-> d.id == editingInterval.id
     # Set text of header for appropriate zoom level
     txt = if zoom > 0.5 then "Section " else ""
     txt += id
 
-    grainsizeScaleRange = [88,168]
-      .map (d)->d*zoom
-      .map (d)->d+lithologyWidth
+    grainsizeWidth = 168*zoom+lithologyWidth
+    grainsizeScaleStart = 88*zoom+lithologyWidth
+
+    grainsizeRange = [grainsizeScaleStart, grainsizeWidth]
+
+    {lithologyWidth, zoom, id, height, pixelsPerMeter} = @props
+
+    innerHeight = height*pixelsPerMeter
+    {left, top, right, bottom} = @props.padding
+    outerHeight = innerHeight+(top+bottom)
+    outerWidth = innerWidth+(left+right)
+
+    ticks = height/10
 
     h "div#section-pane", [
       h "div.section-container", {
@@ -197,14 +179,67 @@ class SectionComponent extends KnownSizeComponent
           height
           divisions
           pixelsPerMeter
-          width: grainsizeScaleRange[1]
-          grainsizeScaleStart: grainsizeScaleRange[0]
+          width: grainsizeWidth
+          grainsizeScaleStart
         }, (
           h ScrollToHeightComponent, {
             scrollToHeight: parseFloat(scrollToHeight)
             id
           }, [
-            @renderInnerElements()
+            h 'div.section', [
+              h ModalEditor, {
+                isOpen: editingInterval.id?
+                interval
+                height: editingInterval.height
+                section: id
+                closeDialog: =>
+                  @setState {editingInterval: {id:null}}
+                addInterval: @addInterval
+                removeInterval: @removeInterval
+                onUpdate: @onIntervalUpdated
+              }
+              h GrainsizeLayoutProvider, {
+                width: grainsizeWidth,
+                grainsizeScaleStart
+              }, [
+                h "svg.overlay", {
+                  SVGNamespaces...
+                  width: outerWidth
+                  height: outerHeight
+                }, [
+                  h 'g.backdrop', {
+                    transform: "translate(#{@props.padding.left} #{@props.padding.top})"
+                  }, [
+                    h ColumnAxis, {ticks}
+                    h LithologyColumn, {width: lithologyWidth}, [
+                      @renderFacies()
+                      h CoveredOverlay, {width: lithologyWidth}
+                      h LithologyColumnInner, {width: lithologyWidth}
+                    ]
+                    h GrainsizeLayoutProvider, {
+                      width: grainsizeWidth,
+                      grainsizeScaleStart
+                    }, [
+                      h GrainsizeAxis
+                      @renderGeneralized({range: grainsizeRange})
+                      @renderCarbonIsotopes()
+                      @renderFloodingSurfaces()
+                      @renderTriangleBars()
+                      @renderSymbolColumn()
+                      @renderNotesColumn()
+                    ]
+                  ]
+                ]
+              ]
+              @renderSectionImages()
+              h DivisionEditOverlay, {
+                onClick: @onEditInterval
+                width: lithologyWidth
+                top: padding.top
+                left: padding.left
+                allowEditing: true
+              }
+            ]
           ]
         )
       ]
@@ -262,44 +297,6 @@ class SectionComponent extends KnownSizeComponent
     {lithologyWidth, showFacies} = @props
     return null unless showFacies
     h FaciesColumnInner, {width: lithologyWidth}
-
-  renderOverlaySVG: =>
-    {lithologyWidth, zoom, id, height, pixelsPerMeter} = @props
-
-    innerHeight = height*pixelsPerMeter
-    {left, top, right, bottom} = @props.padding
-    outerHeight = innerHeight+(top+bottom)
-    outerWidth = innerWidth+(left+right)
-
-    ticks = height/10
-
-    range = [88,168]
-      .map (d)->d*zoom
-      .map (d)->d+lithologyWidth
-
-    h "svg.overlay", {
-      SVGNamespaces...
-      width: outerWidth
-      height: outerHeight
-    }, [
-      h 'g.backdrop', {
-        transform: "translate(#{@props.padding.left} #{@props.padding.top})"
-      }, [
-        h ColumnAxis, {ticks}
-        h LithologyColumn, {width: lithologyWidth}, [
-          @renderFacies()
-          h CoveredOverlay, {width: lithologyWidth}
-          h LithologyColumnInner, {width: lithologyWidth}
-        ]
-        h GrainsizeAxis
-        @renderGeneralized({range})
-        @renderCarbonIsotopes()
-        @renderFloodingSurfaces()
-        @renderTriangleBars()
-        @renderSymbolColumn()
-        @renderNotesColumn()
-      ]
-    ]
 
   onIntervalUpdated: =>
     # Could potentially make this fetch less
