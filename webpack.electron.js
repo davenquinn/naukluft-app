@@ -59,6 +59,7 @@ module.exports = {
     extensions: ['.js', '.coffee'],
     alias: {
       app: path.resolve(__dirname, 'app/'),
+      react: path.resolve(__dirname,'./app/node_modules/react'),
       /*
       This is a pretty awful hack to resolve tilde paths. It requires
       that they exist only in the column-components package.

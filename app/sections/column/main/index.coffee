@@ -1,18 +1,16 @@
 import {findDOMNode} from "react-dom"
 import {format} from "d3-format"
-import {Component, createElement} from "react"
+import {Component, createElement, useState} from "react"
 import h from "@macrostrat/hyper"
+import T from "prop-types"
+
 import {ColumnAxis} from "@macrostrat/column-components/src/axis"
 import {ColumnImages} from "@macrostrat/column-components/src/images"
-import {NotesColumn} from "@macrostrat/column-components/src/notes"
 import "@macrostrat/column-components/src/main.styl"
 import {Intent} from "@blueprintjs/core"
-import {Notification} from "../../notify"
 import {GrainsizeAxis} from "@macrostrat/column-components/src/grainsize"
 import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
 import {ModalEditor} from "@macrostrat/column-components/src/editor"
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from "./data-source"
-import {SVGNamespaces, KnownSizeComponent} from "../util"
 import Samples from "@macrostrat/column-components/src/samples"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
 import {ColumnProvider, ColumnContext, GrainsizeLayoutProvider} from '@macrostrat/column-components'
@@ -24,13 +22,17 @@ import {
   FaciesColumnInner,
   LithologyColumnInner
 } from "@macrostrat/column-components/src/lithology"
-import {SequenceStratConsumer} from "../sequence-strat-context"
 import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
-import {db, storedProcedure, query} from "app/sections/db"
 import {dirname} from "path"
 import update from "immutability-helper"
-import T from "prop-types"
 import {StatefulComponent} from '@macrostrat/ui-components'
+
+import {db, storedProcedure, query} from "app/sections/db"
+import {Notification} from "../../../notify"
+import {SequenceStratConsumer} from "../../sequence-strat-context"
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../data-source"
+import {SVGNamespaces, KnownSizeComponent} from "../../util"
+import {ManagedNotesColumn} from "./notes"
 
 fmt = format(".1f")
 baseDir = dirname require.resolve '..'
@@ -62,23 +64,6 @@ class ScrollToHeightComponent extends Component
       intent: Intent.PRIMARY
     }
     @setState {loaded: true}
-
-class ManagedNotesColumn extends StatefulComponent
-  constructor: (props)->
-    super props
-    @state = {notes: []}
-
-  componentDidMount: =>
-    @updateNotes()
-
-  updateNotes: =>
-    {id} = @props
-    notes = await query 'log-notes', [id]
-    @setState {notes}
-
-  render: ->
-    {notes} = @state
-    h NotesColumn, {notes, @props...}
 
 class SectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
@@ -154,6 +139,7 @@ class SectionComponent extends KnownSizeComponent
     ticks = height/10
 
     shouldRenderGeneralized = @props.activeDisplayMode == 'generalized'
+    shouldShowImages = zoom >= 0.25 and not shouldRenderGeneralized
 
     order = @props.sequenceStratOrder
 
@@ -230,7 +216,7 @@ class SectionComponent extends KnownSizeComponent
                   ]
                 ]
               ]
-              h.if(zoom >= 0.25) ColumnImages, {
+              h.if(shouldShowImages) ColumnImages, {
                 padding: @props.padding
                 lithologyWidth: @props.lithologyWidth
                 imageFiles: @props.imageFiles

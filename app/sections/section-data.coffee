@@ -5,7 +5,9 @@ import {Component, createContext} from "react"
 import {db, query, storedProcedure} from "./db"
 import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
+import {PlatformContext} from 'app/platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
+import {PhotoLibraryProvider} from '@macrostrat/column-components'
 import h from "react-hyperscript"
 import "./main.styl"
 
@@ -45,11 +47,13 @@ getSectionData = (opts={})->
 SectionContext = createContext({})
 
 class SectionDataProvider extends Component
+  @contextType: PlatformContext
   constructor: (props)->
     super props
     @state = {
       sections: []
       surfaces: []
+      photos: []
     }
 
   getInitialData: ->
@@ -57,17 +61,22 @@ class SectionDataProvider extends Component
       .then (sections)=>@setState {sections}
     query('section-surface', null, {baseDir: __dirname})
       .then (surfaces)=>@setState {surfaces}
+    query('photo', null, {baseDir: __dirname})
+      .then (photos)=>@setState {photos}
 
   componentDidMount: ->
     @getInitialData()
 
   render: ->
-    {surfaces, sections} = @state
+    {surfaces, sections, photos} = @state
+    {computePhotoPath} = @context
     # Surfaces really shouldn't be tracked by facies provider
     h LithologyProvider, [
       h FaciesProvider, {surfaces}, [
-        h SequenceStratProvider, null, [
-          h SectionContext.Provider, {value: {sections}}, @props.children
+        h PhotoLibraryProvider, {photos, computePhotoPath}, [
+          h SequenceStratProvider, null, [
+            h SectionContext.Provider, {value: {sections}}, @props.children
+          ]
         ]
       ]
     ]
