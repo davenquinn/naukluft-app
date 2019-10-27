@@ -3,6 +3,10 @@ import h from 'react-hyperscript'
 import {PlatformProvider} from './platform'
 import {SectionDataProvider, SectionConsumer} from './sections/section-data'
 import {SummarySectionsStatic} from './sections/summary-sections'
+import './main.styl'
+import './sections/main.styl'
+import './sections/summary-sections/main.styl'
+
 
 fn = (props)->
   #h 'div'
