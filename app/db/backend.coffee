@@ -1,4 +1,4 @@
-import {join, dirname, resolve} from "path"
+import {join, dirname, resolve, basename} from "path"
 import Promise from "bluebird"
 import {getUID, getHash} from "./util"
 
@@ -18,61 +18,49 @@ db = pgp('postgresql:///Naukluft')
 {helpers} = pgp
 
 queryFiles = {}
-storedProcedure = (id, opts={})->
-  {baseDir} = opts
-  baseDir ?= __dirname
-  if not id.endsWith('.sql')
-    id = join(baseDir,'sql',"#{id}.sql")
+storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
-  queryFiles[id] ?= pgp.QueryFile(id)
-  return queryFiles[id]
+  queryFiles[fileName] ?= pgp.QueryFile(fileName)
+  console.log queryFiles[fileName]
+  return queryFiles[fileName]
 
 queryLibrary = []
-
 # Serialize queries based on query file and opts
 class SerializableQuery
-  constructor: (@id, @values, opts={})->
-    query = storedProcedure(@id, opts)
+  constructor: (@fileName, @values=null, opts={})->
+    fn = resolve(__dirname, @fileName)
+    query = storedProcedure(fn, opts)
+    @id = basename(@fileName, '.sql')
     @sql = pgp.as.format(query, @values)
-    @uid = getUID @id, @values
-    @hash = getHash @id, @values
+    @uid = getUID @fileName, @values
+    @hash = getHash @fileName, @values
     queryLibrary.push(@)
   getData: -> db.query @sql
   filename: -> @id+'_'+@hash+'.json'
 
-baseDir = resolve join __dirname, "../lateral-variation"
-lateralVariationQueries = [
-  'unit-heights'
-  'sections'
-  'boundary-heights'
-]
+import lateralVariationQueries from "../lateral-variation/sql/*.sql"
 for q in lateralVariationQueries
   new SerializableQuery(q, null, {baseDir})
 
-baseDir = resolve join __dirname, "../sections/summary-sections"
-summarySectionQueries = [
-  'lithostratigraphy-surface'
-  'lithostratigraphy-names'
-]
-for q in summarySectionQueries
-  new SerializableQuery(q, null, {baseDir})
+import lithostratQueries from "../sections/summary-sections/sql/*.sql"
+for fn in lithostratQueries
+  new SerializableQuery(fn)
 
-baseDir = resolve join __dirname, "../map-viewer/legend"
-new SerializableQuery('unit-data', null, {baseDir})
+import unitData from "../map-viewer/legend/sql/unit-data.sql"
+new SerializableQuery(unitData)
 
+import faciesQuery from "../sections/facies/sql/facies.sql"
+new SerializableQuery(faciesQuery)
 
-baseDir = resolve join __dirname, "../sections/facies"
-new SerializableQuery('facies',null, {baseDir})
-
-baseDir = resolve join __dirname, "../sections"
-new SerializableQuery('sections', null, {baseDir})
-new SerializableQuery('section-surface', null, {baseDir})
-new SerializableQuery('carbon-isotopes', null, {baseDir})
+import sectionQueries from "../sections/sql/*.sql"
+new SerializableQuery(sectionQueries['sections'])
+new SerializableQuery(sectionQueries['section-surface'])
+new SerializableQuery(sectionQueries['carbon-isotopes'])
 
 sectionLabels = null
 
-sectionQueries =  [
+sectionQueryLabels =  [
   'flooding-surface'
   'section-samples'
   'section-symbols'
@@ -81,16 +69,18 @@ sectionQueries =  [
   'photo'
 ]
 
-createSerializedQueries = ->
-  for q in sectionQueries
+alreadyLoaded = false
+createSerializedQueries = (sectionLabels)->
+  for q in sectionQueryLabels
     for l in sectionLabels
-      v = new SerializableQuery(q,[l], {baseDir})
+      new SerializableQuery(sectionQueries[q],[l])
+  alreadyLoaded = true
 
 serializableQueries = ->
   ## Return a list of serializable queries for writing
   # out to files
-  sections = await db.query storedProcedure('sections', {baseDir})
-  return if sectionLabels?
+  sections = await db.query storedProcedure(sectionQueries['sections'])
+  return if alreadyLoaded
   sectionLabels = sections.map (d)->d.section
   createSerializedQueries()
 

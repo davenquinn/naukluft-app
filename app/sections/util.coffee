@@ -1,7 +1,7 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import {NavLink, BackLink} from "../nav"
-import {Icon} from "react-fa"
+import {Icon} from "@blueprintjs/core"
 import T from "prop-types"
 import {db, storedProcedure, query} from "./db"
 
@@ -11,7 +11,7 @@ class SectionNavigationControl extends Component
     if @props.toggleSettings
       settings = h 'li', [
         h 'a', onClick: @props.toggleSettings, [
-          h Icon, name: 'gear', size: '2x'
+          h Icon, {icon: 'gear', size: 24}
         ]
       ]
 
@@ -19,7 +19,9 @@ class SectionNavigationControl extends Component
 
     h 'ul.controls', [
       h BackLink
-      h NavLink, to: '/', [h Icon, name: 'home', size: '2x']
+      h NavLink, to: '/', [
+        h Icon, {icon: 'home', size: 24}
+      ]
       settings
       children
     ]

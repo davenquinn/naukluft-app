@@ -36,14 +36,12 @@
     "labella": "^1.1.4",
     "mapbox-gl": "^0.44.1",
     "moment": "^2.18.1",
-    "naukluft-db": "file:../../local-packages/naukluft-db",
     "pg": "^6.1.2",
     "pg-promise": "^5.5.0",
     "prop-types": "^15.5.10",
     "react": "^16.11.0",
     "react-color": "^2.13.8",
     "react-dom": "^16.11.0",
-    "react-fa": "^4.2.0",
     "react-hyperscript": "^3.0.0",
     "react-hyperscript-helpers": "^1.2.0",
     "react-images": "^1.0.0",
@@ -64,5 +62,13 @@
     "stratigraphic-column": "file:../../deps/node/stratigraphic-column",
     "stylus": "^0.54.5",
     "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "babel-plugin-root-import": "^6.4.1"
+  },
+  "alias": {
+    "app/": "./"
   }
 }

@@ -28,4 +28,4 @@ class FaciesDescriptionPage extends Component
       }
    ]
 
-export {FaciesDescriptionPage, FaciesDescriptionSmall, FaciesCard}
+export {FaciesDescriptionPage, FaciesDescriptionSmall, FaciesSwatch}
