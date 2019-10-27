@@ -2,8 +2,8 @@
   "plugins": [
     ["module-resolver", {
       "alias": {
-        "@macrostrat/column-components": "./bundled-deps/column-components",
-        "~": "./bundled-deps/column-components"
+        "~/bundled-deps/column-components": "./bundled-deps/column-components",
+        "app/": "./"
       }
     }]
   ],

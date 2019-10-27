@@ -1,7 +1,7 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import {db, storedProcedure, query} from "../../db"
-import {FaciesContext} from '@macrostrat/column-components/src/context'
+import {FaciesContext} from '~/bundled-deps/column-components/src/context'
 
 class FaciesProvider extends Component
   constructor: (props)->

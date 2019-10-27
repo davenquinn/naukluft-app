@@ -4,16 +4,16 @@ import {Component, createElement, useState} from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
 
-import {ColumnAxis} from "@macrostrat/column-components/src/axis"
-import {ColumnImages} from "@macrostrat/column-components/src/images"
-import "@macrostrat/column-components/src/main.styl"
+import {ColumnAxis} from "~/bundled-deps/column-components/src/axis"
+import {ColumnImages} from "~/bundled-deps/column-components/src/images"
+import "~/bundled-deps/column-components/src/main.styl"
 import {Intent} from "@blueprintjs/core"
-import {GrainsizeAxis} from "@macrostrat/column-components/src/grainsize"
-import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
-import {ModalEditor} from "@macrostrat/column-components/src/editor"
-import Samples from "@macrostrat/column-components/src/samples"
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
-import {ColumnProvider, ColumnContext, GrainsizeLayoutProvider} from '@macrostrat/column-components'
+import {GrainsizeAxis} from "~/bundled-deps/column-components/src/grainsize"
+import {SymbolColumn} from "~/bundled-deps/column-components/src/symbol-column"
+import {ModalEditor} from "~/bundled-deps/column-components/src/editor"
+import Samples from "~/bundled-deps/column-components/src/samples"
+import {FloodingSurface, TriangleBars} from "~/bundled-deps/column-components/src/flooding-surface"
+import {ColumnProvider, ColumnContext, GrainsizeLayoutProvider} from '~/bundled-deps/column-components'
 import {
   LithologyColumn,
   GeneralizedSectionColumn,
@@ -21,13 +21,13 @@ import {
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner
-} from "@macrostrat/column-components/src/lithology"
-import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
+} from "~/bundled-deps/column-components/src/lithology"
+import {DivisionEditOverlay} from '~/bundled-deps/column-components/src/edit-overlay'
 import {dirname} from "path"
 import update from "immutability-helper"
 import {StatefulComponent} from '@macrostrat/ui-components'
 
-import {db, storedProcedure, query} from "app/sections/db"
+import {db, storedProcedure, query} from "../../db"
 import {Notification} from "../../../notify"
 import {SequenceStratConsumer} from "../../sequence-strat-context"
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../data-source"

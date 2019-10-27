@@ -6,7 +6,7 @@ import "d3-selection-multi"
 import {Component, createElement} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
-import {SectionAxis} from "@macrostrat/column-components/src/axis"
+import {SectionAxis} from "~/bundled-deps/column-components/src/axis"
 import {query} from "../db"
 import {sectionSurfaceProps} from "./link-overlay"
 import {SVGNamespaces} from "../util"

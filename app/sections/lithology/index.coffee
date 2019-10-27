@@ -1,6 +1,6 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
-import {db, storedProcedure, query} from "app/db"
+import {db, storedProcedure, query} from "../../db"
 
 LithologyContext = createContext {lithology: []}
 
