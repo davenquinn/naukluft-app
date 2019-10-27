@@ -2,6 +2,7 @@ import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import {db, storedProcedure, query} from "../../db"
 import {FaciesContext} from '~/bundled-deps/column-components/src/context'
+import q from "./sql/*.sql"
 
 class FaciesProvider extends Component
   constructor: (props)->
@@ -17,12 +18,12 @@ class FaciesProvider extends Component
     return __colorMap[id] or null
 
   setFaciesColor: (id,color)=>
-    sql = storedProcedure('set-facies-color', {baseDir: __dirname})
+    sql = storedProcedure(q['set-facies-color'])
     await db.none sql, {id,color}
     @getFaciesData()
 
   getFaciesData: =>
-    facies = await query('facies', null, {baseDir: __dirname})
+    facies = await query(q['facies'])
     __colorMap = {}
     for f in facies
       __colorMap[f.id] = f.color
@@ -30,7 +31,7 @@ class FaciesProvider extends Component
     @setState {facies, __colorMap}
 
   getFaciesTractData: =>
-    facies_tracts = await query('facies-tract', null, {baseDir: __dirname})
+    facies_tracts = await query(q['facies-tract'])
     @setState {facies_tracts}
 
   componentDidMount: ->

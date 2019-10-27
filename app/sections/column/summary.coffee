@@ -300,7 +300,7 @@ SVGSectionComponent = (props)->
     h SequenceStratConsumer, null, (value)->
       {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = value
       h ColumnSurfacesProvider, {id, divisions}, (
-        h withRouter(BaseSVGSectionComponent), {
+        h BaseSVGSectionComponent, {
           showTriangleBars, showFloodingSurfaces,
           sequenceStratOrder, inEditMode, props...,
         }

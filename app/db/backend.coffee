@@ -21,7 +21,7 @@ queryFiles = {}
 storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
-  queryFiles[fileName] ?= pgp.QueryFile(fileName)
+  queryFiles[fileName] ?= pgp.QueryFile(resolve(__dirname,fileName))
   console.log queryFiles[fileName]
   return queryFiles[fileName]
 
@@ -30,6 +30,7 @@ queryLibrary = []
 class SerializableQuery
   constructor: (@fileName, @values=null, opts={})->
     fn = resolve(__dirname, @fileName)
+    console.log fn
     query = storedProcedure(fn, opts)
     @id = basename(@fileName, '.sql')
     @sql = pgp.as.format(query, @values)
@@ -41,7 +42,7 @@ class SerializableQuery
 
 import lateralVariationQueries from "../lateral-variation/sql/*.sql"
 for q in lateralVariationQueries
-  new SerializableQuery(q, null, {baseDir})
+  new SerializableQuery(q)
 
 import lithostratQueries from "../sections/summary-sections/sql/*.sql"
 for fn in lithostratQueries
@@ -57,8 +58,6 @@ import sectionQueries from "../sections/sql/*.sql"
 new SerializableQuery(sectionQueries['sections'])
 new SerializableQuery(sectionQueries['section-surface'])
 new SerializableQuery(sectionQueries['carbon-isotopes'])
-
-sectionLabels = null
 
 sectionQueryLabels =  [
   'flooding-surface'
@@ -82,9 +81,9 @@ serializableQueries = ->
   sections = await db.query storedProcedure(sectionQueries['sections'])
   return if alreadyLoaded
   sectionLabels = sections.map (d)->d.section
-  createSerializedQueries()
+  createSerializedQueries(sections)
 
-  createSerializedQueries()
+  createSerializedQueries(sections)
   return queryLibrary
 
 
