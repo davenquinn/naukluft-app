@@ -4,13 +4,13 @@ import "d3-selection-multi"
 import {Component, createElement, createRef} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
-import {GrainsizeLayoutProvider} from '@macrostrat/column-components'
-import {ColumnAxis} from "@macrostrat/column-components/src/axis"
+import {GrainsizeLayoutProvider} from '~/bundled-deps/column-components'
+import {ColumnAxis} from "~/bundled-deps/column-components/src/axis"
 import {PlatformConsumer} from "../../platform"
-import {SymbolColumn} from "@macrostrat/column-components/src/symbol-column"
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/src/flooding-surface"
-import {IntervalEditor} from "@macrostrat/column-components/src/editor"
-import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/src/lithology"
+import {SymbolColumn} from "~/bundled-deps/column-components/src/symbol-column"
+import {FloodingSurface, TriangleBars} from "~/bundled-deps/column-components/src/flooding-surface"
+import {IntervalEditor} from "~/bundled-deps/column-components/src/editor"
+import {LithologyColumn, GeneralizedSectionColumn} from "~/bundled-deps/column-components/src/lithology"
 import {Popover, Position} from "@blueprintjs/core"
 import {withRouter} from "react-router-dom"
 import {Notification} from "../../notify"
@@ -18,10 +18,10 @@ import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {db, storedProcedure, query} from "../db"
-import {ColumnProvider, ColumnContext} from '@macrostrat/column-components/src/context'
+import {ColumnProvider, ColumnContext} from '~/bundled-deps/column-components/src/context'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
-        LithologyColumnInner} from '@macrostrat/column-components/src/lithology'
-import {DivisionEditOverlay} from '@macrostrat/column-components/src/edit-overlay'
+        LithologyColumnInner} from '~/bundled-deps/column-components/src/lithology'
+import {DivisionEditOverlay} from '~/bundled-deps/column-components/src/edit-overlay'
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from './data-source'
 import T from 'prop-types'
 
@@ -300,7 +300,7 @@ SVGSectionComponent = (props)->
     h SequenceStratConsumer, null, (value)->
       {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = value
       h ColumnSurfacesProvider, {id, divisions}, (
-        h withRouter(BaseSVGSectionComponent), {
+        h BaseSVGSectionComponent, {
           showTriangleBars, showFloodingSurfaces,
           sequenceStratOrder, inEditMode, props...,
         }

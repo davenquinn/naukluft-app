@@ -1,6 +1,7 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
-import {db, storedProcedure, query} from "app/db"
+import {db, storedProcedure, query} from "../../db"
+import q from "./sql/lithology.sql"
 
 LithologyContext = createContext {lithology: []}
 
@@ -10,7 +11,7 @@ class LithologyProvider extends Component
     @state = {lithology: []}
 
   getLithologies: =>
-    lithology = await query('lithology', null, {baseDir: __dirname})
+    lithology = await query(q)
     @setState {lithology}
 
   componentDidMount: ->

@@ -9,8 +9,8 @@ import {
   NotesColumn,
   NoteEditor,
   PhotoOverlay
-} from "@macrostrat/column-components"
-import {db, storedProcedure, query} from "app/sections/db"
+} from "~/bundled-deps/column-components"
+import {db, storedProcedure, query} from "~/sections/db"
 
 fmt = format(".1f")
 baseDir = dirname require.resolve '..'

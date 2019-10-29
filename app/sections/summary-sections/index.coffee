@@ -20,11 +20,10 @@ import {SectionOptionsContext, defaultSectionOptions} from "./options"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
-import {NavLink} from "../../nav"
 import {Legend} from "./legend"
 import {query} from "../../db"
 import {SectionPositioner, SectionScale} from "./positioner"
-
+import lithostratSurface from './sql/lithostratigraphy-surface.sql'
 import "../main.styl"
 
 class LegacySectionScale extends SectionScale
@@ -94,6 +93,7 @@ class SummarySectionsBase extends Component
     groupMargin: 400
     columnMargin: 100
     columnWidth: 150
+    showNavigationController: true
   }
   SettingsPanel: SummarySectionsSettings
   pageID: 'summary-sections'
@@ -134,9 +134,10 @@ class SummarySectionsBase extends Component
     return unless v?
     @state = update @state, options: {$merge: v}
 
-    query 'lithostratigraphy-surface', null, {baseDir: __dirname}
+    query(lithostratSurface)
       .then (surfaces)=>
         surfaces.reverse()
+        console.log surfaces
         @setState {surfaces}
 
   renderChemostratigraphy: ->
@@ -202,6 +203,7 @@ class SummarySectionsBase extends Component
      showLithostratigraphy,
      activeMode} = options
 
+    return null unless sections?
     return null unless sections.length > 0
 
     skeletal = activeMode == 'skeleton'
@@ -318,7 +320,7 @@ class SummarySectionsBase extends Component
   render: ->
     backLocation = '/sections'
     {toggleSettings} = @
-    {showNavigationController} = @state.options
+    {showNavigationController} = @props
 
     navigationController = null
     if showNavigationController
@@ -371,4 +373,8 @@ SummarySections = (props)->
   h SequenceStratConsumer, null, ({actions, rest...})->
     h SummarySectionsBase, {props..., rest...}
 
-export {SummarySections, SummarySectionsBase, SectionOptionsContext}
+SummarySectionsStatic = (props)->
+  h SequenceStratConsumer, null, ({actions, rest...})->
+    h SummarySectionsBase, {props..., rest..., showNavigationController: false}
+
+export {SummarySections, SummarySectionsStatic, SummarySectionsBase, SectionOptionsContext}

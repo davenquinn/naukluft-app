@@ -8,10 +8,9 @@ import ReactDOM from "react-dom"
 import {HashRouter,Route,Link, Switch} from "react-router-dom"
 import {mouseTrap} from "react-mousetrap"
 import h from "react-hyperscript"
-import {FocusStyleManager} from "@blueprintjs/core"
+import {FocusStyleManager, Icon} from "@blueprintjs/core"
 FocusStyleManager.onlyShowFocusOnTabs()
 
-import {Icon} from "react-fa"
 import {NavBar, NavLink} from "./nav"
 import {SectionIndex} from "./sections"
 #MapLegend = require './map-legend/component'
@@ -36,7 +35,9 @@ wrapHomeButton = (component)->
     render: ->
       h 'div.page', [
         h 'ul.controls', [
-          h NavLink, to: '/', [h Icon, name: 'home', size: '2x']
+          h NavLink, to: '/', [
+            h Icon, {icon: 'home', size: 24}
+          ]
         ]
         h component
       ]

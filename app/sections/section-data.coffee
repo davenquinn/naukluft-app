@@ -5,11 +5,14 @@ import {Component, createContext} from "react"
 import {db, query, storedProcedure} from "./db"
 import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
-import {PlatformContext} from 'app/platform'
+import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
-import {PhotoLibraryProvider} from '@macrostrat/column-components'
+import {PhotoLibraryProvider} from '~/bundled-deps/column-components'
 import h from "react-hyperscript"
 import "./main.styl"
+import sectionSurfaceQuery from "./sql/section-surface.sql"
+import photoQuery from "./sql/photo.sql"
+import sectionsQuery from "./sql/sections.sql"
 
 sectionFilename = (fn)->
   if PLATFORM == ELECTRON
@@ -23,7 +26,7 @@ getSectionData = (opts={})->
   fn = sectionFilename('file-info.json')
   config = await getJSON fn
 
-  query 'sections', null, {baseDir: __dirname}
+  query sectionsQuery
     .map (s)->
       s.id = s.section.trim()
       files = config[s.id] or []
@@ -59,9 +62,9 @@ class SectionDataProvider extends Component
   getInitialData: ->
     getSectionData()
       .then (sections)=>@setState {sections}
-    query('section-surface', null, {baseDir: __dirname})
+    query(sectionSurfaceQuery)
       .then (surfaces)=>@setState {surfaces}
-    query('photo', null, {baseDir: __dirname})
+    query(photoQuery)
       .then (photos)=>@setState {photos}
 
   componentDidMount: ->
