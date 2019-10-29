@@ -1,22 +1,19 @@
-import {findDOMNode} from "react-dom"
-import * as d3 from "d3"
-import "d3-selection-multi"
-import {Component, createElement, createRef} from "react"
+import {Component, createElement, createRef, useContext} from "react"
 import h from "react-hyperscript"
 import Measure from 'react-measure'
 import {GrainsizeLayoutProvider} from '~/bundled-deps/column-components'
 import {ColumnAxis} from "~/bundled-deps/column-components/src/axis"
-import {PlatformConsumer} from "../../platform"
+import {PlatformContext} from "../../platform"
 import {SymbolColumn} from "~/bundled-deps/column-components/src/symbol-column"
 import {FloodingSurface, TriangleBars} from "~/bundled-deps/column-components/src/flooding-surface"
 import {IntervalEditor} from "~/bundled-deps/column-components/src/editor"
 import {LithologyColumn, GeneralizedSectionColumn} from "~/bundled-deps/column-components/src/lithology"
 import {Popover, Position} from "@blueprintjs/core"
-import {withRouter} from "react-router-dom"
+import {withRouter, useHistory} from "react-router-dom"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
-import {SequenceStratConsumer} from "../sequence-strat-context"
+import {SequenceStratContext} from "../sequence-strat-context"
 import {db, storedProcedure, query} from "../db"
 import {ColumnProvider, ColumnContext} from '~/bundled-deps/column-components/src/context'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
@@ -24,8 +21,10 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
 import {DivisionEditOverlay} from '~/bundled-deps/column-components/src/edit-overlay'
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from './data-source'
 import T from 'prop-types'
+import {format} from 'd3-format'
+import * as d3 from 'd3'
 
-fmt = d3.format('.1f')
+fmt = format('.1f')
 
 IntervalNotification = (props)->
   {id, height, bottom, top, surface} = props
@@ -39,11 +38,32 @@ IntervalNotification = (props)->
     if surface then h('p', ["Surface: ", h('code',surface)]) else null
   ]
 
+EditOverlay = (props)->
+  history = useHistory()
+  {id, rest...} = props
+
+  onClick = ({height})=>
+    {id} = props
+    path = "/sections/#{id}"
+    if height?
+      path += "/height/#{height}"
+    console.log height, path
+    history.push(path)
+
+  h DivisionEditOverlay, {
+    showInfoBox: true
+    onClick
+    rest...
+  }
+
+
+
 class BaseSVGSectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
   @defaultProps: {
     zoom: 1
     pixelsPerMeter: 20
+    inEditMode: false
     skeletal: false
     offset: 0
     offsetTop: null
@@ -66,6 +86,9 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       bottom: 10
     }
   }
+  # @propTypes: {
+  #   inEditMode: T.bool
+  # }
   constructor: (props)->
     super props
     @measureRef = createRef()
@@ -133,7 +156,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
     {inEditMode, innerWidth, history} = @props
 
     onClick = ({height})=>
-      {id} = @props
+      {id} = props
       path = "/sections/#{id}"
       if height?
         path += "/height/#{height}"
@@ -181,6 +204,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
      showTriangleBars,
      showFloodingSurfaces,
      showWhiteUnderlay,
+     inEditMode
      position,
      range,
      pixelsPerMeter
@@ -264,7 +288,12 @@ class BaseSVGSectionComponent extends KnownSizeComponent
             width: innerWidth,
             grainsizeScaleStart
           }, [
-            @renderEditOverlay({left, top})
+            h EditOverlay, {
+              id,
+              allowEditing: true
+              left,
+              top: @props.padding.top
+            }
             h "svg.section", {
               SVGNamespaces...
               style
@@ -296,14 +325,14 @@ class BaseSVGSectionComponent extends KnownSizeComponent
 
 SVGSectionComponent = (props)->
   {id, divisions} = props
-  h PlatformConsumer, null, ({inEditMode})->
-    h SequenceStratConsumer, null, (value)->
-      {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = value
-      h ColumnSurfacesProvider, {id, divisions}, (
-        h BaseSVGSectionComponent, {
-          showTriangleBars, showFloodingSurfaces,
-          sequenceStratOrder, inEditMode, props...,
-        }
-      )
+  {inEditMode} = useContext(PlatformContext)
+  {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = useContext(SequenceStratContext)
+
+  h ColumnSurfacesProvider, {id, divisions}, (
+    h BaseSVGSectionComponent, {
+      showTriangleBars, showFloodingSurfaces,
+      sequenceStratOrder, inEditMode, props...,
+    }
+  )
 
 export {BaseSVGSectionComponent, SVGSectionComponent}
