@@ -29,9 +29,7 @@ queryLibrary = []
 # Serialize queries based on query file and opts
 class SerializableQuery
   constructor: (@fileName, @values=null, opts={})->
-    fn = resolve(__dirname, @fileName)
-    console.log fn
-    query = storedProcedure(fn, opts)
+    query = storedProcedure(@fileName, opts)
     @id = basename(@fileName, '.sql')
     @sql = pgp.as.format(query, @values)
     @uid = getUID @fileName, @values
@@ -40,9 +38,14 @@ class SerializableQuery
   getData: -> db.query @sql
   filename: -> @id+'_'+@hash+'.json'
 
-import lateralVariationQueries from "../lateral-variation/sql/*.sql"
-for q in lateralVariationQueries
-  new SerializableQuery(q)
+import q1 from "../lateral-variation/sql/boundary-heights.sql"
+new SerializableQuery(q1)
+import q2 from "../lateral-variation/sql/section-units.sql"
+new SerializableQuery(q2)
+import q3 from "../lateral-variation/sql/sections.sql"
+new SerializableQuery(q3)
+import q4 from "../lateral-variation/sql/unit-heights.sql"
+new SerializableQuery(q4)
 
 import lithostratNames from "../sections/summary-sections/sql/lithostratigraphy-names.sql"
 new SerializableQuery(lithostratNames)
