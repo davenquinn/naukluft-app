@@ -55,7 +55,9 @@ module.exports = {
       },
       {
         test: /\.sql$/,
-        use: ["file-loader"],
+        use: {
+          loader: path.resolve("./sql-loader.js")
+        },
         exclude: /node_modules/
       }
 
