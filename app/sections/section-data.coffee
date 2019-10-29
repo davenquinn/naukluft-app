@@ -10,7 +10,9 @@ import {SequenceStratProvider} from "./sequence-strat-context"
 import {PhotoLibraryProvider} from '~/bundled-deps/column-components'
 import h from "react-hyperscript"
 import "./main.styl"
-import q from "./sql/*.sql"
+import sectionSurfaceQuery from "./sql/section-surface.sql"
+import photoQuery from "./sql/photo.sql"
+import sectionsQuery from "./sql/sections.sql"
 
 sectionFilename = (fn)->
   if PLATFORM == ELECTRON
@@ -24,7 +26,7 @@ getSectionData = (opts={})->
   fn = sectionFilename('file-info.json')
   config = await getJSON fn
 
-  query q['sections']
+  query sectionsQuery
     .map (s)->
       s.id = s.section.trim()
       files = config[s.id] or []
@@ -60,9 +62,9 @@ class SectionDataProvider extends Component
   getInitialData: ->
     getSectionData()
       .then (sections)=>@setState {sections}
-    query(q['section-surface'])
+    query(sectionSurfaceQuery)
       .then (surfaces)=>@setState {surfaces}
-    query(q['photo'])
+    query(photoQuery)
       .then (photos)=>@setState {photos}
 
   componentDidMount: ->

@@ -9,7 +9,6 @@ import '../sections/summary-sections/main.styl'
 import '../bundled-deps/column-components/src/main.styl'
 
 fn = (props)->
-  #h 'div'
   h PlatformProvider, [
     h SectionDataProvider, [
       h SectionConsumer, null, ({sections})=>

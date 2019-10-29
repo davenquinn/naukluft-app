@@ -44,9 +44,10 @@ import lateralVariationQueries from "../lateral-variation/sql/*.sql"
 for q in lateralVariationQueries
   new SerializableQuery(q)
 
-import lithostratQueries from "../sections/summary-sections/sql/*.sql"
-for fn in lithostratQueries
-  new SerializableQuery(fn)
+import lithostratNames from "../sections/summary-sections/sql/lithostratigraphy-names.sql"
+new SerializableQuery(lithostratNames)
+import lithostratSurface from "../sections/summary-sections/sql/lithostratigraphy-surface.sql"
+new SerializableQuery(lithostratSurface)
 
 import unitData from "../map-viewer/legend/sql/unit-data.sql"
 new SerializableQuery(unitData)
@@ -54,35 +55,35 @@ new SerializableQuery(unitData)
 import faciesQuery from "../sections/facies/sql/facies.sql"
 new SerializableQuery(faciesQuery)
 
-import sectionQueries from "../sections/sql/*.sql"
-new SerializableQuery(sectionQueries['sections'])
-new SerializableQuery(sectionQueries['section-surface'])
-new SerializableQuery(sectionQueries['carbon-isotopes'])
+import sectionsQuery from "../sections/sql/sections.sql"
+new SerializableQuery(sectionsQuery)
+import sectionSurface from "../sections/sql/section-surface.sql"
+new SerializableQuery(sectionSurface)
+import carbonIsotopes from "../sections/sql/carbon-isotopes.sql"
+new SerializableQuery(carbonIsotopes)
 
-sectionQueryLabels =  [
-  'flooding-surface'
-  'section-samples'
-  'section-symbols'
-  'lithology'
-  'log-notes'
-  'photo'
-]
+import sq1 from '../sections/sql/flooding-surface.sql'
+import sq2 from '../sections/sql/section-samples.sql'
+import sq3 from '../sections/sql/section-symbols.sql'
+import sq4 from '../sections/sql/lithology.sql'
+import sq5 from '../sections/sql/log-notes.sql'
+import sq6 from '../sections/sql/photo.sql'
+
+allSectionQueries =  [sq1,sq2,sq3,sq4,sq5,sq6]
 
 alreadyLoaded = false
 createSerializedQueries = (sectionLabels)->
-  for q in sectionQueryLabels
+  for sql in allSectionQueries
     for l in sectionLabels
-      new SerializableQuery(sectionQueries[q],[l])
+      new SerializableQuery(sql,[l])
   alreadyLoaded = true
 
 serializableQueries = ->
   ## Return a list of serializable queries for writing
   # out to files
-  sections = await db.query storedProcedure(sectionQueries['sections'])
+  sections = await db.query storedProcedure(sectionsQuery)
   return if alreadyLoaded
   sectionLabels = sections.map (d)->d.section
-  createSerializedQueries(sections)
-
   createSerializedQueries(sections)
   return queryLibrary
 
