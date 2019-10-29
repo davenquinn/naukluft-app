@@ -52,6 +52,13 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", cssLoader],
         exclude: /node_modules/
+      },
+      {
+        test: /\.sql$/,
+        use: {
+          loader: path.resolve("./sql-loader.js")
+        },
+        exclude: /node_modules/
       }
     ]
   },
@@ -64,7 +71,7 @@ module.exports = {
       This is a pretty awful hack to resolve tilde paths. It requires
       that they exist only in the column-components package.
       */
-      "~": path.resolve(__dirname, 'app', 'bundled-deps', 'column-components')
+      "~": path.resolve(__dirname, 'app')
     }
   }
 }
