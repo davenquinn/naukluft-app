@@ -70,6 +70,7 @@
     "babel-plugin-root-import": "^6.4.1"
   },
   "alias": {
-    "app": "."
+    "app": ".",
+    "#": "./bundled-deps/column-components/src"
   }
 }

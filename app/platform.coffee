@@ -3,7 +3,7 @@ import h from "react-hyperscript"
 import {join, resolve} from "path"
 import LocalStorage from "./sections/storage"
 import update from "immutability-helper"
-import {AssetPathContext} from '~/bundled-deps/column-components/src/context'
+import {AssetPathContext} from '#/context'
 
 ## Set whether we are on the backend or frontend
 global.ELECTRON = 'electron'

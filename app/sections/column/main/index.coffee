@@ -4,16 +4,18 @@ import {Component, createElement, useState} from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
 
-import {ColumnAxis} from "~/bundled-deps/column-components/src/axis"
-import {ColumnImages} from "~/bundled-deps/column-components/src/images"
-import "~/bundled-deps/column-components/src/main.styl"
+import {ColumnAxis} from "#/axis"
+import {ColumnImages} from "#/images"
+import "#/main.styl"
 import {Intent} from "@blueprintjs/core"
-import {GrainsizeAxis} from "~/bundled-deps/column-components/src/grainsize"
-import {SymbolColumn} from "~/bundled-deps/column-components/src/symbol-column"
-import {ModalEditor} from "~/bundled-deps/column-components/src/editor"
-import Samples from "~/bundled-deps/column-components/src/samples"
-import {FloodingSurface, TriangleBars} from "~/bundled-deps/column-components/src/flooding-surface"
-import {ColumnProvider, ColumnContext, GrainsizeLayoutProvider} from '~/bundled-deps/column-components'
+import {GrainsizeAxis} from "#/grainsize"
+import {SymbolColumn} from "#/symbol-column"
+import {ModalEditor} from "#/editor"
+import Samples from "#/samples"
+import {FloodingSurface, TriangleBars} from "#/flooding-surface"
+import {
+  ColumnProvider, ColumnContext, ColumnSVG,
+  GrainsizeLayoutProvider} from '#'
 import {
   LithologyColumn,
   GeneralizedSectionColumn,
@@ -21,8 +23,8 @@ import {
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner
-} from "~/bundled-deps/column-components/src/lithology"
-import {DivisionEditOverlay} from '~/bundled-deps/column-components/src/edit-overlay'
+} from "#/lithology"
+import {DivisionEditOverlay} from '#/edit-overlay'
 import {dirname} from "path"
 import update from "immutability-helper"
 import {StatefulComponent} from '@macrostrat/ui-components'
@@ -177,42 +179,39 @@ class SectionComponent extends KnownSizeComponent
                 width: grainsizeWidth,
                 grainsizeScaleStart
               }, [
-                h "svg.overlay", {
-                  SVGNamespaces...
+                h ColumnSVG, {
                   width: outerWidth
-                  height: outerHeight
+                  paddingLeft: @props.padding.left
+                  paddingTop: @props.padding.top
+                  paddingBottom: @props.padding.bottom
                 }, [
-                  h 'g.backdrop', {
-                    transform: "translate(#{@props.padding.left} #{@props.padding.top})"
+                  h ColumnAxis, {ticks}
+                  h LithologyColumn, {width: lithologyWidth}, [
+                    h.if(@props.showFacies) FaciesColumnInner, {width: lithologyWidth}
+                    h CoveredOverlay, {width: lithologyWidth}
+                    h LithologyColumnInner, {width: lithologyWidth}
+                  ]
+                  h GrainsizeLayoutProvider, {
+                    width: grainsizeWidth,
+                    grainsizeScaleStart
                   }, [
-                    h ColumnAxis, {ticks}
-                    h LithologyColumn, {width: lithologyWidth}, [
-                      h.if(@props.showFacies) FaciesColumnInner, {width: lithologyWidth}
-                      h CoveredOverlay, {width: lithologyWidth}
-                      h LithologyColumnInner, {width: lithologyWidth}
-                    ]
-                    h GrainsizeLayoutProvider, {
-                      width: grainsizeWidth,
-                      grainsizeScaleStart
-                    }, [
-                      h GrainsizeAxis
-                      h.if(shouldRenderGeneralized) GeneralizedSectionColumn, {range: grainsizeRange}, (
-                        h LithologyColumnInner, {width: grainsizeRange[1]}
-                      )
-                      h.if(@props.showCarbonIsotopes) Samples, {id}
-                      h.if(@props.showFloodingSurfaces) FloodingSurface
-                      h.if(@props.showTriangleBars) TriangleBars, {
-                        offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
-                      }
-                      h.if(@props.showSymbols) SymbolColumn, {id, left: 215}
-                      h.if(@props.showNotes and zoom > 0.50) ManagedNotesColumn, {
-                        visible: true
-                        id
-                        width: @props.logWidth*zoom
-                        inEditMode: @props.isEditable
-                        transform: "translate(#{@props.innerWidth})"
-                      }
-                    ]
+                    h GrainsizeAxis
+                    h.if(shouldRenderGeneralized) GeneralizedSectionColumn, {range: grainsizeRange}, (
+                      h LithologyColumnInner, {width: grainsizeRange[1]}
+                    )
+                    h.if(@props.showCarbonIsotopes) Samples, {id}
+                    h.if(@props.showFloodingSurfaces) FloodingSurface
+                    h.if(@props.showTriangleBars) TriangleBars, {
+                      offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
+                    }
+                    h.if(@props.showSymbols) SymbolColumn, {id, left: 215}
+                    h.if(@props.showNotes and zoom > 0.50) ManagedNotesColumn, {
+                      visible: true
+                      id
+                      width: @props.logWidth*zoom
+                      inEditMode: @props.isEditable
+                      transform: "translate(#{@props.innerWidth})"
+                    }
                   ]
                 ]
               ]

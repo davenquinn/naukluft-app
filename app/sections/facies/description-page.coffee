@@ -3,8 +3,8 @@ import h from "react-hyperscript"
 import T from 'prop-types'
 import {SectionNavigationControl} from "../util"
 import classNames from "classnames"
-import {FaciesDescriptionSmall} from '~/bundled-deps/column-components/src/editor/facies/description'
-import {FaciesSwatch} from '~/bundled-deps/column-components/src/editor/facies/color-picker'
+import {FaciesDescriptionSmall} from '#/editor/facies/description'
+import {FaciesSwatch} from '#/editor/facies/color-picker'
 
 class FaciesDescriptionPage extends Component
   @defaultProps: {

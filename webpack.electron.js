@@ -72,6 +72,7 @@ module.exports = {
       This is a pretty awful hack to resolve tilde paths. It requires
       that they exist only in the column-components package.
       */
+      "#": path.resolve(__dirname, 'app', 'bundled-deps', 'column-components', 'src'),
       "~": path.resolve(__dirname, 'app')
     }
   }

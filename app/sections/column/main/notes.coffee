@@ -3,6 +3,9 @@ import {format} from "d3-format"
 import {Component, createElement, useState} from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
+import logNotesQuery from '../../sql/log-notes.sql'
+import updateNoteQuery from '../../sql/update-note.sql'
+import setNoteInvisible from '../../sql/set-note-invisible.sql'
 
 import {dirname} from 'path'
 import {
@@ -13,8 +16,6 @@ import {
 import {db, storedProcedure, query} from "~/sections/db"
 
 fmt = format(".1f")
-baseDir = dirname require.resolve '..'
-sql = (id)-> storedProcedure(id, {baseDir})
 
 PhotoLinks = ({photos})->
   return null unless photos?
@@ -65,19 +66,18 @@ class ManagedNotesColumn extends Component
 
   updateNotes: =>
     {id} = @props
-    notes = await query 'log-notes', [id]
+    notes = await query logNotesQuery, [id]
     @setState {notes}
 
   onUpdateNote: (noteID, newText)=>
     # We can't edit on the frontend
     return unless PLATFORM == ELECTRON
     {dirname} = require 'path'
-    baseDir = dirname require.resolve '../..'
     if newText.length == 0
-      sql = storedProcedure('set-note-invisible', {baseDir})
+      sql = storedProcedure(setNoteInvisible)
       await db.none sql, [noteID]
     else
-      sql = storedProcedure('update-note', {baseDir})
+      sql = storedProcedure(updateNoteQuery)
       await db.none sql, [noteID, newText]
     @updateNotes()
     console.log "Note #{noteID} edited"

@@ -15,7 +15,7 @@ class BackLink extends React.Component
   render: ->
     h 'li', [
       h 'a', {onClick: @onClick}, [
-        h Icon, {icon: 'arrow-left', size: 24}
+        h Icon, {icon: 'arrow-left', iconSize: 24}
       ]
     ]
   onClick: =>

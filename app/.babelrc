@@ -2,7 +2,7 @@
   "plugins": [
     ["module-resolver", {
       "alias": {
-        "~/bundled-deps/column-components": "./bundled-deps/column-components",
+        "#": "./bundled-deps/column-components/src",
         "app/": "./"
       }
     }]

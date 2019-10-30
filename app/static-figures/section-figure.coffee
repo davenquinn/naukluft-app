@@ -1,5 +1,5 @@
-import * as d3 from "d3"
 import h from 'react-hyperscript'
+import {render} from 'react-dom'
 import {PlatformProvider} from '../platform'
 import {SummarySectionsStatic} from '../sections/summary-sections'
 import {SectionDataProvider, SectionConsumer} from '../sections/section-data'
@@ -18,6 +18,8 @@ fn = (props)->
     ]
   ]
 
-fn.isReactComponent = true
 
-export default fn
+wrapper = (el, opts, cb)->
+  render(h(fn), el, cb)
+
+export default wrapper

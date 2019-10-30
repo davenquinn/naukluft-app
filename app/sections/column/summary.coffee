@@ -2,27 +2,27 @@ import {Component, createElement, createRef, useContext} from "react"
 import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
 import {GrainsizeLayoutProvider, ColumnSVG} from '~/bundled-deps/column-components'
-import {ColumnAxis} from "~/bundled-deps/column-components/src/axis"
+import {ColumnAxis} from "#/axis"
 import {PlatformContext} from "../../platform"
-import {SymbolColumn} from "~/bundled-deps/column-components/src/symbol-column"
-import {FloodingSurface, TriangleBars} from "~/bundled-deps/column-components/src/flooding-surface"
-import {IntervalEditor} from "~/bundled-deps/column-components/src/editor"
-import {LithologyColumn, GeneralizedSectionColumn} from "~/bundled-deps/column-components/src/lithology"
+import {SymbolColumn} from "#/symbol-column"
+import {FloodingSurface, TriangleBars} from "#/flooding-surface"
+import {IntervalEditor} from "#/editor"
+import {LithologyColumn, GeneralizedSectionColumn} from "#/lithology"
 import {Popover, Position} from "@blueprintjs/core"
 import {withRouter, useHistory} from "react-router-dom"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {SequenceStratContext} from "../sequence-strat-context"
-import {db, storedProcedure, query} from "../db"
-import {ColumnProvider, ColumnContext} from '~/bundled-deps/column-components/src/context'
+import {ColumnProvider, ColumnContext} from '#/context'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
-        LithologyColumnInner} from '~/bundled-deps/column-components/src/lithology'
-import {DivisionEditOverlay} from '~/bundled-deps/column-components/src/edit-overlay'
+        LithologyColumnInner} from '#/lithology'
+import {DivisionEditOverlay} from '#/edit-overlay'
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from './data-source'
 import T from 'prop-types'
 import {format} from 'd3-format'
 import * as d3 from 'd3'
+import Box from 'ui-box'
 
 fmt = format('.1f')
 
@@ -39,19 +39,23 @@ IntervalNotification = (props)->
   ]
 
 EditOverlay = (props)->
-  history = useHistory()
+  try
+    history = useHistory()
+    navigateTo = history.push
+  catch
+    navigateTo = ->
   {id, rest...} = props
-
   onClick = ({height})=>
     {id} = props
     path = "/sections/#{id}"
     if height?
       path += "/height/#{height}"
     console.log height, path
-    history.push(path)
+    navigateTo(path)
 
   h DivisionEditOverlay, {
     showInfoBox: true
+    allowEditing: false
     onClick
     rest...
   }
@@ -147,29 +151,6 @@ class BaseSVGSectionComponent extends KnownSizeComponent
     return unless hoveredInterval?
     newHovered = divisions.find (d)-> d.id == hoveredInterval.id
     @setState {hoveredInterval: newHovered}
-
-  renderEditOverlay: ({left})=>
-    grainsizeScaleStart = 40
-    {inEditMode, innerWidth, history} = @props
-
-    onClick = ({height})=>
-      {id} = props
-      path = "/sections/#{id}"
-      if height?
-        path += "/height/#{height}"
-      console.log height, path
-      history.push(path)
-
-    h DivisionEditOverlay, {
-      width: innerWidth
-      left,
-      top: @props.padding.top
-      grainsizeScaleRange: [grainsizeScaleStart, innerWidth]
-      showInfoBox: true
-      allowEditing: inEditMode
-      history # This is a shameless hack
-      onClick
-    }
 
   renderFloodingSurfaces: =>
     return null unless @props.showFloodingSurfaces

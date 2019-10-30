@@ -22,7 +22,6 @@ storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
   queryFiles[fileName] ?= pgp.QueryFile(resolve(__dirname,fileName))
-  console.log queryFiles[fileName]
   return queryFiles[fileName]
 
 queryLibrary = []
@@ -87,7 +86,7 @@ serializableQueries = ->
   sections = await db.query storedProcedure(sectionsQuery)
   return if alreadyLoaded
   sectionLabels = sections.map (d)->d.section
-  createSerializedQueries(sections)
+  createSerializedQueries(sectionLabels)
   return queryLibrary
 
 

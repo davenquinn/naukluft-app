@@ -11,7 +11,7 @@ class SectionNavigationControl extends Component
     if @props.toggleSettings
       settings = h 'li', [
         h 'a', onClick: @props.toggleSettings, [
-          h Icon, {icon: 'gear', size: 24}
+          h Icon, {icon: 'cog', iconSize: 24}
         ]
       ]
 
@@ -20,7 +20,7 @@ class SectionNavigationControl extends Component
     h 'ul.controls', [
       h BackLink
       h NavLink, to: '/', [
-        h Icon, {icon: 'home', size: 24}
+        h Icon, {icon: 'home', iconSize: 24}
       ]
       settings
       children
@@ -37,16 +37,7 @@ class KnownSizeComponent extends Component
   @__height: ->
     return null
 
-SVGNamespaces = {
-  xmlns: "http://www.w3.org/2000/svg"
-  xmlnsXlink: "http://www.w3.org/1999/xlink"
-}
-
-SVGComponent = (props)-> h 'svg', {props..., SVGNamespaces...}
-
 export {
   SectionNavigationControl
-  SVGNamespaces
-  SVGComponent
   KnownSizeComponent
 }
