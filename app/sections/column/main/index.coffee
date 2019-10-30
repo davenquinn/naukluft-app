@@ -9,7 +9,6 @@ import {ColumnImages} from "#/images"
 import {Intent} from "@blueprintjs/core"
 import {GrainsizeAxis} from "#/grainsize"
 import {SymbolColumn} from "#/symbol-column"
-import {ModalEditor} from "#/editor"
 import Samples from "#/samples"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
 import {
@@ -31,6 +30,7 @@ import {dirname} from "path"
 import update from "immutability-helper"
 import {StatefulComponent} from '@macrostrat/ui-components'
 
+import {ModalEditor} from "../../editor"
 import {Notification} from "../../../notify"
 import {SequenceStratConsumer} from "../../sequence-strat-context"
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../data-source"
