@@ -3,6 +3,7 @@ import h from "react-hyperscript"
 import {NavLink, BackLink} from "../nav"
 import {Icon} from "@blueprintjs/core"
 import T from "prop-types"
+import {SVGNamespaces} from '#'
 import {db, storedProcedure, query} from "./db"
 
 class SectionNavigationControl extends Component
@@ -40,4 +41,5 @@ class KnownSizeComponent extends Component
 export {
   SectionNavigationControl
   KnownSizeComponent
+  SVGNamespaces
 }

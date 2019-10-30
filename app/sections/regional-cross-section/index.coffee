@@ -5,7 +5,8 @@
 import {Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import h from 'react-hyperscript'
-import {SVGComponent, SectionNavigationControl} from '../util'
+import {SVG} from '#'
+import {SectionNavigationControl} from '../util'
 import {path} from 'd3-path'
 import {schemeSet3} from 'd3-scale-chromatic'
 import {geoPath, geoTransform} from 'd3-geo'
@@ -155,7 +156,7 @@ class RegionalCrossSectionPage extends Component
     {polygons} = @state
     h 'div', [
       h SectionNavigationControl
-      h SVGComponent, {className: 'cross-section'}, [
+      h SVG, {className: 'cross-section'}, [
         h PolygonComponent, {polygons}
         h 'g.linework'
         h 'g.overlay'
@@ -164,4 +165,3 @@ class RegionalCrossSectionPage extends Component
     ]
 
 export {RegionalCrossSectionPage}
-

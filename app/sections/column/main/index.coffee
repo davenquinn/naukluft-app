@@ -6,7 +6,6 @@ import T from "prop-types"
 
 import {ColumnAxis} from "#/axis"
 import {ColumnImages} from "#/images"
-import "#/main.styl"
 import {Intent} from "@blueprintjs/core"
 import {GrainsizeAxis} from "#/grainsize"
 import {SymbolColumn} from "#/symbol-column"
@@ -29,7 +28,6 @@ import {dirname} from "path"
 import update from "immutability-helper"
 import {StatefulComponent} from '@macrostrat/ui-components'
 
-import {db, storedProcedure, query} from "../../db"
 import {Notification} from "../../../notify"
 import {SequenceStratConsumer} from "../../sequence-strat-context"
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../data-source"
@@ -37,8 +35,6 @@ import {SVGNamespaces, KnownSizeComponent} from "../../util"
 import {ManagedNotesColumn} from "./notes"
 
 fmt = format(".1f")
-baseDir = dirname require.resolve '..'
-sql = (id)-> storedProcedure(id, {baseDir})
 
 class ScrollToHeightComponent extends Component
   @contextType: ColumnContext
@@ -145,19 +141,15 @@ class SectionComponent extends KnownSizeComponent
 
     order = @props.sequenceStratOrder
 
-    h "div#section-pane", [
+    h "div.section-pane", [
       h "div.section-container", {
         className: if skeletal then "skeleton" else null
       }, [
-        h 'div.section-header', [h "h2", txt]
+        h 'div.section-header', null, h("h2", txt)
         h ColumnProvider, {
           zoom
           range
-          height
           divisions
-          pixelsPerMeter
-          width: grainsizeWidth
-          grainsizeScaleStart
         }, (
           h ScrollToHeightComponent, {
             scrollToHeight: parseFloat(scrollToHeight)
@@ -187,9 +179,9 @@ class SectionComponent extends KnownSizeComponent
                 }, [
                   h ColumnAxis, {ticks}
                   h LithologyColumn, {width: lithologyWidth}, [
-                    h.if(@props.showFacies) FaciesColumnInner, {width: lithologyWidth}
-                    h CoveredOverlay, {width: lithologyWidth}
-                    h LithologyColumnInner, {width: lithologyWidth}
+                    h.if(@props.showFacies) FaciesColumnInner
+                    h CoveredOverlay
+                    h LithologyColumnInner
                   ]
                   h GrainsizeLayoutProvider, {
                     width: grainsizeWidth,
@@ -223,7 +215,7 @@ class SectionComponent extends KnownSizeComponent
                 skeletal: false
               }
               h DivisionEditOverlay, {
-                onClick: @onEditInterval
+                onEditInterval: @onEditInterval
                 width: lithologyWidth
                 top: padding.top
                 left: padding.left
