@@ -73,6 +73,7 @@ class PlatformProvider extends Component
     @setState val
 
   computePhotoPath: (photo)=>
+    return null unless photo.id?
     if @state.ELECTRON
       return @path( '..', 'Products', 'webroot', 'Sections', 'photos', "#{photo.id}.jpg")
     else

@@ -7,7 +7,7 @@ import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
 import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
-import {PhotoLibraryProvider} from '~/bundled-deps/column-components'
+import {PhotoLibraryProvider} from '#'
 import h from "react-hyperscript"
 import "./main.styl"
 import sectionSurfaceQuery from "./sql/section-surface.sql"

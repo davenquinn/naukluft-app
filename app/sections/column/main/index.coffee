@@ -13,7 +13,10 @@ import {ModalEditor} from "#/editor"
 import Samples from "#/samples"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
 import {
-  ColumnProvider, ColumnContext, ColumnSVG,
+  ColumnProvider,
+  ColumnContext,
+  ColumnScroller,
+  ColumnSVG,
   GrainsizeLayoutProvider} from '#'
 import {
   LithologyColumn,
@@ -47,8 +50,21 @@ class ScrollToHeightComponent extends Component
     @state = {loaded: false}
   render: ->
     h 'div.section-outer', null, @props.children
-  componentDidUpdate: ->
+
+  scrollTo: (height, opts={})->
+    {animated} = opts
+    animated ?= false
+
+    pixelHeight
+
+
+  componentDidMount: ->
+    @componentDidUpdate()
+
+  componentDidUpdate: (prevProps)->
     node = findDOMNode(@)
+    prevProps ?= {}
+    h0 = prevProps.scrollToHeight or null
     {scale} = @context
     {scrollToHeight, id} = @props
     {loaded} = @state
@@ -150,12 +166,17 @@ class SectionComponent extends KnownSizeComponent
           zoom
           range
           divisions
-        }, (
-          h ScrollToHeightComponent, {
-            scrollToHeight: parseFloat(scrollToHeight)
-            id
-          }, [
-            h 'div.section', [
+        }, [
+          h 'div.section', [
+            h 'div.section-outer', [
+              h ColumnScroller, {
+                scrollToHeight: parseFloat(scrollToHeight),
+                onScrolled: (height)=>
+                  Notification.show {
+                    message: "Section #{id} @ #{fmt(height)} m"
+                    intent: Intent.PRIMARY
+                  }
+              }
               h ModalEditor, {
                 isOpen: editingInterval.id?
                 interval
@@ -171,6 +192,13 @@ class SectionComponent extends KnownSizeComponent
                 width: grainsizeWidth,
                 grainsizeScaleStart
               }, [
+                h DivisionEditOverlay, {
+                  onClick: @onEditInterval
+                  width: lithologyWidth
+                  top: padding.top
+                  left: padding.left
+                  allowEditing: true
+                }
                 h ColumnSVG, {
                   width: outerWidth
                   paddingLeft: @props.padding.left
@@ -214,16 +242,9 @@ class SectionComponent extends KnownSizeComponent
                 extraSpace: if zoom > 0.5 then 2.5*zoom else 0
                 skeletal: false
               }
-              h DivisionEditOverlay, {
-                onEditInterval: @onEditInterval
-                width: lithologyWidth
-                top: padding.top
-                left: padding.left
-                allowEditing: true
-              }
             ]
           ]
-        )
+        ]
       ]
     ]
 
@@ -234,6 +255,7 @@ class SectionComponent extends KnownSizeComponent
       }
       return
     {id} = division
+    console.log id
     @setState {editingInterval: {id, height}}
 
   onIntervalUpdated: =>
