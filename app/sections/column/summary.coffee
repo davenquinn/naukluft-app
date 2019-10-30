@@ -1,7 +1,7 @@
 import {Component, createElement, createRef, useContext} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
-import {GrainsizeLayoutProvider} from '~/bundled-deps/column-components'
+import {GrainsizeLayoutProvider, ColumnSVG} from '~/bundled-deps/column-components'
 import {ColumnAxis} from "~/bundled-deps/column-components/src/axis"
 import {PlatformContext} from "../../platform"
 import {SymbolColumn} from "~/bundled-deps/column-components/src/symbol-column"
@@ -56,8 +56,6 @@ EditOverlay = (props)->
     rest...
   }
 
-
-
 class BaseSVGSectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
   @defaultProps: {
@@ -86,9 +84,10 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       bottom: 10
     }
   }
-  # @propTypes: {
-  #   inEditMode: T.bool
-  # }
+  @propTypes: {
+    #inEditMode: T.bool
+    range: T.arrayOf(T.number).isRequired
+  }
   constructor: (props)->
     super props
     @measureRef = createRef()
@@ -98,9 +97,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       hoveredInterval: null
       popoverIsOpen: false
       visible: not @props.trackVisibility
-      scale: d3.scaleLinear().domain(@props.range)
     }
-    @state.scale.clamp()
 
   renderWhiteUnderlay: ->
     {showWhiteUnderlay, skeletal} = @props
@@ -276,13 +273,10 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       ]
       h 'div.section-outer', [
         h ColumnProvider, {
-          height: @props.height
           range
-          zoom
-          pixelsPerMeter
+          height: @props.height
+          zoom: 0.1
           divisions
-          width: innerWidth
-          grainsizeScaleStart
         }, [
           h GrainsizeLayoutProvider, {
             width: innerWidth,
@@ -294,28 +288,26 @@ class BaseSVGSectionComponent extends KnownSizeComponent
               left,
               top: @props.padding.top
             }
-            h "svg.section", {
-              SVGNamespaces...
-              style
+            h ColumnSVG, {
+              width: outerWidth
+              paddingTop: @props.padding.top
+              paddingLeft: @props.padding.left
             }, [
-              h 'g.backdrop', {transform}, [
-                @renderWhiteUnderlay()
-                h GeneralizedSectionColumn, [
-                  if showFacies then h(FaciesColumnInner, {width: innerWidth}) else null
-                  h CoveredOverlay, {width: innerWidth}
-                  h SimplifiedLithologyColumn, {width: innerWidth}
-                ]
-                h SymbolColumn, {
-                  scale
-                  height: innerHeight
-                  left: 90
-                  id
-                  zoom
-                }
-                @renderFloodingSurfaces()
-                @renderTriangleBars()
-                h ColumnAxis, {scale, ticks: nticks}
+              @renderWhiteUnderlay()
+              h GeneralizedSectionColumn, [
+                h.if(showFacies) FaciesColumnInner
+                h CoveredOverlay
+                h SimplifiedLithologyColumn
               ]
+              h SymbolColumn, {
+                height: innerHeight
+                left: 90
+                id
+                zoom
+              }
+              @renderFloodingSurfaces()
+              @renderTriangleBars()
+              h ColumnAxis
             ]
           ]
         ]

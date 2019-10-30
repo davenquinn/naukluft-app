@@ -61,6 +61,7 @@
     "semantic-ui-react": "^0.70.0",
     "stratigraphic-column": "file:../../deps/node/stratigraphic-column",
     "stylus": "^0.54.5",
+    "ui-box": "^3.0.1",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
