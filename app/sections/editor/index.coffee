@@ -1,5 +1,5 @@
 import {findDOMNode} from "react-dom"
-import {Component, createElement} from "react"
+import {Component, useContext} from "react"
 import {Dialog, Button, Intent, ButtonGroup, Alert, Slider} from "@blueprintjs/core"
 import {DeleteButton} from '@macrostrat/ui-components'
 import Select from 'react-select'
@@ -25,17 +25,16 @@ import T from 'prop-types'
 import {dirname} from "path"
 import {hyperStyled} from "@macrostrat/hyper"
 import styles from "#/editor/main.styl"
-
 h = hyperStyled(styles)
 
-#import {db, storedProcedure, query} from "app/sections/db"
+import {db, storedProcedure, query} from "~/sections/db"
 
-# baseDir = dirname require.resolve '..'
-# sql = (id)-> storedProcedure(id, {baseDir})
-# try
-#   {helpers} = require 'app/db/backend'
-# catch
-#   {}
+baseDir = dirname require.resolve '..'
+sql = (id)-> storedProcedure(id, {baseDir})
+try
+  {helpers} = require '~/db/backend'
+catch
+  {}
 
 floodingSurfaceOrders = [-1,-2,-3,-4,-5,null,5,4,3,2,1]
 
@@ -62,6 +61,32 @@ LithologyControls = (props)->
   ]
 
 fmt = format('.2f')
+
+FaciesTractControl = (props)->
+  {faciesTracts} = useContext(FaciesContext)
+  faciesTracts ?= []
+  {interval, onUpdate} = props
+  onUpdate ?= ->
+
+  options = for item in faciesTracts
+    {id, name} = item
+    {value: id, label: name}
+
+  currentVal = interval.facies_tract
+  value = options.find (d)->d.value == currentVal
+  value ?= null
+
+  h Select, {
+    id: 'facies-tract-select'
+    options
+    value
+    selected: currentVal
+    onChange: (res)->
+      f = if res? then res.value else null
+      onUpdate(f)
+  }
+
+
 
 class ModalEditor extends Component
   @defaultProps: {onUpdate: ->}
@@ -112,6 +137,12 @@ class ModalEditor extends Component
           onClick: @updateFacies
           interval
           onChange: (facies)=>@update {facies}
+        }
+        h LabeledControl, {
+          title: 'Facies tracts'
+          is: FaciesTractControl
+          interval
+          onUpdate: (facies_tract)=>@update {facies_tract}
         }
         h LabeledControl, {
           title: 'Surface type (parasequence)'

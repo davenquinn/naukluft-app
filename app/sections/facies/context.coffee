@@ -11,7 +11,7 @@ class FaciesProvider extends Component
     super props
     @state = {
       facies: []
-      facies_tracts: []
+      faciesTracts: []
       __colorMap: {}
     }
 
@@ -33,18 +33,20 @@ class FaciesProvider extends Component
     @setState {facies, __colorMap}
 
   getFaciesTractData: =>
-    facies_tracts = await query(faciesTractsQuery)
-    @setState {facies_tracts}
+    faciesTracts = await query(faciesTractsQuery)
+    @setState {faciesTracts}
 
   componentDidMount: ->
     @getFaciesData()
+    @getFaciesTractData()
 
   render: ->
-    {facies} = @state
+    {facies, faciesTracts} = @state
     {children, rest...} = @props
     procedures = do => {getFaciesColor, setFaciesColor} = @
     value = {
       facies
+      faciesTracts
       procedures...
       rest...
     }

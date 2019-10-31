@@ -1,4 +1,2 @@
 SELECT f.*
-FROM section.facies f
-WHERE f.used
-ORDER BY member_of, id
+FROM section.facies_tract f
