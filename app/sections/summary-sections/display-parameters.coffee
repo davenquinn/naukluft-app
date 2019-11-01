@@ -24,7 +24,7 @@ sectionOffsets = {
   H: 310
   I: 30
   J: -5
-  M: 120
+  M: 10
 }
 
 groupOffsets = {

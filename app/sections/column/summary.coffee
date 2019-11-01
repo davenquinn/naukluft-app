@@ -10,7 +10,7 @@ import {withRouter, useHistory} from "react-router-dom"
 import {GrainsizeLayoutProvider, ColumnSVG} from '~/bundled-deps/column-components'
 import {ColumnAxis} from "#/axis"
 
-import {SymbolColumn} from "#/symbol-column"
+import {ManagedSymbolColumn} from "../components"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
 import {LithologyColumn, GeneralizedSectionColumn} from "#/lithology"
 import {Popover, Position} from "@blueprintjs/core"
@@ -283,11 +283,9 @@ class BaseSVGSectionComponent extends KnownSizeComponent
                 h CoveredOverlay
                 h SimplifiedLithologyColumn
               ]
-              h SymbolColumn, {
-                height: innerHeight
+              h ManagedSymbolColumn, {
                 left: 90
                 id
-                zoom
               }
               @renderFloodingSurfaces()
               @renderTriangleBars()
