@@ -70,9 +70,9 @@ class ManagedNotesColumn extends Component
     @setState {notes}
 
   onUpdateNote: (noteID, newText)=>
+    console.log arguments
     # We can't edit on the frontend
     return unless PLATFORM == ELECTRON
-    {dirname} = require 'path'
     if newText.length == 0
       sql = storedProcedure(setNoteInvisible)
       await db.none sql, [noteID]

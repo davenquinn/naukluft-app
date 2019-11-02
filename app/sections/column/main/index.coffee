@@ -8,7 +8,7 @@ import {ColumnAxis} from "#/axis"
 import {ColumnImages} from "#/images"
 import {Intent} from "@blueprintjs/core"
 import {GrainsizeAxis} from "#/grainsize"
-import {SymbolColumn} from "#/symbol-column"
+import {ManagedSymbolColumn} from "../../components"
 import Samples from "#/samples"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
 import {
@@ -224,7 +224,7 @@ class SectionComponent extends KnownSizeComponent
                     h.if(@props.showTriangleBars) TriangleBars, {
                       offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
                     }
-                    h.if(@props.showSymbols) SymbolColumn, {id, left: 215}
+                    h.if(@props.showSymbols) ManagedSymbolColumn, {id, left: 215}
                     h.if(@props.showNotes and zoom > 0.50) ManagedNotesColumn, {
                       visible: true
                       id
