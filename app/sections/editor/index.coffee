@@ -237,30 +237,28 @@ class IntervalEditor extends Component
         h 'code', interval.id
       ]
       h 'h6', "#{fmt(interval.bottom)}-#{fmt(interval.top)} m"
-      h LabeledControl, [
-        'Surface type'
-        h PickerControl, {
-          vertical: false,
-          isNullable: true,
-          states: surfaceTypes
-          activeState: interval.surface_type
-          onUpdate: (surface_type)=>
-            @update {surface_type}
-        }
-      ]
-      h LabeledControl, [
-        'Surface order'
-        h SurfaceOrderSlider, {
-          interval, onChange: @update
-        }
-      ]
-      h LabeledControl, [
-        'Correlated surface'
-        h CorrelatedSurfaceControl, {
-          interval
-          onChange: @update
-        }
-      ]
+      h LabeledControl, {
+        title: 'Surface type'
+        is: PickerControl,
+        vertical: false,
+        isNullable: true,
+        states: surfaceTypes
+        activeState: interval.surface_type
+        onUpdate: (surface_type)=>
+          @update {surface_type}
+      }
+      h LabeledControl, {
+        title: 'Surface order'
+        is: SurfaceOrderSlider
+        interval
+        onChange: @update
+      }
+      h LabeledControl, {
+        title: 'Correlated surface'
+        is: CorrelatedSurfaceControl,
+        interval
+        onChange: @update
+      }
       #h ButtonGroup, [
         #h Button, {onClick: @props.onPrev}, "Previous"
         #h Button, {onClick: @props.onNext}, "Next"

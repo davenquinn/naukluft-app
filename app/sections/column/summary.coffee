@@ -56,9 +56,13 @@ EditOverlay = (props)->
     console.log height, path
     navigateTo(path)
 
+  renderEditorPopup = (interval)->
+    return null unless interval?
+    h IntervalEditor, {interval}
+
   h DivisionEditOverlay, {
     showInfoBox: true
-    allowEditing: false
+    renderEditorPopup
     onClick
     rest...
   }
