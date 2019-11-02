@@ -7,7 +7,7 @@ import * as d3 from 'd3'
 import Box from 'ui-box'
 import {withRouter, useHistory} from "react-router-dom"
 
-import {GrainsizeLayoutProvider, ColumnSVG} from '~/bundled-deps/column-components'
+import {GrainsizeLayoutProvider, ColumnSVG} from '#'
 import {ColumnAxis} from "#/axis"
 
 import {ManagedSymbolColumn} from "../components"
@@ -20,7 +20,7 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner} from '#/lithology'
 import {DivisionEditOverlay} from '#/edit-overlay'
 
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from './data-source'
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from '../column/data-source'
 import {PlatformContext} from "../../platform"
 import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"

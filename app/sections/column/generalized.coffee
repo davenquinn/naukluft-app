@@ -6,7 +6,6 @@ Measure = require('react-measure').default
 import {Component, createElement, createRef} from "react"
 import classNames from "classnames"
 
-import {BaseSVGSectionComponent} from "./summary"
 import {ClipToFrame} from "#/frame"
 import {
   FaciesColumnInner,

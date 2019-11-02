@@ -1,4 +1,3 @@
-import {BaseSVGSectionComponent} from "../column/summary"
 import {withRouter} from "react-router-dom"
 import {findDOMNode} from "react-dom"
 import * as d3 from "d3"
