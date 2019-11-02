@@ -114,35 +114,6 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       visible: not @props.trackVisibility
     }
 
-  renderWhiteUnderlay: ->
-    {showWhiteUnderlay, skeletal} = @props
-    return null if not showWhiteUnderlay
-    return null if skeletal
-    {innerWidth, padding, marginLeft, position: pos} = @props
-    innerHeight = pos.heightScale.pixelHeight()
-    {left, right} = padding
-    outerWidth = innerWidth+(left+right)
-
-    {triangleBarsOffset: tbo, triangleBarRightSide: onRight} = @props
-    left += tbo
-    marginLeft -= tbo
-    marginRight = 0
-    outerWidth += tbo
-
-    x = -left
-    if @props.showTriangleBars and not onRight
-      x += 50
-    if @props.showTriangleBars and onRight
-      outerWidth += 75
-
-    return h 'rect.underlay', {
-      width: outerWidth
-      height: innerHeight+10
-      x
-      y: -5
-      fill: 'white'
-    }
-
   hoverAdjacent: (offset=1) => =>
     {divisions} = @props
     {hoveredInterval} = @state
@@ -163,29 +134,6 @@ class BaseSVGSectionComponent extends KnownSizeComponent
     newHovered = divisions.find (d)-> d.id == hoveredInterval.id
     @setState {hoveredInterval: newHovered}
 
-  renderFloodingSurfaces: =>
-    return null unless @props.showFloodingSurfaces
-    h FloodingSurface, {
-      offsetLeft: -40
-      lineWidth: 30
-    }
-
-  renderTriangleBars: =>
-    return null unless @props.showTriangleBars
-    {id, triangleBarsOffset: tbo, triangleBarRightSide: onRight} = @props
-
-    offsetLeft = -tbo+35
-    if onRight
-      offsetLeft *= -1
-      offsetLeft += tbo+20
-
-    h TriangleBars, {
-      id
-      offsetLeft
-      lineWidth: 20
-      orders: [@props.sequenceStratOrder, @props.sequenceStratOrder-1]
-    }
-
   render: ->
     {id, zoom, padding, lithologyWidth,
      innerWidth, onResize, marginLeft,
@@ -202,7 +150,6 @@ class BaseSVGSectionComponent extends KnownSizeComponent
     {heightScale} = position
     innerHeight = heightScale.pixelHeight()
     marginTop = heightScale.pixelOffset()
-    scale = heightScale.local
 
     {left, top, right, bottom} = padding
 
@@ -214,9 +161,6 @@ class BaseSVGSectionComponent extends KnownSizeComponent
     divisions = divisions.filter (d)->not d.schematic
 
     {skeletal} = @props
-
-    # Set up number of ticks
-    nticks = (height*@props.zoom)/10
 
     overhangLeft = 0
     overhangRight = 0
@@ -232,33 +176,21 @@ class BaseSVGSectionComponent extends KnownSizeComponent
         overhangRight = 45
         offsetLeft *= -1
         offsetLeft += tbo+20
-        marginRight -= tbo
-        marginLeft += tbo
       else
         overhangLeft = 25
         left = tbo
 
     # Expand SVG past bounds of section
-    style = {
-      width: outerWidth
-      height: outerHeight
-    }
-
-    transform = "translate(#{left} #{@props.padding.top})"
-
-    minWidth = outerWidth
-    position = 'absolute'
-    top = marginTop
 
     grainsizeScaleStart = 40
 
-    h "div.section-container", {
-      className: if @props.skeletal then "skeleton" else null
-      style: {
-        minWidth, top, position,
-        marginLeft: -overhangLeft
-        marginRight: -overhangRight
-      }
+    h Box, {
+      className: 'section-container'
+      position: 'absolute'
+      top: marginTop
+      width: outerWidth
+      marginLeft: -overhangLeft
+      marginRight: -overhangRight
     }, [
       h 'div.section-header', [
         h("h2", {style: {zIndex: 20}}, id)
@@ -286,7 +218,13 @@ class BaseSVGSectionComponent extends KnownSizeComponent
               paddingBottom: 10
               paddingLeft: @props.padding.left
             }, [
-              @renderWhiteUnderlay()
+              h.if(@props.showWhiteUnderlay) 'rect.underlay', {
+                width: outerWidth
+                height: innerHeight+10
+                x: -left
+                y: -5
+                fill: 'white'
+              }
               h GeneralizedSectionColumn, [
                 h.if(showFacies) FaciesColumnInner
                 h CoveredOverlay
@@ -296,8 +234,16 @@ class BaseSVGSectionComponent extends KnownSizeComponent
                 left: 90
                 id
               }
-              @renderFloodingSurfaces()
-              @renderTriangleBars()
+              h.if(@props.showFloodingSurfaces) FloodingSurface, {
+                offsetLeft: -40
+                lineWidth: 30
+              }
+              h.if(@props.showTriangleBars) TriangleBars, {
+                id
+                offsetLeft
+                lineWidth: 20
+                orders: [@props.sequenceStratOrder, @props.sequenceStratOrder-1]
+              }
               h ColumnSummaryAxis
             ]
           ]
