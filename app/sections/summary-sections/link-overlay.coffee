@@ -11,13 +11,14 @@ sectionSurfaceProps = (surface)->
     {surface_type, surface_order} = surface
 
     if surface_type == 'mfs'
-      stroke = '#aaa'
+      stroke = '#ccc'
     else if surface_type == 'sb'
-      stroke = '#faa'
+      stroke = '#fcc'
     else
       stroke = '#ccc'
 
-    strokeWidth = 6-Math.pow(surface_order,1.5)*2
+
+    strokeWidth = 3-Math.pow(surface_order,1.5)*1.5
     if strokeWidth < 1
       strokeWidth = 1
     return {stroke, strokeWidth}
@@ -264,4 +265,3 @@ export {
   SectionLinkOverlay as LinkOverlayBase
   sectionSurfaceProps
 }
-

@@ -12,6 +12,7 @@ import {sectionSurfaceProps} from "./link-overlay"
 import {SVGNamespaces} from "../util"
 import classNames from "classnames"
 import chroma from "chroma-js"
+import sql from '../sql/carbon-isotopes.sql'
 
 fmt = d3.format('.1f')
 
@@ -52,8 +53,7 @@ class IsotopesComponent extends Component
       .x (d)=>@state.xScale(d[column])
       .y (d)=>@state.scale(d.height)
 
-    query('carbon-isotopes')
-      .then @setupData
+    query(sql).then @setupData
 
   setupData: (isotopes)=>
     isotopes = d3.nest()

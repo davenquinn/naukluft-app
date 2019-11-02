@@ -63,6 +63,10 @@ EditOverlay = (props)->
     rest...
   }
 
+ColumnSummaryAxis = (props)->
+  {height, zoom} = useContext(ColumnContext)
+  h ColumnAxis, {ticks: (height*zoom)/5}
+
 class BaseSVGSectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
   @defaultProps: {
@@ -123,12 +127,12 @@ class BaseSVGSectionComponent extends KnownSizeComponent
 
     x = -left
     if @props.showTriangleBars and not onRight
-      x += 55
+      x += 50
     if @props.showTriangleBars and onRight
       outerWidth += 75
 
     return h 'rect.underlay', {
-      width: outerWidth-50
+      width: outerWidth
       height: innerHeight+10
       x
       y: -5
@@ -275,6 +279,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
             h ColumnSVG, {
               width: outerWidth
               paddingTop: @props.padding.top
+              paddingBottom: 10
               paddingLeft: @props.padding.left
             }, [
               @renderWhiteUnderlay()
@@ -289,7 +294,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
               }
               @renderFloodingSurfaces()
               @renderTriangleBars()
-              h ColumnAxis
+              h ColumnSummaryAxis
             ]
           ]
         ]

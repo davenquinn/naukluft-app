@@ -176,7 +176,7 @@ class SummarySectionsBase extends Component
         zoom: 0.1,
         system: 'delta18o'
         label: 'δ¹⁸O'
-        domain: [-15,0]
+        domain: [-15,4]
         key: 'oxygen-isotopes',
         showFacies
         offset
