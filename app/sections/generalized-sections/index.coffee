@@ -28,6 +28,7 @@ import {NavLink} from "../../nav"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {GeneralizedSectionPositioner} from "./positioner"
 import {query} from "../../db"
+import generalizedSectionQuery from '../sql/generalized-section.sql'
 import "../main.styl"
 
 GeneralizedSectionPositions = {
@@ -73,7 +74,7 @@ class GeneralizedSectionsBase extends SummarySectionsBase
         update: @updateOptions
         exportSVG: @exportSVG
 
-    query 'generalized-section', null, {baseDir: join(__dirname,'..')}
+    query generalizedSectionQuery
       .then (data)=>
         groupedSections = d3.nest()
           .key (d)->d.section

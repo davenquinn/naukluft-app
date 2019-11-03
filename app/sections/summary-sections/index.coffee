@@ -311,12 +311,6 @@ class SummarySectionsBase extends Component
       ]
     ]
 
-  renderSettingsPanel: =>
-    {options} = @state
-    h @SettingsPanel, {
-      options...
-    }
-
   render: ->
     backLocation = '/sections'
     {toggleSettings} = @
@@ -342,7 +336,9 @@ class SummarySectionsBase extends Component
           sections
         ]
       ]
-      @renderSettingsPanel()
+      h @SettingsPanel, {
+        @state.options...
+      }
     ]
 
   createSectionOptions: =>
