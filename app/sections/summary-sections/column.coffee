@@ -137,7 +137,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
   render: ->
     {id, zoom, padding, lithologyWidth,
      innerWidth, onResize, marginLeft,
-     showFacies, height, clip_end,
+     showFacies, height,
      showTriangleBars,
      showFloodingSurfaces,
      showWhiteUnderlay,
