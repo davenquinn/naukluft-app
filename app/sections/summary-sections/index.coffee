@@ -16,7 +16,7 @@ import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
 import {SectionLinkOverlay} from "./link-overlay"
 import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
-import {SectionOptionsContext, defaultSectionOptions} from "./options"
+import {SectionOptionsContext, SectionOptionsProvider, defaultSectionOptions} from "./options"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
@@ -299,7 +299,10 @@ class SummarySectionsBase extends Component
 
     h 'div.page.section-page', {id: @pageID}, [
       h 'div.panel-container', [
-        h SectionOptionsContext.Provider, {value: @createSectionOptions()}, [
+        h SectionOptionsProvider, {
+          @state.options...,
+          triangleBarsOffset: if @props.showTriangleBars then 80 else 0
+        }, [
           h.if(@props.showNavigationController) SectionNavigationControl, {
             backLocation: '/section',
             @toggleSettings
@@ -309,18 +312,6 @@ class SummarySectionsBase extends Component
       ]
       h @props.settingsPanel, {@state.options...}
     ]
-
-  createSectionOptions: =>
-    value = {}
-    for k,v of defaultSectionOptions
-      value[k] = @state.options[k]
-    triangleBarsOffset = 0
-    if @props.showTriangleBars
-      triangleBarsOffset = 80
-    return {
-      triangleBarsOffset
-      value...
-    }
 
   updateOptions: (opts)=>
     newOptions = update @state.options, opts
