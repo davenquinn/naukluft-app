@@ -1,6 +1,6 @@
 import {findDOMNode} from "react-dom"
 import {select} from "d3-selection"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
 import {Component, createContext, createRef} from "react"
 import {HotkeysTarget, Hotkeys, Hotkey} from "@blueprintjs/core"
 import update from "immutability-helper"
@@ -82,10 +82,42 @@ groupSectionData = (sections)->
   sectionGroups.sort (a,b)->__ix(a.location)-__ix(b.location)
   return sectionGroups
 
-class WrappedSectionComponent extends Component
-  render: ->
-    h SectionOptionsContext.Consumer, null, (opts)=>
-      h SVGSectionComponent, {opts..., @props...}
+WrappedSectionComponent = (props)->
+  h SectionOptionsContext.Consumer, null, (opts)=>
+    h SVGSectionComponent, {opts..., @props...}
+
+ChemostratigraphyColumn = (props)->
+  {sections, surfaces, options} = props
+  {showCarbonIsotopes, showOxygenIsotopes} = options
+  return null unless showCarbonIsotopes or showOxygenIsotopes
+
+  row = sections.find (d)->d.id == 'J'
+  {offset, location, rest...} = row
+
+  h LocationGroup, {
+    name: null
+    className: 'chemostratigraphy'
+  }, [
+    h.if(showCarbonIsotopes) IsotopesComponent, {
+      zoom: 0.1,
+      key: 'carbon-isotopes',
+      offset
+      location: ""
+      surfaces
+      rest...
+    }
+    h.if(showOxygenIsotopes) IsotopesComponent, {
+      zoom: 0.1,
+      system: 'delta18o'
+      label: 'δ¹⁸O'
+      domain: [-15,4]
+      key: 'oxygen-isotopes',
+      offset
+      location: ""
+      surfaces
+      rest...
+    }
+  ]
 
 class SummarySectionsBase extends Component
   @defaultProps: {
@@ -140,56 +172,6 @@ class SummarySectionsBase extends Component
         console.log surfaces
         @setState {surfaces}
 
-  renderChemostratigraphy: ->
-    {sections, scrollable} = @props
-    {dimensions, options, sectionPositions, surfaces} = @state
-    {dragdealer, dragPosition, rest...} = options
-    {showFloodingSurfaces,
-     showSequenceStratigraphy,
-     showCarbonIsotopes,
-     showOxygenIsotopes,
-     chemostratigraphyPerSection,
-     showFacies} = options
-
-
-    return null unless showCarbonIsotopes or showOxygenIsotopes
-    return null if chemostratigraphyPerSection
-
-    row = sections.find (d)->d.id == 'J'
-    {offset, location, rest...} = row
-    location = null
-
-    __ = []
-    if showCarbonIsotopes
-      __.push h IsotopesComponent, {
-        zoom: 0.1,
-        key: 'carbon-isotopes',
-        showFacies
-        offset
-        location: ""
-        surfaces
-        rest...
-      }
-
-    if showOxygenIsotopes
-      __.push h IsotopesComponent, {
-        zoom: 0.1,
-        system: 'delta18o'
-        label: 'δ¹⁸O'
-        domain: [-15,4]
-        key: 'oxygen-isotopes',
-        showFacies
-        offset
-        location: ""
-        surfaces
-        rest...
-      }
-
-    h LocationGroup, {
-      name: null
-      className: 'chemostratigraphy'
-    }, __
-
   renderSections: ->
     {sections, scrollable, showTriangleBars} = @props
     {dimensions, options, sectionPositions, surfaces} = @state
@@ -237,14 +219,6 @@ class SummarySectionsBase extends Component
     {offset, location, rest...} = row
     location = null
 
-    lithostratKey = h LithostratKey, {
-        zoom: 0.1, key: "key",
-        surfaces,
-        skeletal,
-        offset
-        rest...
-      }
-
     groupedSections = groupSectionData(sections)
 
     height = 1800
@@ -264,18 +238,6 @@ class SummarySectionsBase extends Component
 
     groupedSections = positioner.update(groupedSections)
 
-    sectionGroups = groupedSections.map ({location, columns}, i)->
-      marginRight = groupMargin
-      if i == groupedSections.length-1
-        marginRight = 0
-      style = {marginRight, height}
-      h LocationGroup, {key: location, location, style}, columns.map (col, i)->
-        marginRight = columnMargin
-        if i == columns.length-1
-          marginRight = 0
-        style = {marginRight, height, width: columnWidth}
-        h SectionColumn, {key: i, style}, col.map mapRowToSection
-
     maxOffset = d3.max sections.map (d)->parseFloat(d.height)-parseFloat(d.offset)+669
 
     paddingLeft = if showTriangleBars then 90 else 30
@@ -289,10 +251,23 @@ class SummarySectionsBase extends Component
       h "div#section-page-inner", {
         style: {zoom: 1, minHeight}
       }, [
-        lithostratKey,
-        @renderChemostratigraphy(),
+        h LithostratKey, {
+          zoom: 0.1,
+          key: "key",
+          surfaces,
+          skeletal,
+          offset
+          rest...
+        }
+        h ChemostratigraphyColumn, {
+          sections
+          surfaces
+          options
+          showCarbonIsotopes
+          showOxygenIsotopes
+        }
         h "div#section-container", [
-          h(Legend) if showLegend
+          h.if(showLegend) Legend
           h SectionLinkOverlay, {
             paddingLeft,
             connectLines: true
@@ -306,22 +281,22 @@ class SummarySectionsBase extends Component
             surfaces
             skeletal
           }
-          h 'div.grouped-sections', sectionGroups
+          h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
+            marginRight = groupMargin
+            if i == groupedSections.length-1
+              marginRight = 0
+            style = {marginRight, height}
+            h LocationGroup, {key: location, location, style}, columns.map (col, i)->
+              marginRight = columnMargin
+              if i == columns.length-1
+                marginRight = 0
+              style = {marginRight, height, width: columnWidth}
+              h SectionColumn, {key: i, style}, col.map mapRowToSection
         ]
       ]
     ]
 
   render: ->
-    backLocation = '/sections'
-    {toggleSettings} = @
-    {showNavigationController} = @props
-
-    navigationController = null
-    if showNavigationController
-      navigationController = h(
-        SectionNavigationControl
-        {backLocation, toggleSettings})
-
     # Keep errors isolated within groups
     sections = null
     try
@@ -332,7 +307,10 @@ class SummarySectionsBase extends Component
     h 'div.page.section-page', {id: @pageID}, [
       h 'div.panel-container', [
         h SectionOptionsContext.Provider, {value: @createSectionOptions()}, [
-          navigationController
+          h.if(@props.showNavigationController) SectionNavigationControl, {
+            backLocation: '/section',
+            @toggleSettings
+          }
           sections
         ]
       ]
