@@ -9,6 +9,7 @@ import * as d3 from "d3"
 import update from "immutability-helper"
 Measure = require('react-measure').default
 import {debounce} from "underscore"
+import {StatefulComponent} from '@macrostrat/ui-components'
 
 import {SummarySectionsBase} from "../summary-sections"
 import {GeneralizedSectionsSettings} from "../summary-sections/settings"
@@ -28,6 +29,7 @@ import {NavLink} from "../../nav"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {GeneralizedSectionPositioner} from "./positioner"
 import {query} from "../../db"
+
 import generalizedSectionQuery from '../sql/generalized-section.sql'
 import "../main.styl"
 
@@ -47,8 +49,8 @@ class LinkOverlay extends LinkOverlayBase
 class GeneralizedSectionsBase extends SummarySectionsBase
   @defaultProps: {
     scrollable: true
+    settingsPanel: GeneralizedSectionsSettings
   }
-  SettingsPanel: GeneralizedSectionsSettings
   pageID: 'generalized-sections'
   constructor: (props)->
     super props
@@ -104,12 +106,12 @@ class GeneralizedSectionsBase extends SummarySectionsBase
             range: [start, end]
           }
 
-        @mutateState {sectionData: {$set: vals}}
+        @updateState {sectionData: {$set: vals}}
 
     @optionsStorage = new LocalStorage 'summary-sections'
     v = @optionsStorage.get()
     return unless v?
-    @state = update @state, {options: {$merge: v}}
+    @updateState {options: {$merge: v}}
 
   renderSections: ->
     {dimensions, options, surfaces, sectionData} = @state

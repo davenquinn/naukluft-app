@@ -84,7 +84,7 @@ groupSectionData = (sections)->
 
 WrappedSectionComponent = (props)->
   h SectionOptionsContext.Consumer, null, (opts)=>
-    h SVGSectionComponent, {opts..., @props...}
+    h SVGSectionComponent, {opts..., props...}
 
 ChemostratigraphyColumn = (props)->
   {sections, surfaces, options} = props
@@ -126,8 +126,8 @@ class SummarySectionsBase extends Component
     columnMargin: 100
     columnWidth: 150
     showNavigationController: true
+    settingsPanel: SummarySectionsSettings
   }
-  SettingsPanel: SummarySectionsSettings
   pageID: 'summary-sections'
   constructor: (props)->
     super props
@@ -188,33 +188,6 @@ class SummarySectionsBase extends Component
     return null unless sections?
     return null unless sections.length > 0
 
-    skeletal = activeMode == 'skeleton'
-
-    mapRowToSection = (row)=>
-      {offset, range, height, start, end, rest...} = row
-      offset = sectionOffsets[row.id] or offset
-
-      # Clip off the top of some columns...
-      end = row.clip_end
-
-      height = end-start
-      range = [start, end]
-
-      h WrappedSectionComponent, {
-        zoom: 0.1,
-        key: row.id,
-        skeletal,
-        triangleBarRightSide: row.id == 'J'
-        showCarbonIsotopes,
-        trackVisibility: false
-        offset
-        range
-        height
-        start
-        end
-        rest...
-      }
-
     row = sections.find (d)->d.id == 'J'
     {offset, location, rest...} = row
     location = null
@@ -255,7 +228,6 @@ class SummarySectionsBase extends Component
           zoom: 0.1,
           key: "key",
           surfaces,
-          skeletal,
           offset
           rest...
         }
@@ -279,7 +251,6 @@ class SummarySectionsBase extends Component
             showSequenceStratigraphy
             showCarbonIsotopes
             surfaces
-            skeletal
           }
           h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
             marginRight = groupMargin
@@ -291,7 +262,29 @@ class SummarySectionsBase extends Component
               if i == columns.length-1
                 marginRight = 0
               style = {marginRight, height, width: columnWidth}
-              h SectionColumn, {key: i, style}, col.map mapRowToSection
+              h SectionColumn, {key: i, style}, col.map (row)=>
+                {offset, range, height, start, end, rest...} = row
+                offset = sectionOffsets[row.id] or offset
+
+                # Clip off the top of some columns...
+                end = row.clip_end
+
+                height = end-start
+                range = [start, end]
+
+                h WrappedSectionComponent, {
+                  zoom: 0.1,
+                  key: row.id,
+                  triangleBarRightSide: row.id == 'J'
+                  showCarbonIsotopes,
+                  trackVisibility: false
+                  offset
+                  range
+                  height
+                  start
+                  end
+                  rest...
+                }
         ]
       ]
     ]
@@ -314,9 +307,7 @@ class SummarySectionsBase extends Component
           sections
         ]
       ]
-      h @SettingsPanel, {
-        @state.options...
-      }
+      h @props.settingsPanel, {@state.options...}
     ]
 
   createSectionOptions: =>
@@ -330,10 +321,6 @@ class SummarySectionsBase extends Component
       triangleBarsOffset
       value...
     }
-
-  mutateState: (spec)=>
-    state = update(@state, spec)
-    @setState state
 
   updateOptions: (opts)=>
     newOptions = update @state.options, opts
