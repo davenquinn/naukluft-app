@@ -1,20 +1,21 @@
 import {findDOMNode} from "react-dom"
 import {Component} from "react"
-import "./main.styl"
 import {select} from "d3-selection"
 import h from "react-hyperscript"
-import {NavLink} from "../nav"
-import {SettingsPanel} from "./settings"
-import update from "immutability-helper"
-import LocalStorage from "./storage"
-import {getSectionData} from "./section-data"
 Measure = require('react-measure').default
-import {SectionComponent} from "./column"
-import {PlatformConsumer} from "../platform"
 import PropTypes from "prop-types"
+
+import update from "immutability-helper"
+import "../main.styl"
+import {NavLink} from "../../nav"
+import {SettingsPanel} from "../settings"
+import LocalStorage from "../storage"
+import {getSectionData} from "../section-data"
+import {SectionComponent} from "./column"
+import {PlatformConsumer} from "../../platform"
 import { Hotkey, Hotkeys, HotkeysTarget, Intent} from "@blueprintjs/core"
-import {SectionNavigationControl} from "./util"
-import {Notification} from "../notify"
+import {SectionNavigationControl} from "../util"
+import {Notification} from "../../notify"
 
 class SectionPage extends Component
   constructor: (props)->

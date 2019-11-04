@@ -8,7 +8,6 @@ import {ColumnAxis} from "#/axis"
 import {ColumnImages} from "#/images"
 import {Intent} from "@blueprintjs/core"
 import {GrainsizeAxis} from "#/grainsize"
-import {ManagedSymbolColumn} from "../../components"
 import Samples from "#/samples"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
 import {
@@ -28,15 +27,16 @@ import {
 import {DivisionEditOverlay} from '#/edit-overlay'
 import {StatefulComponent} from '@macrostrat/ui-components'
 
-import {ModalEditor} from "../../editor"
-import {Notification} from "../../../notify"
-import {SequenceStratConsumer} from "../../sequence-strat-context"
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../data-source"
-import {SVGNamespaces, KnownSizeComponent} from "../../util"
+import {ManagedSymbolColumn} from "../components"
+import {ModalEditor} from "../editor"
+import {Notification} from "../../notify"
+import {SequenceStratConsumer} from "../sequence-strat-context"
+import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../column/data-source"
+import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {ManagedNotesColumn} from "./notes"
 import {db, storedProcedure, query} from "~/sections/db"
-import addIntervalQuery from '../../sql/add-interval.sql'
-import removeIntervalQuery from '../../sql/remove-interval.sql'
+import addIntervalQuery from '../sql/add-interval.sql'
+import removeIntervalQuery from '../sql/remove-interval.sql'
 
 fmt = format(".1f")
 

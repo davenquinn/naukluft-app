@@ -3,16 +3,16 @@ import {format} from "d3-format"
 import {Component, createElement, useState} from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
-import logNotesQuery from '../../sql/log-notes.sql'
-import updateNoteQuery from '../../sql/update-note.sql'
-import setNoteInvisible from '../../sql/set-note-invisible.sql'
+import logNotesQuery from '../sql/log-notes.sql'
+import updateNoteQuery from '../sql/update-note.sql'
+import setNoteInvisible from '../sql/set-note-invisible.sql'
 
 import {dirname} from 'path'
 import {
   NotesColumn,
   NoteEditor,
   PhotoOverlay
-} from "~/bundled-deps/column-components"
+} from "#"
 import {db, storedProcedure, query} from "~/sections/db"
 
 fmt = format(".1f")
