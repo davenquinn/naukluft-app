@@ -145,6 +145,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
      position,
      range,
      pixelsPerMeter
+     children
      } = @props
 
     {heightScale} = position
@@ -247,6 +248,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
               h ColumnSummaryAxis
             ]
           ]
+          children
         ]
       ]
     ]

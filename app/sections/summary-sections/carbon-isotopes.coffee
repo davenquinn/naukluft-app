@@ -3,7 +3,7 @@ import {findDOMNode} from "react-dom"
 import * as d3 from "d3"
 import "d3-selection-multi"
 import {Component, createElement} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
 import {SectionAxis} from "#/axis"
 import {query} from "../db"
@@ -12,16 +12,22 @@ import {SVGNamespaces} from "../util"
 import classNames from "classnames"
 import chroma from "chroma-js"
 import sql from '../sql/carbon-isotopes.sql'
+import {
+  ColumnSVG,
+  CrossAxisLayoutProvider,
+  ColumnLayoutContext
+} from '#'
+import T from 'prop-types'
 
 fmt = d3.format('.1f')
 
-class IsotopesComponent extends Component
+class IsotopesColumnInner extends Component
+  @contextType: ColumnLayoutContext
   @defaultProps: {
     visible: false
     label: 'δ¹³C'
     system: 'delta13c'
     trackVisibility: true
-    innerWidth: 150
     offsetTop: null
     showLines: false
     surfaces: null
@@ -30,6 +36,7 @@ class IsotopesComponent extends Component
     pixelsPerMeter: 2
     pixelOffset: 0 # This should be changed
     domain: [-15,6]
+    colorScheme: d3.schemeCategory10
     padding:
       left: 10
       top: 10
@@ -41,18 +48,16 @@ class IsotopesComponent extends Component
     super props
     {system} = @props
     @state = {
-      scale: d3.scaleLinear().domain(@props.range)
-      xScale: d3.scaleLinear().domain(@props.domain)
-      cscale: d3.scaleOrdinal(d3.schemeCategory10)
+      colorScale: d3.scaleOrdinal(d3.schemeCategory10)
       isotopes: []
     }
 
     column = 'avg_'+system
     @line = d3.line()
-      .x (d)=>@state.xScale(d[column])
-      .y (d)=>@state.scale(d.height)
+      .x (d)=>@context.xScale(d[column])
+      .y (d)=>@context.scale(d.height)
 
-    query(sql).then @setupData
+    query(sql).then(@setupData)
 
   setupData: (isotopes)=>
     isotopes = d3.nest()
@@ -76,8 +81,6 @@ class IsotopesComponent extends Component
     [mn,mx] = @props.domain
     innerWidth = (mx-mn)*@props.xRatio
 
-    @state.scale.range [innerHeight-pixelOffset, 0-pixelOffset]
-    @state.xScale.range [0, innerWidth]
     outerHeight = innerHeight+(top+bottom)
     outerWidth = innerWidth+(left+right)
 
@@ -100,9 +103,8 @@ class IsotopesComponent extends Component
     transform = "translate(#{@props.padding.left} #{@props.padding.top})"
 
     minWidth = outerWidth
-    h "div.isotopes", {
-      className: if @props.skeletal then "skeleton" else null
-      style: {marginTop: 12}
+    h "div.isotopes-column", {
+      style: {marginTop: 22}
     }, [
       h 'div.section-header.subtle', [
         h "h2", {style: {
@@ -112,34 +114,23 @@ class IsotopesComponent extends Component
         }},label
       ]
       h 'div.section-outer', [
-        h Measure, {
-          bounds: true,
-          client: true,
-          onResize: @onResize
-        }, ({measureRef})=>
-          h "svg.section", {
-            SVGNamespaces...
-            size...
-            ref: measureRef
-          }, [
-            h 'g.backdrop', {transform}, [
-              @renderScale()
-              @renderAxisLines()
-              @renderData()
-            ]
-          ]
+        h ColumnSVG, {
+          width: outerWidth
+        }, [
+          @renderScale()
+          @renderAxisLines()
+          @renderData()
+        ]
       ]
     ]
 
   locatePoint: (d, s=0)=>
     {system} = @props
+    {xScale, scale} = @context
     v = d['avg_'+system]
     unless s == 0
       v += d['std_'+system]*s
-    [
-      @state.xScale(v)
-      @state.scale(parseFloat(d.height))
-    ]
+    [xScale(v), scale(parseFloat(d.height))]
 
   renderAxisLines: =>
     getHeight = (d)->
@@ -147,6 +138,7 @@ class IsotopesComponent extends Component
       return height
 
     {surfaces} = @props
+    {scale} = @context
     return null unless surfaces?
     surfaces = surfaces.filter (d)->d.type == 'sequence-strat'
     h 'g.surfaces', {style: {strokeOpacity: 0.3}}, surfaces.map (d)=>
@@ -157,7 +149,7 @@ class IsotopesComponent extends Component
         # robust solution to this problem in the SQL code.
         return null
 
-      y = @state.scale(height)
+      y = scale(height)
       h 'line', {
         x1: -500
         x2: 500
@@ -166,25 +158,46 @@ class IsotopesComponent extends Component
       }
 
   renderData: =>
-    {isotopes, cscale, scale, xScale} = @state
+    {scale, xScale} = @context
+    {isotopes} = @state
+    cscale = d3.scaleOrdinal(@props.colorScheme)
     h 'g.data', isotopes.map ({key, values}, i)=>
       [x,y] = @locatePoint values[values.length-1]
-      transform = "translate(#{x},#{y})"
       fill = stroke = cscale(i)
-
-      line = null
-      if @props.showLines
-        lineValues = values.filter (d)->d.in_zebra_nappe
-        d = @line(lineValues)
-        line = h 'path', {d, stroke, fill:'transparent'}
+      lineValues = values.filter (d)->d.in_zebra_nappe
       h 'g.section-data', {key}, [
+        h 'g.data-points', values.map (d)=>
+          [x1,y1] = @locatePoint(d, -2)
+          [x2,y2] = @locatePoint(d, 2)
+
+          actualStroke = stroke
+          if not d.in_zebra_nappe
+            actualStroke = chroma(stroke).brighten(2).css()
+
+          h 'line', {
+            key: d.analysis_id
+            x1,y1,
+            x2,y2,
+            stroke: actualStroke
+            strokeWidth: 8
+            strokeLinecap: 'round'
+          }
         @renderValues(values, fill)
-        line
-        h 'text', {transform, x:10,y:5,fill}, key
+        h.if(@props.showLines) 'path', {
+          d: @line(lineValues)
+          stroke
+          fill:'transparent'
+        }
+        h 'text', {
+          transform: "translate(#{x},#{y})"
+          x: 10,
+          y: 5,
+          fill
+        }, key
       ]
 
   renderValues: (entries, stroke)=>
-    {scale, xScale} = @state
+    {scale, xScale} = @context
     h 'g.data-points', entries.map (d)=>
       [x1,y1] = @locatePoint(d, -2)
       [x2,y2] = @locatePoint(d, 2)
@@ -203,7 +216,7 @@ class IsotopesComponent extends Component
 
   renderScale: =>
     {height} = @props
-    {xScale, scale} = @state
+    {xScale, scale} = @context
     v = xScale.ticks()
     h 'g.scale', v.map (d)->
       x = xScale(d)
@@ -215,4 +228,20 @@ class IsotopesComponent extends Component
         h 'text', {y: y+12}, "#{d}"
       ]
 
-export {IsotopesComponent}
+IsotopesColumn = (props)->
+  {width, domain, rest...} = props
+  h CrossAxisLayoutProvider, {width, domain}, (
+    h IsotopesColumnInner, rest
+  )
+
+IsotopesColumn.propTypes = {
+  width: T.number.isRequired
+  domain: T.arrayOf(T.number).isRequired
+}
+
+IsotopesColumn.defaultProps = {
+  domain: [-15, 6]
+  width: 150
+}
+
+export {IsotopesColumn}

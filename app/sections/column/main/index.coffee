@@ -36,6 +36,9 @@ import {SequenceStratConsumer} from "../../sequence-strat-context"
 import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../../util"
 import {ManagedNotesColumn} from "./notes"
+import {db, storedProcedure, query} from "~/sections/db"
+import addIntervalQuery from '../../sql/add-interval.sql'
+import removeIntervalQuery from '../../sql/remove-interval.sql'
 
 fmt = format(".1f")
 
@@ -265,7 +268,8 @@ class SectionComponent extends KnownSizeComponent
   addInterval: (height)=>
     {editingInterval} = @state
     {id: section} = @props
-    {id} = await db.one sql('add-interval'), {section,height}
+    sql = storedProcedure(addIntervalQuery)
+    {id} = await db.one sql, {section,height}
     {id: oldID, height} = editingInterval
     if oldID?
       editingInterval = {id, height}
@@ -276,7 +280,8 @@ class SectionComponent extends KnownSizeComponent
 
   removeInterval: (id)=>
     {id: section} = @props
-    await db.none sql('remove-interval'), {section, id}
+    sql = storedProcedure(removeIntervalQuery)
+    await db.none sql, {section, id}
     @context.updateDivisions()
     @setState {editingInterval: {id:null}}
 
