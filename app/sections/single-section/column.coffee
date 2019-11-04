@@ -40,46 +40,6 @@ import removeIntervalQuery from '../sql/remove-interval.sql'
 
 fmt = format(".1f")
 
-class ScrollToHeightComponent extends Component
-  @contextType: ColumnContext
-  @propTypes: {
-    scrollToHeight: T.number
-    id: T.string
-  }
-  constructor: (props)->
-    super props
-    @state = {loaded: false}
-  render: ->
-    h 'div.section-outer', null, @props.children
-
-  scrollTo: (height, opts={})->
-    {animated} = opts
-    animated ?= false
-
-    pixelHeight
-
-
-  componentDidMount: ->
-    @componentDidUpdate()
-
-  componentDidUpdate: (prevProps)->
-    node = findDOMNode(@)
-    prevProps ?= {}
-    h0 = prevProps.scrollToHeight or null
-    {scale} = @context
-    {scrollToHeight, id} = @props
-    {loaded} = @state
-    return unless scrollToHeight?
-    return if loaded
-    scrollTop = scale(scrollToHeight)-window.innerHeight/2
-    node.scrollTop = scrollTop
-
-    Notification.show {
-      message: "Section #{id} @ #{fmt(scrollToHeight)} m"
-      intent: Intent.PRIMARY
-    }
-    @setState {loaded: true}
-
 class SectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
   @defaultProps: {
@@ -106,7 +66,7 @@ class SectionComponent extends KnownSizeComponent
     editingInterval: {id: null}
     useRelativePositioning: true
     padding: {
-      left: 150
+      left: 30
       top: 30
       right: 0
       bottom: 30

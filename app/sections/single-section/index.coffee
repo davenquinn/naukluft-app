@@ -89,20 +89,22 @@ class SectionPage extends Component
 
     {toggleSettings} = @
     h 'div.page.section-page.single-section', [
-      h SectionNavigationControl, {toggleSettings}
-      h 'div.panel-container', [
-        h PlatformConsumer, null, ({inEditMode})=>
-          h SectionComponent, {
-            trackVisibility: false
-            section...,
-            scrollToHeight,
-            offsetTop: 0
-            onResize: @onResize
-            key, skeletal,
-            isEditable: inEditMode
-            useRelativePositioning: false
-            options...
-          }
+      h 'div.left-panel', [
+        h SectionNavigationControl, {toggleSettings}
+        h 'div.panel-container', [
+          h PlatformConsumer, null, ({inEditMode})=>
+            h SectionComponent, {
+              trackVisibility: false
+              section...,
+              scrollToHeight,
+              offsetTop: 0
+              onResize: @onResize
+              key, skeletal,
+              isEditable: inEditMode
+              useRelativePositioning: false
+              options...
+            }
+        ]
       ]
       h SettingsPanel, @state.options
     ]
