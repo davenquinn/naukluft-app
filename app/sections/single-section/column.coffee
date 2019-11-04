@@ -8,7 +8,6 @@ import {ColumnAxis} from "#/axis"
 import {ColumnImages} from "#/images"
 import {Intent} from "@blueprintjs/core"
 import {GrainsizeAxis} from "#/grainsize"
-import Samples from "#/samples"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
 import {
   ColumnProvider,
@@ -27,6 +26,7 @@ import {
 import {DivisionEditOverlay} from '#/edit-overlay'
 import {StatefulComponent} from '@macrostrat/ui-components'
 
+import Samples from "./samples"
 import {ManagedSymbolColumn} from "../components"
 import {ModalEditor} from "../editor"
 import {Notification} from "../../notify"
@@ -44,8 +44,6 @@ class SectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
   @defaultProps: {
     zoom: 1
-    pixelsPerMeter: 20
-    skeletal: false
     offset: 0
     offsetTop: null
     useRelativePositioning: true
@@ -85,9 +83,8 @@ class SectionComponent extends KnownSizeComponent
 
   render: ->
     {divisions} = @context
-    {id, zoom, pixelsPerMeter,
-     scrollToHeight, height,
-     skeletal, range,
+    {id, zoom,
+     scrollToHeight, height, range,
      lithologyWidth, padding
     } = @props
     {lithologyWidth, zoom, id, padding} = @props
@@ -104,12 +101,9 @@ class SectionComponent extends KnownSizeComponent
 
     grainsizeRange = [grainsizeScaleStart, grainsizeWidth]
 
-    {lithologyWidth, zoom, id, height, pixelsPerMeter} = @props
+    {lithologyWidth, zoom, id, height} = @props
 
-    innerHeight = height*pixelsPerMeter
     {left, top, right, bottom} = @props.padding
-    outerHeight = innerHeight+(top+bottom)
-    outerWidth = innerWidth+(left+right)
 
     ticks = height/10
 
@@ -119,9 +113,7 @@ class SectionComponent extends KnownSizeComponent
     order = @props.sequenceStratOrder
 
     h "div.section-pane", [
-      h "div.section-container", {
-        className: if skeletal then "skeleton" else null
-      }, [
+      h "div.section-container", [
         h 'div.section-header', null, h("h2", txt)
         h ColumnProvider, {
           zoom
@@ -162,7 +154,7 @@ class SectionComponent extends KnownSizeComponent
                   allowEditing: true
                 }
                 h ColumnSVG, {
-                  width: outerWidth
+                  innerWidth: @props.innerWidth + @props.logWidth
                   paddingLeft: @props.padding.left
                   paddingTop: @props.padding.top
                   paddingBottom: @props.padding.bottom
@@ -181,16 +173,16 @@ class SectionComponent extends KnownSizeComponent
                     h.if(shouldRenderGeneralized) GeneralizedSectionColumn, {range: grainsizeRange}, (
                       h LithologyColumnInner, {width: grainsizeRange[1]}
                     )
-                    h.if(@props.showCarbonIsotopes) Samples, {id}
+                    #h.if(@props.showCarbonIsotopes) Samples, {id}
                     h.if(@props.showFloodingSurfaces) FloodingSurface
                     h.if(@props.showTriangleBars) TriangleBars, {
                       offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
                     }
                     h.if(@props.showSymbols) ManagedSymbolColumn, {id, left: 215}
-                    h.if(@props.showNotes and zoom > 0.50) ManagedNotesColumn, {
+                    h.if(@props.showNotes) ManagedNotesColumn, {
                       visible: true
                       id
-                      width: @props.logWidth*zoom
+                      width: @props.logWidth
                       inEditMode: @props.isEditable
                       transform: "translate(#{@props.innerWidth})"
                     }
