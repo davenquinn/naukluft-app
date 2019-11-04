@@ -35,7 +35,7 @@ class IsotopesColumnInner extends Component
     height: 100 # Section height in meters
     pixelsPerMeter: 2
     pixelOffset: 0 # This should be changed
-    domain: [-15,6]
+    domain: [-15,8]
     colorScheme: d3.schemeCategory10
     padding:
       left: 10
@@ -67,55 +67,22 @@ class IsotopesColumnInner extends Component
     @setState {isotopes}
 
   render: ->
-    {id, zoom, padding,
-     onResize,
-     marginLeft, height,
-     clip_end, pixelOffset
-     heightOfTop
-    } = @props
-    innerHeight = height*@props.pixelsPerMeter
-
+    {padding, label} = @props
+    {width: innerWidth} = @context
     {left, top, right, bottom} = padding
 
-    scaleFactor = @props.scaleFactor/@props.pixelsPerMeter
-    [mn,mx] = @props.domain
-    innerWidth = (mx-mn)*@props.xRatio
-
-    outerHeight = innerHeight+(top+bottom)
-    outerWidth = innerWidth+(left+right)
-
-    marginTop = heightOfTop*@props.pixelsPerMeter*@props.zoom
-
-    [bottom,top] = @props.range
-
-    txt = id
-
-    {scale,visible, divisions} = @state
-    zoom = @props.zoom
-
-    size = {
-      width: outerWidth
-      height: outerHeight
-    }
-
-    {label} = @props
-
-    transform = "translate(#{@props.padding.left} #{@props.padding.top})"
-
-    minWidth = outerWidth
     h "div.isotopes-column", {
-      style: {marginTop: 22}
+      style: {marginTop: 6}
     }, [
       h 'div.section-header.subtle', [
-        h "h2", {style: {
-          height: '1.2rem'
-          position: 'absolute'
-          top: '-1.4rem'
-        }},label
+        h "h2",label
       ]
       h 'div.section-outer', [
         h ColumnSVG, {
-          width: outerWidth
+          innerWidth
+          paddingLeft: padding.left
+          paddingRight: padding.right
+          paddingBottom: padding.bottom
         }, [
           @renderScale()
           @renderAxisLines()
