@@ -88,8 +88,8 @@ class SectionPage extends Component
 
     {toggleSettings} = @
     h 'div.page.section-page.single-section', [
+      h SectionNavigationControl, {toggleSettings}
       h 'div.panel-container', [
-        h SectionNavigationControl, {toggleSettings}
         h PlatformConsumer, null, ({inEditMode})=>
           h SectionComponent, {
             trackVisibility: false

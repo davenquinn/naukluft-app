@@ -26,8 +26,6 @@ import {
   LithologyColumnInner
 } from "#/lithology"
 import {DivisionEditOverlay} from '#/edit-overlay'
-import {dirname} from "path"
-import update from "immutability-helper"
 import {StatefulComponent} from '@macrostrat/ui-components'
 
 import {ModalEditor} from "../../editor"
@@ -174,6 +172,7 @@ class SectionComponent extends KnownSizeComponent
             h 'div.section-outer', [
               h ColumnScroller, {
                 scrollToHeight: parseFloat(scrollToHeight),
+                paddingTop: @props.padding.top
                 onScrolled: (height)=>
                   Notification.show {
                     message: "Section #{id} @ #{fmt(height)} m"
