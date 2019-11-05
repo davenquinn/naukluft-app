@@ -12,6 +12,8 @@ import {SVGNamespaces} from "../util"
 import classNames from "classnames"
 import chroma from "chroma-js"
 import sql from '../sql/carbon-isotopes.sql'
+import allCarbonIsotopes from '../sql/all-carbon-isotopes.sql'
+
 import {
   ColumnSVG,
   CrossAxisLayoutProvider,
@@ -43,7 +45,6 @@ class IsotopesColumnInner extends Component
       right: 10
       bottom: 30
   }
-
   constructor: (props)->
     super props
     {system} = @props
@@ -149,7 +150,6 @@ class IsotopesColumnInner extends Component
             strokeWidth: 8
             strokeLinecap: 'round'
           }
-        @renderValues(values, fill)
         h.if(@props.showLines) 'path', {
           d: @line(lineValues)
           stroke
@@ -162,24 +162,6 @@ class IsotopesColumnInner extends Component
           fill
         }, key
       ]
-
-  renderValues: (entries, stroke)=>
-    {scale, xScale} = @context
-    h 'g.data-points', entries.map (d)=>
-      [x1,y1] = @locatePoint(d, -2)
-      [x2,y2] = @locatePoint(d, 2)
-
-      actualStroke = stroke
-      if not d.in_zebra_nappe
-        actualStroke = chroma(stroke).brighten(2).css()
-
-      h 'line', {
-        key: d.analysis_id
-        x1,y1,x2,y2,
-        stroke: actualStroke
-        strokeWidth: 8
-        strokeLinecap: 'round'
-      }
 
   renderScale: =>
     {height} = @props
@@ -194,6 +176,106 @@ class IsotopesColumnInner extends Component
         h 'line', {x0: 0, x1: 0, y0: 0, y1: y}
         h 'text', {y: y+12}, "#{d}"
       ]
+
+class MinimalIsotopesColumnInner extends Component
+  @contextType: ColumnLayoutContext
+  @defaultProps: {
+    visible: false
+    label: 'δ¹³C'
+    system: 'delta13c'
+    offsetTop: null
+    domain: [-15,8]
+    colorScheme: d3.schemeCategory10
+    padding:
+      left: 10
+      top: 10
+      right: 10
+      bottom: 30
+  }
+
+  @propTypes: {
+    section: T.string.isRequired
+  }
+
+  constructor: (props)->
+    super props
+    {system} = @props
+    @state = {
+      isotopes: []
+    }
+
+    column = 'avg_'+system
+    @line = d3.line()
+      .x (d)=>@context.xScale(d[column])
+      .y (d)=>@context.scale(d.height)
+
+    query(allCarbonIsotopes).then(@setupData)
+
+  setupData: (data)=>
+    isotopes = data
+      .filter (d)=> d.section == @props.section
+      .sort (a,b)-> a.orig_height < b.orig_height
+    console.log isotopes
+    @setState {isotopes}
+
+  render: ->
+    {padding, label, transform} = @props
+    {width: innerWidth} = @context
+    {left, top, right, bottom} = padding
+
+    h 'g.isotopes-column', {transform}, [
+      @renderScale()
+      @renderData()
+    ]
+
+  locatePoint: (d, s=0)=>
+    {system} = @props
+    {xScale, scale} = @context
+    v = d['avg_'+system]
+    unless s == 0
+      v += d['std_'+system]*s
+    [xScale(v), scale(parseFloat(d.height))]
+
+  renderData: =>
+    {scale, xScale} = @context
+    {isotopes} = @state
+    cscale = d3.scaleOrdinal(@props.colorScheme)
+    stroke = '#888'
+
+    h 'g.data', [
+      h 'g.data-points', isotopes.map (d)=>
+        [x1,y1] = @locatePoint(d, -2)
+        [x2,y2] = @locatePoint(d, 2)
+
+        h 'line', {
+          key: d.analysis_id
+          x1,y1,
+          x2,y2,
+          stroke
+          strokeWidth: 6
+          strokeLinecap: 'round'
+        }
+      h.if(@props.showLines) 'path', {
+        d: @line(isotopes)
+        stroke
+        fill:'transparent'
+      }
+    ]
+
+  renderScale: =>
+    {height} = @props
+    {xScale, scale, pixelHeight} = @context
+    v = [0]
+    h 'g.scale', v.map (d)->
+      x = xScale(d)
+      y = scale(0)
+      transform = "translate(#{x})"
+      className = classNames {zero: d == 0}
+      h 'g.tick', {transform, className, key: d}, [
+        h 'line', {x0: 0, x1: 0, y0: 0, y1: pixelHeight, stroke: '#aaa'}
+      ]
+
+
 
 IsotopesColumn = (props)->
   {width, domain, rest...} = props
@@ -211,4 +293,12 @@ IsotopesColumn.defaultProps = {
   width: 150
 }
 
-export {IsotopesColumn}
+MinimalIsotopesColumn = (props)->
+  {width, domain, rest...} = props
+  h CrossAxisLayoutProvider, {width, domain}, (
+    h MinimalIsotopesColumnInner, rest
+  )
+
+MinimalIsotopesColumn.defaultProps = IsotopesColumn.defaultProps
+
+export {IsotopesColumn, MinimalIsotopesColumn}

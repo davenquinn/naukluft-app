@@ -310,24 +310,18 @@ class SummarySectionsBase extends Component
     ]
 
   render: ->
-    # Keep errors isolated within groups
-    sections = null
-    try
-      sections = @renderSections()
-    catch err
-      console.error err
-
     h 'div.page.section-page', {id: @pageID}, [
       h 'div.panel-container', [
+        h SectionNavigationControl, {
+          backLocation: '/section',
+          @toggleSettings
+        }
         h SectionOptionsProvider, {
           @state.options...,
           triangleBarsOffset: if @props.showTriangleBars then 80 else 0
         }, [
-          h.if(@props.showNavigationController) SectionNavigationControl, {
-            backLocation: '/section',
-            @toggleSettings
-          }
-          sections
+
+          @renderSections()
         ]
       ]
       h @props.settingsPanel, {@state.options...}

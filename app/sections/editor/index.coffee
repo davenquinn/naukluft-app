@@ -1,6 +1,6 @@
 import {findDOMNode} from "react-dom"
 import {Component, useContext} from "react"
-import {Dialog, Button, Intent, ButtonGroup, Alert, Slider} from "@blueprintjs/core"
+import {Dialog, Button, Intent, ButtonGroup, Alert, Slider, Switch} from "@blueprintjs/core"
 import {DeleteButton} from '@macrostrat/ui-components'
 import Select from 'react-select'
 import {format} from "d3-format"
@@ -114,6 +114,10 @@ class ModalEditor extends Component
       style: {top: '10%', zIndex: 1000, position: 'relative'}
     }, [
       h 'div.bp3-dialog-body', [
+        h LithologyControls, {
+          interval
+          @update
+        }
         h LabeledControl, {
           title: 'Grainsize'
           is: PickerControl
@@ -124,6 +128,12 @@ class ModalEditor extends Component
           activeState: interval.grainsize
           onUpdate: (grainsize)=>
             @update {grainsize}
+        }
+        h Switch, {
+          label: 'Covered'
+          checked: interval.covered
+          onChange: (d)=>
+            @update {covered: not interval.covered}
         }
         h LabeledControl, {
           title: 'Surface expression'

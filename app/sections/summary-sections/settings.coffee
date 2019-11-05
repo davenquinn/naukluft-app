@@ -1,6 +1,6 @@
 import {SettingsPanel} from "../settings"
 import {FaciesDescriptionSmall} from "../facies"
-import {Button, Silder} from "@blueprintjs/core"
+import {Button, Slider} from "@blueprintjs/core"
 import h from "react-hyperscript"
 
 class SummarySectionsSettings extends SettingsPanel

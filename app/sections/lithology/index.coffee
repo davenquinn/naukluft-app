@@ -1,26 +1,24 @@
-import {Component, createContext} from "react"
+import {Component} from "react"
 import h from "react-hyperscript"
 import {db, storedProcedure, query} from "../../db"
-import q from "./sql/lithology.sql"
+import {LithologyProvider} from '#'
+import q from "./lithology.sql"
 
-LithologyContext = createContext {lithology: []}
-
-class LithologyProvider extends Component
+class OurLithologyProvider extends Component
   constructor: (props)->
     super props
-    @state = {lithology: []}
+    @state = {lithologies: []}
 
   getLithologies: =>
-    lithology = await query(q)
-    @setState {lithology}
+    lithologies = await query(q)
+    @setState {lithologies}
 
   componentDidMount: ->
     @getLithologies()
 
   render: ->
-    {lithology} = @state
-    {children, rest...} = @props
-    value = {lithology}
-    h LithologyContext.Provider, {value}, children
+    {lithologies} = @state
+    {children} = @props
+    h LithologyProvider, {lithologies}, children
 
-export {LithologyProvider, LithologyContext}
+export {OurLithologyProvider as LithologyProvider}

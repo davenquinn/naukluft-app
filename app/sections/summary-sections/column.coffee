@@ -26,6 +26,7 @@ import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
+import {MinimalIsotopesColumn} from './carbon-isotopes'
 
 fmt = format('.1f')
 
@@ -102,6 +103,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
   @propTypes: {
     #inEditMode: T.bool
     range: T.arrayOf(T.number).isRequired
+    isotopesPerSection: T.bool
   }
   constructor: (props)->
     super props
@@ -170,6 +172,9 @@ class BaseSVGSectionComponent extends KnownSizeComponent
     marginLeft -= tbo
     marginRight = 0
     outerWidth += tbo
+    if @props.isotopesPerSection
+      isotopesWidth = 60
+      outerWidth += 100
 
     if showTriangleBars
       offsetLeft = -tbo+35
@@ -246,6 +251,11 @@ class BaseSVGSectionComponent extends KnownSizeComponent
                 orders: [@props.sequenceStratOrder, @props.sequenceStratOrder-1]
               }
               h ColumnSummaryAxis
+              h.if(@props.isotopesPerSection) MinimalIsotopesColumn, {
+                width: 60,
+                section: id
+                transform: 'translate(120)'
+              }
             ]
           ]
           children
