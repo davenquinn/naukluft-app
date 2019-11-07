@@ -1,142 +1,121 @@
-import {Component} from "react"
+import {Component, useContext} from "react"
 import h from "react-hyperscript"
 import {CSSTransition} from "react-transition-group"
 import {Switch, Slider, Button} from "@blueprintjs/core"
-import {format, select} from "d3"
-import {PlatformConsumer} from "../platform"
+import {PlatformContext} from "../platform"
 import {PickerControl} from "#/editor/picker-base"
-import {SequenceStratConsumer} from "./sequence-strat-context"
+import {SequenceStratContext} from "./sequence-strat-context"
 import {FaciesDescriptionSmall} from "./facies"
 import classNames from "classnames"
-
+import {useSettings, updateSettings} from '#'
+import T from 'prop-types'
 import "./settings.styl"
 
-fmt = format('.2f')
+SettingsSwitch = ({id, label})->
+  settings = useSettings()
+  checked = settings[id]
+  onChange = updateSettings -> {[id]: {$set: not checked}}
+
+  h Switch, {
+    checked
+    label: label
+    key: id
+    onChange
+  }
+
+SettingsPicker = ({id, options})=>
+  settings = useSettings()
+  onUpdate = updateSettings (value)=>{[id]: {$set: value}}
+  h PickerControl, {
+    states: options
+    activeState: settings[id]
+    onUpdate
+  }
+
+OptionsShape = T.shape {
+  value: T.string.isRequired
+  label: T.string.isRequired
+}
+
+SettingsPicker.propTypes = {
+  id: T.string.isRequired
+  options: T.arrayOf(OptionsShape).isRequired
+}
 
 EditModeControl = (props)->
-  h PlatformConsumer, null, ({WEB, inEditMode, updateState})->
-    h Switch, {
-      checked: inEditMode
-      label: 'Allow editing'
-      key: 'edit-mode'
-      onChange: -> updateState {inEditMode: not inEditMode}
-    }
+  {WEB, inEditMode, updateState} = useContext(PlatformContext)
+  h Switch, {
+    checked: inEditMode
+    label: 'Allow editing'
+    key: 'edit-mode'
+    onChange: -> updateState {inEditMode: not inEditMode}
+  }
 
 SerializedQueriesControl = (props)->
-  h PlatformConsumer, null, ({WEB, serializedQueries, updateState})->
-    return null if WEB
-    h Switch, {
-      checked: serializedQueries
-      label: 'Serialized queries'
-      key: 'serialized-queries'
-      onChange: -> updateState {serializedQueries: not serializedQueries}
-    }
+  {WEB, serializedQueries, updateState} = useContext(PlatformContext)
+  return null if WEB
+  h Switch, {
+    checked: serializedQueries
+    label: 'Serialized queries'
+    key: 'serialized-queries'
+    onChange: -> updateState {serializedQueries: not serializedQueries}
+  }
 
 SequenceStratControlPanel = (props)->
-  h SequenceStratConsumer, null, (value)->
-    {actions} = value
-    h 'div', props, [
-      h 'h5', 'Sequence stratigraphy'
-      h Switch, {
-        checked: value.showFloodingSurfaces
-        label: "Flooding surfaces"
-        onChange: actions.toggleBooleanState("showFloodingSurfaces")
-      }
-      h Switch, {
-        checked: value.showTriangleBars
-        label: "Triangle bars"
-        onChange: actions.toggleBooleanState("showTriangleBars")
-      }
-      h Slider, {
-        min: 0,
-        max: 5,
-        stepSize: 1,
-        showTrackFill: false,
-        value: value.sequenceStratOrder
-        onChange: (v)->
-          actions.updateState({sequenceStratOrder:v})
-      }
-      h 'hr'
-    ]
+  value = useContext(SequenceStratContext)
+  {actions} = value
+  h 'div', props, [
+    h 'h5', 'Sequence stratigraphy'
+    h Switch, {
+      checked: value.showFloodingSurfaces
+      label: "Flooding surfaces"
+      onChange: actions.toggleBooleanState("showFloodingSurfaces")
+    }
+    h Switch, {
+      checked: value.showTriangleBars
+      label: "Triangle bars"
+      onChange: actions.toggleBooleanState("showTriangleBars")
+    }
+    h Slider, {
+      min: 0,
+      max: 5,
+      stepSize: 1,
+      showTrackFill: false,
+      value: value.sequenceStratOrder
+      onChange: (v)->
+        actions.updateState({sequenceStratOrder:v})
+    }
+  ]
 
 class SettingsPanel extends Component
   render: ->
-    return null unless @props.settingsPanelIsActive
     h CSSTransition, {
       classNames: "settings"
       timeout: {exit: 1000, enter: 1000}
     }, [
-      h 'div#settings', {key: 'settings'}, [
+      h 'div#settings.settings', {key: 'settings'}, [
         h 'h2', 'Settings'
         h 'hr'
         @renderControls()...
       ]
     ]
 
-  viewParams: =>
-    h 'div#view-params', [
-      h 'h5', 'View info'
-      h 'table.bp3-table', [
-        h 'tbody', [
-          h 'tr', [
-            h 'td', 'Zoom'
-            h 'td', fmt(@props.zoom)
-          ]
-        ]
-      ]
-    ]
-
   renderControls: =>
     return [
       h 'h5', "Components"
-      @createSwitch 'showCarbonIsotopes', "Carbon isotopes"
-      @createSwitch 'showFacies', "Facies"
-      @createSwitch 'showSymbols', 'Symbols'
-      @createSwitch 'showNotes', "Notes"
-      @createPicker 'displayModes', 'activeDisplayMode'
+      h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
+      h SettingsSwitch, {id: 'showFacies', label: "Facies"}
+      h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
+      h SettingsSwitch, {id: 'showNotes', label: "Notes"}
       h 'hr'
       h SequenceStratControlPanel
-      @sequenceStratControls()
-      @debuggingControls()
-      h 'h6', 'Display mode'
-      @createPicker 'modes', 'activeMode'
+      h 'div', [
+        h 'h5', "Backend"
+        h EditModeControl
+        h SerializedQueriesControl
+        h 'hr'
+      ]
     ]
 
-  debuggingControls: ->
-    h 'div', [
-      h 'h5', "Backend"
-      h EditModeControl
-      h SerializedQueriesControl
-      h Button, {onClick: @printToPDF}, "Print to PDF"
-      h 'hr'
-    ]
-
-  sequenceStratControls: ->
-    return h SequenceStratControlPanel
-
-  createSwitch: (id, label)=>
-    h Switch, {
-      checked: @props[id]
-      label: label
-      key: id
-      onChange: @switchHandler(id)
-    }
-
-  switchHandler: (name)=> =>
-    v = {}
-    v[name] = {$apply: (d)->not d}
-    @props.update v
-
-  createPicker: (modes, active)=>
-    onUpdate = (value)=>
-      v = {}
-      v[active] = {$set: value}
-      @props.update v
-
-    h PickerControl, {
-      states: @props[modes]
-      activeState: @props[active]
-      onUpdate
-    }
 
 export {PickerControl, SettingsPanel}

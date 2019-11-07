@@ -1,120 +1,47 @@
-import {findDOMNode} from "react-dom"
-import {Component} from "react"
-import {select} from "d3-selection"
-import h from "react-hyperscript"
-Measure = require('react-measure').default
-import PropTypes from "prop-types"
+import {Component, useContext, useState} from "react"
+import h from "@macrostrat/hyper"
 
-import update from "immutability-helper"
 import "../main.styl"
 import {NavLink} from "../../nav"
 import {SettingsPanel} from "../settings"
 import LocalStorage from "../storage"
 import {getSectionData} from "../section-data"
 import {SectionComponent} from "./column"
-import {PlatformConsumer} from "../../platform"
-import { Hotkey, Hotkeys, HotkeysTarget, Intent} from "@blueprintjs/core"
+import {PlatformContext} from "../../platform"
 import {SectionNavigationControl} from "../util"
 import {Notification} from "../../notify"
+import {SettingsProvider, useSettings} from './settings'
 
-class SectionPage extends Component
-  constructor: (props)->
-    super props
-    @state =
-      dimensions: {}
-      options:
-        zoom: 1
-        settingsPanelIsActive: false
-        modes: [
-          {value: 'normal', label: 'Normal'}
-          {value: 'skeleton', label: 'Skeleton'}
-          #{value: 'sequence-stratigraphy', label: 'Sequence Strat.'}
-        ]
-        activeMode: 'normal'
-        displayModes: [
-          {value: 'image', label: 'Full-resolution'}
-          {value: 'generalized', label: 'Generalized'}
-        ]
-        activeDisplayMode: 'image'
-        showNotes: true
-        showSymbols: true
-        showFacies: true
-        showFloodingSurfaces: false
-        showTriangleBars: false
-        # Allows us to test the serialized query mode
-        # we are developing for the web
-        serializedQueries: global.SERIALIZED_QUERIES
-        dragdealer: false
-        condensedDisplay: true
-        update: @updateOptions
-        sectionIDs: []
-        showCarbonIsotopes: false
-        dragPosition: {x: 500, y: 500}
+SectionPageInner = (props)->
+  # Set up routing to jump to a specific height
+  {section, height: scrollToHeight} = props
+  {inEditMode} = useContext(PlatformContext)
+  settings = useSettings()
 
-    @optionsStorage = new LocalStorage 'sections-component'
-    v = @optionsStorage.get()
-    return unless v?
-    @state = update @state, options: {$merge: v}
+  # State to control whether we show settings panel
+  [showSettings, setShowSettings] = useState(false)
+  toggleSettings = -> setShowSettings(not showSettings)
 
-  getChildContext: ->
-    inEditMode: @state.options.inEditMode
-
-  @childContextTypes:
-    inEditMode: PropTypes.bool
-
-  render: ->
-    console.log @props, @state
-
-    resizeFunc = (contentRect)->
-      @setState dimensions: contentRect
-
-    {section, height} = @props
-    {inEditMode} = @state.options
-
-    scrollToHeight = height
-
-    # Set up routing to jump to a specific height
-    obj = {
-      bounds: true,
-      offset: true,
-      scroll: true,
-      client: true,
-      onResize: resizeFunc
-    }
-
-    key = section.id # Because react
-    skeletal = @state.options.activeMode == 'skeleton'
-    {options} = @state
-    options.zoom = 1
-
-    {toggleSettings} = @
-    h 'div.page.section-page.single-section', [
-      h 'div.left-panel', [
-        h SectionNavigationControl, {toggleSettings}
-        h 'div.panel-container', [
-          h PlatformConsumer, null, ({inEditMode})=>
-            h SectionComponent, {
-              trackVisibility: false
-              section...,
-              scrollToHeight,
-              offsetTop: 0
-              onResize: @onResize
-              key, skeletal,
-              isEditable: inEditMode
-              useRelativePositioning: false
-              options...
-            }
-        ]
+  h 'div.page.section-page.single-section', [
+    h 'div.left-panel', [
+      h SectionNavigationControl, {toggleSettings}
+      h 'div.panel-container', [
+        h SectionComponent, {
+          section...,
+          scrollToHeight,
+          offsetTop: 0
+          key: section.id
+          isEditable: inEditMode
+          settings...
+        }
       ]
-      h SettingsPanel, @state.options
     ]
+    h.if(showSettings) SettingsPanel
+  ]
 
-  updateOptions: (opts)=>
-    newOptions = update @state.options, opts
-    @setState options: newOptions
-    @optionsStorage.set newOptions
-
-  toggleSettings: =>
-    @updateOptions settingsPanelIsActive: {$apply: (d)->not d}
+SectionPage = (props)->
+  h SettingsProvider, [
+    h SectionPageInner, props
+  ]
 
 export default SectionPage

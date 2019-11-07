@@ -8,7 +8,6 @@ import {join} from "path"
 import * as d3 from "d3"
 import update from "immutability-helper"
 Measure = require('react-measure').default
-import {debounce} from "underscore"
 import {StatefulComponent} from '@macrostrat/ui-components'
 
 import {SummarySectionsBase} from "../summary-sections"
