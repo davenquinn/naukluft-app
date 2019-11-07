@@ -24,7 +24,7 @@ import {IntervalShape} from '#/editor/types'
 import T from 'prop-types'
 import {dirname} from "path"
 import {hyperStyled} from "@macrostrat/hyper"
-import styles from "#/editor/main.styl"
+import styles from "./style.styl"
 h = hyperStyled(styles)
 
 import {db, storedProcedure, query} from "~/sections/db"
@@ -60,11 +60,20 @@ LithologyControls = (props)->
     }
   ]
 
-fmt = format('.2f')
+_fmt = format('.2f')
+fmt = (d)->
+  val = _fmt(d)
+  for i in [0...1]
+    lastIx = val.length-1
+    return val if val[lastIx] != '0'
+    val = val.slice(0,lastIx)
+  return val
+
 
 FaciesTractControl = (props)->
   {faciesTracts} = useContext(FaciesContext)
-  faciesTracts ?= []
+  if not faciesTracts?
+    return null
   {interval, onUpdate} = props
   onUpdate ?= ->
 
@@ -86,7 +95,13 @@ FaciesTractControl = (props)->
       onUpdate(f)
   }
 
+updateInterval = (id, section, columns)->
+  {TableName, update} = helpers
+  tbl = new TableName("section_lithology", "section")
 
+  s = helpers.update columns, null, tbl
+  s += " WHERE id=#{id} AND section='#{section}'"
+  await db.none(s)
 
 class ModalEditor extends Component
   @defaultProps: {onUpdate: ->}
@@ -144,12 +159,11 @@ class ModalEditor extends Component
         h LabeledControl, {
           title: 'Facies'
           is: FaciesPicker
-          onClick: @updateFacies
           interval
           onChange: (facies)=>@update {facies}
         }
         h LabeledControl, {
-          title: 'Facies tracts'
+          title: 'Facies tract'
           is: FaciesTractControl
           interval
           onUpdate: (facies_tract)=>@update {facies_tract}
@@ -204,21 +218,9 @@ class ModalEditor extends Component
         ]
       ]
     ]
-  updateFacies: (facies)=>
-    {interval} = @props
-    selected = facies.id
-    if selected == interval.facies
-      selected = null
-    @update {facies: selected}
 
   update: (columns)=>
-    {TableName, update} = helpers
-    tbl = new TableName("section_lithology", "section")
-    id = @props.interval.id
-    section = @props.section
-    s = helpers.update columns, null, tbl
-    s += " WHERE id=#{id} AND section='#{section}'"
-    await db.none(s)
+    await updateInterval(@props.interval.id, @props.section, columns)
     @props.onUpdate()
 
 class IntervalEditor extends Component
@@ -240,13 +242,20 @@ class IntervalEditor extends Component
     {id, top, bottom, facies} = interval
     hgt = fmt(height)
 
-    width = @props.width or 240
-    h 'div.interval-editor', {style: {padding: 20, zIndex: 50, backgroundColor: 'white', width}}, [
-      h 'h3', [
-        "Interval "
-        h 'code', interval.id
+    width = @props.width or 340
+    h 'div.interval-editor', {style: {padding: 10, zIndex: 50, backgroundColor: 'white', width}}, [
+      h 'div.interval-editor-title', [
+        h 'h3', "#{fmt(interval.bottom)}–#{fmt(interval.top)} m"
+        h 'div.id', [
+          h 'code', interval.id
+        ]
       ]
-      h 'h6', "#{fmt(interval.bottom)}-#{fmt(interval.top)} m"
+      h LabeledControl, {
+        title: 'Facies tract'
+        is: FaciesTractControl
+        interval
+        onUpdate: (facies_tract)=>@update {facies_tract}
+      }
       h LabeledControl, {
         title: 'Surface type'
         is: PickerControl,
@@ -269,11 +278,6 @@ class IntervalEditor extends Component
         interval
         onChange: @update
       }
-      #h ButtonGroup, [
-        #h Button, {onClick: @props.onPrev}, "Previous"
-        #h Button, {onClick: @props.onNext}, "Next"
-      #]
-      #h Button, {intent: Intent.PRIMARY, onClick: @props.onClose}, "Close"
     ]
   updateFacies: (facies)=>
     {interval} = @props
@@ -283,14 +287,7 @@ class IntervalEditor extends Component
     @update {facies: selected}
 
   update: (columns)=>
-    {TableName, update} = helpers
-    tbl = new TableName("section_lithology", "section")
-    id = @props.interval.id
-    section = @props.section
-    s = helpers.update columns, null, tbl
-    s += " WHERE id=#{id} AND section='#{section}'"
-    console.log s
-    await db.none(s)
+    await updateInterval(@props.interval.id, @props.section, columns)
     @props.onUpdate()
 
 

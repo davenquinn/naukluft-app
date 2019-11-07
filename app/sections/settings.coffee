@@ -95,6 +95,7 @@ class SettingsPanel extends Component
       @createSwitch 'showNotes', "Notes"
       @createPicker 'displayModes', 'activeDisplayMode'
       h 'hr'
+      h SequenceStratControlPanel
       @sequenceStratControls()
       @debuggingControls()
       h 'h6', 'Display mode'
@@ -109,42 +110,6 @@ class SettingsPanel extends Component
       h Button, {onClick: @printToPDF}, "Print to PDF"
       h 'hr'
     ]
-
-  printToPDF: ->
-    console.log "Printing to PDF"
-    {remote} = require 'electron'
-    fs = require 'fs'
-    path = require 'path'
-    wc = remote.getCurrentWebContents()
-
-    pixelsToMicrons = (px)->
-      Math.ceil(px/96.0*25400)
-
-    try
-      {width, height} = document.querySelector('#section-page-inner').getBoundingClientRect()
-      width = 2400
-      height = 1900
-      scale = 5
-    catch
-      # Single section page
-      {width, x, y, height} = document.querySelector('.section-outer').getBoundingClientRect()
-      height += y + 30
-      width += x + 1000
-      scale = 1
-
-    opts = {
-      printBackground: true
-      marginsType: 1
-      pageSize: {
-        height: pixelsToMicrons(height*scale)+10
-        width: pixelsToMicrons(width*scale)+10
-      }
-    }
-
-    wc.printToPDF opts, (e, data)->
-      dn = process.env.REPO_DIR
-      outfile = path.join(dn, "graphics","output", "summary-sections.pdf")
-      fs.writeFileSync outfile, data
 
   sequenceStratControls: ->
     return h SequenceStratControlPanel
