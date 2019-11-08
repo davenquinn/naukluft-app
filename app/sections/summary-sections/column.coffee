@@ -5,6 +5,7 @@ import T from 'prop-types'
 import {format} from 'd3-format'
 import * as d3 from 'd3'
 import Box from 'ui-box'
+import {useSettings} from '#'
 import {withRouter, useHistory} from "react-router-dom"
 
 import {GrainsizeLayoutProvider, ColumnSVG} from '#'
@@ -20,13 +21,16 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner} from '#/lithology'
 import {DivisionEditOverlay} from '#/edit-overlay'
 
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from '../column/data-source'
+import {
+  ColumnSurfacesProvider,
+  ColumnSurfacesContext} from '../column/data-source'
 import {PlatformContext} from "../../platform"
 import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {MinimalIsotopesColumn} from './chemostrat'
+import {FaciesTractIntervals} from './facies-tracts'
 
 fmt = format('.1f')
 
@@ -42,6 +46,15 @@ IntervalNotification = (props)->
     if surface then h('p', ["Surface: ", h('code',surface)]) else null
   ]
 
+ColumnMain = ->
+  {showFacies, showFaciesTracts} = useSettings()
+  h GeneralizedSectionColumn, [
+    h.if(showFacies) FaciesColumnInner
+    h.if(showFaciesTracts) FaciesTractIntervals
+    h CoveredOverlay
+    h SimplifiedLithologyColumn
+  ]
+
 EditOverlay = (props)->
   try
     history = useHistory()
@@ -49,7 +62,7 @@ EditOverlay = (props)->
   catch
     navigateTo = ->
   {id, rest...} = props
-  onClick = ({height})=>
+  onClick = ({height})->
     {id} = props
     path = "/sections/#{id}"
     if height?
@@ -231,11 +244,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
                 y: -5
                 fill: 'white'
               }
-              h GeneralizedSectionColumn, [
-                h.if(showFacies) FaciesColumnInner
-                h CoveredOverlay
-                h SimplifiedLithologyColumn
-              ]
+              h ColumnMain
               h ManagedSymbolColumn, {
                 left: 90
                 id
@@ -267,7 +276,9 @@ class BaseSVGSectionComponent extends KnownSizeComponent
 SVGSectionComponent = (props)->
   {id, divisions} = props
   {inEditMode} = useContext(PlatformContext)
-  {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = useContext(SequenceStratContext)
+  {showTriangleBars,
+  showFloodingSurfaces,
+  sequenceStratOrder} = useContext(SequenceStratContext)
 
   h ColumnSurfacesProvider, {id, divisions}, (
     h BaseSVGSectionComponent, {

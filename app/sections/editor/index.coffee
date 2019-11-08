@@ -11,6 +11,7 @@ import {PickerControl} from "#/editor/picker-base"
 import {LabeledControl, IntervalEditorTitle} from "#/editor/util"
 #import "react-select/dist/react-select.css"
 
+import {ColumnSurfacesContext} from "../column/data-source"
 import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '#/editor/lithology-picker'
 import {
   CorrelatedSurfaceControl,
@@ -95,12 +96,13 @@ FaciesTractControl = (props)->
       onUpdate(f)
   }
 
-updateInterval = (id, section, columns)->
+updateInterval = (id, columns)->
   {TableName, update} = helpers
   tbl = new TableName("section_lithology", "section")
 
   s = helpers.update columns, null, tbl
-  s += " WHERE id=#{id} AND section='#{section}'"
+  s += " WHERE id=#{id}"
+  console.log s
   await db.none(s)
 
 class ModalEditor extends Component
@@ -220,36 +222,24 @@ class ModalEditor extends Component
     ]
 
   update: (columns)=>
-    await updateInterval(@props.interval.id, @props.section, columns)
+    await updateInterval(@props.interval.id, columns)
     @props.onUpdate()
 
 class IntervalEditor extends Component
+  @contextType: ColumnSurfacesContext
   @defaultProps: {
     onUpdate: ->
     onNext: ->
     onPrev: ->
     onClose: ->
   }
-  constructor: (props)->
-    super props
-    @state = {
-      facies: [],
-      isAlertOpen: false
-    }
   render: ->
     {interval, height, section} = @props
     return null unless interval?
     {id, top, bottom, facies} = interval
     hgt = fmt(height)
 
-    width = @props.width or 340
-    h 'div.interval-editor', {style: {padding: 10, zIndex: 50, backgroundColor: 'white', width}}, [
-      h 'div.interval-editor-title', [
-        h 'h3', "#{fmt(interval.bottom)}–#{fmt(interval.top)} m"
-        h 'div.id', [
-          h 'code', interval.id
-        ]
-      ]
+    h 'div.interval-editor', [
       h LabeledControl, {
         title: 'Facies tract'
         is: FaciesTractControl
@@ -287,8 +277,8 @@ class IntervalEditor extends Component
     @update {facies: selected}
 
   update: (columns)=>
-    await updateInterval(@props.interval.id, @props.section, columns)
-    @props.onUpdate()
+    await updateInterval(@props.interval.id, columns)
+    @context.updateDivisions()
 
 
 export {ModalEditor, IntervalEditor}

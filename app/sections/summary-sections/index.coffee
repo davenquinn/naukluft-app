@@ -12,7 +12,10 @@ import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
 import {SectionLinkOverlay} from "./link-overlay"
 import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
-import {SequenceStratConsumer, SequenceStratContext} from "../sequence-strat-context"
+import {
+  SequenceStratConsumer,
+  SequenceStratContext
+} from "../sequence-strat-context"
 import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
 import {LocationGroup} from './layout'
@@ -68,9 +71,6 @@ groupSectionData = (sections)->
   __ix = indexOf(groupOrder)
   sectionGroups.sort (a,b)->__ix(a.location)-__ix(b.location)
   return sectionGroups
-
-WrappedSectionComponent = (props)->
-  h SVGSectionComponent, {props...}
 
 SectionPane = (props) ->
   {dimensions, sectionPositions, surfaces, sections
@@ -177,7 +177,7 @@ SectionPane = (props) ->
               height = end-start
               range = [start, end]
 
-              h WrappedSectionComponent, {
+              h SVGSectionComponent, {
                 zoom: 0.1,
                 key: row.id,
                 triangleBarRightSide: row.id == 'J'

@@ -15,7 +15,7 @@ BaseSectionPage = (props)->
   console.log(children)
 
   h SettingsProvider, {
-    localStorageID: id
+    storageID: id
     defaultSettings...
   }, [
     h 'div.page.section-page', {className}, [
@@ -31,6 +31,7 @@ BaseSectionPage = (props)->
 
 BaseSectionPage.propTypes = {
   className: T.string
+  id: T.string.isRequired
   settingsPanel: T.elementType.isRequired
 }
 
