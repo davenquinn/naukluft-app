@@ -4,6 +4,13 @@ import {
   useSettings,
   updateSettings
 } from '#'
+import {
+  BaseSettingsPanel,
+  SettingsSwitch
+  SequenceStratControlPanel
+  EditModeControl
+  SerializedQueriesControl
+} from '../settings'
 
 defaultSettings = {
   zoom: 1
@@ -44,4 +51,22 @@ SettingsProvider = (props)->
     overrides...
   }, children
 
-export {SettingsProvider, useSettings, updateSettings}
+
+SettingsPanel = ->
+  h BaseSettingsPanel, [
+    h 'h5', "Components"
+    h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
+    h SettingsSwitch, {id: 'showFacies', label: "Facies"}
+    h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
+    h SettingsSwitch, {id: 'showNotes', label: "Notes"}
+    h 'hr'
+    h SequenceStratControlPanel
+    h 'div', [
+      h 'h5', "Backend"
+      h EditModeControl
+      h SerializedQueriesControl
+      h 'hr'
+    ]
+  ]
+
+export {SettingsPanel, defaultSettings}

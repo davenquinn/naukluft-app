@@ -20,3 +20,4 @@ class ManagedSymbolColumn extends Component
     h SymbolColumn, {symbols, @props...}
 
 export {ManagedSymbolColumn}
+export * from './base-page'

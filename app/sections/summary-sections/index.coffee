@@ -1,31 +1,30 @@
 import {findDOMNode} from "react-dom"
 import {select} from "d3-selection"
 import {hyperStyled} from "@macrostrat/hyper"
-import {Component, createContext, createRef} from "react"
-import {HotkeysTarget, Hotkeys, Hotkey} from "@blueprintjs/core"
+import {Component, useContext} from "react"
 import update from "immutability-helper"
-import PropTypes from "prop-types"
 import {debounce} from "underscore"
 import * as d3 from "d3"
-import {ColumnProvider} from "#"
-import {SummarySectionsSettings} from "./settings"
-import LocalStorage from "../storage"
+import {ColumnProvider, useSettings} from "#"
 import {getSectionData} from "../section-data"
 import {IsotopesColumn} from "./carbon-isotopes"
 import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
 import {SectionLinkOverlay} from "./link-overlay"
 import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
-import {SectionOptionsContext, SectionOptionsProvider, defaultSectionOptions} from "./options"
-import {SequenceStratConsumer} from "../sequence-strat-context"
+import {SectionOptionsContext, SectionOptionsProvider} from "./options"
+import {SequenceStratConsumer, SequenceStratContext} from "../sequence-strat-context"
 import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
 import {Legend} from "./legend"
 import {query} from "../../db"
 import {SectionPositioner, SectionScale} from "./positioner"
+import {BaseSectionPage} from '../components'
+import {SummarySectionsSettings, defaultSettings} from './settings'
 import lithostratSurface from './sql/lithostratigraphy-surface.sql'
 import "../main.styl"
 import styles from "./main.styl"
+import T from 'prop-types'
 
 h = hyperStyled(styles)
 
@@ -139,6 +138,132 @@ ChemostratigraphyColumn = (props)->
     }
   ]
 
+SectionPane = (props) ->
+  {dimensions, sectionPositions, surfaces, sections
+   groupMargin, columnMargin, columnWidth, scrollable} = props
+  scrollable = true
+
+  {dragdealer, dragPosition, rest...} = useSettings()
+  {showFloodingSurfaces,
+   showSequenceStratigraphy,
+   showCarbonIsotopes,
+   showOxygenIsotopes,
+   showFacies,
+   showLegend,
+   showLithostratigraphy,
+   activeMode} = useSettings()
+
+  {showTriangleBars} = useContext(SequenceStratContext)
+
+  return null unless sections?
+  return null unless sections.length > 0
+
+  row = sections.find (d)->d.id == 'J'
+  {offset, location, rest...} = row
+  location = null
+
+  groupedSections = groupSectionData(sections)
+
+  height = 1800
+  # Pre-compute section positions
+  if showTriangleBars
+    columnWidth += 25
+
+  ## Create a section positioner
+  positioner = new SectionPositioner({
+    groupMargin,
+    columnMargin,
+    columnWidth,
+    sectionOffsets
+    ScaleCreator: LegacySectionScale
+  })
+
+  groupedSections = positioner.update(groupedSections)
+
+  maxOffset = d3.max sections.map (d)->parseFloat(d.height)-parseFloat(d.offset)+669
+
+  paddingLeft = if showTriangleBars then 90 else 30
+  marginTop = 52 # This is a weird hack
+  {canvas} = dimensions
+
+  minHeight = 1500
+
+  options = useSettings()
+
+  h 'div#section-pane', {style: {overflow: 'scroll'}}, [
+    h "div#section-page-inner", {
+      style: {zoom: 1, minHeight}
+    }, [
+      h LithostratKey, {
+        zoom: 0.1,
+        key: "key",
+        surfaces,
+        offset
+        rest...
+      }
+      h ChemostratigraphyColumn, {
+        sections
+        surfaces
+        options
+        showCarbonIsotopes
+        showOxygenIsotopes
+      }
+      h "div#section-container", [
+        h.if(showLegend) Legend
+        h SectionLinkOverlay, {
+          paddingLeft,
+          connectLines: true
+          width: 2500,
+          height,
+          marginTop,
+          groupedSections,
+          showLithostratigraphy
+          showSequenceStratigraphy
+          showCarbonIsotopes
+          surfaces
+        }
+        h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
+          marginRight = groupMargin
+          if i == groupedSections.length-1
+            marginRight = 0
+          style = {marginRight, height}
+          h LocationGroup, {key: location, location, style}, columns.map (col, i)->
+            marginRight = columnMargin
+            if i == columns.length-1
+              marginRight = 0
+            style = {marginRight, height, width: columnWidth}
+            h SectionColumn, {key: i, style}, col.map (row)=>
+              {offset, range, height, start, end, rest...} = row
+              offset = sectionOffsets[row.id] or offset
+
+              # Clip off the top of some columns...
+              end = row.clip_end
+
+              height = end-start
+              range = [start, end]
+
+              h WrappedSectionComponent, {
+                zoom: 0.1,
+                key: row.id,
+                triangleBarRightSide: row.id == 'J'
+                showCarbonIsotopes,
+                trackVisibility: false
+                offset
+                range
+                height
+                start
+                end
+                rest...
+              }
+      ]
+    ]
+  ]
+
+SectionPane.propTypes = {
+  sections: T.arrayOf(T.object).isRequired
+  surfaces: T.arrayOf(T.object).isRequired
+}
+
 class SummarySectionsBase extends Component
   @defaultProps: {
     scrollable: true
@@ -152,188 +277,26 @@ class SummarySectionsBase extends Component
   constructor: (props)->
     super props
     @state = {
-      sections: []
       surfaces: []
       dimensions: {
         canvas: {width: 100, height: 100}
       }
       sectionPositions: {}
-      options: {
-        settingsPanelIsActive: false
-        modes: [
-          {value: 'normal', label: 'Normal'}
-          {value: 'skeleton', label: 'Skeleton'}
-        ]
-        showNavigationController: true
-        activeMode: 'normal'
-        defaultSectionOptions...
-        showLegend: true
-        # Allows us to test the serialized query mode
-        # we are developing for the web
-        serializedQueries: global.SERIALIZED_QUERIES
-        condensedDisplay: true
-        update: @updateOptions
-        sectionIDs: []
-        showLithostratigraphy: true
-        showSequenceStratigraphy: true
-        showCarbonIsotopes: true
-        chemostratigraphyPerSection: false
-      }
     }
-
-    @optionsStorage = new LocalStorage 'summary-sections'
-    v = @optionsStorage.get()
-    return unless v?
-    @state = update @state, options: {$merge: v}
 
     query(lithostratSurface)
       .then (surfaces)=>
         surfaces.reverse()
-        console.log surfaces
         @setState {surfaces}
 
-  renderSections: ->
-    {sections, scrollable, showTriangleBars} = @props
-    {dimensions, options, sectionPositions, surfaces} = @state
-    {dragdealer, dragPosition, rest...} = options
-    {showFloodingSurfaces,
-     showSequenceStratigraphy,
-     showCarbonIsotopes,
-     showOxygenIsotopes,
-     showFacies,
-     showLegend,
-     showLithostratigraphy,
-     activeMode} = options
-
-    return null unless sections?
-    return null unless sections.length > 0
-
-    row = sections.find (d)->d.id == 'J'
-    {offset, location, rest...} = row
-    location = null
-
-    groupedSections = groupSectionData(sections)
-
-    height = 1800
-    # Pre-compute section positions
-    {groupMargin, columnMargin, columnWidth} = @props
-    if showTriangleBars
-      columnWidth += 25
-
-    ## Create a section positioner
-    positioner = new SectionPositioner({
-      groupMargin,
-      columnMargin,
-      columnWidth,
-      sectionOffsets
-      ScaleCreator: LegacySectionScale
-    })
-
-    groupedSections = positioner.update(groupedSections)
-
-    maxOffset = d3.max sections.map (d)->parseFloat(d.height)-parseFloat(d.offset)+669
-
-    paddingLeft = if showTriangleBars then 90 else 30
-    marginTop = 52 # This is a weird hack
-    overflow = if scrollable then "scroll" else 'inherit'
-    {canvas} = @state.dimensions
-
-    minHeight = 1500
-
-    h 'div#section-pane', {style: {overflow}}, [
-      h "div#section-page-inner", {
-        style: {zoom: 1, minHeight}
-      }, [
-        h LithostratKey, {
-          zoom: 0.1,
-          key: "key",
-          surfaces,
-          offset
-          rest...
-        }
-        h ChemostratigraphyColumn, {
-          sections
-          surfaces
-          options
-          showCarbonIsotopes
-          showOxygenIsotopes
-        }
-        h "div#section-container", [
-          h.if(showLegend) Legend
-          h SectionLinkOverlay, {
-            paddingLeft,
-            connectLines: true
-            width: 2500,
-            height,
-            marginTop,
-            groupedSections,
-            showLithostratigraphy
-            showSequenceStratigraphy
-            showCarbonIsotopes
-            surfaces
-          }
-          h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
-            marginRight = groupMargin
-            if i == groupedSections.length-1
-              marginRight = 0
-            style = {marginRight, height}
-            h LocationGroup, {key: location, location, style}, columns.map (col, i)->
-              marginRight = columnMargin
-              if i == columns.length-1
-                marginRight = 0
-              style = {marginRight, height, width: columnWidth}
-              h SectionColumn, {key: i, style}, col.map (row)=>
-                {offset, range, height, start, end, rest...} = row
-                offset = sectionOffsets[row.id] or offset
-
-                # Clip off the top of some columns...
-                end = row.clip_end
-
-                height = end-start
-                range = [start, end]
-
-                h WrappedSectionComponent, {
-                  zoom: 0.1,
-                  key: row.id,
-                  triangleBarRightSide: row.id == 'J'
-                  showCarbonIsotopes,
-                  trackVisibility: false
-                  offset
-                  range
-                  height
-                  start
-                  end
-                  rest...
-                }
-        ]
-      ]
-    ]
-
   render: ->
-    h 'div.page.section-page', {id: @pageID}, [
-      h 'div.panel-container', [
-        h SectionNavigationControl, {
-          backLocation: '/section',
-          @toggleSettings
-        }
-        h SectionOptionsProvider, {
-          @state.options...,
-          triangleBarsOffset: if @props.showTriangleBars then 80 else 0
-        }, [
-
-          @renderSections()
-        ]
+    h BaseSectionPage, {id: @pageID, settingsPanel: @props.settingsPanel, defaultSettings}, [
+      h SectionOptionsProvider, {
+        triangleBarsOffset: if @props.showTriangleBars then 80 else 0
+      }, [
+        h SectionPane, {@props...,@state...}
       ]
-      h @props.settingsPanel, {@state.options...}
     ]
-
-  updateOptions: (opts)=>
-    newOptions = update @state.options, opts
-    @setState options: newOptions
-    @optionsStorage.set newOptions
-
-  toggleSettings: =>
-    @updateOptions settingsPanelIsActive: {$apply: (d)->not d}
 
 SummarySections = (props)->
   h SequenceStratConsumer, null, ({actions, rest...})->

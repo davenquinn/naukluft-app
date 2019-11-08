@@ -2,14 +2,13 @@ import {Component, useContext} from "react"
 import h from "react-hyperscript"
 import {CSSTransition} from "react-transition-group"
 import {Switch, Slider, Button} from "@blueprintjs/core"
-import {PlatformContext} from "../platform"
+import {PlatformContext} from "../../platform"
 import {PickerControl} from "#/editor/picker-base"
-import {SequenceStratContext} from "./sequence-strat-context"
-import {FaciesDescriptionSmall} from "./facies"
+import {SequenceStratContext} from "../sequence-strat-context"
 import classNames from "classnames"
 import {useSettings, updateSettings} from '#'
 import T from 'prop-types'
-import "./settings.styl"
+import "./main.styl"
 
 SettingsSwitch = ({id, label})->
   settings = useSettings()
@@ -87,35 +86,26 @@ SequenceStratControlPanel = (props)->
     }
   ]
 
-class SettingsPanel extends Component
-  render: ->
-    h CSSTransition, {
-      classNames: "settings"
-      timeout: {exit: 1000, enter: 1000}
-    }, [
-      h 'div#settings.settings', {key: 'settings'}, [
-        h 'h2', 'Settings'
-        h 'hr'
-        @renderControls()...
-      ]
-    ]
-
-  renderControls: =>
-    return [
-      h 'h5', "Components"
-      h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
-      h SettingsSwitch, {id: 'showFacies', label: "Facies"}
-      h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
-      h SettingsSwitch, {id: 'showNotes', label: "Notes"}
+BaseSettingsPanel = (props)->
+  {children} = props
+  h CSSTransition, {
+    classNames: "settings"
+    timeout: {exit: 1000, enter: 1000}
+  }, [
+    h 'div#settings.settings', {key: 'settings'}, [
+      h 'h2', 'Settings'
       h 'hr'
-      h SequenceStratControlPanel
-      h 'div', [
-        h 'h5', "Backend"
-        h EditModeControl
-        h SerializedQueriesControl
-        h 'hr'
-      ]
+      children
     ]
+  ]
 
 
-export {PickerControl, SettingsPanel}
+export {
+  SettingsSwitch
+  SettingsPicker
+  SequenceStratControlPanel
+  SerializedQueriesControl
+  EditModeControl
+  PickerControl
+  BaseSettingsPanel
+}

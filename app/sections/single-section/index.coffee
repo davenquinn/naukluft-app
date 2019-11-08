@@ -3,45 +3,44 @@ import h from "@macrostrat/hyper"
 
 import "../main.styl"
 import {NavLink} from "../../nav"
-import {SettingsPanel} from "../settings"
 import LocalStorage from "../storage"
 import {getSectionData} from "../section-data"
 import {SectionComponent} from "./column"
 import {PlatformContext} from "../../platform"
+import {BaseSectionPage} from '../components'
 import {SectionNavigationControl} from "../util"
 import {Notification} from "../../notify"
-import {SettingsProvider, useSettings} from './settings'
+import {defaultSettings, SettingsPanel} from './settings'
+import {useSettings} from '#'
 
-SectionPageInner = (props)->
+SectionMain = (props)->
   # Set up routing to jump to a specific height
-  {section, height: scrollToHeight} = props
+  {section, height: scrollToHeight, children} = props
   {inEditMode} = useContext(PlatformContext)
   settings = useSettings()
 
-  # State to control whether we show settings panel
-  [showSettings, setShowSettings] = useState(false)
-  toggleSettings = -> setShowSettings(not showSettings)
-
-  h 'div.page.section-page.single-section', [
-    h 'div.left-panel', [
-      h SectionNavigationControl, {toggleSettings}
-      h 'div.panel-container', [
-        h SectionComponent, {
-          section...,
-          scrollToHeight,
-          offsetTop: 0
-          key: section.id
-          isEditable: inEditMode
-          settings...
-        }
-      ]
-    ]
-    h.if(showSettings) SettingsPanel
-  ]
+  h SectionComponent, {
+    props...
+    isEditable: inEditMode
+    settings...
+    children
+  }
 
 SectionPage = (props)->
-  h SettingsProvider, [
-    h SectionPageInner, props
+  # Set up routing to jump to a specific height
+  {section, height: scrollToHeight} = props
+
+  h BaseSectionPage, {
+    defaultSettings
+    id: 'single-section'
+    settingsPanel: SettingsPanel
+  }, [
+    h SectionMain, {
+      section...,
+      scrollToHeight,
+      offsetTop: 0
+      key: section.id
+    }
   ]
 
 export default SectionPage
