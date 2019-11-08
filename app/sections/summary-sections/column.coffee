@@ -26,7 +26,7 @@ import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
-import {MinimalIsotopesColumn} from './carbon-isotopes'
+import {MinimalIsotopesColumn} from './chemostrat'
 
 fmt = format('.1f')
 

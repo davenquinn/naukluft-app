@@ -6,13 +6,13 @@ import {Component, createElement} from "react"
 import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
 import {SectionAxis} from "#/axis"
-import {query} from "../db"
-import {sectionSurfaceProps} from "./link-overlay"
-import {SVGNamespaces} from "../util"
 import classNames from "classnames"
 import chroma from "chroma-js"
-import sql from '../sql/carbon-isotopes.sql'
-import allCarbonIsotopes from '../sql/all-carbon-isotopes.sql'
+
+import {sectionSurfaceProps} from '../link-overlay'
+import {query} from "../../db"
+import sql from '../../sql/carbon-isotopes.sql'
+import allCarbonIsotopes from '../../sql/all-carbon-isotopes.sql'
 
 import {
   ColumnSVG,

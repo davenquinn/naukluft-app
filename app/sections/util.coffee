@@ -38,8 +38,15 @@ class KnownSizeComponent extends Component
   @__height: ->
     return null
 
+rangeForSection = (row)->
+  {start, end, clip_end} = row
+  clip_end ?= end
+  [start, clip_end]
+
+
 export {
   SectionNavigationControl
   KnownSizeComponent
   SVGNamespaces
+  rangeForSection
 }

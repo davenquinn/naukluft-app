@@ -7,7 +7,7 @@ import {debounce} from "underscore"
 import * as d3 from "d3"
 import {ColumnProvider, useSettings} from "#"
 import {getSectionData} from "../section-data"
-import {IsotopesColumn} from "./carbon-isotopes"
+import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
 import {SectionLinkOverlay} from "./link-overlay"
@@ -16,6 +16,7 @@ import {SectionOptionsContext, SectionOptionsProvider} from "./options"
 import {SequenceStratConsumer, SequenceStratContext} from "../sequence-strat-context"
 import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
+import {LocationGroup} from './layout'
 import {Legend} from "./legend"
 import {query} from "../../db"
 import {SectionPositioner, SectionScale} from "./positioner"
@@ -38,22 +39,6 @@ class SectionColumn extends Component
     style.position = 'relative'
     style.width ?= 240
     h 'div.section-column', {style}, @props.children
-
-class LocationGroup extends Component
-  @defaultProps: {
-    offsetTop: 0
-  }
-  render: ->
-    {id, name, location, width,
-     children, style, className} = @props
-    name ?= location
-    id ?= location
-    style ?= {}
-    style.width ?= width
-    h 'div.location-group', {id, style, className}, [
-      h 'h1', {}, name
-      h 'div.location-group-body', {}, children
-    ]
 
 groupSectionData = (sections)->
   stackGroup = (d)=>
@@ -88,55 +73,6 @@ groupSectionData = (sections)->
 WrappedSectionComponent = (props)->
   h SectionOptionsContext.Consumer, null, (opts)=>
     h SVGSectionComponent, {opts..., props...}
-
-ChemostratigraphyGroup = (props)->
-  {range, children} = props
-  h LocationGroup, {
-    name: null
-    className: 'chemostratigraphy'
-  }, (
-    h ColumnProvider, {
-      range
-      zoom: 0.1
-    }, children
-  )
-
-rangeForSection = (row)->
-  {start, end, clip_end} = row
-  clip_end ?= end
-  [start, clip_end]
-
-ChemostratigraphyColumn = (props)->
-  {sections, surfaces, options, range} = props
-  {showCarbonIsotopes, showOxygenIsotopes} = options
-  return null unless showCarbonIsotopes or showOxygenIsotopes
-
-  row = sections.find (d)->d.id == 'J'
-  {offset, location, rest...} = row
-
-  h ChemostratigraphyGroup, {
-    range: rangeForSection(row)
-  }, [
-    h.if(showCarbonIsotopes) IsotopesColumn, {
-      zoom: 0.1,
-      key: 'carbon-isotopes',
-      offset
-      location: ""
-      surfaces
-      rest...
-    }
-    h.if(showOxygenIsotopes) IsotopesColumn, {
-      zoom: 0.1,
-      system: 'delta18o'
-      label: 'δ¹⁸O'
-      domain: [-15,4]
-      key: 'oxygen-isotopes',
-      offset
-      location: ""
-      surfaces
-      rest...
-    }
-  ]
 
 SectionPane = (props) ->
   {dimensions, sectionPositions, surfaces, sections
