@@ -70,8 +70,7 @@ groupSectionData = (sections)->
   return sectionGroups
 
 WrappedSectionComponent = (props)->
-  h SectionOptionsContext.Consumer, null, (opts)=>
-    h SVGSectionComponent, {opts..., props...}
+  h SVGSectionComponent, {props...}
 
 SectionPane = (props) ->
   {dimensions, sectionPositions, surfaces, sections
@@ -155,6 +154,7 @@ SectionPane = (props) ->
           showLithostratigraphy
           showSequenceStratigraphy
           showCarbonIsotopes
+          triangleBarsOffset: 0
           surfaces
         }
         h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->

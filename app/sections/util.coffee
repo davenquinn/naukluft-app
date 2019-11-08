@@ -1,31 +1,35 @@
 import {Component, createContext} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
+import {useHistory} from "react-router"
 import {NavLink, BackLink} from "../nav"
-import {Icon} from "@blueprintjs/core"
+import {Icon, ButtonGroup, Button} from "@blueprintjs/core"
 import T from "prop-types"
+import {LinkButton} from '@macrostrat/ui-components'
 import {SVGNamespaces} from '#'
 import {db, storedProcedure, query} from "./db"
 
-class SectionNavigationControl extends Component
-  render: ->
-    settings = null
-    if @props.toggleSettings
-      settings = h 'li', [
-        h 'a', onClick: @props.toggleSettings, [
-          h Icon, {icon: 'cog', iconSize: 24}
-        ]
-      ]
+BackButton = ->
+  history = useHistory()
+  onClick = -> history.goBack()
+  h Button, {
+    icon: 'arrow-left',
+    size: 24,
+    large: true,
+    onClick
+  }
 
-    {children} = @props
-
-    h 'ul.controls', [
-      h BackLink
-      h NavLink, to: '/', [
-        h Icon, {icon: 'home', iconSize: 24}
-      ]
-      settings
-      children
-    ]
+SectionNavigationControl = (props)->
+  {toggleSettings, children} = props
+  h ButtonGroup, {className: 'controls'}, [
+    h BackButton
+    h LinkButton, {to: '/', icon: 'home', large: true}
+    h.if(toggleSettings?) Button, {
+      onClick: toggleSettings,
+      icon: 'cog',
+      large: true
+    }
+    children
+  ]
 
 class KnownSizeComponent extends Component
   constructor: (props)->

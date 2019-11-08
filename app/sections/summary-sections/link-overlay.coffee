@@ -4,7 +4,6 @@ import classNames from "classnames"
 import * as d3 from "d3"
 import {SVGNamespaces} from "../util"
 import {Notification} from "../../notify"
-import {SectionOptionsContext} from "./options"
 import PropTypes from "prop-types"
 
 sectionSurfaceProps = (surface)->
@@ -155,7 +154,7 @@ class SectionLinkOverlay extends Component
     {skeletal, groupedSections, marginTop,
      showLithostratigraphy, surfaces} = @props
     return null unless surfaces.length
-    {triangleBarsOffset} = @props.sectionOptions
+    {triangleBarsOffset} = @props
 
     sectionIndex = groupedSections.index
 
@@ -257,8 +256,7 @@ class SectionLinkOverlay extends Component
 
 class SectionLinkHOC extends Component
   render: ->
-    h SectionOptionsContext.Consumer, null, (sectionOptions)=>
-      h SectionLinkOverlay, {sectionOptions, @props...}
+    h SectionLinkOverlay, @props
 
 export {
   SectionLinkHOC as SectionLinkOverlay
