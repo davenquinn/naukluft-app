@@ -12,7 +12,6 @@ import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
 import {SectionLinkOverlay} from "./link-overlay"
 import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
-import {SectionOptionsContext, SectionOptionsProvider} from "./options"
 import {SequenceStratConsumer, SequenceStratContext} from "../sequence-strat-context"
 import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
@@ -227,11 +226,7 @@ class SummarySectionsBase extends Component
 
   render: ->
     h BaseSectionPage, {id: @pageID, settingsPanel: @props.settingsPanel, defaultSettings}, [
-      h SectionOptionsProvider, {
-        triangleBarsOffset: if @props.showTriangleBars then 80 else 0
-      }, [
-        h SectionPane, {@props...,@state...}
-      ]
+      h SectionPane, {@props...,@state...}
     ]
 
 SummarySections = (props)->
@@ -246,5 +241,4 @@ export {
   SummarySections,
   SummarySectionsStatic,
   SummarySectionsBase,
-  SectionOptionsContext
 }
