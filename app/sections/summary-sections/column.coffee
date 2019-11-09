@@ -30,7 +30,7 @@ import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {MinimalIsotopesColumn} from './chemostrat'
-import {FaciesTractIntervals} from './facies-tracts'
+import {FaciesTractIntervals} from '../column/facies-tracts'
 
 fmt = format('.1f')
 

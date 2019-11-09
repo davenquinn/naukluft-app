@@ -31,9 +31,14 @@ import {ManagedSymbolColumn} from "../components"
 import {ModalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {SequenceStratConsumer} from "../sequence-strat-context"
-import {ColumnSurfacesProvider, ColumnSurfacesContext} from "../column/data-source"
+import {
+  ColumnSurfacesProvider,
+  ColumnSurfacesContext
+} from "../column/data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {ManagedNotesColumn} from "./notes"
+import {FaciesTractIntervals} from '../column/facies-tracts'
+
 import {db, storedProcedure, query} from "~/sections/db"
 import addIntervalQuery from '../sql/add-interval.sql'
 import removeIntervalQuery from '../sql/remove-interval.sql'
@@ -96,11 +101,6 @@ class SectionComponent extends KnownSizeComponent
     txt = if zoom > 0.5 then "Section " else ""
     txt += id
 
-    grainsizeWidth = 168*zoom+lithologyWidth
-    grainsizeScaleStart = 88*zoom+lithologyWidth
-
-    grainsizeRange = [grainsizeScaleStart, grainsizeWidth]
-
     {lithologyWidth, zoom, id, height} = @props
 
     {left, top, right, bottom} = @props.padding
@@ -111,6 +111,16 @@ class SectionComponent extends KnownSizeComponent
     shouldShowImages = zoom >= 0.25 and not shouldRenderGeneralized
 
     order = @props.sequenceStratOrder
+
+    lithologyLeftMargin = 0
+    if @props.showFaciesTracts
+      lithologyLeftMargin += @props.lithologyWidth
+    columnLeftMargin = lithologyLeftMargin + @props.lithologyWidth
+
+    grainsizeWidth = 168*zoom+lithologyWidth
+    grainsizeScaleStart = 88*zoom+columnLeftMargin
+
+    grainsizeRange = [grainsizeScaleStart, grainsizeWidth]
 
     h "div.section-pane", [
       h "div.section-container", [
@@ -143,12 +153,11 @@ class SectionComponent extends KnownSizeComponent
                 onUpdate: @onIntervalUpdated
               }
               h GrainsizeLayoutProvider, {
-                width: grainsizeWidth,
+                width: grainsizeWidth+lithologyLeftMargin,
                 grainsizeScaleStart
               }, [
                 h DivisionEditOverlay, {
                   onClick: @onEditInterval
-                  width: lithologyWidth
                   top: padding.top
                   left: padding.left
                   allowEditing: true
@@ -160,38 +169,47 @@ class SectionComponent extends KnownSizeComponent
                   paddingBottom: @props.padding.bottom
                 }, [
                   h ColumnAxis, {ticks}
-                  h LithologyColumn, {width: lithologyWidth}, [
-                    h.if(@props.showFacies) FaciesColumnInner
-                    h CoveredOverlay
-                    h LithologyColumnInner
+                  h.if(@props.showFaciesTracts) LithologyColumn, {width: lithologyWidth}, [
+                    h FaciesTractIntervals
                   ]
-                  h GrainsizeLayoutProvider, {
-                    width: grainsizeWidth,
-                    grainsizeScaleStart
-                  }, [
-                    h GrainsizeAxis
-                    h.if(shouldRenderGeneralized) GeneralizedSectionColumn, {range: grainsizeRange}, (
-                      h LithologyColumnInner, {width: grainsizeRange[1]}
-                    )
-                    #h.if(@props.showCarbonIsotopes) Samples, {id}
-                    h.if(@props.showFloodingSurfaces) FloodingSurface
-                    h.if(@props.showTriangleBars) TriangleBars, {
-                      offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
-                    }
-                    h.if(@props.showSymbols) ManagedSymbolColumn, {id, left: 215}
-                    h.if(@props.showNotes) ManagedNotesColumn, {
-                      visible: true
-                      id
-                      width: @props.logWidth
-                      inEditMode: @props.isEditable
-                      transform: "translate(#{@props.innerWidth})"
-                    }
+                  h 'g', {transform: "translate(#{lithologyLeftMargin})"}, [
+                    h LithologyColumn, {width: lithologyWidth}, [
+                      h.if(@props.showFacies) FaciesColumnInner
+                      h CoveredOverlay
+                      h LithologyColumnInner
+                    ]
+                  ]
+                  h 'g', {transform: "translate(#{columnLeftMargin})"}, [
+                    h GrainsizeLayoutProvider, {
+                      width: grainsizeWidth,
+                      grainsizeScaleStart
+                    }, [
+                      h GrainsizeAxis
+                      h.if(shouldRenderGeneralized) GeneralizedSectionColumn, {
+                        range: grainsizeRange
+                      }, (
+                        h LithologyColumnInner, {width: grainsizeRange[1]}
+                      )
+                      #h.if(@props.showCarbonIsotopes) Samples, {id}
+                      h.if(@props.showFloodingSurfaces) FloodingSurface
+                      h.if(@props.showTriangleBars) TriangleBars, {
+                        offsetLeft: -85, lineWidth: 25, orders: [order, order-1]
+                      }
+                      h.if(@props.showSymbols) ManagedSymbolColumn, {id, left: 215}
+                      h.if(@props.showNotes) ManagedNotesColumn, {
+                        visible: true
+                        id
+                        width: @props.logWidth
+                        inEditMode: @props.isEditable
+                        transform: "translate(#{@props.innerWidth})"
+                      }
+                    ]
                   ]
                 ]
               ]
               h.if(shouldShowImages) ColumnImages, {
                 padding: @props.padding
-                lithologyWidth: @props.lithologyWidth
+                lithologyWidth: columnLeftMargin
                 imageFiles: @props.imageFiles
                 extraSpace: if zoom > 0.5 then 2.5*zoom else 0
                 skeletal: false

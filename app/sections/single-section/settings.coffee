@@ -32,6 +32,7 @@ defaultSettings = {
   showFacies: true
   showFloodingSurfaces: false
   showTriangleBars: false
+  showFaciesTracts: false
   # Allows us to test the serialized query mode
   # we are developing for the web
   serializedQueries: global.SERIALIZED_QUERIES
@@ -57,6 +58,7 @@ SettingsPanel = ->
     h 'h5', "Components"
     h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
     h SettingsSwitch, {id: 'showFacies', label: "Facies"}
+    h SettingsSwitch, {id: 'showFaciesTracts', label: "Facies tracts"}
     h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
     h SettingsSwitch, {id: 'showNotes', label: "Notes"}
     h 'hr'
