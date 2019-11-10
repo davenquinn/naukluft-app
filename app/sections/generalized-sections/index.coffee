@@ -10,19 +10,23 @@ import update from "immutability-helper"
 Measure = require('react-measure').default
 import {StatefulComponent} from '@macrostrat/ui-components'
 
-import {SummarySectionsBase} from "../summary-sections"
-import {GeneralizedSectionsSettings} from "../summary-sections/settings"
-import LocalStorage from "../storage"
+import {BaseSectionPage} from '../components/base-page'
+import {GeneralizedSectionSettings, defaultSettings} from "./settings"
 import {getSectionData} from "../section-data"
 import {IsotopesComponent} from "../summary-sections/chemostrat"
-import {GeneralizedSVGSection} from "../column"
+import {GeneralizedSVGSection} from "./column"
 import {SectionNavigationControl} from "../util"
 import {LinkOverlayBase} from "../summary-sections/link-overlay"
 import {LithostratKey} from "../summary-sections/lithostrat-key"
 import {FaciesDescriptionSmall} from "../facies"
 import {Legend} from "../summary-sections/legend"
 import "../summary-sections/main.styl"
-import {stackGroups, groupOrder, sectionOffsets} from "../summary-sections/display-parameters"
+import {useSettings} from '#'
+import {
+  stackGroups,
+  groupOrder,
+  sectionOffsets
+} from "../summary-sections/display-parameters"
 import {NavLink} from "../../nav"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {GeneralizedSectionPositioner} from "./positioner"
@@ -44,10 +48,60 @@ class LinkOverlay extends LinkOverlayBase
       h 'g.section-links', @prepareData().map @buildLink
     ]
 
-class GeneralizedSectionsBase extends SummarySectionsBase
+SectionPane = (props)->
+  {dimensions, surfaces, sectionData} = props
+  return null unless sectionData?
+  options = useSettings()
+  {showFacies, showLithology} = options
+
+  positioner = new GeneralizedSectionPositioner {
+    pixelsPerMeter: 1.5
+    columnWidth: 50
+    positions: GeneralizedSectionPositions
+    scaleMultipliers: {x: 70}
+    margin: 40
+    marginHorizontal: 80
+  }
+  groupedSections = positioner.update(sectionData)
+
+  getGeneralizedHeight = (surface)->
+    # Gets heights of surfaces in stacked sections
+    {section, height, inferred} = surface
+    for newSection in sectionData
+      for s in newSection.divisions
+        continue unless s.original_section.trim() == section.trim()
+        continue unless s.original_bottom == height
+        return {section: s.section, height: s.bottom, inferred}
+    return null
+
+  surfaces = surfaces.map ({section_height, rest...})->
+    # Update section heights to use generalized section heights
+    section_height = section_height.map(getGeneralizedHeight).filter (d)->d?
+    {section_height, rest...}
+
+  size = do -> {width, height} = groupedSections.position
+
+  links = null
+  # links = h LinkOverlay, {
+  #   size...,
+  #   surfaces, groupedSections
+  #   showLithostratigraphy: false
+  #   showSequenceStratigraphy: true
+  # }
+  h 'svg#section-pane', {size..., style: size}, [
+    #links
+    h 'g.section-pane-inner', {}, groupedSections.map (row, i)=>
+      {columns: [[section]]} = row
+      console.log section
+      vals = do -> {id, divisions, position} = section
+      console.log vals.position
+      h GeneralizedSVGSection, {vals..., showFacies, showLithology}
+  ]
+
+class GeneralizedSectionsBase extends Component
   @defaultProps: {
     scrollable: true
-    settingsPanel: GeneralizedSectionsSettings
+    settingsPanel: GeneralizedSectionSettings
   }
   pageID: 'generalized-sections'
   constructor: (props)->
@@ -58,21 +112,6 @@ class GeneralizedSectionsBase extends SummarySectionsBase
         canvas: {width: 100, height: 100}
       }
       sectionPositions: {}
-      options:
-        settingsPanelIsActive: false
-        modes: [
-          {value: 'normal', label: 'Normal'}
-          {value: 'skeleton', label: 'Skeleton'}
-          #{value: 'sequence-stratigraphy', label: 'Sequence Strat.'}
-        ]
-        showFacies: true
-        showFaciesTracts: false
-        showSimplifiedLithology: true
-        showSequenceStratigraphy: true
-        # Allows us to test the serialized query mode
-        # we are developing for the web
-        update: @updateOptions
-        exportSVG: @exportSVG
 
     query generalizedSectionQuery
       .then (data)=>
@@ -104,60 +143,18 @@ class GeneralizedSectionsBase extends SummarySectionsBase
             range: [start, end]
           }
 
-        @updateState {sectionData: {$set: vals}}
+        @setState {sectionData: vals}
 
-    @optionsStorage = new LocalStorage 'summary-sections'
-    v = @optionsStorage.get()
-    return unless v?
-    @updateState {options: {$merge: v}}
-
-  renderSections: ->
-    {dimensions, options, surfaces, sectionData} = @state
-    {showFacies, showLithology} = options
-    return null unless sectionData?
-
-    positioner = new GeneralizedSectionPositioner {
-      pixelsPerMeter: 1.5
-      columnWidth: 50
-      positions: GeneralizedSectionPositions
-      scaleMultipliers: {x: 70}
-      margin: 40
-      marginHorizontal: 80
-    }
-    groupedSections = positioner.update(sectionData)
-
-    getGeneralizedHeight = (surface)->
-      # Gets heights of surfaces in stacked sections
-      {section, height, inferred} = surface
-      for newSection in sectionData
-        for s in newSection.divisions
-          continue unless s.original_section.trim() == section.trim()
-          continue unless s.original_bottom == height
-          return {section: s.section, height: s.bottom, inferred}
-      return null
-
-    surfaces = surfaces.map ({section_height, rest...})->
-      # Update section heights to use generalized section heights
-      section_height = section_height.map(getGeneralizedHeight).filter (d)->d?
-      {section_height, rest...}
-
-    size = do -> {width, height} = groupedSections.position
-
-    links = null
-    links = h LinkOverlay, {
-      size...,
-      surfaces, groupedSections
-      showLithostratigraphy: false
-      showSequenceStratigraphy: true
-    }
-    h 'svg#section-pane', {size..., style: size}, [
-      links
-      h 'g.section-pane-inner', {}, groupedSections.map (row, i)=>
-        {columns: [[section]]} = row
-        vals = do -> {id, divisions, position} = section
-        console.log vals.position
-        h GeneralizedSVGSection, {vals..., showFacies, showLithology}
-    ]
+  render: =>
+    h BaseSectionPage, {
+      id: @pageID,
+      settingsPanel: @props.settingsPanel,
+      defaultSettings: {
+        defaultSettings...
+        update: @updateOptions
+        exportSVG: @exportSVG
+        }
+      }, h(SectionPane, {@props..., @state...})
 
   exportSVG: =>
     el = findDOMNode(@).querySelector("svg#section-pane")

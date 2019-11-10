@@ -1,7 +1,4 @@
-import * as d3 from "d3"
-import "d3-selection-multi"
 import h from "react-hyperscript"
-import {findDOMNode} from "react-dom"
 Measure = require('react-measure').default
 import {Component, createElement, createRef} from "react"
 import classNames from "classnames"
@@ -15,7 +12,7 @@ import {FaciesContext} from "../facies"
 import {SVGNamespaces} from "../util"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {TriangleBars} from "#/flooding-surface"
-import {ColumnProvider} from "#/context"
+import {ColumnProvider, ColumnLayoutProvider} from "#/context"
 
 resolveID = (d)->
   {pattern} = d
@@ -28,9 +25,6 @@ resolveID = (d)->
 
 class GeneralizedSVGSectionBase extends Component
   @defaultProps: {pixelsPerMeter: 20, zoom: 1, showLithology: false}
-  constructor: (props)->
-    super props
-
   renderTriangleBars: ->
     {showTriangleBars,
      id, divisions, sequenceStratOrder} = @props
@@ -79,24 +73,25 @@ class GeneralizedSVGSectionBase extends Component
     h ColumnProvider, {
       height, divisions, pixelsPerMeter
     }, [
-      h "g.section", {transform, key: id}, [
-        h ClipToFrame, {
-          width
-          className: 'lithology-column'
-        }, [
-          @renderFacies()
-          @renderLithology()
+      h ColumnLayoutProvider, {width}, [
+        h "g.section", {transform, key: id}, [
+          h ClipToFrame, {
+            width
+            className: 'lithology-column'
+          }, [
+            @renderFacies()
+            @renderLithology()
+          ]
+          @renderTriangleBars()
         ]
-        @renderTriangleBars()
       ]
     ]
 
-class GeneralizedSVGSection extends Component
-  render: ->
-    h FaciesContext.Consumer, null, ({facies})=>
-      h SequenceStratConsumer, null, ({actions, rest...})=>
-        props = {@props..., facies, rest...}
-        h GeneralizedSVGSectionBase, props
+GeneralizedSVGSection = (props)->
+  h FaciesContext.Consumer, null, ({facies})=>
+    h SequenceStratConsumer, null, ({actions, rest...})=>
+      props = {props..., facies, rest...}
+      h GeneralizedSVGSectionBase, props
 
 
 export {GeneralizedSVGSection}

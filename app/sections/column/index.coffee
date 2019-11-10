@@ -1,3 +1,2 @@
-import {GeneralizedSVGSection} from './generalized'
-
-export {GeneralizedSVGSection}
+export * from './data-source'
+export * from './facies-tracts'

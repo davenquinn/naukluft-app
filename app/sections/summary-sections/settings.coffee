@@ -67,21 +67,5 @@ SummarySectionsSettings = ->
       h 'hr'
     ]
   ]
-
-GeneralizedSectionsSettings = ->
-  h BaseSettingsPanel, [
-    h 'h5', "Components"
-    h SettingsSwitch, {id: 'showSequenceStratigraphy', label: "Sequence-stratigraphic correlations"}
-    h SettingsSwitch, {id: 'showLithology', label: "Simplified lithology"}
-    h SettingsSwitch, {id: 'showFacies', label: "Facies"}
-    h SettingsSwitch, {id: 'showFaciesTracts', label: 'Facies tracts'}
-    h 'hr'
-    h SequenceStratControlPanel
-    h 'div', [
-      h 'h5', "Backend"
-      h SerializedQueriesControl
-    ]
-  ]
-
 export {SettingsProvider, useSettings, updateSettings,
-        SummarySectionsSettings, GeneralizedSectionsSettings, defaultSettings}
+        SummarySectionsSettings, defaultSettings}
