@@ -10,7 +10,11 @@ import {getSectionData} from "../section-data"
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
-import {SectionLinkOverlay} from "./link-overlay"
+import {
+  SectionLinkOverlay,
+  SectionLinkOverlay2,
+  SectionPositionProvider
+} from "./link-overlay"
 import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
 import {
   SequenceStratConsumer,
@@ -114,7 +118,8 @@ SectionPane = (props) ->
 
   groupedSections = positioner.update(groupedSections)
 
-  maxOffset = d3.max sections.map (d)->parseFloat(d.height)-parseFloat(d.offset)+669
+  maxOffset = d3.max sections.map (d)->
+    parseFloat(d.height)-parseFloat(d.offset)+669
 
   paddingLeft = if showTriangleBars then 90 else 30
   marginTop = 52 # This is a weird hack
@@ -156,6 +161,9 @@ SectionPane = (props) ->
           showCarbonIsotopes
           triangleBarsOffset: 0
           surfaces
+        }
+        h SectionLinkOverlay2, {
+
         }
         h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
           marginRight = groupMargin
@@ -237,11 +245,13 @@ class SummarySectionsBase extends Component
     ]
 
 SummarySections = (props)->
-  h SequenceStratConsumer, null, ({actions, rest...})->
-    h SummarySectionsBase, {
-      props...,
-      rest...
-    }
+  h SectionPositionProvider, [
+    h SequenceStratConsumer, null, ({actions, rest...})->
+      h SummarySectionsBase, {
+        props...,
+        rest...
+      }
+  ]
 
 SummarySectionsStatic = (props)->
   h SequenceStratConsumer, null, ({actions, rest...})->

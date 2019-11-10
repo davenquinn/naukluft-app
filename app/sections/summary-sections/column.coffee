@@ -21,6 +21,7 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner} from '#/lithology'
 import {DivisionEditOverlay} from '#/edit-overlay'
 
+import {ColumnTracker} from './link-overlay'
 import {
   ColumnSurfacesProvider,
   ColumnSurfacesContext} from '../column/data-source'
@@ -201,6 +202,8 @@ class BaseSVGSectionComponent extends KnownSizeComponent
 
     # Expand SVG past bounds of section
 
+    domID = "column-#{id}"
+
     grainsizeScaleStart = 40
 
     h Box, {
@@ -214,13 +217,14 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       h 'div.section-header', [
         h("h2", {style: {zIndex: 20}}, id)
       ]
-      h 'div.section-outer', [
+      h 'div.section-outer', {id: domID}, [
         h ColumnProvider, {
           range
           height: @props.height
           zoom: 0.1
           divisions
         }, [
+          h ColumnTracker, {domID, id}
           h GrainsizeLayoutProvider, {
             width: innerWidth,
             grainsizeScaleStart

@@ -1,10 +1,12 @@
-import {Component, createContext} from "react"
+import {Component, createContext, useContext, useState, useEffect, useLayoutEffect} from "react"
 import h from "react-hyperscript"
 import classNames from "classnames"
 import * as d3 from "d3"
 import {SVGNamespaces} from "../util"
 import {Notification} from "../../notify"
 import PropTypes from "prop-types"
+import update from 'immutability-helper'
+import {ColumnContext} from '#/context'
 
 sectionSurfaceProps = (surface)->
     {surface_type, surface_order} = surface
@@ -261,9 +263,55 @@ class SectionLinkHOC extends Component
   render: ->
     h SectionLinkOverlay, @props
 
+SectionPositionContext = createContext()
+SectionObserverContext = createContext({})
+
+SectionPositionProvider = (props)->
+  {children} = props
+
+  [value, setState] = useState({})
+
+  setPosition = (id, scale, pos)->
+    return unless pos?
+    return unless scale?
+    {x,y} = pos
+    if value[id]?
+      return if x == value[id].x and y == value[id].y
+    spec = {[id]: {$set: pos}}
+    newValue = update value, spec
+    setState newValue
+
+  h SectionPositionContext.Provider, {value: setPosition}, [
+    h SectionObserverContext.Provider, {value}, children
+  ]
+
+ColumnTracker = (props)->
+  {id, domID} = props
+  domID ?= id
+  setPosition = useContext(SectionPositionContext)
+  {scale} = useContext(ColumnContext)
+
+  runPositioner = ->
+    # Run this code after render
+    node = document.getElementById(domID)
+    rect = node.getBoundingClientRect()
+    setPosition(id, scale, rect)
+
+  useLayoutEffect(runPositioner)
+
+  return null
+
+SectionLinkOverlay2 = (props)->
+  return null
+
+
 export {
   SectionLinkHOC as SectionLinkOverlay
   SectionLinkOverlay as LinkOverlayBase
+  SectionPositionProvider
+  SectionPositionContext
+  SectionLinkOverlay2
   sectionSurfaceProps
+  ColumnTracker
   prepareLinkData
 }
