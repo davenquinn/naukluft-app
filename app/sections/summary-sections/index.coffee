@@ -218,24 +218,38 @@ class SummarySectionsBase extends Component
       }
       sectionPositions: {}
     }
-
     query(lithostratSurface)
       .then (surfaces)=>
         surfaces.reverse()
         @setState {surfaces}
 
   render: ->
-    h BaseSectionPage, {id: @pageID, settingsPanel: @props.settingsPanel, defaultSettings}, [
-      h SectionPane, {@props...,@state...}
+    {settingsPanel} = @props
+    h BaseSectionPage, {
+      id: @pageID,
+      settingsPanel,
+      defaultSettings
+    }, [
+      h SectionPane, {
+        @props...,
+        @state...
+      }
     ]
 
 SummarySections = (props)->
   h SequenceStratConsumer, null, ({actions, rest...})->
-    h SummarySectionsBase, {props..., rest...}
+    h SummarySectionsBase, {
+      props...,
+      rest...
+    }
 
 SummarySectionsStatic = (props)->
   h SequenceStratConsumer, null, ({actions, rest...})->
-    h SummarySectionsBase, {props..., rest..., showNavigationController: false}
+    h SummarySectionsBase, {
+      showNavigationController: false
+      props...,
+      rest...,
+    }
 
 export {
   SummarySections,

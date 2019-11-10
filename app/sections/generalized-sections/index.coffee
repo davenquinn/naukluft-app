@@ -43,6 +43,7 @@ GeneralizedSectionPositions = {
 
 class LinkOverlay extends LinkOverlayBase
   render: ->
+    return null
     {width, height} = @props
     h 'g#section-link-overlay', [
       h 'g.section-links', @prepareData().map @buildLink
@@ -82,14 +83,14 @@ SectionPane = (props)->
   size = do -> {width, height} = groupedSections.position
 
   links = null
-  # links = h LinkOverlay, {
-  #   size...,
-  #   surfaces, groupedSections
-  #   showLithostratigraphy: false
-  #   showSequenceStratigraphy: true
-  # }
+  links = h LinkOverlay, {
+    size...,
+    surfaces, groupedSections
+    showLithostratigraphy: false
+    showSequenceStratigraphy: true
+  }
   h 'svg#section-pane', {size..., style: size}, [
-    #links
+    links
     h 'g.section-pane-inner', {}, groupedSections.map (row, i)=>
       {columns: [[section]]} = row
       console.log section
@@ -153,8 +154,8 @@ class GeneralizedSectionsBase extends Component
         defaultSettings...
         update: @updateOptions
         exportSVG: @exportSVG
-        }
-      }, h(SectionPane, {@props..., @state...})
+      }
+    }, h(SectionPane, {@props..., @state...})
 
   exportSVG: =>
     el = findDOMNode(@).querySelector("svg#section-pane")

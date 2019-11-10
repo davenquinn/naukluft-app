@@ -16,7 +16,6 @@ sectionSurfaceProps = (surface)->
     else
       stroke = '#ccc'
 
-
     strokeWidth = 3-Math.pow(surface_order,1.5)*1.5
     if strokeWidth < 1
       strokeWidth = 1
@@ -26,6 +25,85 @@ OverlayContext = createContext {
   sectionPositions: []
   onResize: ->
 }
+
+prepareLinkData = (props)->
+  {skeletal, groupedSections, marginTop,
+   showLithostratigraphy, surfaces} = props
+  return null unless surfaces.length
+  {triangleBarsOffset} = props
+
+  sectionIndex = groupedSections.index
+
+  ## Deconflict surfaces
+  ## The below is a fairly complex way to make sure multiple surfaces
+  ## aren't connected in the same stack.
+  sectionSurfaces = {}
+  console.log surfaces
+  for {surface_id, section_height} in surfaces
+    continue unless surface_id? # weed out lithostratigraphy for now
+    for {section, height, inferred} in section_height
+      sectionSurfaces[section] ?= []
+      sectionSurfaces[section].push {surface_id, height, inferred}
+
+  # Backdoor way to get section stacks
+  sectionStacks = d3.nest()
+    .key (d)->d.position.x
+    .entries (v for k,v of sectionIndex)
+
+  stackSurfaces = []
+  for {key, values: stackedSections} in sectionStacks
+    surfacesIndex = {}
+    # Logic for determining which section's surface is rendered
+    # within a stack (typically the section that is not inferred)
+
+    for section in stackedSections
+      {id: section_id} = section
+      section_surfaces = sectionSurfaces[section_id] or []
+      # Define a function to return domain
+      withinDomain = (height)->
+        {position} = sectionIndex[section.id]
+        scale = position.heightScale.global
+        d = scale.domain()
+        return d[0] < height < d[1]
+
+      # Naive logic
+      for surface in section_surfaces
+        s1 = surfacesIndex[surface.surface_id]
+        if s1?
+          # We already have a surface defined
+          if withinDomain(s1.height)
+            if s1.inferred and not section.inferred
+              continue
+          if not withinDomain(surface.height)
+            continue
+        surfacesIndex[surface.surface_id] = {section: section_id, surface...}
+    # Convert to an array
+    surfacesIndex = (v for k,v of surfacesIndex)
+    # Add the pixel height
+    for surface in surfacesIndex
+      {position} = sectionIndex[surface.section]
+      scale = position.heightScale.global
+      surface.y = scale(surface.height)
+      surface.inDomain = withinDomain(surface.height)
+
+    # Save generated index to appropriate stack
+    stackSurfaces.push {
+      x: parseFloat(key)
+      values: surfacesIndex
+    }
+
+  # Turn back into surface-oriented list
+  return surfaces.map (s)->
+    id = s.surface_id
+    v = {s...}
+    return v unless id?
+    heights = []
+    for {values} in stackSurfaces
+      val = values.find (d)->id == d.surface_id
+      heights.push(val) if val?
+    v.section_height = heights
+    return v
+
 
 # https://www.particleincell.com/2012/bezier-splines/
 
@@ -150,83 +228,8 @@ class SectionLinkOverlay extends Component
 
     h 'g', links
 
-  prepareData: ->
-    {skeletal, groupedSections, marginTop,
-     showLithostratigraphy, surfaces} = @props
-    return null unless surfaces.length
-    {triangleBarsOffset} = @props
-
-    sectionIndex = groupedSections.index
-
-    ## Deconflict surfaces
-    ## The below is a fairly complex way to make sure multiple surfaces
-    ## aren't connected in the same stack.
-    sectionSurfaces = {}
-    console.log surfaces
-    for {surface_id, section_height} in surfaces
-      continue unless surface_id? # weed out lithostratigraphy for now
-      for {section, height, inferred} in section_height
-        sectionSurfaces[section] ?= []
-        sectionSurfaces[section].push {surface_id, height, inferred}
-
-    # Backdoor way to get section stacks
-    sectionStacks = d3.nest()
-      .key (d)->d.position.x
-      .entries (v for k,v of sectionIndex)
-
-    stackSurfaces = []
-    for {key, values: stackedSections} in sectionStacks
-      surfacesIndex = {}
-      # Logic for determining which section's surface is rendered
-      # within a stack (typically the section that is not inferred)
-
-      for section in stackedSections
-        {id: section_id} = section
-        section_surfaces = sectionSurfaces[section_id] or []
-        # Define a function to return domain
-        withinDomain = (height)->
-          {position} = sectionIndex[section.id]
-          scale = position.heightScale.global
-          d = scale.domain()
-          return d[0] < height < d[1]
-
-        # Naive logic
-        for surface in section_surfaces
-          s1 = surfacesIndex[surface.surface_id]
-          if s1?
-            # We already have a surface defined
-            if withinDomain(s1.height)
-              if s1.inferred and not section.inferred
-                continue
-            if not withinDomain(surface.height)
-              continue
-          surfacesIndex[surface.surface_id] = {section: section_id, surface...}
-      # Convert to an array
-      surfacesIndex = (v for k,v of surfacesIndex)
-      # Add the pixel height
-      for surface in surfacesIndex
-        {position} = sectionIndex[surface.section]
-        scale = position.heightScale.global
-        surface.y = scale(surface.height)
-        surface.inDomain = withinDomain(surface.height)
-
-      # Save generated index to appropriate stack
-      stackSurfaces.push {
-        x: parseFloat(key)
-        values: surfacesIndex
-      }
-
-    # Turn back into surface-oriented list
-    return surfaces.map (s)->
-      id = s.surface_id
-      v = {s...}
-      return v unless id?
-      heights = []
-      for {values} in stackSurfaces
-        val = values.find (d)->id == d.surface_id
-        heights.push(val) if val?
-      v.section_height = heights
-      return v
+  prepareData: =>
+    prepareLinkData(@props)
 
   renderSectionTrackers: ->
     {groupedSections, skeletal} = @props
@@ -243,7 +246,7 @@ class SectionLinkOverlay extends Component
 
     className = classNames {skeletal}
 
-    surfacesNew = @prepareData()
+    surfacesNew = prepareLinkData(@props)
 
     {width, height} = @props
     style = {top: marginTop}
@@ -262,4 +265,5 @@ export {
   SectionLinkHOC as SectionLinkOverlay
   SectionLinkOverlay as LinkOverlayBase
   sectionSurfaceProps
+  prepareLinkData
 }
