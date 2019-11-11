@@ -133,6 +133,9 @@ SectionPane = (props) ->
     h "div#section-page-inner", {
       style: {zoom: 1, minHeight}
     }, [
+      h SectionLinkOverlay2, {
+
+      }
       h LithostratKey, {
         zoom: 0.1,
         key: "key",
@@ -162,15 +165,16 @@ SectionPane = (props) ->
           triangleBarsOffset: 0
           surfaces
         }
-        h SectionLinkOverlay2, {
-
-        }
         h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
           marginRight = groupMargin
           if i == groupedSections.length-1
             marginRight = 0
           style = {marginRight, height}
-          h LocationGroup, {key: location, location, style}, columns.map (col, i)->
+          h LocationGroup, {
+            key: location,
+            location,
+            style
+          }, columns.map (col, i)->
             marginRight = columnMargin
             if i == columns.length-1
               marginRight = 0

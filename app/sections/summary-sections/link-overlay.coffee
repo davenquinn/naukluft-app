@@ -161,9 +161,6 @@ class SectionLinkOverlay extends Component
       if not showSequenceStratigraphy
         return null
 
-      if surface_id == 19
-        return null
-
     onClick = ->
       v = if type == 'lithostrat' then "Lithostratigraphic" else "Sequence-stratigraphic"
       Notification.show {
@@ -277,7 +274,8 @@ SectionPositionProvider = (props)->
     {x,y} = pos
     if value[id]?
       return if x == value[id].x and y == value[id].y
-    spec = {[id]: {$set: pos}}
+    val = {x,y,scale}
+    spec = {[id]: {$set: val}}
     newValue = update value, spec
     setState newValue
 
@@ -298,12 +296,20 @@ ColumnTracker = (props)->
     setPosition(id, scale, rect)
 
   useLayoutEffect(runPositioner)
-
   return null
 
 SectionLinkOverlay2 = (props)->
-  return null
-
+  sectionPositions = useContext(SectionObserverContext)
+  pos = Object.values(sectionPositions)
+  style = {
+    position: 'absolute'
+    zIndex: 100
+  }
+  h 'svg', {height: 1800, width: 3800, style}, pos.map (d)->
+    {x,y,scale} = d
+    return null unless scale?
+    height = scale.range()[0]
+    h 'rect', {x,y, width: 100, height, fill: 'red'}
 
 export {
   SectionLinkHOC as SectionLinkOverlay
