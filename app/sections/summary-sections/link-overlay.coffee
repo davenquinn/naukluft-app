@@ -38,7 +38,17 @@ SectionPositionProvider = (props)->
     {x,y} = pos
     if value[id]?
       return if x == value[id].x and y == value[id].y
-    val = {x,y,scale,otherProps...}
+
+    {width: innerWidth, padding} = otherProps
+    return null unless scale?
+    [min, max] = scale.range()
+    innerHeight = Math.abs(max-min)
+    sz = expandInnerSize {innerWidth, innerHeight, padding}
+
+    globalRange = scale.range().map (d)-> d + y + sz.paddingTop
+    globalScale = scale.copy().range(globalRange).clamp(false)
+
+    val = {id,x,y,scale,globalScale, sz...}
     spec = {[id]: {$set: val}}
     newValue = update value, spec
     setState newValue
@@ -69,18 +79,17 @@ ColumnTracker.propTypes = {
 }
 
 prepareLinkData = (props)->
-  {skeletal, groupedSections, marginTop,
-   showLithostratigraphy, surfaces} = props
+  {skeletal, marginTop,
+   showLithostratigraphy, surfaces, sectionIndex} = props
   return null unless surfaces.length
   {triangleBarsOffset} = props
 
-  sectionIndex = groupedSections.index
+  #sectionIndex = groupedSections.index
 
   ## Deconflict surfaces
   ## The below is a fairly complex way to make sure multiple surfaces
   ## aren't connected in the same stack.
   sectionSurfaces = {}
-  console.log surfaces
   for {surface_id, section_height} in surfaces
     continue unless surface_id? # weed out lithostratigraphy for now
     for {section, height, inferred} in section_height
@@ -89,8 +98,10 @@ prepareLinkData = (props)->
 
   # Backdoor way to get section stacks
   sectionStacks = d3.nest()
-    .key (d)->d.position.x
+    .key (d)->d.x
     .entries (v for k,v of sectionIndex)
+
+  console.log sectionIndex, sectionStacks
 
   stackSurfaces = []
   for {key, values: stackedSections} in sectionStacks
@@ -103,9 +114,8 @@ prepareLinkData = (props)->
       section_surfaces = sectionSurfaces[section_id] or []
       # Define a function to return domain
       withinDomain = (height)->
-        {position} = sectionIndex[section.id]
-        scale = position.heightScale.global
-        d = scale.domain()
+        {globalScale} = sectionIndex[section_id]
+        d = globalScale.domain()
         return d[0] < height < d[1]
 
       # Naive logic
@@ -120,18 +130,17 @@ prepareLinkData = (props)->
             continue
         surfacesIndex[surface.surface_id] = {section: section_id, surface...}
     # Convert to an array
-    surfacesIndex = (v for k,v of surfacesIndex)
+    surfacesArray = (v for k,v of surfacesIndex)
     # Add the pixel height
-    for surface in surfacesIndex
-      {position} = sectionIndex[surface.section]
-      scale = position.heightScale.global
-      surface.y = scale(surface.height)
+    for surface in surfacesArray
+      {globalScale} = sectionIndex[surface.section]
+      surface.y = globalScale(surface.height)
       surface.inDomain = withinDomain(surface.height)
 
     # Save generated index to appropriate stack
     stackSurfaces.push {
       x: parseFloat(key)
-      values: surfacesIndex
+      values: surfacesArray
     }
 
   # Turn back into surface-oriented list
@@ -159,6 +168,7 @@ class SectionTrackers extends Component
       h 'rect.section-tracker', {x,y,width,height}
 
 class SectionLinkOverlay extends Component
+  @contextType: SectionObserverContext
   @defaultProps: {
     width: 100
     height: 100
@@ -211,14 +221,15 @@ class SectionLinkOverlay extends Component
         ]
       }
 
+    sectionIndex = @context
+
     heights = []
     for {section, height, inferred, inDomain} in values
       try
-        {position} = groupedSections.index[section]
-        scale = position.heightScale.global
-        {width, x: x0} = position
+        {globalScale, x: x0, width} = sectionIndex[section]
+        console.log section, sectionIndex[section]
         x1 = x0+width
-        y = scale(height)
+        y = globalScale(height)
         heights.push {x0, x1, y, inferred, inDomain, section}
       catch
         # Not positioned yet (or at all?)
@@ -226,6 +237,8 @@ class SectionLinkOverlay extends Component
 
 
     heights.sort (a,b)-> a.x0 - b.x0
+
+    console.log heights
 
     return null if heights.length < 2
 
@@ -268,7 +281,9 @@ class SectionLinkOverlay extends Component
     h 'g', links
 
   prepareData: =>
-    prepareLinkData(@props)
+    sectionIndex = @context
+    console.log sectionIndex
+    prepareLinkData({@props..., sectionIndex})
 
   renderSectionTrackers: ->
     {groupedSections, skeletal} = @props
@@ -282,8 +297,9 @@ class SectionLinkOverlay extends Component
     {skeletal, marginTop,
      showLithostratigraphy, surfaces} = @props
     return null unless surfaces.length
+    sectionIndex = @context
 
-    surfacesNew = prepareLinkData(@props)
+    surfacesNew = prepareLinkData({@props..., sectionIndex})
 
     {width, height} = @props
     style = {top: marginTop}
@@ -306,12 +322,8 @@ SectionLinkOverlay2 = (props)->
     zIndex: 100
   }
   h 'svg', {height: 2000, width: 3800, style}, pos.map (d)->
-    {x,y,scale, width: innerWidth, padding} = d
+    {x,y,scale, width, height} = d
     return null unless scale?
-    [min, max] = scale.range()
-    innerHeight = Math.abs(max-min)
-    sz = expandInnerSize {innerWidth, innerHeight, padding}
-    {width, height} = sz
     h 'rect', {x,y, width, height, fill: 'red'}
 
 export {

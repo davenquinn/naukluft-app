@@ -133,8 +133,18 @@ SectionPane = (props) ->
     h "div#section-page-inner", {
       style: {zoom: 1, minHeight}
     }, [
-      h SectionLinkOverlay2, {
-
+      h SectionLinkOverlay, {
+        paddingLeft,
+        connectLines: true
+        width: 3800,
+        height,
+        marginTop: 0,
+        groupedSections,
+        showLithostratigraphy
+        showSequenceStratigraphy
+        showCarbonIsotopes
+        triangleBarsOffset: 0
+        surfaces
       }
       h LithostratKey, {
         zoom: 0.1,
@@ -152,19 +162,6 @@ SectionPane = (props) ->
       }
       h "div#section-container", [
         h.if(showLegend) Legend
-        h SectionLinkOverlay, {
-          paddingLeft,
-          connectLines: true
-          width: 2500,
-          height,
-          marginTop,
-          groupedSections,
-          showLithostratigraphy
-          showSequenceStratigraphy
-          showCarbonIsotopes
-          triangleBarsOffset: 0
-          surfaces
-        }
         h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
           marginRight = groupMargin
           if i == groupedSections.length-1
