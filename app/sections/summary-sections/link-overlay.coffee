@@ -4,9 +4,10 @@ import classNames from "classnames"
 import * as d3 from "d3"
 import {SVGNamespaces} from "../util"
 import {Notification} from "../../notify"
-import PropTypes from "prop-types"
+import T from "prop-types"
 import update from 'immutability-helper'
 import {ColumnContext} from '#/context'
+import {expandInnerSize} from '#'
 
 sectionSurfaceProps = (surface)->
     {surface_type, surface_order} = surface
@@ -23,9 +24,48 @@ sectionSurfaceProps = (surface)->
       strokeWidth = 1
     return {stroke, strokeWidth}
 
-OverlayContext = createContext {
-  sectionPositions: []
-  onResize: ->
+SectionPositionContext = createContext()
+SectionObserverContext = createContext({})
+
+SectionPositionProvider = (props)->
+  {children} = props
+
+  [value, setState] = useState({})
+
+  setPosition = (id, scale, pos, otherProps)->
+    return unless pos?
+    return unless scale?
+    {x,y} = pos
+    if value[id]?
+      return if x == value[id].x and y == value[id].y
+    val = {x,y,scale,otherProps...}
+    spec = {[id]: {$set: val}}
+    newValue = update value, spec
+    setState newValue
+
+  h SectionPositionContext.Provider, {value: setPosition}, [
+    h SectionObserverContext.Provider, {value}, children
+  ]
+
+ColumnTracker = (props)->
+  {id, domID, rest...} = props
+  domID ?= id
+  setPosition = useContext(SectionPositionContext)
+  {scale} = useContext(ColumnContext)
+
+  runPositioner = ->
+    # Run this code after render
+    node = document.getElementById(domID)
+    rect = node.getBoundingClientRect()
+    setPosition(id, scale, rect, rest)
+
+  useLayoutEffect(runPositioner)
+  return null
+
+ColumnTracker.propTypes = {
+  width: T.number.isRequired
+  id: T.string.isRequired
+  domID: T.string
 }
 
 prepareLinkData = (props)->
@@ -243,15 +283,13 @@ class SectionLinkOverlay extends Component
      showLithostratigraphy, surfaces} = @props
     return null unless surfaces.length
 
-    className = classNames {skeletal}
-
     surfacesNew = prepareLinkData(@props)
 
     {width, height} = @props
     style = {top: marginTop}
     h 'svg#section-link-overlay', {
       SVGNamespaces...
-      className, width, height, style}, [
+      width, height, style}, [
       @renderSectionTrackers()
       h 'g.section-links', surfacesNew.map @buildLink
     ]
@@ -260,44 +298,6 @@ class SectionLinkHOC extends Component
   render: ->
     h SectionLinkOverlay, @props
 
-SectionPositionContext = createContext()
-SectionObserverContext = createContext({})
-
-SectionPositionProvider = (props)->
-  {children} = props
-
-  [value, setState] = useState({})
-
-  setPosition = (id, scale, pos)->
-    return unless pos?
-    return unless scale?
-    {x,y} = pos
-    if value[id]?
-      return if x == value[id].x and y == value[id].y
-    val = {x,y,scale}
-    spec = {[id]: {$set: val}}
-    newValue = update value, spec
-    setState newValue
-
-  h SectionPositionContext.Provider, {value: setPosition}, [
-    h SectionObserverContext.Provider, {value}, children
-  ]
-
-ColumnTracker = (props)->
-  {id, domID} = props
-  domID ?= id
-  setPosition = useContext(SectionPositionContext)
-  {scale} = useContext(ColumnContext)
-
-  runPositioner = ->
-    # Run this code after render
-    node = document.getElementById(domID)
-    rect = node.getBoundingClientRect()
-    setPosition(id, scale, rect)
-
-  useLayoutEffect(runPositioner)
-  return null
-
 SectionLinkOverlay2 = (props)->
   sectionPositions = useContext(SectionObserverContext)
   pos = Object.values(sectionPositions)
@@ -305,11 +305,14 @@ SectionLinkOverlay2 = (props)->
     position: 'absolute'
     zIndex: 100
   }
-  h 'svg', {height: 1800, width: 3800, style}, pos.map (d)->
-    {x,y,scale} = d
+  h 'svg', {height: 2000, width: 3800, style}, pos.map (d)->
+    {x,y,scale, width: innerWidth, padding} = d
     return null unless scale?
-    height = scale.range()[0]
-    h 'rect', {x,y, width: 100, height, fill: 'red'}
+    [min, max] = scale.range()
+    innerHeight = Math.abs(max-min)
+    sz = expandInnerSize {innerWidth, innerHeight, padding}
+    {width, height} = sz
+    h 'rect', {x,y, width, height, fill: 'red'}
 
 export {
   SectionLinkHOC as SectionLinkOverlay

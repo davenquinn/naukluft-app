@@ -224,7 +224,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
           zoom: 0.1
           divisions
         }, [
-          h ColumnTracker, {domID, id}
+          h ColumnTracker, {domID, id, width: 140, padding: 10}
           h GrainsizeLayoutProvider, {
             width: innerWidth,
             grainsizeScaleStart
@@ -261,7 +261,10 @@ class BaseSVGSectionComponent extends KnownSizeComponent
                 id
                 offsetLeft
                 lineWidth: 20
-                orders: [@props.sequenceStratOrder, @props.sequenceStratOrder-1]
+                orders: [
+                  @props.sequenceStratOrder,
+                  @props.sequenceStratOrder-1
+                ]
               }
               h ColumnSummaryAxis
               h.if(@props.isotopesPerSection) MinimalIsotopesColumn, {
