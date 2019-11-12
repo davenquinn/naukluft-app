@@ -1,9 +1,11 @@
-import {Component, createContext, useContext, useState, useEffect, useLayoutEffect} from "react"
+import {
+  Component, createContext, useContext,
+  useState, useLayoutEffect
+} from "react"
 import h from "@macrostrat/hyper"
 import {linkHorizontal} from 'd3-shape'
 import classNames from "classnames"
-import * as d3 from "d3"
-import {SVGNamespaces} from "../util"
+import {group, pairs} from 'd3-array'
 import {Notification} from "../../notify"
 import T from "prop-types"
 import update from 'immutability-helper'
@@ -82,15 +84,13 @@ ColumnTracker.propTypes = {
   domID: T.string
 }
 
-inDomain = (scale)->(height)->
+withinDomain = (scale, height)->
   d = scale.domain()
   return d[0] < height < d[1]
 
 prepareLinkData = (props)->
-  {skeletal, marginTop,
-   showLithostratigraphy, surfaces, sectionIndex} = props
+  {surfaces, sectionIndex} = props
   return null unless surfaces.length
-  {triangleBarsOffset} = props
 
   ## Deconflict surfaces
   ## The below is a fairly complex way to make sure multiple surfaces
@@ -103,12 +103,11 @@ prepareLinkData = (props)->
       sectionSurfaces[section].push {surface_id, height, inferred}
 
   # Backdoor way to get section stacks
-  sectionStacks = d3.nest()
-    .key (d)->d.x
-    .entries (v for k,v of sectionIndex)
+  vals = Object.values(sectionIndex)
+  sectionStacks = group vals, (d)->d.x
 
   stackSurfaces = []
-  for {key, values: stackedSections} in sectionStacks
+  sectionStacks.forEach (stackedSections, key)->
     surfacesIndex = {}
     # Logic for determining which section's surface is rendered
     # within a stack (typically the section that is not inferred)
@@ -118,17 +117,16 @@ prepareLinkData = (props)->
       section_surfaces = sectionSurfaces[section_id] or []
       # Define a function to return domain
       {globalScale} = sectionIndex[section_id]
-      withinDomain = inDomain(globalScale)
 
       # Naive logic
       for surface in section_surfaces
         s1 = surfacesIndex[surface.surface_id]
         if s1?
           # We already have a surface defined
-          if withinDomain(s1.height)
+          if withinDomain(globalScale, s1.height)
             if s1.inferred and not section.inferred
               continue
-          if not withinDomain(surface.height)
+          if not withinDomain(globalScale, surface.height)
             continue
         surfacesIndex[surface.surface_id] = {section: section_id, surface...}
     # Convert to an array
@@ -137,7 +135,7 @@ prepareLinkData = (props)->
     for surface in surfacesArray
       {globalScale} = sectionIndex[surface.section]
       surface.y = globalScale(surface.height)
-      surface.inDomain = withinDomain(surface.height)
+      surface.inDomain = withinDomain(globalScale, surface.height)
 
     # Save generated index to appropriate stack
     stackSurfaces.push {
@@ -183,22 +181,23 @@ SectionLink = (props)->
 
   sectionIndex = useContext(SectionObserverContext)
 
-  heights = []
-  for {section, height, inferred, inDomain} in values
-    try
-      {globalScale, x: x0, width} = sectionIndex[section]
-      x1 = x0+width
-      y = globalScale(height)
-      heights.push {x0, x1, y, inferred, inDomain, section}
-    catch
-      # Not positioned yet (or at all?)
-      console.log "No section position computed for #{section}"
+  heights = values.map (v)->
+    {section, height, inferred, inDomain} = v
+    {globalScale, x: x0, width} = sectionIndex[section]
+    return {
+      x0
+      x1: x0+width
+      y: globalScale(height)
+      inferred
+      inDomain
+      section
+    }
 
   heights.sort (a,b)-> a.x0 - b.x0
 
   return null if heights.length < 2
 
-  pathData = d3.pairs heights, (a,b)->
+  pathData = pairs heights, (a,b)->
     inferred = (a.inferred or b.inferred)
     source = {x: a.x1, y: a.y, section: a.section}
     target = {x: b.x0, y: b.y, section: b.section}
@@ -268,20 +267,39 @@ FilteredSectionLink = (props)->
 
   h SectionLink, {props..., stroke, strokeWidth, onClick}
 
+getSize = (sectionIndex)->
+  w_ = 0
+  h_ = 0
+  for k,v of sectionIndex
+    console.log v
+    {width, height, x, y} = v
+    maxX = x+width
+    maxY = y+height
+    if maxX > w_
+      w_ = maxX
+    if maxY > h_
+      h_ = maxY
+  return {
+    width: w_
+    height: h_
+  }
+
 SectionLinkOverlay = (props)->
   {surfaces, showSectionTrackers, connectLines} = props
   return null unless surfaces.length
 
+  sectionIndex = useContext(SectionObserverContext)
+
   surfacesNew = prepareLinkData({
     props...,
-    sectionIndex: useContext(SectionObserverContext)
+    sectionIndex
   })
 
-  {width, height} = props
+  sz = getSize(sectionIndex)
+
   h SVG, {
-    id: "section-link-overlay",
-    width,
-    height
+    id: "section-link-overlay"
+    sz...
   }, [
     h.if(showSectionTrackers) SectionTrackerRects
     h 'g.section-links', surfacesNew.map (surface)->

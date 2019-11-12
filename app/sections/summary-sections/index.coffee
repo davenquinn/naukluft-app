@@ -1,11 +1,8 @@
-import {findDOMNode} from "react-dom"
-import {select} from "d3-selection"
+import {nest} from "d3-collection"
+import {max} from "d3-array"
 import {hyperStyled} from "@macrostrat/hyper"
 import {Component, useContext} from "react"
-import update from "immutability-helper"
-import {debounce} from "underscore"
-import * as d3 from "d3"
-import {ColumnProvider, useSettings} from "#"
+import {useSettings} from "#"
 import {getSectionData} from "../section-data"
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"
@@ -19,7 +16,6 @@ import {
   SequenceStratConsumer,
   SequenceStratContext
 } from "../sequence-strat-context"
-import {FaciesDescriptionSmall} from "../facies"
 import {LithostratKey} from "./lithostrat-key"
 import {LocationGroup} from './layout'
 import {Legend} from "./legend"
@@ -57,7 +53,7 @@ groupSectionData = (sections)->
 
   __ix = indexOf(stackGroups)
 
-  sectionGroups = d3.nest()
+  sectionGroups = nest()
     .key (d)->d.location
     .key stackGroup
     .sortKeys (a,b)->__ix(a)-__ix(b)
@@ -76,9 +72,8 @@ groupSectionData = (sections)->
   return sectionGroups
 
 SectionPane = (props) ->
-  {dimensions, sectionPositions, surfaces, sections
-   groupMargin, columnMargin, columnWidth, scrollable} = props
-  scrollable = true
+  {sectionPositions, surfaces, sections
+   groupMargin, columnMargin, columnWidth} = props
 
   {dragdealer, dragPosition, rest...} = useSettings()
   {showFloodingSurfaces,
@@ -117,12 +112,10 @@ SectionPane = (props) ->
 
   groupedSections = positioner.update(groupedSections)
 
-  maxOffset = d3.max sections.map (d)->
+  maxOffset = max sections.map (d)->
     parseFloat(d.height)-parseFloat(d.offset)+669
 
   paddingLeft = if showTriangleBars then 90 else 30
-  marginTop = 52 # This is a weird hack
-  {canvas} = dimensions
 
   minHeight = 1500
 
@@ -133,15 +126,7 @@ SectionPane = (props) ->
       style: {zoom: 1, minHeight}
     }, [
       h SectionLinkOverlay, {
-        paddingLeft,
         connectLines: true
-        width: 3800,
-        height,
-        marginTop: 0,
-        showLithostratigraphy
-        showSequenceStratigraphy
-        showCarbonIsotopes
-        triangleBarsOffset: 0
         surfaces
       }
       h LithostratKey, {
@@ -208,7 +193,6 @@ SectionPane.propTypes = {
 
 class SummarySectionsBase extends Component
   @defaultProps: {
-    scrollable: true
     groupMargin: 400
     columnMargin: 100
     columnWidth: 150
@@ -220,9 +204,6 @@ class SummarySectionsBase extends Component
     super props
     @state = {
       surfaces: []
-      dimensions: {
-        canvas: {width: 100, height: 100}
-      }
       sectionPositions: {}
     }
     query(lithostratSurface)
