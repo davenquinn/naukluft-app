@@ -12,7 +12,6 @@ import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
 import {
   SectionLinkOverlay,
-  SectionLinkOverlay2,
   SectionPositionProvider
 } from "./link-overlay"
 import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
@@ -139,7 +138,6 @@ SectionPane = (props) ->
         width: 3800,
         height,
         marginTop: 0,
-        groupedSections,
         showLithostratigraphy
         showSequenceStratigraphy
         showCarbonIsotopes

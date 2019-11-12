@@ -1,28 +1,28 @@
 import {Component, createContext, useContext, useState, useEffect, useLayoutEffect} from "react"
 import h from "@macrostrat/hyper"
+import {linkHorizontal} from 'd3-shape'
 import classNames from "classnames"
 import * as d3 from "d3"
 import {SVGNamespaces} from "../util"
 import {Notification} from "../../notify"
 import T from "prop-types"
 import update from 'immutability-helper'
-import {ColumnContext} from '#/context'
-import {expandInnerSize, SVG} from '#'
+import {expandInnerSize, useSettings, ColumnContext, SVG} from '#'
 
 sectionSurfaceProps = (surface)->
-    {surface_type, surface_order} = surface
+  {surface_type, surface_order} = surface
 
-    if surface_type == 'mfs'
-      stroke = '#ccc'
-    else if surface_type == 'sb'
-      stroke = '#fcc'
-    else
-      stroke = '#ccc'
+  if surface_type == 'mfs'
+    stroke = '#ccc'
+  else if surface_type == 'sb'
+    stroke = '#fcc'
+  else
+    stroke = '#ccc'
 
-    strokeWidth = 3-Math.pow(surface_order,1.5)*1.5
-    if strokeWidth < 1
-      strokeWidth = 1
-    return {stroke, strokeWidth}
+  strokeWidth = 3-Math.pow(surface_order,1.5)*1.5
+  if strokeWidth < 1
+    strokeWidth = 1
+  return {stroke, strokeWidth}
 
 SectionPositionContext = createContext()
 SectionObserverContext = createContext({})
@@ -58,6 +58,10 @@ SectionPositionProvider = (props)->
   ]
 
 ColumnTracker = (props)->
+  ###
+  Tracks a column's position and reports
+  it back to the SectionObserverContext.
+  ###
   {id, domID, rest...} = props
   domID ?= id
   setPosition = useContext(SectionPositionContext)
@@ -77,6 +81,10 @@ ColumnTracker.propTypes = {
   id: T.string.isRequired
   domID: T.string
 }
+
+inDomain = (scale)->(height)->
+  d = scale.domain()
+  return d[0] < height < d[1]
 
 prepareLinkData = (props)->
   {skeletal, marginTop,
@@ -99,8 +107,6 @@ prepareLinkData = (props)->
     .key (d)->d.x
     .entries (v for k,v of sectionIndex)
 
-  console.log sectionIndex, sectionStacks
-
   stackSurfaces = []
   for {key, values: stackedSections} in sectionStacks
     surfacesIndex = {}
@@ -111,10 +117,8 @@ prepareLinkData = (props)->
       {id: section_id} = section
       section_surfaces = sectionSurfaces[section_id] or []
       # Define a function to return domain
-      withinDomain = (height)->
-        {globalScale} = sectionIndex[section_id]
-        d = globalScale.domain()
-        return d[0] < height < d[1]
+      {globalScale} = sectionIndex[section_id]
+      withinDomain = inDomain(globalScale)
 
       # Naive logic
       for surface in section_surfaces
@@ -164,129 +168,130 @@ SectionTrackerRects = (props)->
     return null unless scale?
     h 'rect.section-tracker', {x,y, width, height, props...}
 
-class SectionLinkOverlay extends Component
-  @contextType: SectionObserverContext
-  @defaultProps: {
-    width: 100
-    height: 100
-    paddingLeft: 20
-    marginTop: 0
-    connectLines: true
-    showLithostratigraphy: true
-    showCarbonIsotopes: false
-    showSectionTrackers: false
-  }
-  constructor: (props)->
-    super props
+buildLink = linkHorizontal()
+  .x (d)->d.x
+  .y (d)->d.y
 
-    @link = d3.linkHorizontal()
-      .x (d)->d.x
-      .y (d)->d.y
+SectionLink = (props)->
+  {connectLines, surface, stroke, strokeWidth, onClick} = props
+  stroke ?= 'black'
+  strokeWidth ?= 1
+  {section_height, surface_id, unit_commonality,
+   type, note} = surface
 
-  buildLink: (surface)=>
-    {paddingLeft, marginTop,
-     showLithostratigraphy, showSequenceStratigraphy
-     connectLines
-    } = @props
-    {section_height, surface_id, unit_commonality,
-     type, flooding_surface_order, note} = surface
+  values = [section_height...]
 
-    values = [section_height...]
+  sectionIndex = useContext(SectionObserverContext)
 
-    if type == 'lithostrat'
-      stroke = '#ccc'
-      if not showLithostratigraphy
-        return null
-    if type == 'sequence-strat'
-      {stroke, strokeWidth} = sectionSurfaceProps(surface)
-      if not showSequenceStratigraphy
-        return null
+  heights = []
+  for {section, height, inferred, inDomain} in values
+    try
+      {globalScale, x: x0, width} = sectionIndex[section]
+      x1 = x0+width
+      y = globalScale(height)
+      heights.push {x0, x1, y, inferred, inDomain, section}
+    catch
+      # Not positioned yet (or at all?)
+      console.log "No section position computed for #{section}"
 
-    onClick = ->
-      v = if type == 'lithostrat' then "Lithostratigraphic" else "Sequence-stratigraphic"
-      Notification.show {
-        message: h 'div', [
-          "#{v} surface "
-          h 'code', surface_id
-          if note? then ": #{note}" else null
-        ]
-      }
+  heights.sort (a,b)-> a.x0 - b.x0
 
-    sectionIndex = @context
+  return null if heights.length < 2
 
-    heights = []
-    for {section, height, inferred, inDomain} in values
-      try
-        {globalScale, x: x0, width} = sectionIndex[section]
-        console.log section, sectionIndex[section]
-        x1 = x0+width
-        y = globalScale(height)
-        heights.push {x0, x1, y, inferred, inDomain, section}
-      catch
-        # Not positioned yet (or at all?)
-        console.log "No section position computed for #{section}"
+  pathData = d3.pairs heights, (a,b)->
+    inferred = (a.inferred or b.inferred)
+    source = {x: a.x1, y: a.y, section: a.section}
+    target = {x: b.x0, y: b.y, section: b.section}
+    {inDomain} = b
+    width = b.x1-b.x0
+    {source, target, inferred, width}
 
+  d = null
+  links = for pair,i in pathData
+    unit_commonality ?= 0
+    {inferred,width} = pair
+    className = classNames(
+      "section-link"
+      type
+      {inferred})
+    # First move to initial height
+    {x,y} = pair.source
 
-    heights.sort (a,b)-> a.x0 - b.x0
-
-    return null if heights.length < 2
-
-    pathData = d3.pairs heights, (a,b)->
-      inferred = (a.inferred or b.inferred)
-      source = {x: a.x1, y: a.y, section: a.section}
-      target = {x: b.x0, y: b.y, section: b.section}
-      {inDomain} = b
-      width = b.x1-b.x0
-      {source, target, inferred, width}
-
-    d = null
-    links = for pair,i in pathData
-      unit_commonality ?= 0
-      {inferred,width} = pair
-      className = classNames(
-        "section-link"
-        type
-        {inferred})
-      # First move to initial height
-      {x,y} = pair.source
-
-      if not d?
-        initialX = x
-        if connectLines
-          initialX -= width
-        d = "M#{initialX},#{y}"
-        if connectLines
-          d += "l#{width},0"
-
-      d += @link(pair)
+    if not d?
+      initialX = x
+      if connectLines
+        initialX -= width
+      d = "M#{initialX},#{y}"
       if connectLines
         d += "l#{width},0"
-      else
-        d += "M#{width},0"
-      fill = 'none'
 
-      h 'path', {d, className, stroke, strokeWidth, fill, onClick}
+    d += buildLink(pair)
+    if connectLines
+      d += "l#{width},0"
+    else
+      d += "M#{width},0"
+    fill = 'none'
 
-    h 'g', links
+    h 'path', {d, className, stroke, strokeWidth, fill, onClick}
 
-  render: ->
-    {surfaces, showSectionTrackers} = @props
-    return null unless surfaces.length
+  h 'g', links
 
-    surfacesNew = prepareLinkData({
-      @props...,
-      sectionIndex: @context
-    })
+SectionLink.propTypes = {
+  connectLines: T.bool
+  stroke: T.string
+  strokeWidth: T.number
+  surface: T.object.isRequired
+}
 
-    {width, height} = @props
-    h SVG, {
-      id: "section-link-overlay",
-      width,
-      height
-    }, [
-      h.if(showSectionTrackers) SectionTrackerRects
-      h 'g.section-links', surfacesNew.map @buildLink
-    ]
+FilteredSectionLink = (props)->
+  {type, note, id: surface_id} = props.surface
+  {showLithostratigraphy, showSequenceStratigraphy} = useSettings()
+  if type == 'lithostrat'
+    stroke = '#ccc'
+    strokeWidth = 1
+    if not showLithostratigraphy
+      return null
+  if type == 'sequence-strat'
+    {stroke, strokeWidth} = sectionSurfaceProps(props.surface)
+    if not showSequenceStratigraphy
+      return null
+
+  onClick = ->
+    v = if type == 'lithostrat' then "Lithostratigraphic" else "Sequence-stratigraphic"
+    Notification.show {
+      message: h 'div', [
+        "#{v} surface "
+        h 'code', surface_id
+        h.if(note?) ": #{note}"
+      ]
+    }
+
+  h SectionLink, {props..., stroke, strokeWidth, onClick}
+
+SectionLinkOverlay = (props)->
+  {surfaces, showSectionTrackers, connectLines} = props
+  return null unless surfaces.length
+
+  surfacesNew = prepareLinkData({
+    props...,
+    sectionIndex: useContext(SectionObserverContext)
+  })
+
+  {width, height} = props
+  h SVG, {
+    id: "section-link-overlay",
+    width,
+    height
+  }, [
+    h.if(showSectionTrackers) SectionTrackerRects
+    h 'g.section-links', surfacesNew.map (surface)->
+      h FilteredSectionLink, {surface, connectLines}
+  ]
+
+SectionLinkOverlay.defaultProps = {
+  connectLines: true
+  showSectionTrackers: false
+}
 
 export {
   SectionLinkOverlay
