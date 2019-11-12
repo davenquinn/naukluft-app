@@ -41,13 +41,13 @@ GeneralizedSectionPositions = {
   Ubisis: {x: 5, y: 290}
 }
 
-class LinkOverlay extends LinkOverlayBase
+class LinkOverlay extends Component
   render: ->
     return null
-    {width, height} = @props
-    h 'g#section-link-overlay', [
-      h 'g.section-links', @prepareData().map @buildLink
-    ]
+    # {width, height} = @props
+    # h 'g#section-link-overlay', [
+    #   h 'g.section-links', @prepareData().map @buildLink
+    # ]
 
 SectionPane = (props)->
   {dimensions, surfaces, sectionData} = props

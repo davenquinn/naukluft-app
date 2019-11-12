@@ -114,11 +114,11 @@ class SectionComponent extends KnownSizeComponent
 
     lithologyLeftMargin = 0
     if @props.showFaciesTracts
-      lithologyLeftMargin += @props.lithologyWidth
-    columnLeftMargin = lithologyLeftMargin + @props.lithologyWidth
+      lithologyLeftMargin += lithologyWidth
+    columnLeftMargin = lithologyLeftMargin + lithologyWidth
 
-    grainsizeWidth = 168*zoom+lithologyWidth
-    grainsizeScaleStart = 88*zoom+columnLeftMargin
+    grainsizeWidth = 168*zoom
+    grainsizeScaleStart = 88*zoom
 
     grainsizeRange = [grainsizeScaleStart, grainsizeWidth]
 
@@ -140,6 +140,8 @@ class SectionComponent extends KnownSizeComponent
                     message: "Section #{id} @ #{fmt(height)} m"
                     intent: Intent.PRIMARY
                   }
+                scrollContainer: ->
+                  document.querySelector('.section-pane')
               }
               h ModalEditor, {
                 isOpen: editingInterval.id?
@@ -153,8 +155,8 @@ class SectionComponent extends KnownSizeComponent
                 onUpdate: @onIntervalUpdated
               }
               h GrainsizeLayoutProvider, {
-                width: grainsizeWidth+lithologyLeftMargin,
-                grainsizeScaleStart
+                width: grainsizeWidth+columnLeftMargin,
+                grainsizeScaleStart: grainsizeScaleStart+columnLeftMargin
               }, [
                 h DivisionEditOverlay, {
                   onClick: @onEditInterval

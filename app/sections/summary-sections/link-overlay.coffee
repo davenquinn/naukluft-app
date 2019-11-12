@@ -1,5 +1,5 @@
 import {Component, createContext, useContext, useState, useEffect, useLayoutEffect} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
 import classNames from "classnames"
 import * as d3 from "d3"
 import {SVGNamespaces} from "../util"
@@ -7,7 +7,7 @@ import {Notification} from "../../notify"
 import T from "prop-types"
 import update from 'immutability-helper'
 import {ColumnContext} from '#/context'
-import {expandInnerSize} from '#'
+import {expandInnerSize, SVG} from '#'
 
 sectionSurfaceProps = (surface)->
     {surface_type, surface_order} = surface
@@ -84,8 +84,6 @@ prepareLinkData = (props)->
   return null unless surfaces.length
   {triangleBarsOffset} = props
 
-  #sectionIndex = groupedSections.index
-
   ## Deconflict surfaces
   ## The below is a fairly complex way to make sure multiple surfaces
   ## aren't connected in the same stack.
@@ -158,14 +156,13 @@ prepareLinkData = (props)->
 
 # https://www.particleincell.com/2012/bezier-splines/
 
-ZeroPadding = {left: 0, right: 0, top: 0, bottom: 0}
-
-class SectionTrackers extends Component
-  render: ->
-    {sectionPositions} = @props
-    h 'g.section-trackers', sectionPositions.map (d)->
-      {x,y,width,height} = d
-      h 'rect.section-tracker', {x,y,width,height}
+SectionTrackerRects = (props)->
+  sectionPositions = useContext(SectionObserverContext)
+  sections = Object.values(sectionPositions)
+  h 'g.section-trackers', sections.map (d)->
+    {x,y,scale, width, height} = d
+    return null unless scale?
+    h 'rect.section-tracker', {x,y, width, height, props...}
 
 class SectionLinkOverlay extends Component
   @contextType: SectionObserverContext
@@ -177,7 +174,7 @@ class SectionLinkOverlay extends Component
     connectLines: true
     showLithostratigraphy: true
     showCarbonIsotopes: false
-    sectionOptions: {}
+    showSectionTrackers: false
   }
   constructor: (props)->
     super props
@@ -189,18 +186,12 @@ class SectionLinkOverlay extends Component
   buildLink: (surface)=>
     {paddingLeft, marginTop,
      showLithostratigraphy, showSequenceStratigraphy
-     showCarbonIsotopes, groupedSections,
      connectLines
     } = @props
     {section_height, surface_id, unit_commonality,
      type, flooding_surface_order, note} = surface
 
     values = [section_height...]
-    if showCarbonIsotopes
-      v = section_height.find (d)->d.section == 'J'
-      if v?
-        {section, rest...} = v
-        values.push {section: 'carbon-isotopes', rest...}
 
     if type == 'lithostrat'
       stroke = '#ccc'
@@ -237,8 +228,6 @@ class SectionLinkOverlay extends Component
 
 
     heights.sort (a,b)-> a.x0 - b.x0
-
-    console.log heights
 
     return null if heights.length < 2
 
@@ -280,58 +269,29 @@ class SectionLinkOverlay extends Component
 
     h 'g', links
 
-  prepareData: =>
-    sectionIndex = @context
-    console.log sectionIndex
-    prepareLinkData({@props..., sectionIndex})
-
-  renderSectionTrackers: ->
-    {groupedSections, skeletal} = @props
-    return null if not skeletal
-    # Compute the position of sections by index
-    # This could be moved to a context instance probably
-    ix = ({id: k, v.position...} for k,v of groupedSections.index)
-    h SectionTrackers, {sectionPositions: ix}
-
   render: ->
-    {skeletal, marginTop,
-     showLithostratigraphy, surfaces} = @props
+    {surfaces, showSectionTrackers} = @props
     return null unless surfaces.length
-    sectionIndex = @context
 
-    surfacesNew = prepareLinkData({@props..., sectionIndex})
+    surfacesNew = prepareLinkData({
+      @props...,
+      sectionIndex: @context
+    })
 
     {width, height} = @props
-    style = {top: marginTop}
-    h 'svg#section-link-overlay', {
-      SVGNamespaces...
-      width, height, style}, [
-      @renderSectionTrackers()
+    h SVG, {
+      id: "section-link-overlay",
+      width,
+      height
+    }, [
+      h.if(showSectionTrackers) SectionTrackerRects
       h 'g.section-links', surfacesNew.map @buildLink
     ]
 
-class SectionLinkHOC extends Component
-  render: ->
-    h SectionLinkOverlay, @props
-
-SectionLinkOverlay2 = (props)->
-  sectionPositions = useContext(SectionObserverContext)
-  pos = Object.values(sectionPositions)
-  style = {
-    position: 'absolute'
-    zIndex: 100
-  }
-  h 'svg', {height: 2000, width: 3800, style}, pos.map (d)->
-    {x,y,scale, width, height} = d
-    return null unless scale?
-    h 'rect', {x,y, width, height, fill: 'red'}
-
 export {
-  SectionLinkHOC as SectionLinkOverlay
-  SectionLinkOverlay as LinkOverlayBase
+  SectionLinkOverlay
   SectionPositionProvider
   SectionPositionContext
-  SectionLinkOverlay2
   sectionSurfaceProps
   ColumnTracker
   prepareLinkData
