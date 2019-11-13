@@ -104,6 +104,44 @@ ColumnIsotopes = (props)->
     }
   ]
 
+SequenceStratViews = (props)->
+  {id} = props
+  {sequenceStratOrder, showFloodingSurfaces, showTriangleBars} = useSettings()
+  h [
+    h.if(showFloodingSurfaces) FloodingSurface, {
+      offsetLeft: -40
+      lineWidth: 30
+    }
+    h.if(showTriangleBars) TriangleBars, {
+      id
+      offsetLeft: 0
+      lineWidth: 20
+      orders: [
+        sequenceStratOrder,
+        sequenceStratOrder-1
+      ]
+    }
+  ]
+
+calcColumnWidth = (props)->
+  {baseWidth} = props
+  o = useSettings()
+
+  width = baseWidth
+  width += 40 # Symbol column
+
+  if o.isotopesPerSection
+    if o.showCarbonIsotopes
+      width += 40
+    if o.showOxygenIsotopes
+      width += 40
+
+  if o.showTriangleBars
+    width += 40
+
+  return width
+
+
 SVGSectionInner = (props)->
   {id, zoom, padding, lithologyWidth,
    innerWidth, onResize, marginLeft,
@@ -132,13 +170,11 @@ SVGSectionInner = (props)->
   overhangLeft = 0
   overhangRight = 0
 
+
   {triangleBarsOffset: tbo, triangleBarRightSide: onRight} = props
   marginLeft -= tbo
   marginRight = 0
   outerWidth += tbo
-  if props.isotopesPerSection
-    isotopesWidth = 60
-    outerWidth += 100
 
   if showTriangleBars
     offsetLeft = -tbo+35
@@ -155,7 +191,7 @@ SVGSectionInner = (props)->
   domID = "column-#{id}"
 
   # We need to change this!
-  overallWidth = 150
+  overallWidth = calcColumnWidth {baseWidth: 150}
 
   grainsizeScaleStart = 40
 
@@ -189,13 +225,13 @@ SVGSectionInner = (props)->
             top: padding.top
           }
           h ColumnSVG, {
-            width: outerWidth
+            width: overallWidth
             paddingTop: padding.top
             paddingBottom: padding.bottom
             paddingLeft: padding.left
           }, [
             h.if(props.showWhiteUnderlay) 'rect.underlay', {
-              width: outerWidth
+              width: overallWidth
               height: innerHeight+10
               x: -left
               y: -5
@@ -207,19 +243,7 @@ SVGSectionInner = (props)->
               left: 90
               id
             }
-            h.if(props.showFloodingSurfaces) FloodingSurface, {
-              offsetLeft: -40
-              lineWidth: 30
-            }
-            h.if(props.showTriangleBars) TriangleBars, {
-              id
-              offsetLeft
-              lineWidth: 20
-              orders: [
-                props.sequenceStratOrder,
-                props.sequenceStratOrder-1
-              ]
-            }
+            h SequenceStratViews, {id}
             h ColumnIsotopes, {
               id,
               columnWidth: props.isotopeColumnWidth
