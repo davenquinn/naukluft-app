@@ -29,7 +29,6 @@ import {PlatformContext} from "../../platform"
 import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
-import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {MinimalIsotopesColumn} from './chemostrat'
 import {FaciesTractIntervals} from '../column/facies-tracts'
 
@@ -88,210 +87,183 @@ ColumnSummaryAxis = (props)->
 
 ColumnIsotopes = (props)->
   opts = useSettings()
-  {id} = props
+  {id, columnWidth} = props
+  columnWidth ?= 40
   return null unless opts.isotopesPerSection
   h [
     h.if(opts.showCarbonIsotopes) MinimalIsotopesColumn, {
-      width: 40,
+      width: columnWidth,
       section: id
       transform: 'translate(120)'
     }
     h.if(opts.showOxygenIsotopes) MinimalIsotopesColumn, {
-      width: 40,
+      width: columnWidth,
       section: id
       transform: 'translate(160)'
       system: 'delta18o'
     }
   ]
 
-class BaseSVGSectionComponent extends KnownSizeComponent
-  @contextType: ColumnSurfacesContext
-  @defaultProps: {
-    zoom: 1
-    pixelsPerMeter: 20
-    inEditMode: false
-    skeletal: false
-    offset: 0
-    offsetTop: null
-    useRelativePositioning: true
-    showTriangleBars: false
-    trackVisibility: false
-    innerWidth: 100
-    height: 100 # Section height in meters
-    lithologyWidth: 40
-    showWhiteUnderlay: true
-    showFacies: true
-    triangleBarsOffset: 0
-    triangleBarRightSide: false
-    onResize: ->
-    marginLeft: -10
-    padding: {
-      left: 30
-      top: 10
-      right: 20
-      bottom: 28
-    }
-  }
-  @propTypes: {
-    #inEditMode: T.bool
-    range: T.arrayOf(T.number).isRequired
-    isotopesPerSection: T.bool
-  }
-  constructor: (props)->
-    super props
-    @measureRef = createRef()
+SVGSectionInner = (props)->
+  {id, zoom, padding, lithologyWidth,
+   innerWidth, onResize, marginLeft,
+   showFacies, height,
+   showTriangleBars,
+   showFloodingSurfaces,
+   showWhiteUnderlay,
+   inEditMode
+   position,
+   range,
+   children
+   } = props
 
-    @state = {
-      @state...
-      hoveredInterval: null
-      popoverIsOpen: false
-      visible: not @props.trackVisibility
-    }
+  {heightScale} = position
+  innerHeight = heightScale.pixelHeight()
+  marginTop = heightScale.pixelOffset()
 
-  hoverAdjacent: (offset=1) => =>
-    {divisions} = @props
-    {hoveredInterval} = @state
-    return if not hoveredInterval?
-    ix = divisions.findIndex (d)->d.id = hoveredInterval.id
-    return unless ix?
-    newDiv = divisions[ix+offset]
-    return unless newDiv?
-    @setState {hoveredInterval: newDiv}
+  {left, top, right, bottom} = padding
 
-  onIntervalUpdated: =>
-    console.log "Updating intervals"
-    {id: section} = @props
-    # Could potentially make this fetch less
-    divisions = await @context.updateDivisions()
-    {hoveredInterval} = @state
-    return unless hoveredInterval?
-    newHovered = divisions.find (d)-> d.id == hoveredInterval.id
-    @setState {hoveredInterval: newHovered}
+  outerHeight = innerHeight+(top+bottom)
+  outerWidth = innerWidth+(left+right)
 
-  render: ->
-    {id, zoom, padding, lithologyWidth,
-     innerWidth, onResize, marginLeft,
-     showFacies, height,
-     showTriangleBars,
-     showFloodingSurfaces,
-     showWhiteUnderlay,
-     inEditMode
-     position,
-     range,
-     pixelsPerMeter
-     children
-     } = @props
+  {divisions} = useContext(ColumnSurfacesContext)
+  divisions = divisions.filter (d)->not d.schematic
 
-    {heightScale} = position
-    innerHeight = heightScale.pixelHeight()
-    marginTop = heightScale.pixelOffset()
+  overhangLeft = 0
+  overhangRight = 0
 
-    {left, top, right, bottom} = padding
+  {triangleBarsOffset: tbo, triangleBarRightSide: onRight} = props
+  marginLeft -= tbo
+  marginRight = 0
+  outerWidth += tbo
+  if props.isotopesPerSection
+    isotopesWidth = 60
+    outerWidth += 100
 
-    outerHeight = innerHeight+(top+bottom)
-    outerWidth = innerWidth+(left+right)
+  if showTriangleBars
+    offsetLeft = -tbo+35
+    if onRight
+      overhangRight = 45
+      offsetLeft *= -1
+      offsetLeft += tbo+20
+    else
+      overhangLeft = 25
+      left = tbo
 
-    {divisions} = @context
-    {visible} = @state
-    divisions = divisions.filter (d)->not d.schematic
+  # Expand SVG past bounds of section
 
-    {skeletal} = @props
+  domID = "column-#{id}"
 
-    overhangLeft = 0
-    overhangRight = 0
+  # We need to change this!
+  overallWidth = 150
 
-    {triangleBarsOffset: tbo, triangleBarRightSide: onRight} = @props
-    marginLeft -= tbo
-    marginRight = 0
-    outerWidth += tbo
-    if @props.isotopesPerSection
-      isotopesWidth = 60
-      outerWidth += 100
+  grainsizeScaleStart = 40
 
-    if showTriangleBars
-      offsetLeft = -tbo+35
-      if onRight
-        overhangRight = 45
-        offsetLeft *= -1
-        offsetLeft += tbo+20
-      else
-        overhangLeft = 25
-        left = tbo
-
-    # Expand SVG past bounds of section
-
-    domID = "column-#{id}"
-
-    grainsizeScaleStart = 40
-
-    h Box, {
-      className: 'section-container'
-      position: 'absolute'
-      top: marginTop
-      width: outerWidth
-      marginLeft: -overhangLeft
-      marginRight: -overhangRight
-    }, [
-      h 'div.section-header', [
-        h("h2", {style: {zIndex: 20}}, id)
-      ]
-      h 'div.section-outer', {id: domID}, [
-        h ColumnProvider, {
-          range
-          height: @props.height
-          zoom: 0.1
-          divisions
+  h Box, {
+    className: 'section-container'
+    position: 'absolute'
+    top: marginTop
+    width: outerWidth
+    marginLeft: -overhangLeft
+    marginRight: -overhangRight
+  }, [
+    h 'div.section-header', [
+      h("h2", {style: {zIndex: 20}}, id)
+    ]
+    h 'div.section-outer', {id: domID}, [
+      h ColumnProvider, {
+        range
+        height: props.height
+        zoom: 0.1
+        divisions
+      }, [
+        h ColumnTracker, {domID, id, width: overallWidth, padding: 10}
+        h GrainsizeLayoutProvider, {
+          width: innerWidth,
+          grainsizeScaleStart
         }, [
-          h ColumnTracker, {domID, id, width: 140, padding: 10}
-          h GrainsizeLayoutProvider, {
-            width: innerWidth,
-            grainsizeScaleStart
+          h EditOverlay, {
+            id,
+            allowEditing: true
+            left,
+            top: padding.top
+          }
+          h ColumnSVG, {
+            width: outerWidth
+            paddingTop: padding.top
+            paddingBottom: padding.bottom
+            paddingLeft: padding.left
           }, [
-            h EditOverlay, {
-              id,
-              allowEditing: true
-              left,
-              top: @props.padding.top
-            }
-            h ColumnSVG, {
+            h.if(props.showWhiteUnderlay) 'rect.underlay', {
               width: outerWidth
-              paddingTop: @props.padding.top
-              paddingBottom: @props.padding.bottom
-              paddingLeft: @props.padding.left
-            }, [
-              h.if(@props.showWhiteUnderlay) 'rect.underlay', {
-                width: outerWidth
-                height: innerHeight+10
-                x: -left
-                y: -5
-                fill: 'white'
-              }
-              h ColumnMain
-              h ManagedSymbolColumn, {
-                left: 90
-                id
-              }
-              h.if(@props.showFloodingSurfaces) FloodingSurface, {
-                offsetLeft: -40
-                lineWidth: 30
-              }
-              h.if(@props.showTriangleBars) TriangleBars, {
-                id
-                offsetLeft
-                lineWidth: 20
-                orders: [
-                  @props.sequenceStratOrder,
-                  @props.sequenceStratOrder-1
-                ]
-              }
-              h ColumnSummaryAxis
-              h ColumnIsotopes, {id}
-            ]
+              height: innerHeight+10
+              x: -left
+              y: -5
+              fill: 'white'
+            }
+            h ColumnSummaryAxis
+            h ColumnMain
+            h ManagedSymbolColumn, {
+              left: 90
+              id
+            }
+            h.if(props.showFloodingSurfaces) FloodingSurface, {
+              offsetLeft: -40
+              lineWidth: 30
+            }
+            h.if(props.showTriangleBars) TriangleBars, {
+              id
+              offsetLeft
+              lineWidth: 20
+              orders: [
+                props.sequenceStratOrder,
+                props.sequenceStratOrder-1
+              ]
+            }
+            h ColumnIsotopes, {
+              id,
+              columnWidth: props.isotopeColumnWidth
+            }
           ]
-          children
         ]
+        children
       ]
     ]
+  ]
+
+
+SVGSectionInner.defaultProps = {
+  zoom: 1
+  inEditMode: false
+  skeletal: false
+  isotopeColumnWidth: 40
+  offset: 0
+  offsetTop: null
+  useRelativePositioning: true
+  showTriangleBars: false
+  trackVisibility: false
+  innerWidth: 100
+  height: 100 # Section height in meters
+  lithologyWidth: 40
+  showWhiteUnderlay: true
+  showFacies: true
+  triangleBarsOffset: 0
+  triangleBarRightSide: false
+  onResize: ->
+  marginLeft: -10
+  padding: {
+    left: 30
+    top: 10
+    right: 20
+    bottom: 28
+  }
+}
+
+SVGSectionInner.propTypes = {
+  #inEditMode: T.bool
+  range: T.arrayOf(T.number).isRequired
+  isotopesPerSection: T.bool
+}
 
 
 SVGSectionComponent = (props)->
@@ -302,7 +274,7 @@ SVGSectionComponent = (props)->
   sequenceStratOrder} = useContext(SequenceStratContext)
 
   h ColumnSurfacesProvider, {id, divisions}, (
-    h BaseSVGSectionComponent, {
+    h SVGSectionInner, {
       showTriangleBars, showFloodingSurfaces,
       sequenceStratOrder, inEditMode, props...,
     }
