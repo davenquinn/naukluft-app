@@ -231,7 +231,7 @@ class MinimalIsotopesColumnInner extends Component
     system: 'delta13c'
     offsetTop: null
     colorScheme: d3.schemeCategory10
-    corrected: false
+    correctIsotopeRatios: false
     padding:
       left: 10
       top: 10
@@ -258,7 +258,11 @@ class MinimalIsotopesColumnInner extends Component
     @setState {isotopes}
 
   render: ->
-    {padding, label, transform, system, corrected, label} = @props
+    {
+      padding, label, transform,
+      system, corrected, label
+      correctIsotopeRatios
+    } = @props
     {width: innerWidth, xScale} = @context
     {left, top, right, bottom} = padding
     {isotopes} = @state
@@ -267,7 +271,7 @@ class MinimalIsotopesColumnInner extends Component
 
     h 'g.isotopes-column', {transform}, [
       h MinimalColumnScale, {system}
-      h IsotopesDataArea, {system, corrected}, [
+      h IsotopesDataArea, {system, correctIsotopeRatios}, [
         h 'g.data-points', isotopes.map (d)=>
           h IsotopeDataPoint, {
             datum: d,
@@ -300,8 +304,9 @@ IsotopesColumn.defaultProps = {
 
 MinimalIsotopesColumn = (props)->
   {width, domain, rest...} = props
+  {correctIsotopeRatios} = useSettings()
   h CrossAxisLayoutProvider, {width, domain}, (
-    h MinimalIsotopesColumnInner, rest
+    h MinimalIsotopesColumnInner, {correctIsotopeRatios, rest...}
   )
 
 MinimalIsotopesColumn.defaultProps = IsotopesColumn.defaultProps

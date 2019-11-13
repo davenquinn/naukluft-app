@@ -24,7 +24,7 @@ sectionOffsets = {
   H: 310
   I: 30
   J: -5
-  M: 10
+  M: 180
 }
 
 groupOffsets = {
@@ -35,9 +35,9 @@ groupOffsets = {
 
 groupOrder = [
   'Onis'
+  'Naukluft'
   'Ubisis'
   'Tsams'
-  'Naukluft'
   'Büllsport'
 ]
 

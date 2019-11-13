@@ -231,7 +231,12 @@ SectionLink = (props)->
       d += "M#{width},0"
     fill = 'none'
 
-    h 'path', {d, className, stroke, strokeWidth, fill, onClick}
+    h 'path', {
+      d, className, stroke,
+      strokeWidth, fill,
+      onClick
+      style: {cursor: if onClick then 'pointer' else null}
+    }
 
   h 'g', links
 
@@ -243,7 +248,7 @@ SectionLink.propTypes = {
 }
 
 FilteredSectionLink = (props)->
-  {type, note, id: surface_id} = props.surface
+  {type, note, surface_id} = props.surface
   {showLithostratigraphy, showSequenceStratigraphy} = useSettings()
   if type == 'lithostrat'
     stroke = '#ccc'
@@ -261,7 +266,9 @@ FilteredSectionLink = (props)->
       message: h 'div', [
         "#{v} surface "
         h 'code', surface_id
-        h.if(note?) ": #{note}"
+        h.if(note?) [
+          ": #{note}"
+        ]
       ]
     }
 

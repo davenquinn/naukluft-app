@@ -191,7 +191,7 @@ SVGSectionInner = (props)->
   domID = "column-#{id}"
 
   # We need to change this!
-  overallWidth = calcColumnWidth {baseWidth: 150}
+  overallWidth = calcColumnWidth {baseWidth: 120}
 
   grainsizeScaleStart = 40
 
@@ -199,7 +199,7 @@ SVGSectionInner = (props)->
     className: 'section-container'
     position: 'absolute'
     top: marginTop
-    width: outerWidth
+    width: overallWidth
     marginLeft: -overhangLeft
     marginRight: -overhangRight
   }, [
@@ -213,7 +213,7 @@ SVGSectionInner = (props)->
         zoom: 0.1
         divisions
       }, [
-        h ColumnTracker, {domID, id, width: overallWidth, padding: 10}
+        h ColumnTracker, {domID, id, width: overallWidth-40, padding: 10}
         h GrainsizeLayoutProvider, {
           width: innerWidth,
           grainsizeScaleStart
