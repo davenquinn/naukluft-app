@@ -12,6 +12,7 @@ import classNames from "classnames"
 import chroma from "chroma-js"
 import {AxisBottom} from '@vx/axis'
 
+import {useIsotopes} from './data-manager'
 import {sectionSurfaceProps} from '../link-overlay'
 import {query} from "../../db"
 import sql from '../../sql/carbon-isotopes.sql'
@@ -25,6 +26,7 @@ import {
   ColumnSVG,
   CrossAxisLayoutProvider,
   ColumnLayoutContext
+  useSettings
 } from '#'
 import T from 'prop-types'
 
@@ -82,26 +84,9 @@ class IsotopesColumnInner extends Component
       right: 10
       bottom: 30
   }
-  constructor: (props)->
-    super props
-    {system} = @props
-    @state = {
-      colorScale: d3.scaleOrdinal(d3.schemeCategory10)
-      isotopes: []
-    }
-
-    column = 'avg_'+system
-
-
-    query(sql).then(@setupData)
-
-  setupData: (isotopes)=>
-    isotopes = d3.nest()
-      .key (d)->d.section
-      .entries isotopes
-      .sort (a,b)-> a.height < b.height
-    @setState {isotopes}
-
+  @propTypes: {
+    isotopes: T.object.isRequired
+  }
   render: ->
     {padding, label} = @props
     {width: innerWidth} = @context
@@ -153,11 +138,12 @@ class IsotopesColumnInner extends Component
       }
 
   renderData: =>
-    {system, corrected} = @props
-    {isotopes} = @state
+    {system, corrected, isotopes} = @props
+    return null unless isotopes?
 
     cscale = d3.scaleOrdinal(@props.colorScheme)
-    h IsotopesDataArea, {system, corrected}, isotopes.map ({key, values}, i)=>
+    allIsotopes = Array.from(isotopes).filter ([k,v])->not ['K','W1','L'].includes(k)
+    h IsotopesDataArea, {system, corrected}, allIsotopes.map ([key, values], i)=>
       topDatum = values[values.length-1]
       #[x,y] = @locatePoint values[values.length-1]
       fill = stroke = cscale(i)
@@ -166,7 +152,7 @@ class IsotopesColumnInner extends Component
         h 'g.data-points', values.map (d)=>
           actualStroke = stroke
           if not d.in_zebra_nappe
-            actualStroke = chroma(stroke).brighten(2).css()
+            actualStroke = chroma(stroke).brighten(2).desaturate(2).css()
 
           h IsotopeDataPoint, {
             datum: d,
@@ -241,37 +227,29 @@ class MinimalIsotopesColumnInner extends Component
 
   @propTypes: {
     section: T.string.isRequired
+    isotopes: T.arrayOf(T.object).isRequired
   }
-
-  constructor: (props)->
-    super props
-    {system} = @props
-    @state = {
-      isotopes: []
-    }
-    query(allCarbonIsotopes).then(@setupData)
-
-  setupData: (data)=>
-    isotopes = data
-      .filter (d)=> d.section == @props.section
-      .sort (a,b)-> a.orig_height < b.orig_height
-    @setState {isotopes}
 
   render: ->
     {
       padding, label, transform,
       system, corrected, label
       correctIsotopeRatios
+      isotopes
     } = @props
     {width: innerWidth, xScale} = @context
     {left, top, right, bottom} = padding
-    {isotopes} = @state
 
     stroke = if system == 'delta13c' then 'dodgerblue' else 'red'
 
     h 'g.isotopes-column', {transform}, [
       h MinimalColumnScale, {system}
-      h IsotopesDataArea, {system, correctIsotopeRatios}, [
+      h IsotopesDataArea, {
+        system,
+        correctIsotopeRatios
+        getHeight: (d)->
+          d.orig_height
+      }, [
         h 'g.data-points', isotopes.map (d)=>
           h IsotopeDataPoint, {
             datum: d,
@@ -288,8 +266,9 @@ class MinimalIsotopesColumnInner extends Component
 
 IsotopesColumn = (props)->
   {width, domain, rest...} = props
+  isotopes = useIsotopes()
   h CrossAxisLayoutProvider, {width, domain}, (
-    h IsotopesColumnInner, rest
+    h IsotopesColumnInner, {isotopes, rest...}
   )
 
 IsotopesColumn.propTypes = {
@@ -303,10 +282,19 @@ IsotopesColumn.defaultProps = {
 }
 
 MinimalIsotopesColumn = (props)->
-  {width, domain, rest...} = props
+  {width, domain, section, rest...} = props
   {correctIsotopeRatios} = useSettings()
+  isotopes = useIsotopes()
+  return null unless isotopes?
+  vals = isotopes.get(section)
+  return null unless vals?
   h CrossAxisLayoutProvider, {width, domain}, (
-    h MinimalIsotopesColumnInner, {correctIsotopeRatios, rest...}
+    h MinimalIsotopesColumnInner, {
+      correctIsotopeRatios,
+      isotopes: vals,
+      section
+      rest...
+    }
   )
 
 MinimalIsotopesColumn.defaultProps = IsotopesColumn.defaultProps

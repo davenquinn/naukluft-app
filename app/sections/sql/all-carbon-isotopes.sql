@@ -12,8 +12,14 @@ SELECT
   c.std_delta13c_corr,
   c.std_delta18o_corr,
   s.section,
-  s.height,
-  coalesce(a.failure_mode, ss.failure_mode) failure_mode
+  s.height orig_height,
+  coalesce(a.failure_mode, ss.failure_mode) failure_mode,
+  (section.normalized_height(section::text, s.height::numeric)).*,
+  CASE
+  WHEN (section = 'J' AND height < 14.3) THEN false
+  WHEN section = 'W1' THEN false
+  ELSE true
+  END AS in_zebra_nappe
 FROM carbon_isotopes.analysis a
 JOIN carbon_isotopes.sample s
   ON s.id = a.sample_id
@@ -24,6 +30,6 @@ JOIN carbon_isotopes.analysis_session ss
 )
 SELECT *
 FROM a
-WHERE height IS NOT null
+WHERE orig_height IS NOT null
   AND failure_mode IS null
 ORDER BY height;

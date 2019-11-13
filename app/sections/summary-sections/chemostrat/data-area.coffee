@@ -17,20 +17,21 @@ valueAtStdev = (opts)->
     return v
 
 createPointLocator = (opts)->
-  {xScale, scale, rest...} = opts
+  {xScale, scale, getHeight, rest...} = opts
   val = valueAtStdev(rest)
   (d, s=0)->
     v = val(d, s)
-    [xScale(v), scale(parseFloat(d.height))]
+    [xScale(v), scale(getHeight(d))]
 
 IsotopesDataContext = createContext()
 
 IsotopesDataArea = (props)->
   {xScale, scale} = useContext(ColumnLayoutContext)
-  {corrected, system, children} = props
+  {corrected, system, children, getHeight} = props
+  getHeight ?= (d)->d.height
 
   # Handlers for creating points and lines
-  pointLocator = createPointLocator({xScale, scale, corrected, system})
+  pointLocator = createPointLocator({xScale, scale, corrected, system, getHeight})
 
   column = 'avg_'+system
   if corrected

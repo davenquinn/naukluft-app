@@ -10,6 +10,7 @@ import {SequenceStratProvider} from "./sequence-strat-context"
 import {PhotoLibraryProvider} from '#'
 import h from "react-hyperscript"
 import "./main.styl"
+import {IsotopesDataProvider} from './summary-sections/chemostrat/data-manager'
 import sectionSurfaceQuery from "./sql/section-surface.sql"
 import photoQuery from "./sql/photo.sql"
 import sectionsQuery from "./sql/sections.sql"
@@ -78,7 +79,9 @@ class SectionDataProvider extends Component
       h FaciesProvider, {surfaces}, [
         h PhotoLibraryProvider, {photos, computePhotoPath}, [
           h SequenceStratProvider, null, [
-            h SectionContext.Provider, {value: {sections}}, @props.children
+            h IsotopesDataProvider, null, [
+              h SectionContext.Provider, {value: {sections}}, @props.children
+            ]
           ]
         ]
       ]
