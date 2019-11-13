@@ -129,7 +129,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
       left: 30
       top: 10
       right: 20
-      bottom: 10
+      bottom: 28
     }
   }
   @propTypes: {
@@ -256,7 +256,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
             h ColumnSVG, {
               width: outerWidth
               paddingTop: @props.padding.top
-              paddingBottom: 10
+              paddingBottom: @props.padding.bottom
               paddingLeft: @props.padding.left
             }, [
               h.if(@props.showWhiteUnderlay) 'rect.underlay', {

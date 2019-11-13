@@ -121,6 +121,7 @@ SectionPane = (props) ->
   minHeight = 1500
 
   options = useSettings()
+  showChemostrat = not options.isotopesPerSection
 
   h 'div#section-pane', {style: {overflow: 'scroll'}}, [
     h "div#section-page-inner", {
@@ -137,7 +138,7 @@ SectionPane = (props) ->
         offset
         rest...
       }
-      h ChemostratigraphyColumn, {
+      h.if(showChemostrat) ChemostratigraphyColumn, {
         sections
         surfaces
         options

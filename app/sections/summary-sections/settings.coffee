@@ -32,7 +32,7 @@ defaultSettings = {
   showLithostratigraphy: true
   showSequenceStratigraphy: true
   showCarbonIsotopes: true
-  chemostratigraphyPerSection: false
+  isotopesPerSection: false
   correctIsotopeRatios: false
 }
 

@@ -1,6 +1,7 @@
 import {withRouter} from "react-router-dom"
 import {findDOMNode} from "react-dom"
 import * as d3 from "d3"
+import {scaleLinear} from 'd3-scale'
 import {line} from 'd3-shape'
 import "d3-selection-multi"
 import {Component, createElement, createContext, useContext} from "react"
@@ -9,6 +10,7 @@ import Measure from 'react-measure'
 import {SectionAxis} from "#/axis"
 import classNames from "classnames"
 import chroma from "chroma-js"
+import {AxisBottom} from '@vx/axis'
 
 import {sectionSurfaceProps} from '../link-overlay'
 import {query} from "../../db"
@@ -37,6 +39,24 @@ IsotopeText = ({datum, text, rest...})->
 
 IsotopeText.propTypes = {
   datum: T.object.isRequired
+}
+
+ScaleLine = (props)->
+  {value, className, labelBottom, labelOffset, rest...} = props
+  labelBottom ?= false
+  labelOffset ?= 12
+  {xScale, scale, pixelHeight} = useContext(ColumnLayoutContext)
+  x = xScale(value)
+  transform = "translate(#{x})"
+  className = classNames(className, {zero: value == 0})
+  h 'g.tick', {transform, className, key: value}, [
+    h 'line', {x0: 0, x1: 0, y0: 0, y1: pixelHeight, rest...}
+    h.if(labelBottom) 'text', {y: pixelHeight+labelOffset}, "#{value}"
+  ]
+
+ScaleLine.propTypes = {
+  value: T.number.isRequired
+  labelBottom: T.bool
 }
 
 class IsotopesColumnInner extends Component
@@ -166,18 +186,42 @@ class IsotopesColumnInner extends Component
       ]
 
   renderScale: =>
-    {height} = @props
-    {xScale, scale} = @context
+    {xScale} = @context
     v = xScale.ticks()
     h 'g.scale', v.map (d)->
-      x = xScale(d)
-      y = scale(0)
-      transform = "translate(#{x})"
-      className = classNames {zero: d == 0}
-      h 'g.tick', {transform, className, key: d}, [
-        h 'line', {x0: 0, x1: 0, y0: 0, y1: y}
-        h 'text', {y: y+12}, "#{d}"
-      ]
+      h ScaleLine, {value: d, labelBottom: true}
+
+partialScale = (scale, domain)->
+  scale.copy()
+    .domain domain
+    .range domain.map(scale)
+
+MinimalColumnScale = (props)->
+  {system} = props
+  {xScale, pixelHeight} = useContext(ColumnLayoutContext)
+  label = if system == 'delta13c' then 'δ¹³C' else 'δ¹⁸O'
+
+  h 'g.scale.isotope-scale-axis', [
+    h ScaleLine, {value: 0, stroke: '#ddd'}
+    h ScaleLine, {value: -8, stroke: '#ddd', strokeDasharray: '2 6'}
+    h AxisBottom, {
+      scale: xScale
+      rangePadding: -4
+      tickLength: 3
+      tickValues: [-8,0]
+      top: pixelHeight
+      tickLabelProps: (tickValue, i)->
+        # Compensate for negative sign
+        if tickValue < 0
+          dx = -2
+        return {
+          dy: '-1px', dx, fontSize: 10,
+          textAnchor: 'middle', fill: '#aaa'
+        }
+      labelOffset: 0
+      label
+    }
+  ]
 
 class MinimalIsotopesColumnInner extends Component
   @contextType: ColumnLayoutContext
@@ -214,47 +258,28 @@ class MinimalIsotopesColumnInner extends Component
     @setState {isotopes}
 
   render: ->
-    {padding, label, transform} = @props
-    {width: innerWidth} = @context
+    {padding, label, transform, system, corrected, label} = @props
+    {width: innerWidth, xScale} = @context
     {left, top, right, bottom} = padding
-
-    h 'g.isotopes-column', {transform}, [
-      @renderScale()
-      @renderData()
-    ]
-
-  renderData: =>
-    {scale, xScale} = @context
     {isotopes} = @state
-    {system, corrected} = @props
+
     stroke = if system == 'delta13c' then 'dodgerblue' else 'red'
 
-    h IsotopesDataArea, {system, corrected}, [
-      h 'g.data-points', isotopes.map (d)=>
-        h IsotopeDataPoint, {
-          datum: d,
-          stroke,
-          strokeWidth: 4
-      }
-      h.if(@props.showLines) IsotopeDataLine, {
-        values: isotopes
-        stroke
-      }
-    ]
-
-  renderScale: =>
-    {height} = @props
-    {xScale, scale, pixelHeight} = @context
-    v = [0]
-    h 'g.scale', v.map (d)->
-      x = xScale(d)
-      y = scale(0)
-      transform = "translate(#{x})"
-      className = classNames {zero: d == 0}
-      h 'g.tick', {transform, className, key: d}, [
-        h 'line', {x0: 0, x1: 0, y0: 0, y1: pixelHeight, stroke: '#aaa'}
+    h 'g.isotopes-column', {transform}, [
+      h MinimalColumnScale, {system}
+      h IsotopesDataArea, {system, corrected}, [
+        h 'g.data-points', isotopes.map (d)=>
+          h IsotopeDataPoint, {
+            datum: d,
+            stroke,
+            strokeWidth: 4
+        }
+        h.if(@props.showLines) IsotopeDataLine, {
+          values: isotopes
+          stroke
+        }
       ]
-
+    ]
 
 
 IsotopesColumn = (props)->

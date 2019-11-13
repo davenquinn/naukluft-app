@@ -1,28 +1,8 @@
-import {withRouter} from "react-router-dom"
-import {findDOMNode} from "react-dom"
-import * as d3 from "d3"
 import {line} from 'd3-shape'
-import "d3-selection-multi"
-import {Component, createElement, createContext, useContext} from "react"
+import {createContext, useContext} from "react"
 import h from "@macrostrat/hyper"
-import Measure from 'react-measure'
-import {SectionAxis} from "#/axis"
-import classNames from "classnames"
-import chroma from "chroma-js"
-
-import {sectionSurfaceProps} from '../link-overlay'
-import {query} from "../../db"
-import sql from '../../sql/carbon-isotopes.sql'
-import allCarbonIsotopes from '../../sql/all-carbon-isotopes.sql'
-
-import {
-  ColumnSVG,
-  CrossAxisLayoutProvider,
-  ColumnLayoutContext
-} from '#'
+import {ColumnLayoutContext} from '#'
 import T from 'prop-types'
-
-fmt = d3.format('.1f')
 
 valueAtStdev = (opts)->
   {system, corrected} = opts

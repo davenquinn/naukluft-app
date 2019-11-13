@@ -14,6 +14,7 @@
     "@macrostrat/column-components": "file:./bundled-deps/column-components",
     "@macrostrat/hyper": "git+https://github.com/UW-Macrostrat/hyper.git",
     "@macrostrat/ui-components": "file:./bundled-deps/ui-components",
+    "@vx/axis": "0.0.192",
     "bluebird": "^3.5.0",
     "calculate-size": "^1.1.1",
     "chroma-js": "^1.2.1",
