@@ -29,7 +29,8 @@ ChemostratigraphyGroup = (props)->
 
 ChemostratigraphyColumn = (props)->
   {sections, surfaces, options, range} = props
-  {showCarbonIsotopes, showOxygenIsotopes} = options
+  {correctIsotopeRatios, showCarbonIsotopes, showOxygenIsotopes} = useSettings()
+
   return null unless showCarbonIsotopes or showOxygenIsotopes
 
   row = sections.find (d)->d.id == 'J'
@@ -44,6 +45,7 @@ ChemostratigraphyColumn = (props)->
       offset
       location: ""
       surfaces
+      corrected: correctIsotopeRatios
       rest...
     }
     h.if(showOxygenIsotopes) IsotopesColumn, {
@@ -52,6 +54,7 @@ ChemostratigraphyColumn = (props)->
       label: 'δ¹⁸O'
       domain: [-15,4]
       key: 'oxygen-isotopes',
+      corrected: correctIsotopeRatios
       offset
       location: ""
       surfaces

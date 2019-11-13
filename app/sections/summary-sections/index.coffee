@@ -83,6 +83,7 @@ SectionPane = (props) ->
    showFacies,
    showLegend,
    showLithostratigraphy,
+   isotopesPerSection
    activeMode} = useSettings()
 
   {showTriangleBars} = useContext(SequenceStratContext)
@@ -140,8 +141,6 @@ SectionPane = (props) ->
         sections
         surfaces
         options
-        showCarbonIsotopes
-        showOxygenIsotopes
       }
       h "div#section-container", [
         h.if(showLegend) Legend
@@ -174,6 +173,7 @@ SectionPane = (props) ->
                 key: row.id,
                 triangleBarRightSide: row.id == 'J'
                 showCarbonIsotopes,
+                isotopesPerSection
                 trackVisibility: false
                 offset
                 range

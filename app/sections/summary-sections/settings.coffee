@@ -33,6 +33,7 @@ defaultSettings = {
   showSequenceStratigraphy: true
   showCarbonIsotopes: true
   chemostratigraphyPerSection: false
+  correctIsotopeRatios: false
 }
 
 SettingsProvider = (props)->
@@ -51,6 +52,7 @@ SummarySectionsSettings = ->
     h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
     h SettingsSwitch, {id: 'showOxygenIsotopes', label: "Oxygen isotopes"}
     h SettingsSwitch, {id: 'isotopesPerSection', label: "Show isotopes for each section"}
+    h SettingsSwitch, {id: 'correctIsotopeRatios', label: "Experimental standard correction"}
     h SettingsSwitch, {id: 'showLithostratigraphy', label: "Lithostratigraphic correlations"}
     h SettingsSwitch, {id: 'showSequenceStratigraphy', label: "Sequence-stratigraphic correlations"}
     h SettingsSwitch, {id: 'showFacies', label: "Facies"}

@@ -1,8 +1,9 @@
 import {withRouter} from "react-router-dom"
 import {findDOMNode} from "react-dom"
 import * as d3 from "d3"
+import {line} from 'd3-shape'
 import "d3-selection-multi"
-import {Component, createElement} from "react"
+import {Component, createElement, createContext, useContext} from "react"
 import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
 import {SectionAxis} from "#/axis"
@@ -23,10 +24,88 @@ import T from 'prop-types'
 
 fmt = d3.format('.1f')
 
+valueAtStdev = (opts)->
+  {system, corrected} = opts
+  corrected ?= false
+  system ?= 'delta13c'
+  if corrected
+    system += "_corr"
+  (d, s=0)->
+    v = d['avg_'+system]
+    if s != 0
+      v += d['std_'+system]*s
+    return v
+
+createPointLocator = (opts)->
+  {xScale, scale, rest...} = opts
+  val = valueAtStdev(rest)
+  (d, s=0)->
+    v = val(d, s)
+    [xScale(v), scale(parseFloat(d.height))]
+
+IsotopesDataContext = createContext()
+
+IsotopesDataArea = (props)->
+  {xScale, scale} = useContext(ColumnLayoutContext)
+  {corrected, system, children} = props
+
+  # Handlers for creating points and lines
+  pointLocator = createPointLocator({xScale, scale, corrected, system})
+
+  column = 'avg_'+system
+  if corrected
+    column += '_corr'
+  lineLocator = line()
+      .x (d)->xScale(d[column])
+      .y (d)->scale(d.height)
+
+  value = {pointLocator, lineLocator, corrected, system}
+  h IsotopesDataContext.Provider, {value}, (
+    h('g.data', null, children)
+  )
+
+IsotopeDataPoint = (props)->
+  {pointLocator} = useContext(IsotopesDataContext)
+  {datum, rest...} = props
+  [x1,y1] = pointLocator(datum, -2)
+  [x2,y2] = pointLocator(datum, 2)
+  h 'line', {
+    key: datum.analysis_id
+    x1,y1,
+    x2,y2,
+    strokeLinecap: 'round'
+    rest...
+  }
+
+IsotopeDataPoint.propTypes = {
+  datum: T.object.isRequired
+}
+
+IsotopeDataLine = (props)->
+  {values, rest...} = props
+  {lineLocator} = useContext(IsotopesDataContext)
+  h 'path', {
+    d: lineLocator(lineValues)
+    fill:'transparent'
+    rest...
+  }
+
+IsotopeText = ({datum, text, rest...})->
+  {pointLocator} = useContext(IsotopesDataContext)
+  [x,y] = pointLocator(datum)
+  h 'text', {
+    x, y, rest...
+  }, text
+
+IsotopeText.propTypes = {
+  datum: T.object.isRequired
+}
+
 class IsotopesColumnInner extends Component
   @contextType: ColumnLayoutContext
   @defaultProps: {
     visible: false
+    corrected: false
     label: 'δ¹³C'
     system: 'delta13c'
     trackVisibility: true
@@ -54,9 +133,7 @@ class IsotopesColumnInner extends Component
     }
 
     column = 'avg_'+system
-    @line = d3.line()
-      .x (d)=>@context.xScale(d[column])
-      .y (d)=>@context.scale(d.height)
+
 
     query(sql).then(@setupData)
 
@@ -92,14 +169,6 @@ class IsotopesColumnInner extends Component
       ]
     ]
 
-  locatePoint: (d, s=0)=>
-    {system} = @props
-    {xScale, scale} = @context
-    v = d['avg_'+system]
-    unless s == 0
-      v += d['std_'+system]*s
-    [xScale(v), scale(parseFloat(d.height))]
-
   renderAxisLines: =>
     getHeight = (d)->
       {height} = d.section_height.find (v)->v.section == 'J'
@@ -126,41 +195,36 @@ class IsotopesColumnInner extends Component
       }
 
   renderData: =>
-    {scale, xScale} = @context
+    {system, corrected} = @props
     {isotopes} = @state
+
     cscale = d3.scaleOrdinal(@props.colorScheme)
-    h 'g.data', isotopes.map ({key, values}, i)=>
-      [x,y] = @locatePoint values[values.length-1]
+    h IsotopesDataArea, {system, corrected}, isotopes.map ({key, values}, i)=>
+      topDatum = values[values.length-1]
+      #[x,y] = @locatePoint values[values.length-1]
       fill = stroke = cscale(i)
-      lineValues = values.filter (d)->d.in_zebra_nappe
+
       h 'g.section-data', {key}, [
         h 'g.data-points', values.map (d)=>
-          [x1,y1] = @locatePoint(d, -2)
-          [x2,y2] = @locatePoint(d, 2)
-
           actualStroke = stroke
           if not d.in_zebra_nappe
             actualStroke = chroma(stroke).brighten(2).css()
 
-          h 'line', {
-            key: d.analysis_id
-            x1,y1,
-            x2,y2,
+          h IsotopeDataPoint, {
+            datum: d,
             stroke: actualStroke
             strokeWidth: 8
-            strokeLinecap: 'round'
           }
-        h.if(@props.showLines) 'path', {
-          d: @line(lineValues)
+        h.if(@props.showLines) IsotopeDataLine, {
+          values: values.filter (d)->d.in_zebra_nappe
           stroke
-          fill:'transparent'
         }
-        h 'text', {
-          transform: "translate(#{x},#{y})"
-          x: 10,
-          y: 5,
+        h IsotopeText, {
+          datum: topDatum
+          transform: "translate(10,5)"
           fill
-        }, key
+          text: key
+        }
       ]
 
   renderScale: =>
@@ -184,8 +248,8 @@ class MinimalIsotopesColumnInner extends Component
     label: 'δ¹³C'
     system: 'delta13c'
     offsetTop: null
-    domain: [-15,8]
     colorScheme: d3.schemeCategory10
+    corrected: false
     padding:
       left: 10
       top: 10
@@ -203,19 +267,12 @@ class MinimalIsotopesColumnInner extends Component
     @state = {
       isotopes: []
     }
-
-    column = 'avg_'+system
-    @line = d3.line()
-      .x (d)=>@context.xScale(d[column])
-      .y (d)=>@context.scale(d.height)
-
     query(allCarbonIsotopes).then(@setupData)
 
   setupData: (data)=>
     isotopes = data
       .filter (d)=> d.section == @props.section
       .sort (a,b)-> a.orig_height < b.orig_height
-    console.log isotopes
     @setState {isotopes}
 
   render: ->
@@ -228,37 +285,22 @@ class MinimalIsotopesColumnInner extends Component
       @renderData()
     ]
 
-  locatePoint: (d, s=0)=>
-    {system} = @props
-    {xScale, scale} = @context
-    v = d['avg_'+system]
-    unless s == 0
-      v += d['std_'+system]*s
-    [xScale(v), scale(parseFloat(d.height))]
-
   renderData: =>
     {scale, xScale} = @context
     {isotopes} = @state
-    cscale = d3.scaleOrdinal(@props.colorScheme)
-    stroke = '#888'
+    {system, corrected} = @props
+    stroke = if system == 'delta13c' then 'dodgerblue' else 'red'
 
-    h 'g.data', [
+    h IsotopesDataArea, {system, corrected}, [
       h 'g.data-points', isotopes.map (d)=>
-        [x1,y1] = @locatePoint(d, -2)
-        [x2,y2] = @locatePoint(d, 2)
-
-        h 'line', {
-          key: d.analysis_id
-          x1,y1,
-          x2,y2,
-          stroke
-          strokeWidth: 6
-          strokeLinecap: 'round'
-        }
-      h.if(@props.showLines) 'path', {
-        d: @line(isotopes)
+        h IsotopeDataPoint, {
+          datum: d,
+          stroke,
+          strokeWidth: 4
+      }
+      h.if(@props.showLines) IsotopeDataLine, {
+        values: isotopes
         stroke
-        fill:'transparent'
       }
     ]
 

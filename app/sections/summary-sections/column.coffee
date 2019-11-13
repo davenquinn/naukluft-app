@@ -86,6 +86,24 @@ ColumnSummaryAxis = (props)->
   {height, zoom} = useContext(ColumnContext)
   h ColumnAxis, {ticks: (height*zoom)/5}
 
+ColumnIsotopes = (props)->
+  opts = useSettings()
+  {id} = props
+  return null unless opts.isotopesPerSection
+  h [
+    h.if(opts.showCarbonIsotopes) MinimalIsotopesColumn, {
+      width: 40,
+      section: id
+      transform: 'translate(120)'
+    }
+    h.if(opts.showOxygenIsotopes) MinimalIsotopesColumn, {
+      width: 40,
+      section: id
+      transform: 'translate(160)'
+      system: 'delta18o'
+    }
+  ]
+
 class BaseSVGSectionComponent extends KnownSizeComponent
   @contextType: ColumnSurfacesContext
   @defaultProps: {
@@ -267,11 +285,7 @@ class BaseSVGSectionComponent extends KnownSizeComponent
                 ]
               }
               h ColumnSummaryAxis
-              h.if(@props.isotopesPerSection) MinimalIsotopesColumn, {
-                width: 60,
-                section: id
-                transform: 'translate(120)'
-              }
+              h ColumnIsotopes, {id}
             ]
           ]
           children
