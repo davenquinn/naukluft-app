@@ -16,6 +16,7 @@ import {join} from 'path'
 import {db, storedProcedure} from '../db'
 import './main.styl'
 import {PlatformContext} from '../../platform'
+import sql from './sql/get-generalized.sql'
 
 removeALine = (f)->
   f.substring(f.indexOf("\n") + 1)
@@ -140,10 +141,8 @@ class RegionalCrossSectionPage extends Component
     @getPolygons(pathData, points)
 
   getPolygons: (pathData, points)->
-    sql = storedProcedure "get-generalized", {
-      baseDir: join(__dirname)
-    }
-    res = await db.query sql, {
+    q = storedProcedure(sql)
+    res = await db.query q, {
       geometry: {
         coordinates: pathData,
         type: 'MultiLineString'

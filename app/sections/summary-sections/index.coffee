@@ -1,8 +1,8 @@
 import {nest} from "d3-collection"
 import {max} from "d3-array"
 import {hyperStyled} from "@macrostrat/hyper"
-import {Component, useContext} from "react"
-import {useSettings} from "#"
+import {Component, useContext, createContext} from "react"
+import {useSettings, SettingsProvider} from "#"
 import {getSectionData} from "../section-data"
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"
@@ -19,14 +19,17 @@ import {
 import {LithostratKey} from "./lithostrat-key"
 import {LocationGroup} from './layout'
 import {Legend} from "./legend"
-import {query} from "../../db"
 import {SectionPositioner, SectionScale} from "./positioner"
 import {BaseSectionPage} from '../components'
 import {SummarySectionsSettings, defaultSettings} from './settings'
-import lithostratSurface from './sql/lithostratigraphy-surface.sql'
+import {
+  SectionSurfacesContext,
+  SectionSurfacesProvider
+} from './data-provider'
 import "../main.styl"
 import styles from "./main.styl"
 import T from 'prop-types'
+
 
 h = hyperStyled(styles)
 
@@ -72,10 +75,12 @@ groupSectionData = (sections)->
   return sectionGroups
 
 SectionPane = (props) ->
-  {sectionPositions, surfaces, sections
+  {sectionPositions, sections
    groupMargin, columnMargin, columnWidth} = props
 
   {dragdealer, dragPosition, rest...} = useSettings()
+  {surfaces} = useContext(SectionSurfacesContext)
+
   {showFloodingSurfaces,
    showSequenceStratigraphy,
    showCarbonIsotopes,
@@ -226,21 +231,34 @@ class SummarySectionsBase extends Component
     ]
 
 SummarySections = (props)->
-  h SectionPositionProvider, [
-    h SequenceStratConsumer, null, ({actions, rest...})->
-      h SummarySectionsBase, {
-        props...,
-        rest...
-      }
+  h SectionSurfacesProvider, [
+    h SectionPositionProvider, [
+      h SequenceStratConsumer, null, ({actions, rest...})->
+        h SummarySectionsBase, {
+          props...,
+          rest...
+        }
+    ]
   ]
 
 SummarySectionsStatic = (props)->
-  h SequenceStratConsumer, null, ({actions, rest...})->
-    h SummarySectionsBase, {
-      showNavigationController: false
-      props...,
-      rest...,
-    }
+  sectionSettings = {}
+
+  h SectionSurfacesProvider, [
+    h SectionPositionProvider, [
+      h SettingsProvider, {
+        sectionSettings...
+      }, [
+        h 'div.page.section-page', [
+          h 'div.panel-container', [
+            h SectionPane, {
+              props...,
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
 
 export {
   SummarySections,

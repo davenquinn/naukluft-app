@@ -304,4 +304,4 @@ SVGSectionComponent = (props)->
     }
   )
 
-export {BaseSVGSectionComponent, SVGSectionComponent}
+export {SVGSectionComponent}
