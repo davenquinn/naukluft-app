@@ -23,11 +23,8 @@ import {
   SectionSurfacesContext,
   SectionSurfacesProvider
 } from '../data-provider'
-import "../../main.styl"
-import styles from "../main.styl"
 import T from 'prop-types'
-
-
+import styles from "./main.styl"
 h = hyperStyled(styles)
 
 class LegacySectionScale extends SectionScale
@@ -75,7 +72,6 @@ SectionPane = (props) ->
   {sectionPositions, sections
    groupMargin, columnMargin, columnWidth} = props
 
-  {dragdealer, dragPosition, rest...} = useSettings()
   {surfaces} = useContext(SectionSurfacesContext)
 
   {showFloodingSurfaces,
@@ -122,65 +118,48 @@ SectionPane = (props) ->
 
   minHeight = 1500
 
-  options = useSettings()
-  showChemostrat = not options.isotopesPerSection
-
-  h 'div#static-section-pane', [
-    h "div#section-page-inner", {
-      style: {zoom: 1, minHeight}
-    }, [
-      h SectionLinkOverlay, {
-        connectLines: true
-        surfaces
-      }
-      h LithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        surfaces,
-        offset
-        rest...
-      }
-      h "div#section-container", [
-        h.if(showLegend) Legend
-        h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
-          marginRight = groupMargin
-          if i == groupedSections.length-1
+  h 'div.static-section-page', [
+    h SectionLinkOverlay, {
+      connectLines: true
+      surfaces
+    }
+    h "div.section-container", [
+      h.if(showLegend) Legend
+      h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
+        marginRight = groupMargin
+        if i == groupedSections.length-1
+          marginRight = 0
+        style = {marginRight, height}
+        h LocationGroup, {
+          key: location,
+          location,
+          style
+        }, columns.map (col, i)->
+          marginRight = columnMargin
+          if i == columns.length-1
             marginRight = 0
-          style = {marginRight, height}
-          h LocationGroup, {
-            key: location,
-            location,
-            style
-          }, columns.map (col, i)->
-            marginRight = columnMargin
-            if i == columns.length-1
-              marginRight = 0
-            style = {marginRight, height, width: columnWidth}
-            h SectionColumn, {key: i, style}, col.map (row)=>
-              {offset, range, height, start, end, rest...} = row
-              offset = sectionOffsets[row.id] or offset
+          style = {marginRight, height, width: columnWidth}
+          h SectionColumn, {key: i, style}, col.map (row)=>
+            {offset, range, height, start, end, rest...} = row
+            offset = sectionOffsets[row.id] or offset
 
-              # Clip off the top of some columns...
-              end = row.clip_end
+            # Clip off the top of some columns...
+            end = row.clip_end
 
-              height = end-start
-              range = [start, end]
+            height = end-start
+            range = [start, end]
 
-              h SVGSectionComponent, {
-                zoom: 0.1,
-                key: row.id,
-                triangleBarRightSide: row.id == 'J'
-                showCarbonIsotopes,
-                isotopesPerSection
-                trackVisibility: false
-                offset
-                range
-                height
-                start
-                end
-                rest...
-              }
-      ]
+            h SVGSectionComponent, {
+              zoom: 0.1,
+              key: row.id,
+              triangleBarRightSide: row.id == 'J'
+              offset
+              range
+              height
+              start
+              end
+              rest...
+            }
     ]
   ]
 
@@ -195,6 +174,8 @@ SummarySectionsFigure = (props)->
     groupMargin: 400
     columnMargin: 100
     columnWidth: 150
+    interactive: false
+    showLegend: true
   }
 
   h SectionSurfacesProvider, [
@@ -202,13 +183,9 @@ SummarySectionsFigure = (props)->
       h SettingsProvider, {
         sectionSettings...
       }, [
-        h 'div.page.section-page', [
-          h 'div.panel-container', [
-            h SectionPane, {
-              props...,
-            }
-          ]
-        ]
+        h SectionPane, {
+          props...,
+        }
       ]
     ]
   ]

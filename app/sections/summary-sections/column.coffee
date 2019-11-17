@@ -56,6 +56,9 @@ ColumnMain = ->
   ]
 
 EditOverlay = (props)->
+  {interactive} = useSettings()
+  interactive ?= false
+  return null unless interactive
   try
     history = useHistory()
     navigateTo = history.push

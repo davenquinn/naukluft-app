@@ -14,6 +14,7 @@ SectionSurfacesProvider = (props)->
       .then (surfaces)->
         surfaces.reverse()
         setState {surfaces}
+    return
 
   useEffect getData, []
 

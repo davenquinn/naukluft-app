@@ -255,4 +255,5 @@ export {
   SummarySections,
   SummarySectionsStatic,
   SummarySectionsBase,
+  SectionPane
 }

@@ -61,6 +61,10 @@ class PlatformProvider extends Component
     value = {rest..., restState..., serializedQueries, updateState, computePhotoPath,
              resolveSymbol, resolveLithologySymbol}
 
+    {resolveSymbol} = @props
+    if not resolveSymbol?
+      resolveSymbol = @resolveSymbol
+
     assetPathFunctions = {resolveSymbol, resolveLithologySymbol}
     h AssetPathContext.Provider, {value: assetPathFunctions}, [
       h PlatformContext.Provider, {value}, children

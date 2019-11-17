@@ -34,6 +34,7 @@ defaultSettings = {
   showCarbonIsotopes: true
   isotopesPerSection: false
   correctIsotopeRatios: false
+  interactive: true
 }
 
 SettingsProvider = (props)->
