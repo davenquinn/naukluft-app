@@ -1,2 +1,2 @@
-import fn from './static-figures/section-figure.coffee'
+import fn from './sections/summary-sections/static-figure'
 export default fn

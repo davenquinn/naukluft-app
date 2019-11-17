@@ -3,31 +3,28 @@ import {max} from "d3-array"
 import {hyperStyled} from "@macrostrat/hyper"
 import {Component, useContext, createContext} from "react"
 import {useSettings, SettingsProvider} from "#"
-import {getSectionData} from "../section-data"
-import {ChemostratigraphyColumn} from "./chemostrat"
-import {SVGSectionComponent} from "./column"
-import {SectionNavigationControl} from "../util"
+import {SVGSectionComponent} from "../column"
 import {
   SectionLinkOverlay,
   SectionPositionProvider
-} from "./link-overlay"
-import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
+} from "../link-overlay"
+import {stackGroups, groupOrder, sectionOffsets} from "./positions"
 import {
   SequenceStratConsumer,
   SequenceStratContext
-} from "../sequence-strat-context"
-import {LithostratKey} from "./lithostrat-key"
-import {LocationGroup} from './layout'
-import {Legend} from "./legend"
-import {SectionPositioner, SectionScale} from "./positioner"
-import {BaseSectionPage} from '../components'
-import {SummarySectionsSettings, defaultSettings} from './settings'
+} from "../../sequence-strat-context"
+import {LithostratKey} from "../lithostrat-key"
+import {LocationGroup} from '../layout'
+import {Legend} from "../legend"
+import {SectionPositioner, SectionScale} from "../positioner"
+import {BaseSectionPage} from '../../components'
+import {SummarySectionsSettings, defaultSettings} from '../settings'
 import {
   SectionSurfacesContext,
   SectionSurfacesProvider
-} from './data-provider'
-import "../main.styl"
-import styles from "./main.styl"
+} from '../data-provider'
+import "../../main.styl"
+import styles from "../main.styl"
 import T from 'prop-types'
 
 
@@ -128,7 +125,7 @@ SectionPane = (props) ->
   options = useSettings()
   showChemostrat = not options.isotopesPerSection
 
-  h 'div#section-pane', {style: {overflow: 'scroll'}}, [
+  h 'div#static-section-pane', [
     h "div#section-page-inner", {
       style: {zoom: 1, minHeight}
     }, [
@@ -142,11 +139,6 @@ SectionPane = (props) ->
         surfaces,
         offset
         rest...
-      }
-      h.if(showChemostrat) ChemostratigraphyColumn, {
-        sections
-        surfaces
-        options
       }
       h "div#section-container", [
         h.if(showLegend) Legend
@@ -197,42 +189,12 @@ SectionPane.propTypes = {
   surfaces: T.arrayOf(T.object).isRequired
 }
 
-class SummarySectionsBase extends Component
-  @defaultProps: {
+SummarySectionsFigure = (props)->
+  sectionSettings = {
+    showFacies: true
     groupMargin: 400
     columnMargin: 100
     columnWidth: 150
-    showNavigationController: true
-    settingsPanel: SummarySectionsSettings
-  }
-  pageID: 'summary-sections'
-  render: ->
-    {settingsPanel} = @props
-    h BaseSectionPage, {
-      id: @pageID,
-      settingsPanel,
-      defaultSettings
-    }, [
-      h SectionPane, {
-        @props...,
-        @state...
-      }
-    ]
-
-SummarySections = (props)->
-  h SectionSurfacesProvider, [
-    h SectionPositionProvider, [
-      h SequenceStratConsumer, null, ({actions, rest...})->
-        h SummarySectionsBase, {
-          props...,
-          rest...
-        }
-    ]
-  ]
-
-SummarySectionsStatic = (props)->
-  sectionSettings = {
-    showFacies: true
   }
 
   h SectionSurfacesProvider, [
@@ -251,8 +213,4 @@ SummarySectionsStatic = (props)->
     ]
   ]
 
-export {
-  SummarySections,
-  SummarySectionsStatic,
-  SummarySectionsBase,
-}
+export {SummarySectionsFigure}
