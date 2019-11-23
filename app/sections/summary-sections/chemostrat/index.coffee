@@ -28,7 +28,7 @@ ChemostratigraphyGroup = (props)->
   )
 
 ChemostratigraphyColumn = (props)->
-  {sections, surfaces, options, range} = props
+  {sections, surfaces, options, colorScheme, range} = props
   {correctIsotopeRatios, showCarbonIsotopes, showOxygenIsotopes} = useSettings()
 
   return null unless showCarbonIsotopes or showOxygenIsotopes
@@ -45,6 +45,7 @@ ChemostratigraphyColumn = (props)->
       offset
       location: ""
       surfaces
+      colorScheme
       corrected: correctIsotopeRatios
       rest...
     }
@@ -54,6 +55,7 @@ ChemostratigraphyColumn = (props)->
       label: 'δ¹⁸O'
       domain: [-15,4]
       key: 'oxygen-isotopes',
+      colorScheme
       corrected: correctIsotopeRatios
       offset
       location: ""

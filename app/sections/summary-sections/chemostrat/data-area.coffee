@@ -28,7 +28,10 @@ IsotopesDataContext = createContext()
 IsotopesDataArea = (props)->
   {xScale, scale} = useContext(ColumnLayoutContext)
   {corrected, system, children, getHeight} = props
-  getHeight ?= (d)->d.height
+  getHeight ?= (d)->
+    if not d.height?
+      console.log d
+    d.height
 
   # Handlers for creating points and lines
   pointLocator = createPointLocator({xScale, scale, corrected, system, getHeight})

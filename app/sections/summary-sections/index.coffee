@@ -1,5 +1,3 @@
-import {nest} from "d3-collection"
-import {max} from "d3-array"
 import {hyperStyled} from "@macrostrat/hyper"
 import {Component, useContext, createContext} from "react"
 import {useSettings, SettingsProvider} from "#"
@@ -16,6 +14,7 @@ import {
   stackGroups,
   sectionOffsets
   groupOffsets
+  sectionIsotopeScheme
 } from "./display-parameters"
 import {
   SequenceStratConsumer,
@@ -48,7 +47,6 @@ SectionPane = (props) ->
   {sectionPositions, sections
    groupMargin, columnMargin, columnWidth} = props
 
-  {dragdealer, dragPosition, rest...} = useSettings()
   {surfaces} = useContext(SectionSurfacesContext)
 
   {showFloodingSurfaces,
@@ -103,23 +101,40 @@ SectionPane = (props) ->
         sections
         surfaces
         options
+        #colorScheme: sectionIsotopeScheme
       }
       h "div#section-container", [
         h.if(showLegend) Legend
         h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
           marginRight = groupMargin
-          if i == groupedSections.length-1
+          if location == 'Tsams'
             marginRight = 0
+          # Tighten spacing for Onis and Naukluft
+          if i == 0
+            marginRight /= 2.5
+          if i == 1
+            marginRight = 30
+
           style = {marginRight, height}
+
+          if location == 'Büllsport'
+            style = {position: 'absolute', top: 0, right: 0}
+
           h LocationGroup, {
             key: location,
             location,
             style
           }, columns.map (col, i)->
             marginRight = columnMargin
+            if location == 'Tsams'
+              marginRight = 80
+              if i == 0
+                marginRight = 30
+
             if i == columns.length-1
               marginRight = 0
             style = {marginRight, height, width: columnWidth}
+
             h SectionColumn, {key: i, style}, col.map (row)=>
               {offset, range, height, start, end, rest...} = row
               offset = sectionOffsets[row.id] or offset

@@ -12,6 +12,7 @@ import classNames from "classnames"
 import chroma from "chroma-js"
 import {AxisBottom} from '@vx/axis'
 
+import {sectionIsotopeScheme} from '../display-parameters'
 import {useIsotopes} from './data-manager'
 import {sectionSurfaceProps} from '../link-overlay'
 import {query} from "../../db"
@@ -77,7 +78,7 @@ class IsotopesColumnInner extends Component
     pixelsPerMeter: 2
     pixelOffset: 0 # This should be changed
     domain: [-15,8]
-    colorScheme: d3.schemeCategory10
+    colorScheme: sectionIsotopeScheme
     padding:
       left: 10
       top: 10
@@ -141,12 +142,11 @@ class IsotopesColumnInner extends Component
     {system, corrected, isotopes} = @props
     return null unless isotopes?
 
-    cscale = d3.scaleOrdinal(@props.colorScheme)
     allIsotopes = Array.from(isotopes).filter ([k,v])->not ['K','W1','L'].includes(k)
     h IsotopesDataArea, {system, corrected}, allIsotopes.map ([key, values], i)=>
       topDatum = values[values.length-1]
       #[x,y] = @locatePoint values[values.length-1]
-      fill = stroke = cscale(i)
+      fill = stroke = @props.colorScheme(key, i)
 
       h 'g.section-data', {key}, [
         h 'g.data-points', values.map (d)=>
@@ -172,8 +172,9 @@ class IsotopesColumnInner extends Component
       ]
 
   renderScale: =>
+    {nTicks} = @props
     {xScale} = @context
-    v = xScale.ticks()
+    v = xScale.ticks(nTicks)
     h 'g.scale', v.map (d)->
       h ScaleLine, {value: d, labelBottom: true}
 
@@ -278,7 +279,8 @@ IsotopesColumn.propTypes = {
 
 IsotopesColumn.defaultProps = {
   domain: [-15, 6]
-  width: 150
+  width: 100
+  nTicks: 8
 }
 
 MinimalIsotopesColumn = (props)->
