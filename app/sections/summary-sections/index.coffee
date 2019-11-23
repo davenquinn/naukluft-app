@@ -24,7 +24,6 @@ import {
 import {LithostratKey} from "./lithostrat-key"
 import {LocationGroup} from './layout'
 import {Legend} from "./legend"
-import {SectionPositioner, SectionScale} from "./positioner"
 import {BaseSectionPage} from '../components'
 import {SummarySectionsSettings, defaultSettings} from './settings'
 import {
@@ -37,10 +36,6 @@ import styles from "./main.styl"
 import T from 'prop-types'
 
 h = hyperStyled(styles)
-
-class LegacySectionScale extends SectionScale
-  pixelOffset: ->
-    (670-@props.height-@props.offset)*@props.pixelsPerMeter
 
 class SectionColumn extends Component
   render: ->
@@ -81,20 +76,6 @@ SectionPane = (props) ->
   # Pre-compute section positions
   if showTriangleBars
     columnWidth += 25
-
-  ## Create a section positioner
-  positioner = new SectionPositioner({
-    groupMargin,
-    columnMargin,
-    columnWidth,
-    sectionOffsets
-    ScaleCreator: LegacySectionScale
-  })
-
-  groupedSections = positioner.update(groupedSections)
-
-  maxOffset = max sections.map (d)->
-    parseFloat(d.height)-parseFloat(d.offset)+669
 
   paddingLeft = if showTriangleBars then 90 else 30
 
@@ -143,15 +124,11 @@ SectionPane = (props) ->
               {offset, range, height, start, end, rest...} = row
               offset = sectionOffsets[row.id] or offset
 
-              groupOffset = groupOffsets[row.location] or 0
-
               # Clip off the top of some columns...
               end = row.clip_end
 
               height = end-start
               range = [start, end]
-
-              console.log(row.id, height, offset, rest)
 
               h SVGSectionComponent, {
                 zoom: 0.1,
