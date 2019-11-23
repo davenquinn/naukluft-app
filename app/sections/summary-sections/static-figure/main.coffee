@@ -1,6 +1,4 @@
-import {nest} from "d3-collection"
 import {max} from "d3-array"
-import {hyperStyled} from "@macrostrat/hyper"
 import {Component, useContext, createContext} from "react"
 import {useSettings, SettingsProvider} from "#"
 import {SVGSectionComponent} from "../column"
@@ -21,10 +19,12 @@ import {BaseSectionPage} from '../../components'
 import {SummarySectionsSettings, defaultSettings} from '../settings'
 import {
   SectionSurfacesContext,
-  SectionSurfacesProvider
+  SectionSurfacesProvider,
+  groupSectionData
 } from '../data-provider'
 import T from 'prop-types'
 import styles from "./main.styl"
+import {hyperStyled} from "@macrostrat/hyper"
 h = hyperStyled(styles)
 
 class LegacySectionScale extends SectionScale
@@ -38,53 +38,10 @@ class SectionColumn extends Component
     style.width ?= 240
     h 'div.section-column', {style}, @props.children
 
-groupSectionData = (sections)->
-  stackGroup = (d)=>
-    for g in stackGroups
-      if g.indexOf(d.id) != -1
-        return g
-    return d.id
-
-  indexOf = (arr)->(d)->
-    arr.indexOf(d)
-
-  __ix = indexOf(stackGroups)
-
-  sectionGroups = nest()
-    .key (d)->d.location
-    .key stackGroup
-    .sortKeys (a,b)->__ix(a)-__ix(b)
-    .entries sections
-
-  # Change key names to be more semantic
-  for g in sectionGroups
-    g.columns = g.values.map (col)->
-      return col.values
-    delete g.values
-    g.location = g.key
-    delete g.key
-
-  __ix = indexOf(groupOrder)
-  sectionGroups.sort (a,b)->__ix(a.location)-__ix(b.location)
-  return sectionGroups
-
 SectionPane = (props) ->
   {sectionPositions, sections
    groupMargin, columnMargin, columnWidth} = props
-
   {surfaces} = useContext(SectionSurfacesContext)
-
-  {showFloodingSurfaces,
-   showSequenceStratigraphy,
-   showCarbonIsotopes,
-   showOxygenIsotopes,
-   showFacies,
-   showLegend,
-   showLithostratigraphy,
-   isotopesPerSection
-   activeMode} = useSettings()
-
-  {showTriangleBars} = useContext(SequenceStratContext)
 
   return null unless sections?
   return null unless sections.length > 0
@@ -93,28 +50,12 @@ SectionPane = (props) ->
   {offset, location, rest...} = row
   location = null
 
-  groupedSections = groupSectionData(sections)
-
-  height = 1800
-  # Pre-compute section positions
-  if showTriangleBars
-    columnWidth += 25
-
-  ## Create a section positioner
-  positioner = new SectionPositioner({
-    groupMargin,
-    columnMargin,
-    columnWidth,
-    sectionOffsets
-    ScaleCreator: LegacySectionScale
-  })
-
-  groupedSections = positioner.update(groupedSections)
+  groupedSections = groupSectionData(sections, {stackGroups, groupOrder})
 
   maxOffset = max sections.map (d)->
     parseFloat(d.height)-parseFloat(d.offset)+669
 
-  paddingLeft = if showTriangleBars then 90 else 30
+  paddingLeft = 30
 
   minHeight = 1500
 
@@ -124,21 +65,18 @@ SectionPane = (props) ->
       surfaces
     }
     h "div.section-container", [
-      h.if(showLegend) Legend
+      #h Legend
       h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
-        marginRight = groupMargin
         if i == groupedSections.length-1
           marginRight = 0
-        style = {marginRight, height}
         h LocationGroup, {
           key: location,
           location,
-          style
         }, columns.map (col, i)->
           marginRight = columnMargin
           if i == columns.length-1
             marginRight = 0
-          style = {marginRight, height, width: columnWidth}
+          style = {marginRight, width: columnWidth}
           h SectionColumn, {key: i, style}, col.map (row)=>
             {offset, range, height, start, end, rest...} = row
             offset = sectionOffsets[row.id] or offset

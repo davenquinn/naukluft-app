@@ -24,7 +24,8 @@ import {DivisionEditOverlay} from '#/edit-overlay'
 import {ColumnTracker} from './link-overlay'
 import {
   ColumnSurfacesProvider,
-  ColumnSurfacesContext} from '../column/data-source'
+  ColumnSurfacesContext
+} from '../column/data-source'
 import {PlatformContext} from "../../platform"
 import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"
@@ -144,23 +145,32 @@ calcColumnWidth = (props)->
 
   return width
 
+ColumnBox = (props)->
+  {offsetTop, rest...} = props
+  {pixelsPerMeter, zoom} = useContext(ColumnContext)
+  h Box, {
+    className: 'section-container'
+    position: 'absolute'
+    top: offsetTop*pixelsPerMeter*zoom
+    rest...
+  }
 
 SVGSectionInner = (props)->
   {id, zoom, padding, lithologyWidth,
    innerWidth, onResize, marginLeft,
-   showFacies, height,
+   showFacies
    showTriangleBars,
    showFloodingSurfaces,
    showWhiteUnderlay,
    inEditMode
-   position,
+   height
    range,
+   offsetTop,
+   marginTop,
    children
    } = props
 
-  {heightScale} = position
-  innerHeight = heightScale.pixelHeight()
-  marginTop = heightScale.pixelOffset()
+  innerHeight = height*zoom
 
   {left, top, right, bottom} = padding
 
@@ -198,24 +208,22 @@ SVGSectionInner = (props)->
 
   grainsizeScaleStart = 40
 
-  h Box, {
-    className: 'section-container'
-    position: 'absolute'
-    top: marginTop
-    width: overallWidth
-    marginLeft: -overhangLeft
-    marginRight: -overhangRight
+  h ColumnProvider, {
+    range
+    height: props.height
+    zoom: 0.1
+    divisions
   }, [
-    h 'div.section-header', [
-      h("h2", {style: {zIndex: 20}}, id)
-    ]
-    h 'div.section-outer', {id: domID}, [
-      h ColumnProvider, {
-        range
-        height: props.height
-        zoom: 0.1
-        divisions
-      }, [
+    h ColumnBox, {
+      offsetTop
+      width: overallWidth
+      marginLeft: -overhangLeft
+      marginRight: -overhangRight
+    }, [
+      h 'div.section-header', [
+        h("h2", {style: {zIndex: 20}}, id)
+      ]
+      h 'div.section-outer', {id: domID}, [
         h ColumnTracker, {domID, id, width: overallWidth-40, padding: 10}
         h GrainsizeLayoutProvider, {
           width: innerWidth,
@@ -264,8 +272,8 @@ SVGSectionInner.defaultProps = {
   inEditMode: false
   skeletal: false
   isotopeColumnWidth: 40
-  offset: 0
   offsetTop: null
+  marginTop: null
   useRelativePositioning: true
   showTriangleBars: false
   trackVisibility: false
@@ -290,6 +298,7 @@ SVGSectionInner.propTypes = {
   #inEditMode: T.bool
   range: T.arrayOf(T.number).isRequired
   isotopesPerSection: T.bool
+  offsetTop: T.number
 }
 
 

@@ -11,7 +11,12 @@ import {
   SectionLinkOverlay,
   SectionPositionProvider
 } from "./link-overlay"
-import {stackGroups, groupOrder, sectionOffsets} from "./display-parameters"
+import {
+  groupOrder,
+  stackGroups,
+  sectionOffsets
+  groupOffsets
+} from "./display-parameters"
 import {
   SequenceStratConsumer,
   SequenceStratContext
@@ -24,12 +29,12 @@ import {BaseSectionPage} from '../components'
 import {SummarySectionsSettings, defaultSettings} from './settings'
 import {
   SectionSurfacesContext,
-  SectionSurfacesProvider
+  SectionSurfacesProvider,
+  groupSectionData
 } from './data-provider'
 import "../main.styl"
 import styles from "./main.styl"
 import T from 'prop-types'
-
 
 h = hyperStyled(styles)
 
@@ -43,36 +48,6 @@ class SectionColumn extends Component
     style.position = 'relative'
     style.width ?= 240
     h 'div.section-column', {style}, @props.children
-
-groupSectionData = (sections)->
-  stackGroup = (d)=>
-    for g in stackGroups
-      if g.indexOf(d.id) != -1
-        return g
-    return d.id
-
-  indexOf = (arr)->(d)->
-    arr.indexOf(d)
-
-  __ix = indexOf(stackGroups)
-
-  sectionGroups = nest()
-    .key (d)->d.location
-    .key stackGroup
-    .sortKeys (a,b)->__ix(a)-__ix(b)
-    .entries sections
-
-  # Change key names to be more semantic
-  for g in sectionGroups
-    g.columns = g.values.map (col)->
-      return col.values
-    delete g.values
-    g.location = g.key
-    delete g.key
-
-  __ix = indexOf(groupOrder)
-  sectionGroups.sort (a,b)->__ix(a.location)-__ix(b.location)
-  return sectionGroups
 
 SectionPane = (props) ->
   {sectionPositions, sections
@@ -100,7 +75,7 @@ SectionPane = (props) ->
   {offset, location, rest...} = row
   location = null
 
-  groupedSections = groupSectionData(sections)
+  groupedSections = groupSectionData(sections, {stackGroups, groupOrder})
 
   height = 1800
   # Pre-compute section positions
@@ -168,11 +143,15 @@ SectionPane = (props) ->
               {offset, range, height, start, end, rest...} = row
               offset = sectionOffsets[row.id] or offset
 
+              groupOffset = groupOffsets[row.location] or 0
+
               # Clip off the top of some columns...
               end = row.clip_end
 
               height = end-start
               range = [start, end]
+
+              console.log(row.id, height, offset, rest)
 
               h SVGSectionComponent, {
                 zoom: 0.1,
@@ -180,8 +159,7 @@ SectionPane = (props) ->
                 triangleBarRightSide: row.id == 'J'
                 showCarbonIsotopes,
                 isotopesPerSection
-                trackVisibility: false
-                offset
+                offsetTop: (670-height-offset)
                 range
                 height
                 start

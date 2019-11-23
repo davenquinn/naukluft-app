@@ -5,6 +5,7 @@ import {SummarySectionsFigure} from './main'
 import {SectionDataProvider, SectionConsumer} from '../../section-data'
 import '../../../bundled-deps/column-components/src/main.styl'
 import symbols from '../../../../assets/**/*.svg'
+import './fonts.css'
 
 resolveSymbol = (sym)->
   return null unless sym?
