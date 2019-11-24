@@ -23,6 +23,8 @@ defaultSettings = {
   activeMode: 'normal'
   showLegend: true
   showFacies: true
+  showLithology: true
+  showGrainsize: true
   showFaciesTracts: false
   # Allows us to test the serialized query mode
   # we are developing for the web
@@ -58,6 +60,8 @@ SummarySectionsSettings = ->
     h SettingsSwitch, {id: 'showSequenceStratigraphy', label: "Sequence-stratigraphic correlations"}
     h SettingsSwitch, {id: 'showFacies', label: "Facies"}
     h SettingsSwitch, {id: 'showFaciesTracts', label: "Facies tracts"}
+    h SettingsSwitch, {id: 'showLithology', label: 'Lithology patterns'}
+    h SettingsSwitch, {id: 'showGrainsize', label: 'Grainsize scale'}
     h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
     h SettingsSwitch, {id: 'showNotes', label: "Notes"}
     h SettingsSwitch, {id: 'showLegend', label: "Legend"}

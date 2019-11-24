@@ -18,7 +18,7 @@ import {Popover, Position} from "@blueprintjs/core"
 import {SequenceStratContext} from "../sequence-strat-context"
 import {ColumnProvider, ColumnContext} from '#/context'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
-        LithologyColumnInner} from '#/lithology'
+        LithologyColumnInner, SimpleFrame} from '#/lithology'
 import {DivisionEditOverlay} from '#/edit-overlay'
 
 import {ColumnTracker} from './link-overlay'
@@ -48,12 +48,18 @@ IntervalNotification = (props)->
   ]
 
 ColumnMain = ->
-  {showFacies, showFaciesTracts} = useSettings()
-  h GeneralizedSectionColumn, [
+  {showFacies, showFaciesTracts, showLithology, showGrainsize} = useSettings()
+  c = GeneralizedSectionColumn
+  width = null
+  if not showGrainsize
+    c = LithologyColumn
+    width = 60
+
+  h c, {width}, [
     h.if(showFacies) FaciesColumnInner
     h.if(showFaciesTracts) FaciesTractIntervals
     h CoveredOverlay
-    h SimplifiedLithologyColumn
+    h.if(showLithology) SimplifiedLithologyColumn
   ]
 
 EditOverlay = (props)->
@@ -155,6 +161,18 @@ ColumnBox = (props)->
     rest...
   }
 
+ColumnUnderlay = (props)->
+  {width, paddingLeft} = props
+  {pixelHeight} = useContext(ColumnContext)
+  paddingLeft ?= 5
+  h 'rect.underlay', {
+    width
+    height: pixelHeight+10
+    x: -paddingLeft
+    y: -5
+    fill: 'white'
+  }
+
 SVGSectionInner = (props)->
   {id, zoom, padding, lithologyWidth,
    innerWidth, onResize, marginLeft,
@@ -224,7 +242,8 @@ SVGSectionInner = (props)->
         h("h2", {style: {zIndex: 20}}, id)
       ]
       h 'div.section-outer', {id: domID}, [
-        h ColumnTracker, {domID, id, width: overallWidth-40, padding: 10}
+        h ColumnTracker, {
+          domID, id, width: overallWidth-40, padding: 10}
         h GrainsizeLayoutProvider, {
           width: innerWidth,
           grainsizeScaleStart
@@ -241,12 +260,9 @@ SVGSectionInner = (props)->
             paddingBottom: padding.bottom
             paddingLeft: padding.left
           }, [
-            h.if(props.showWhiteUnderlay) 'rect.underlay', {
+            h.if(showWhiteUnderlay) ColumnUnderlay, {
               width: overallWidth
-              height: innerHeight+10
-              x: -left
-              y: -5
-              fill: 'white'
+              paddingLeft: left
             }
             h ColumnSummaryAxis
             h ColumnMain
