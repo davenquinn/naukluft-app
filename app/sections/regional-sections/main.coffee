@@ -23,18 +23,10 @@ import {
   SectionSurfacesContext
 } from '../summary-sections/data-provider'
 import {SVGSectionComponent} from '../summary-sections/column'
+import {FaciesSection} from './column'
 import styles from '../generalized-sections/main.styl'
 import styles2 from './main.styl'
 h = hyperStyled({styles...,styles2...})
-
-GeneralizedSection = (props)->
-  {id} = props
-  h 'div.section-column', {className: id}, [
-    h SVGSectionComponent, {
-      props...
-      absolutePosition: false
-    }
-  ]
 
 getGeneralizedHeight = (sectionData)->(surface)->
   # Gets heights of a surface in stacked sections
@@ -90,7 +82,7 @@ SectionPane = (props)->
       # at which to clip off errant facies
       end = parseFloat(surfaces[surfaces.length-1].section_end)
 
-      h GeneralizedSection, {
+      h FaciesSection, {
         id: key
         zoom: 0.1,
         key,

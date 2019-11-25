@@ -1,5 +1,14 @@
-import {Component, createElement, createRef, useContext} from "react"
-import h from "@macrostrat/hyper"
+import {hyperStyled} from "@macrostrat/hyper"
+import {SVGSectionComponent} from '../summary-sections/column'
+import {useContext} from 'react'
+import {
+  ColumnSurfacesProvider,
+} from '../column/data-source'
+
+import styles from './main.styl'
+h = hyperStyled(styles)
+
+import {Component, createElement, createRef} from "react"
 import Measure from 'react-measure'
 import T from 'prop-types'
 import {format} from 'd3-format'
@@ -21,16 +30,15 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner, SimpleFrame} from '#/lithology'
 import {DivisionEditOverlay} from '#/edit-overlay'
 
-import {ColumnTracker} from './link-overlay'
+import {ColumnTracker} from '../summary-sections/link-overlay'
 import {
-  ColumnSurfacesProvider,
   ColumnSurfacesContext
 } from '../column/data-source'
 import {PlatformContext} from "../../platform"
 import {IntervalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
-import {MinimalIsotopesColumn} from './chemostrat'
+import {MinimalIsotopesColumn} from '../summary-sections/chemostrat'
 import {FaciesTractIntervals} from '../column/facies-tracts'
 
 fmt = format('.1f')
@@ -329,19 +337,15 @@ SVGSectionInner.propTypes = {
   offsetTop: T.number
 }
 
-
-SVGSectionComponent = (props)->
+FaciesSection = (props)->
+  {id} = props
   {id, divisions} = props
-  {inEditMode} = useContext(PlatformContext)
-  {showTriangleBars,
-  showFloodingSurfaces,
-  sequenceStratOrder} = useContext(SequenceStratContext)
 
-  h ColumnSurfacesProvider, {id, divisions}, (
-    h SVGSectionInner, {
-      showTriangleBars, showFloodingSurfaces,
-      sequenceStratOrder, inEditMode, props...,
-    }
-  )
+  h 'div.section-column', {className: id}, [
+    h ColumnSurfacesProvider, {id, divisions}, (
+      h SVGSectionInner, {inEditMode: false, props...,
+      }
+    )
+  ]
 
-export {SVGSectionComponent, SVGSectionInner}
+export {FaciesSection}
