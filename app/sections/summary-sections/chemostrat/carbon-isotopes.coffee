@@ -157,7 +157,7 @@ class IsotopesColumnInner extends Component
           h IsotopeDataPoint, {
             datum: d,
             stroke: actualStroke
-            strokeWidth: 8
+            strokeWidth: 4
           }
         h.if(@props.showLines) IsotopeDataLine, {
           values: values.filter (d)->d.in_zebra_nappe

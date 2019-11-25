@@ -50,14 +50,23 @@ IsotopesDataArea = (props)->
 
 IsotopeDataPoint = (props)->
   {pointLocator} = useContext(IsotopesDataContext)
-  {datum, rest...} = props
-  [x1,y1] = pointLocator(datum, -2)
-  [x2,y2] = pointLocator(datum, 2)
+  {datum, strokeWidth, rest...} = props
+  #[x1,y1] = pointLocator(datum, -2)
+  [x0,y] = pointLocator(datum, 0)
+  [x1,y1] = pointLocator(datum, 2)
+
+  dx = x1-x0-strokeWidth/2
+  if dx < 0
+    dx = 0
+
   h 'line', {
     key: datum.analysis_id
-    x1,y1,
-    x2,y2,
+    x1: x0-dx,
+    y1: y,
+    x2: x1+dx,
+    y2: y,
     strokeLinecap: 'round'
+    strokeWidth
     rest...
   }
 
