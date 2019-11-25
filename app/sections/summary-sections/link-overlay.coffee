@@ -291,6 +291,10 @@ getSize = (sectionIndex)->
     height: h_
   }
 
+useCanvasSize = ->
+  sectionIndex = useContext(SectionObserverContext)
+  return getSize(sectionIndex)
+
 SectionLinkOverlay = (props)->
   {surfaces, showSectionTrackers, connectLines} = props
   return null unless surfaces.length
@@ -325,4 +329,5 @@ export {
   sectionSurfaceProps
   ColumnTracker
   prepareLinkData
+  useCanvasSize
 }
