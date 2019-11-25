@@ -152,12 +152,20 @@ calcColumnWidth = (props)->
   return width
 
 ColumnBox = (props)->
-  {offsetTop, rest...} = props
+  {offsetTop, absolutePosition, rest...} = props
   {pixelsPerMeter, zoom} = useContext(ColumnContext)
+
+  marginTop = offsetTop*pixelsPerMeter*zoom
+  pos = {marginTop}
+  if absolutePosition
+    pos = {
+      position: 'absolute'
+      top: marginTop
+    }
+
   h Box, {
     className: 'section-container'
-    position: 'absolute'
-    top: offsetTop*pixelsPerMeter*zoom
+    pos...
     rest...
   }
 
@@ -185,6 +193,7 @@ SVGSectionInner = (props)->
    range,
    offsetTop,
    marginTop,
+   absolutePosition
    children
    } = props
 
@@ -237,6 +246,7 @@ SVGSectionInner = (props)->
       width: overallWidth
       marginLeft: -overhangLeft
       marginRight: -overhangRight
+      absolutePosition
     }, [
       h 'div.section-header', [
         h("h2", {style: {zIndex: 20}}, id)
@@ -298,6 +308,7 @@ SVGSectionInner.defaultProps = {
   lithologyWidth: 40
   showWhiteUnderlay: true
   showFacies: true
+  absolutePosition: true
   triangleBarsOffset: 0
   triangleBarRightSide: false
   onResize: ->
@@ -313,6 +324,7 @@ SVGSectionInner.defaultProps = {
 SVGSectionInner.propTypes = {
   #inEditMode: T.bool
   range: T.arrayOf(T.number).isRequired
+  absolutePosition: T.bool
   isotopesPerSection: T.bool
   offsetTop: T.number
 }

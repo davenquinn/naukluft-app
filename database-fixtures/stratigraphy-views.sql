@@ -67,6 +67,7 @@ CREATE OR REPLACE VIEW section.section_surface_data AS
 SELECT
   l.id,
   l.facies,
+  l.facies_tract,
   l.section,
   f.color facies_color,
   l.lithology,
@@ -103,13 +104,15 @@ LEFT JOIN section.lithology v
 JOIN section.section s
   ON s.id = l.section;
 
-CREATE OR REPLACE VIEW section.generalized_section_surface AS
+DROP MATERIALIZED VIEW IF EXISTS section.generalized_section_surface;
+CREATE MATERIALIZED VIEW section.generalized_section_surface AS
 WITH l AS (
   SELECT * FROM section.section_surface_data
 )
 SELECT
   l.id,
   l.facies,
+  l.facies_tract,
   s.location section,
   l.section original_section,
   l.bottom original_bottom,

@@ -21,6 +21,8 @@ defaultSettings = {
     #{value: 'sequence-stratigraphy', label: 'Sequence Strat.'}
   ]
   showFacies: true
+  showLithology: true
+  showGrainsize: true
   showFaciesTracts: false
   showSimplifiedLithology: true
   showSequenceStratigraphy: true
@@ -44,4 +46,5 @@ GeneralizedSectionSettings = ->
 export {
   GeneralizedSectionSettings,
   defaultSettings
+  useSettings
 }
