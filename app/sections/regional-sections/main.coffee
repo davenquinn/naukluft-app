@@ -1,7 +1,6 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {group} from 'd3-array'
 
-import {BaseSectionPage} from '../components/base-page'
 import {
   GeneralizedSurfacesContext,
   GeneralizedSurfacesProvider
@@ -50,6 +49,28 @@ LinkOverlay = (props)->
 
   h SectionLinkOverlay, {surfaces, rest...}
 
+SequenceCorrelations = (props)->
+  {sections, offsets, id, rest...} = props
+  h 'div.generalized-sections', sections.map ({key,surfaces})->
+    start = 0
+    # Bottom is the first division with an assigned facies
+    for d in surfaces
+      if d.facies? and d.facies != 'none'
+        start = d.bottom
+        break
+    # Top of the last section is taken as the height
+    # at which to clip off errant facies
+    end = parseFloat(surfaces[surfaces.length-1].section_end)
+
+    h FaciesSection, {
+      id: key
+      zoom: 0.08,
+      key,
+      offsetTop: offsets[key]
+      range: [start, end]
+      divisions: surfaces
+      rest...
+    }
 
 SectionPane = (props)->
   {surfaces} = useContext(GeneralizedSurfacesContext)
@@ -63,37 +84,18 @@ SectionPane = (props)->
   sections.sort (a,b)->
     order.indexOf(a.key)-order.indexOf(b.key)
 
-  offsets = {
-    Onis: 0
-    Ubisis: 300
-    Tsams: 200
-  }
-
   h 'div.section-pane-static#section-pane-static', {style: {position: 'relative'}}, [
     h LinkOverlay, {sections, id: 'section-pane-static'}
-    h 'div.generalized-sections', sections.map ({key,surfaces})->
-      start = 0
-      # Bottom is the first division with an assigned facies
-      for d in surfaces
-        if d.facies? and d.facies != 'none'
-          start = d.bottom
-          break
-      # Top of the last section is taken as the height
-      # at which to clip off errant facies
-      end = parseFloat(surfaces[surfaces.length-1].section_end)
-
-      h FaciesSection, {
-        id: key
-        zoom: 0.1,
-        key,
-        triangleBarRightSide: key == 'Onis'
-        offsetTop: offsets[key]
-        start
-        end
-        range: [start, end]
-        height: end-start
-        divisions: surfaces
-      }
+    h SequenceCorrelations, {
+      id: "S3"
+      offsets: {
+        Onis: 0
+        Ubisis: 265
+        Tsams: 160
+      },
+      sections,
+      bottomSurface: 15
+    }
   ]
 
 GeneralizedSectionsInner = (props)->

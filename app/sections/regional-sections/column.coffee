@@ -18,13 +18,26 @@ SVGSectionInner = (props)->
   {id,
    height
    range,
+   zoom
    offsetTop,
    divisions
    children
    topSurface
+   bottomSurface
    } = props
 
   divisions = divisions.filter (d)->not d.schematic
+
+  if bottomSurface?
+    {bottom: bottomHeight} = divisions.find (d)->d.surface == bottomSurface
+    range[0] = bottomHeight
+  if topSurface?
+    {bottom: topHeight} = divisions.find (d)->d.surface == topSurface
+    range[1] = topHeight
+  height = range[1]-range[0]
+
+  divisions = divisions.filter (d)->
+    range[0] <= d.top and d.bottom <= range[1]
 
   # Expand SVG past bounds of section
 
@@ -33,7 +46,7 @@ SVGSectionInner = (props)->
   h ColumnProvider, {
     range
     height
-    zoom: 0.05
+    zoom
     divisions
   }, [
     h ColumnBox, {
@@ -70,6 +83,7 @@ SVGSectionInner.defaultProps = {
   offsetTop: null
   marginTop: null
   topSurface: null
+  bottomSurface: null
 }
 
 SVGSectionInner.propTypes = {
