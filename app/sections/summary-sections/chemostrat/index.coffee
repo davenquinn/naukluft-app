@@ -28,7 +28,7 @@ ChemostratigraphyGroup = (props)->
   )
 
 ChemostratigraphyColumn = (props)->
-  {sections, surfaces, options, colorScheme, range} = props
+  {sections, surfaces, options, colorScheme, range, showLines} = props
   {correctIsotopeRatios, showCarbonIsotopes, showOxygenIsotopes} = useSettings()
 
   return null unless showCarbonIsotopes or showOxygenIsotopes
@@ -47,6 +47,7 @@ ChemostratigraphyColumn = (props)->
       surfaces
       colorScheme
       corrected: correctIsotopeRatios
+      showLines
       rest...
     }
     h.if(showOxygenIsotopes) IsotopesColumn, {
@@ -60,9 +61,14 @@ ChemostratigraphyColumn = (props)->
       offset
       location: ""
       surfaces
+      showLines
       rest...
     }
   ]
+
+ChemostratigraphyColumn.propTypes = {
+  showLines: T.bool
+}
 
 
 export {

@@ -36,7 +36,11 @@ SectionPositionProvider = (props)->
   [value, setState] = useState({})
 
   setPosition = (id, scale, pos, otherProps)->
-    containerPosition = container.current.getBoundingClientRect()
+    el = container.current
+    if el?
+      containerPosition = el.getBoundingClientRect()
+    else
+      containerPosition = {x: 0, y: 0}
 
     return unless pos?
     return unless scale?

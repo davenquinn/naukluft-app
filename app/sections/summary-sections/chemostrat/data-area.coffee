@@ -75,7 +75,7 @@ IsotopeDataPoint.propTypes = {
 }
 
 IsotopeDataLine = (props)->
-  {values, rest...} = props
+  {values: lineValues, rest...} = props
   {lineLocator} = useContext(IsotopesDataContext)
   h 'path', {
     d: lineLocator(lineValues)

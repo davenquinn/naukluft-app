@@ -161,7 +161,8 @@ class IsotopesColumnInner extends Component
           }
         h.if(@props.showLines) IsotopeDataLine, {
           values: values.filter (d)->d.in_zebra_nappe
-          stroke
+          stroke: chroma(stroke).alpha(0.1).css()
+          strokeWidth: 3
         }
         h IsotopeText, {
           datum: topDatum
@@ -278,9 +279,9 @@ IsotopesColumn.propTypes = {
 }
 
 IsotopesColumn.defaultProps = {
-  domain: [-15, 6]
+  domain: [-14, 6]
   width: 100
-  nTicks: 8
+  nTicks: 6
 }
 
 MinimalIsotopesColumn = (props)->

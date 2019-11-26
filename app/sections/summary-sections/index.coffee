@@ -100,6 +100,7 @@ SectionPane = (props) ->
       h.if(showChemostrat) ChemostratigraphyColumn, {
         sections
         surfaces
+        showLines: true
         options
         #colorScheme: sectionIsotopeScheme
       }
