@@ -1,6 +1,6 @@
 import {
   Component, createContext, useContext,
-  useState, useLayoutEffect
+  useState, useRef, useLayoutEffect
 } from "react"
 import h from "@macrostrat/hyper"
 import {linkHorizontal} from 'd3-shape'
@@ -31,13 +31,18 @@ SectionObserverContext = createContext({})
 
 SectionPositionProvider = (props)->
   {children} = props
+  container = useRef()
 
   [value, setState] = useState({})
 
   setPosition = (id, scale, pos, otherProps)->
+    containerPosition = container.current.getBoundingClientRect()
+
     return unless pos?
     return unless scale?
     {x,y} = pos
+    x -= containerPosition.x
+    y -= containerPosition.y
     if value[id]?
       return if x == value[id].x and y == value[id].y
 
@@ -55,8 +60,10 @@ SectionPositionProvider = (props)->
     newValue = update value, spec
     setState newValue
 
-  h SectionPositionContext.Provider, {value: setPosition}, [
-    h SectionObserverContext.Provider, {value}, children
+  h 'div.section-positioner', {ref: container}, [
+    h SectionPositionContext.Provider, {value: setPosition}, [
+      h SectionObserverContext.Provider, {value}, children
+    ]
   ]
 
 ColumnTracker = (props)->

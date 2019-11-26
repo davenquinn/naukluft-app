@@ -22,7 +22,11 @@ import {ColumnAxis} from "#/axis"
 
 import {ManagedSymbolColumn} from "../components"
 import {FloodingSurface, TriangleBars} from "#/flooding-surface"
-import {LithologyColumn, GeneralizedSectionColumn} from "#/lithology"
+import {
+  LithologyColumn,
+  CarbonateDivisions,
+  GeneralizedSectionColumn
+} from "#/lithology"
 import {Popover, Position} from "@blueprintjs/core"
 import {SequenceStratContext} from "../sequence-strat-context"
 import {ColumnProvider, ColumnContext} from '#/context'
@@ -53,92 +57,6 @@ IntervalNotification = (props)->
     ]
     h 'p', "#{bottom} - #{top} m"
     if surface then h('p', ["Surface: ", h('code',surface)]) else null
-  ]
-
-ColumnMain = ->
-  {showFacies, showFaciesTracts, showLithology, showGrainsize} = useSettings()
-  c = GeneralizedSectionColumn
-  width = null
-  if not showGrainsize
-    c = LithologyColumn
-    width = 60
-
-  h c, {width}, [
-    h.if(showFacies) FaciesColumnInner
-    h.if(showFaciesTracts) FaciesTractIntervals
-    h CoveredOverlay
-    h.if(showLithology) SimplifiedLithologyColumn
-  ]
-
-EditOverlay = (props)->
-  {interactive} = useSettings()
-  interactive ?= false
-  return null unless interactive
-  try
-    history = useHistory()
-    navigateTo = history.push
-  catch
-    navigateTo = ->
-  {id, rest...} = props
-  onClick = ({height})->
-    {id} = props
-    path = "/sections/#{id}"
-    if height?
-      path += "/height/#{height}"
-    console.log height, path
-    navigateTo(path)
-
-  renderEditorPopup = (interval)->
-    return null unless interval?
-    h IntervalEditor, {interval}
-
-  h DivisionEditOverlay, {
-    showInfoBox: true
-    renderEditorPopup
-    onClick
-    rest...
-  }
-
-ColumnSummaryAxis = (props)->
-  {height, zoom} = useContext(ColumnContext)
-  h ColumnAxis, {ticks: (height*zoom)/5}
-
-ColumnIsotopes = (props)->
-  opts = useSettings()
-  {id, columnWidth} = props
-  columnWidth ?= 40
-  return null unless opts.isotopesPerSection
-  h [
-    h.if(opts.showCarbonIsotopes) MinimalIsotopesColumn, {
-      width: columnWidth,
-      section: id
-      transform: 'translate(120)'
-    }
-    h.if(opts.showOxygenIsotopes) MinimalIsotopesColumn, {
-      width: columnWidth,
-      section: id
-      transform: 'translate(160)'
-      system: 'delta18o'
-    }
-  ]
-
-SequenceStratViews = (props)->
-  {id} = props
-  {sequenceStratOrder, showFloodingSurfaces, showTriangleBars} = useSettings()
-  h [
-    h.if(showFloodingSurfaces) FloodingSurface, {
-      offsetLeft: -40
-      lineWidth: 30
-    }
-    h.if(showTriangleBars) TriangleBars, {
-      id
-      offsetLeft: 0
-      lineWidth: 20
-      orders: [
-        sequenceStratOrder,
-        sequenceStratOrder-1
-      ]
-    }
   ]
 
 calcColumnWidth = (props)->
@@ -177,18 +95,6 @@ ColumnBox = (props)->
     rest...
   }
 
-ColumnUnderlay = (props)->
-  {width, paddingLeft} = props
-  {pixelHeight} = useContext(ColumnContext)
-  paddingLeft ?= 5
-  h 'rect.underlay', {
-    width
-    height: pixelHeight+10
-    x: -paddingLeft
-    y: -5
-    fill: 'white'
-  }
-
 SVGSectionInner = (props)->
   {id, zoom, padding, lithologyWidth,
    innerWidth, onResize, marginLeft,
@@ -215,25 +121,6 @@ SVGSectionInner = (props)->
   {divisions} = useContext(ColumnSurfacesContext)
   divisions = divisions.filter (d)->not d.schematic
 
-  overhangLeft = 0
-  overhangRight = 0
-
-
-  {triangleBarsOffset: tbo, triangleBarRightSide: onRight} = props
-  marginLeft -= tbo
-  marginRight = 0
-  outerWidth += tbo
-
-  if showTriangleBars
-    offsetLeft = -tbo+35
-    if onRight
-      overhangRight = 45
-      offsetLeft *= -1
-      offsetLeft += tbo+20
-    else
-      overhangLeft = 25
-      left = tbo
-
   # Expand SVG past bounds of section
 
   domID = "column-#{id}"
@@ -246,53 +133,31 @@ SVGSectionInner = (props)->
   h ColumnProvider, {
     range
     height: props.height
-    zoom: 0.1
+    zoom: 0.05
     divisions
   }, [
     h ColumnBox, {
       offsetTop
-      width: overallWidth
-      marginLeft: -overhangLeft
-      marginRight: -overhangRight
-      absolutePosition
+      width: 70
+      absolutePosition: false
     }, [
-      h 'div.section-header', [
-        h("h2", {style: {zIndex: 20}}, id)
-      ]
       h 'div.section-outer', {id: domID}, [
         h ColumnTracker, {
-          domID, id, width: overallWidth-40, padding: 10}
-        h GrainsizeLayoutProvider, {
-          width: innerWidth,
-          grainsizeScaleStart
+          domID,
+          id,
+          width: 50,
+          padding: 10
+        }
+        h ColumnSVG, {
+          width: 70
+          paddingTop: 10
+          paddingBottom: 10
+          paddingLeft: 10
         }, [
-          h EditOverlay, {
-            id,
-            allowEditing: true
-            left,
-            top: padding.top
-          }
-          h ColumnSVG, {
-            width: overallWidth
-            paddingTop: padding.top
-            paddingBottom: padding.bottom
-            paddingLeft: padding.left
-          }, [
-            h.if(showWhiteUnderlay) ColumnUnderlay, {
-              width: overallWidth
-              paddingLeft: left
-            }
-            h ColumnSummaryAxis
-            h ColumnMain
-            h ManagedSymbolColumn, {
-              left: 90
-              id
-            }
-            h SequenceStratViews, {id}
-            h ColumnIsotopes, {
-              id,
-              columnWidth: props.isotopeColumnWidth
-            }
+          h LithologyColumn, {width: 50}, [
+            h FaciesColumnInner
+            #h FaciesTractIntervals
+            h CarbonateDivisions, {minimumHeight: 1}
           ]
         ]
         children
