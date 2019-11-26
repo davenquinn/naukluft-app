@@ -8,7 +8,7 @@ import Box from 'ui-box'
 import {useSettings} from '#'
 import {withRouter, useHistory} from "react-router-dom"
 
-import {GrainsizeLayoutProvider, ColumnSVG} from '#'
+import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '#'
 import {ColumnAxis} from "#/axis"
 
 import {ManagedSymbolColumn} from "../components"
@@ -151,24 +151,6 @@ calcColumnWidth = (props)->
 
   return width
 
-ColumnBox = (props)->
-  {offsetTop, absolutePosition, rest...} = props
-  {pixelsPerMeter, zoom} = useContext(ColumnContext)
-
-  marginTop = offsetTop*pixelsPerMeter*zoom
-  pos = {marginTop}
-  if absolutePosition
-    pos = {
-      position: 'absolute'
-      top: marginTop
-    }
-
-  h Box, {
-    className: 'section-container'
-    pos...
-    rest...
-  }
-
 ColumnUnderlay = (props)->
   {width, paddingLeft} = props
   {pixelHeight} = useContext(ColumnContext)
@@ -242,6 +224,7 @@ SVGSectionInner = (props)->
     divisions
   }, [
     h ColumnBox, {
+      className: 'section-container'
       offsetTop
       width: overallWidth
       marginLeft: -overhangLeft
