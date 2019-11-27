@@ -1,18 +1,19 @@
 import {hyperStyled} from "@macrostrat/hyper"
-import {createRef} from "react"
+import {createRef, useContext, useRef, useLayoutEffect} from "react"
 import T from 'prop-types'
-import {ColumnSVG, ColumnBox, ColumnProvider} from '#'
+import {ColumnSVG, ColumnBox, ColumnProvider, ColumnContext} from '#'
+import {
+  SectionPositionContext,
+  ColumnTracker
+} from '../summary-sections/link-overlay'
 import {
   LithologyColumn,
   FaciesColumnInner,
   CarbonateDivisions,
 } from "#/lithology"
-import {ColumnTracker} from '../summary-sections/link-overlay'
 
 import styles from './main.styl'
 h = hyperStyled(styles)
-
-# Surface 15
 
 SVGSectionInner = (props)->
   {id,
@@ -54,18 +55,10 @@ SVGSectionInner = (props)->
       width: 70
       absolutePosition: false
     }, [
-      h 'div.section-outer', {id: domID}, [
-        h ColumnTracker, {
-          domID,
-          id,
-          width: 50,
-          padding: 10
-        }
+      h ColumnTracker, {className: 'section-outer', id, padding: 10}, [
         h ColumnSVG, {
           width: 70
-          paddingTop: 10
-          paddingBottom: 10
-          paddingLeft: 10
+          padding: 10
         }, [
           h LithologyColumn, {width: 50}, [
             h FaciesColumnInner

@@ -234,9 +234,10 @@ SVGSectionInner = (props)->
       h 'div.section-header', [
         h("h2", {style: {zIndex: 20}}, id)
       ]
-      h 'div.section-outer', {id: domID}, [
-        h ColumnTracker, {
-          domID, id, width: overallWidth-40, padding: 10}
+      h ColumnTracker, {
+        className: 'section-outer', id,
+        paddingTop: 10
+      }, [
         h GrainsizeLayoutProvider, {
           width: innerWidth,
           grainsizeScaleStart

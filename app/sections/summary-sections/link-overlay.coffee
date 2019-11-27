@@ -1,6 +1,11 @@
 import {
-  Component, createContext, useContext,
-  useState, useRef, useLayoutEffect
+  Component,
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useLayoutEffect,
+  forwardRef
 } from "react"
 import h from "@macrostrat/hyper"
 import {linkHorizontal} from 'd3-shape'
@@ -44,22 +49,22 @@ SectionPositionProvider = (props)->
 
     return unless pos?
     return unless scale?
-    {x,y} = pos
+    {x,y, width} = pos
     x -= containerPosition.x
     y -= containerPosition.y
     if value[id]?
       return if x == value[id].x and y == value[id].y
 
-    {width: innerWidth, padding} = otherProps
+    {width: innerWidth, padding, rest...} = otherProps
     return null unless scale?
     [min, max] = scale.range()
     innerHeight = Math.abs(max-min)
-    sz = expandInnerSize {innerWidth, innerHeight, padding}
+    sz = expandInnerSize {innerWidth, innerHeight, padding, rest...}
 
     globalRange = scale.range().map (d)-> d + y + sz.paddingTop
     globalScale = scale.copy().range(globalRange).clamp(false)
 
-    val = {id,x,y,scale,globalScale, sz...}
+    val = {id,x,y, width, scale,globalScale, sz...}
     spec = {[id]: {$set: val}}
     newValue = update value, spec
     setState newValue
@@ -75,24 +80,25 @@ ColumnTracker = (props)->
   Tracks a column's position and reports
   it back to the SectionObserverContext.
   ###
-  {id, domID, rest...} = props
-  domID ?= id
+  {children, className, id, rest...} = props
   setPosition = useContext(SectionPositionContext)
   {scale} = useContext(ColumnContext)
 
+  ref = useRef()
+
   runPositioner = ->
+    return unless ref.current?
     # Run this code after render
-    node = document.getElementById(domID)
-    rect = node.getBoundingClientRect()
+    rect = ref.current.getBoundingClientRect()
     setPosition(id, scale, rect, rest)
 
   useLayoutEffect(runPositioner)
-  return null
+
+  h 'div', {className, ref}, children
 
 ColumnTracker.propTypes = {
-  width: T.number.isRequired
+  width: T.number
   id: T.string.isRequired
-  domID: T.string
 }
 
 withinDomain = (scale, height)->
@@ -311,6 +317,7 @@ SectionLinkOverlay = (props)->
   return null unless surfaces.length
 
   sectionIndex = useContext(SectionObserverContext)
+  console.log sectionIndex
 
   surfacesNew = prepareLinkData({
     props...,

@@ -1,11 +1,11 @@
 .section-pane-static
-  width 960px
+  width 800px
   height 1200px // figure out how to automate this
   .generalized-sections
     flex-grow 1
     display flex
     flex-direction row
-    width 960px
+    width 800px
     //justify-content space-between
   .section-column
     flex-grow 1
@@ -13,3 +13,6 @@
       flex-grow 0.5
     &:last-child
       flex-grow 0
+
+:global(.section-positioner)
+  position relative
