@@ -21,14 +21,15 @@ queryFiles = {}
 storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
-  queryFiles[fileName] ?= pgp.QueryFile(resolve(__dirname,fileName))
-  return queryFiles[fileName]
+  fn = resolve(__dirname,fileName)
+  queryFiles[fn] ?= pgp.QueryFile(fn)
+  return queryFiles[fn]
 
 queryLibrary = []
 # Serialize queries based on query file and opts
 class SerializableQuery
   constructor: (@fileName, @values=null, opts={})->
-    query = storedProcedure(@fileName, opts)
+    query = storedProcedure(@fileName)
     @id = basename(@fileName, '.sql')
     @sql = pgp.as.format(query, @values)
     @uid = getUID @fileName, @values

@@ -312,7 +312,7 @@ useCanvasSize = ->
   sectionIndex = useContext(SectionObserverContext)
   return getSize(sectionIndex)
 
-SectionLinkOverlay = (props)->
+SectionLinkOverlay = forwardRef (props, ref)->
   {surfaces, showSectionTrackers, connectLines} = props
   return null unless surfaces.length
 
@@ -327,7 +327,9 @@ SectionLinkOverlay = (props)->
   sz = getSize(sectionIndex)
 
   h SVG, {
+    # Shouldn't need ID but we apparently do
     id: "section-link-overlay"
+    ref,
     sz...
   }, [
     h.if(showSectionTrackers) SectionTrackerRects

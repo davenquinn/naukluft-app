@@ -1,17 +1,24 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {group} from 'd3-array'
-
 import {
   GeneralizedSurfacesContext,
   GeneralizedSurfacesProvider
 } from '../generalized-sections/data-provider'
-import {GeneralizedSectionSettings, defaultSettings} from "../generalized-sections/settings"
+import {
+  GeneralizedSectionSettings,
+  defaultSettings
+} from "../generalized-sections/settings"
 import {IsotopesComponent} from "../summary-sections/chemostrat"
 import {LithostratKey} from "../summary-sections/lithostrat-key"
 import {Legend} from "../summary-sections/legend"
 import "../summary-sections/main.styl"
 import {useSettings, SettingsProvider} from '#'
-import {useContext} from 'react'
+import {
+  useContext,
+  forwardRef,
+  useEffect,
+  useRef
+} from 'react'
 import {
   SectionPositionProvider,
   SectionLinkOverlay
@@ -23,9 +30,19 @@ import {
 } from '../summary-sections/data-provider'
 import {SVGSectionComponent} from '../summary-sections/column'
 import {FaciesSection} from './column'
+import {writeFileSync} from 'fs'
+import path from 'path'
+
 import styles from '../generalized-sections/main.styl'
 import styles2 from './main.styl'
 h = hyperStyled({styles...,styles2...})
+
+exportSVG = (node, outputFile)->
+  # Should make this work only in Node
+  serializer = new XMLSerializer()
+  return unless node?
+  svgString = serializer.serializeToString(node)
+  writeFileSync(outputFile, svgString, 'utf-8')
 
 getGeneralizedHeight = (sectionData, opts={})->
   # Manage the top and bottom heights allowed
@@ -53,7 +70,7 @@ getGeneralizedHeight = (sectionData, opts={})->
         return {section: s.section, height: s.bottom, inferred}
     return null
 
-LinkOverlay = (props)->
+LinkOverlay = forwardRef (props, ref)->
   {sections, topSurface, bottomSurface, rest...} = props
   {surfaces} = useContext(SectionSurfacesContext)
   generalize = getGeneralizedHeight(sections, {topSurface, bottomSurface})
@@ -63,11 +80,24 @@ LinkOverlay = (props)->
     section_height = section_height.map(generalize).filter (d)->d?
     {section_height, rest...}
 
-  h SectionLinkOverlay, {surfaces, rest...}
+  h SectionLinkOverlay, {surfaces, ref, rest...}
 
 CorrelationContainer = (props)->
   {id, sections, children, rest...} = props
   domID = "sequence-#{id}"
+
+
+  ref = useRef()
+  exportCorrelations = ->
+    exportFilename = path.join(
+      path.resolve("."), "sections",
+      "regional-sections", require.resolve("./#{id}.svg"))
+    node = ref.current
+    return unless node?
+    console.log "Exporting file #{id}.svg"
+    exportSVG(node, exportFilename)
+
+  useEffect exportCorrelations, [ref.current]
 
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID}, [
