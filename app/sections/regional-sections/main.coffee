@@ -17,6 +17,7 @@ import {
   useContext,
   forwardRef,
   useEffect,
+  useLayoutEffect,
   useRef
 } from 'react'
 import {
@@ -70,38 +71,36 @@ getGeneralizedHeight = (sectionData, opts={})->
         return {section: s.section, height: s.bottom, inferred}
     return null
 
-LinkOverlay = forwardRef (props, ref)->
+LinkOverlay = (props)->
   {sections, topSurface, bottomSurface, rest...} = props
   {surfaces} = useContext(SectionSurfacesContext)
   generalize = getGeneralizedHeight(sections, {topSurface, bottomSurface})
 
-  surfaces = surfaces.map ({section_height, rest...})->
+  surfaces = surfaces.map ({section_height, rest1...})->
     # Update surfaces to use generalized section heights
     section_height = section_height.map(generalize).filter (d)->d?
-    {section_height, rest...}
+    {section_height, rest1...}
 
-  h SectionLinkOverlay, {surfaces, ref, rest...}
+  h SectionLinkOverlay, {surfaces, rest...}
 
 CorrelationContainer = (props)->
   {id, sections, children, rest...} = props
   domID = "sequence-#{id}"
 
 
-  ref = useRef()
-  exportCorrelations = ->
+  innerRef = (node)->
     exportFilename = path.join(
       path.resolve("."), "sections",
       "regional-sections", require.resolve("./#{id}.svg"))
-    node = ref.current
     return unless node?
-    console.log "Exporting file #{id}.svg"
+    console.log "Exporting file #{id}.svg", node
     exportSVG(node, exportFilename)
 
-  useEffect exportCorrelations, [ref.current]
+  #useEffect exportCorrelations
 
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID}, [
-      h LinkOverlay, {sections, rest...}
+      h LinkOverlay, {innerRef, sections, rest...}
       h 'div.generalized-sections', children
     ]
   ]
