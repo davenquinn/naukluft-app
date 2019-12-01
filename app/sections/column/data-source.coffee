@@ -24,6 +24,7 @@ class ColumnSurfacesProvider extends Component
 
   updateDivisions: =>
     {id} = @props
+    console.log "Updating divisions for all columns."
     divisions = await query q, [id]
     @setState {divisions}
 

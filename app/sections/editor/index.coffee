@@ -18,6 +18,7 @@ import {
   SurfaceOrderSlider,
   HorizontalPicker,
   BoundaryStyleControl
+  RaisedSelect
 } from '#/editor/controls'
 import {FaciesPicker} from '#/editor/facies/picker'
 import {grainSizes} from "#/grainsize"
@@ -78,22 +79,19 @@ FaciesTractControl = (props)->
   {interval, onUpdate} = props
   onUpdate ?= ->
 
-  options = for item in faciesTracts
-    {id, name} = item
-    {value: id, label: name}
+  options = faciesTracts.map (d)->d.id
 
   currentVal = interval.facies_tract
-  value = options.find (d)->d.value == currentVal
-  value ?= null
 
-  h Select, {
+  h RaisedSelect, {
     id: 'facies-tract-select'
     options
-    value
-    selected: currentVal
+    value: currentVal
+    getOptionLabel: (id)->
+      v = faciesTracts.find (d)->d.id == id
+      return v.name
     onChange: (res)->
-      f = if res? then res.value else null
-      onUpdate(f)
+      onUpdate(res)
   }
 
 updateInterval = (id, columns)->

@@ -102,7 +102,6 @@ SectionPane = (props) ->
         surfaces
         showLines: true
         options
-        #colorScheme: sectionIsotopeScheme
       }
       h "div#section-container", [
         h.if(showLegend) Legend
@@ -127,10 +126,6 @@ SectionPane = (props) ->
             style
           }, columns.map (col, i)->
             marginRight = columnMargin
-            if location == 'Tsams'
-              marginRight = 80
-              if i == 0
-                marginRight = 30
 
             if i == columns.length-1
               marginRight = 0

@@ -9,11 +9,27 @@ import {
 import {
   LithologyColumn,
   FaciesColumnInner,
-  CarbonateDivisions,
+  CarbonateDivisions
+  ParameterIntervals,
 } from "#/lithology"
+import {FaciesContext} from '#'
 
 import styles from './main.styl'
 h = hyperStyled(styles)
+
+FaciesTractIntervals = (props)->
+  {faciesTracts} = useContext(FaciesContext)
+  colorIndex = {}
+  faciesTracts.map (d)->
+    colorIndex[d.id] = d.color
+
+  h ParameterIntervals, {
+    parameter: 'facies_tract'
+    fillForInterval: (facies_tract, d)->
+      return null unless facies_tract?
+      colorIndex[facies_tract]
+    props...
+  }
 
 SVGSectionInner = (props)->
   {id,
@@ -52,18 +68,21 @@ SVGSectionInner = (props)->
   }, [
     h ColumnBox, {
       offsetTop
-      width: 70
+      width: 40
       absolutePosition: false
     }, [
-      h ColumnTracker, {className: 'section-outer', id, padding: 10}, [
+      h ColumnTracker, {
+        className: 'section-outer',
+        id,
+        padding: 5
+      }, [
         h ColumnSVG, {
-          width: 70
-          padding: 10
+          width: 40
+          padding: 5
         }, [
-          h LithologyColumn, {width: 50}, [
-            h FaciesColumnInner
-            #h FaciesTractIntervals
-            h CarbonateDivisions, {minimumHeight: 1}
+          h LithologyColumn, {width: 30}, [
+            h FaciesTractIntervals
+            h CarbonateDivisions, {minimumHeight: 2}
           ]
         ]
         children
