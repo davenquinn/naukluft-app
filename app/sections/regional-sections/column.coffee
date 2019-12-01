@@ -1,7 +1,12 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {createRef, useContext, useRef, useLayoutEffect} from "react"
 import T from 'prop-types'
-import {ColumnSVG, ColumnBox, ColumnProvider, ColumnContext} from '#'
+import {
+  ColumnSVG,
+  ColumnBox,
+  ColumnProvider,
+  ColumnContext
+} from '#'
 import {
   SectionPositionContext,
   ColumnTracker
