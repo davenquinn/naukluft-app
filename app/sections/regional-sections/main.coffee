@@ -1,43 +1,11 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {group} from 'd3-array'
-import {
-  GeneralizedSurfacesContext,
-  GeneralizedSurfacesProvider
-} from '../generalized-sections/data-provider'
-import {
-  GeneralizedSectionSettings,
-  defaultSettings
-} from "../generalized-sections/settings"
-import {IsotopesComponent} from "../summary-sections/chemostrat"
-import {LithostratKey} from "../summary-sections/lithostrat-key"
-import {Legend} from "../summary-sections/legend"
-import {useSettings, SettingsProvider} from '#'
-import {
-  useContext,
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useRef
-} from 'react'
-import {
-  SectionPositionProvider,
-  SectionLinkOverlay
-  useCanvasSize
-} from "../summary-sections/link-overlay"
-import {
-  SectionSurfacesProvider
-  SectionSurfacesContext
-} from '../summary-sections/data-provider'
-import {
-  updateSectionE,
-  getGeneralizedHeight,
-  exportSVG
-} from './helpers'
-import {SVGSectionComponent} from '../summary-sections/column'
-import {FaciesSection} from './column'
+import {GeneralizedSurfacesContext} from '../generalized-sections/data-provider'
+import {useContext} from 'react'
+import {useCanvasSize} from "../summary-sections/link-overlay"
+import {updateSectionE} from './helpers'
 import {SequenceCorrelations} from './sequence'
-import {writeFileSync} from 'fs'
-import path from 'path'
+import {RegionalSectionsContainer} from './container'
 
 import "../summary-sections/main.styl"
 import styles from '../generalized-sections/main.styl'
@@ -93,18 +61,9 @@ SectionPane = (props)->
     }
   ]
 
-GeneralizedSectionsInner = (props)->
-  h SettingsProvider, {
-    defaultSettings...
-  }, [
-    h SectionPane
-  ]
-
 RegionalSections = (props)->
-  h SectionSurfacesProvider, [
-    h GeneralizedSurfacesProvider, [
-      h GeneralizedSectionsInner
-    ]
+  h RegionalSectionsContainer, [
+    h SectionPane
   ]
 
 export {RegionalSections}

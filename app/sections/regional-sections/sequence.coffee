@@ -1,36 +1,11 @@
 import {hyperStyled} from "@macrostrat/hyper"
-import {group} from 'd3-array'
-import {
-  GeneralizedSurfacesContext,
-  GeneralizedSurfacesProvider
-} from '../generalized-sections/data-provider'
-import {
-  GeneralizedSectionSettings,
-  defaultSettings
-} from "../generalized-sections/settings"
-import {useSettings, SettingsProvider} from '#'
-import {
-  useContext,
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useRef
-} from 'react'
+import {useContext} from 'react'
 import {
   SectionPositionProvider,
   SectionLinkOverlay
-  useCanvasSize
 } from "../summary-sections/link-overlay"
-import {
-  SectionSurfacesProvider
-  SectionSurfacesContext
-} from '../summary-sections/data-provider'
-import {
-  updateSectionE,
-  getGeneralizedHeight,
-  exportSVG
-} from './helpers'
-import {SVGSectionComponent} from '../summary-sections/column'
+import {SectionSurfacesContext} from '../summary-sections/data-provider'
+import {getGeneralizedHeight, exportSVG} from './helpers'
 import {FaciesSection} from './column'
 import path from 'path'
 
@@ -53,16 +28,12 @@ CorrelationContainer = (props)->
   {id, sections, children, rest...} = props
   domID = "sequence-#{id}"
 
-
   innerRef = (node)->
     exportFilename = path.join(
       path.resolve("."), "sections",
       "regional-sections", require.resolve("./#{id}.svg"))
     return unless node?
-    console.log "Exporting file #{id}.svg", node
     exportSVG(node, exportFilename)
-
-  #useEffect exportCorrelations
 
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID}, [
