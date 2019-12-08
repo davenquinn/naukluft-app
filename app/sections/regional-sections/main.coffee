@@ -11,7 +11,6 @@ import {
 import {IsotopesComponent} from "../summary-sections/chemostrat"
 import {LithostratKey} from "../summary-sections/lithostrat-key"
 import {Legend} from "../summary-sections/legend"
-import "../summary-sections/main.styl"
 import {useSettings, SettingsProvider} from '#'
 import {
   useContext,
@@ -29,125 +28,21 @@ import {
   SectionSurfacesProvider
   SectionSurfacesContext
 } from '../summary-sections/data-provider'
+import {
+  updateSectionE,
+  getGeneralizedHeight,
+  exportSVG
+} from './helpers'
 import {SVGSectionComponent} from '../summary-sections/column'
 import {FaciesSection} from './column'
+import {SequenceCorrelations} from './sequence'
 import {writeFileSync} from 'fs'
 import path from 'path'
 
+import "../summary-sections/main.styl"
 import styles from '../generalized-sections/main.styl'
 import styles2 from './main.styl'
 h = hyperStyled({styles...,styles2...})
-
-exportSVG = (node, outputFile)->
-  # Should make this work only in Node
-  serializer = new XMLSerializer()
-  return unless node?
-  svgString = serializer.serializeToString(node)
-  writeFileSync(outputFile, svgString, 'utf-8')
-
-getGeneralizedHeight = (sectionData, opts={})->
-  # Manage the top and bottom heights allowed
-  # using only the first section
-  upperHeight = {}
-  lowerHeight = {}
-  for {key, surfaces} in sectionData
-    if opts.topSurface?
-      s = surfaces.find (d)->d.surface == opts.topSurface
-      upperHeight[key] = s.bottom
-    if opts.bottomSurface?
-      s = surfaces.find (d)->d.surface == opts.bottomSurface
-      lowerHeight[key] = s.bottom
-
-  return (surface)->
-    # Gets heights of a surface in stacked sections
-    {section, height, inferred} = surface
-    for {key, surfaces} in sectionData
-      for s in surfaces
-        continue unless s.original_section.trim() == section.trim()
-        continue unless s.original_bottom == height
-        # Make sure we only take links between upper and lower surfaces if set
-        continue if upperHeight[key]? and upperHeight[key] < s.bottom
-        continue if lowerHeight[key]? and lowerHeight[key] > s.bottom
-        return {section: s.section, height: s.bottom, inferred}
-    return null
-
-LinkOverlay = (props)->
-  {sections, topSurface, bottomSurface, rest...} = props
-  {surfaces} = useContext(SectionSurfacesContext)
-  generalize = getGeneralizedHeight(sections, {topSurface, bottomSurface})
-
-  surfaces = surfaces.map ({section_height, rest1...})->
-    # Update surfaces to use generalized section heights
-    section_height = section_height.map(generalize).filter (d)->d?
-    {section_height, rest1...}
-
-  h SectionLinkOverlay, {surfaces, rest...}
-
-CorrelationContainer = (props)->
-  {id, sections, children, rest...} = props
-  domID = "sequence-#{id}"
-
-
-  innerRef = (node)->
-    exportFilename = path.join(
-      path.resolve("."), "sections",
-      "regional-sections", require.resolve("./#{id}.svg"))
-    return unless node?
-    console.log "Exporting file #{id}.svg", node
-    exportSVG(node, exportFilename)
-
-  #useEffect exportCorrelations
-
-  h SectionPositionProvider, [
-    h 'div.sequence', {id: domID}, [
-      h LinkOverlay, {innerRef, sections, rest...}
-      h 'div.generalized-sections', children
-    ]
-  ]
-
-SequenceCorrelations = (props)->
-  {sections, offsets, id, bottomSurface, topSurface, rest...} = props
-  h CorrelationContainer, {
-    id,
-    sections,
-    topSurface,
-    bottomSurface
-  }, sections.map ({key,surfaces})->
-    start = 0
-    # Bottom is the first division with an assigned facies
-    for d in surfaces
-      if d.facies? and d.facies != 'none'
-        start = d.bottom
-        break
-    # Top of the last section is taken as the height
-    # at which to clip off errant facies
-    end = surfaces[surfaces.length-1].top
-
-    h FaciesSection, {
-      id: key
-      zoom: 0.05,
-      key,
-      offsetTop: offsets[key] or 0
-      range: [start, end]
-      divisions: surfaces
-      bottomSurface
-      topSurface
-      rest...
-    }
-
-updateSectionE = (sections)->
-  # Special case for upper Lemoenputs formation in
-  # Section E: add 10 m for probable tectonic attenuation of shale
-  Ubisis = sections.find (d)->d.key == 'Ubisis'
-  return unless Ubisis?
-  divisions = Ubisis.surfaces
-  ix = divisions.findIndex (d)-> d.id == 502
-  return if ix == -1
-  addedHeight = 25
-  divisions[ix].top += addedHeight
-  for i in [ix+1...divisions.length]
-    divisions[i].bottom += addedHeight
-    divisions[i].top += addedHeight
 
 SectionPane = (props)->
   {surfaces} = useContext(GeneralizedSurfacesContext)
