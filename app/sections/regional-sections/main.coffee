@@ -121,7 +121,7 @@ SequenceCorrelations = (props)->
         break
     # Top of the last section is taken as the height
     # at which to clip off errant facies
-    end = parseFloat(surfaces[surfaces.length-1].section_end)
+    end = surfaces[surfaces.length-1].top
 
     h FaciesSection, {
       id: key
@@ -135,6 +135,20 @@ SequenceCorrelations = (props)->
       rest...
     }
 
+updateSectionE = (sections)->
+  # Special case for upper Lemoenputs formation in
+  # Section E: add 10 m for probable tectonic attenuation of shale
+  Ubisis = sections.find (d)->d.key == 'Ubisis'
+  return unless Ubisis?
+  divisions = Ubisis.surfaces
+  ix = divisions.findIndex (d)-> d.id == 502
+  return if ix == -1
+  addedHeight = 25
+  divisions[ix].top += addedHeight
+  for i in [ix+1...divisions.length]
+    divisions[i].bottom += addedHeight
+    divisions[i].top += addedHeight
+
 SectionPane = (props)->
   {surfaces} = useContext(GeneralizedSurfacesContext)
   sz = useCanvasSize()
@@ -142,6 +156,8 @@ SectionPane = (props)->
   sections = Array.from surfaceMap, ([key,surfaces])->
     surfaces.sort (a,b)->a.bottom-b.bottom
     return {key,surfaces}
+
+  updateSectionE(sections)
 
   order = ['Onis', 'Ubisis', 'Tsams']
   sections.sort (a,b)->

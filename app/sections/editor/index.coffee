@@ -79,17 +79,17 @@ FaciesTractControl = (props)->
   {interval, onUpdate} = props
   onUpdate ?= ->
 
-  options = faciesTracts.map (d)->d.id
+  options = faciesTracts.map (d)->
+    {value: d.id, label: d.name}
 
-  currentVal = interval.facies_tract
+  currentVal = options.find (d)->
+    d.value == interval.facies_tract
 
   h RaisedSelect, {
     id: 'facies-tract-select'
     options
+    isClearable: true
     value: currentVal
-    getOptionLabel: (id)->
-      v = faciesTracts.find (d)->d.id == id
-      return v.name
     onChange: (res)->
       onUpdate(res)
   }
@@ -166,7 +166,9 @@ class ModalEditor extends Component
           title: 'Facies tract'
           is: FaciesTractControl
           interval
-          onUpdate: (facies_tract)=>@update {facies_tract}
+          onUpdate: (option)=>
+            facies_tract = option.value
+            @update {facies_tract}
         }
         h LabeledControl, {
           title: 'Surface type (parasequence)'
@@ -242,7 +244,9 @@ class IntervalEditor extends Component
         title: 'Facies tract'
         is: FaciesTractControl
         interval
-        onUpdate: (facies_tract)=>@update {facies_tract}
+        onUpdate: (option)=>
+          facies_tract = option.value
+          @update {facies_tract}
       }
       h LabeledControl, {
         title: 'Surface type'

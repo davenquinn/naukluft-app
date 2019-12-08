@@ -38,7 +38,6 @@ FaciesTractIntervals = (props)->
 
 SVGSectionInner = (props)->
   {id,
-   height
    range,
    zoom
    offsetTop,
