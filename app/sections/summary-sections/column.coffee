@@ -21,7 +21,7 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner, SimpleFrame} from '#/lithology'
 import {DivisionEditOverlay} from '#/edit-overlay'
 
-import {ColumnTracker} from './link-overlay'
+import {ColumnTracker} from '../components/link-overlay'
 import {
   ColumnSurfacesProvider,
   ColumnSurfacesContext

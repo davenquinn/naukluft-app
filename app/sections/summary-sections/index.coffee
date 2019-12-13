@@ -8,7 +8,7 @@ import {SectionNavigationControl} from "../util"
 import {
   SectionLinkOverlay,
   SectionPositionProvider
-} from "./link-overlay"
+} from "../components/link-overlay"
 import {
   groupOrder,
   stackGroups,

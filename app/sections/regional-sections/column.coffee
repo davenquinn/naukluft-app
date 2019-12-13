@@ -10,7 +10,7 @@ import {
 import {
   SectionPositionContext,
   ColumnTracker
-} from '../summary-sections/link-overlay'
+} from '../components/link-overlay'
 import {
   LithologyColumn,
   FaciesColumnInner,
@@ -86,7 +86,7 @@ SVGSectionInner = (props)->
         }, [
           h LithologyColumn, {width: 30}, [
             h FaciesTractIntervals
-            h CarbonateDivisions, {minimumHeight: 2}
+            #h CarbonateDivisions, {minimumHeight: 2}
           ]
         ]
         children

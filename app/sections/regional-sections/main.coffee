@@ -2,7 +2,7 @@ import {hyperStyled} from "@macrostrat/hyper"
 import {group} from 'd3-array'
 import {GeneralizedSurfacesContext} from '../generalized-sections/data-provider'
 import {useContext} from 'react'
-import {useCanvasSize} from "../summary-sections/link-overlay"
+import {useCanvasSize} from "../components/link-overlay"
 import {updateSectionE} from './helpers'
 import {SequenceCorrelations} from './sequence'
 import {RegionalSectionsContainer} from './container'

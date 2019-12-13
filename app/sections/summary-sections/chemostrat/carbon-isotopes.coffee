@@ -14,7 +14,7 @@ import {AxisBottom} from '@vx/axis'
 
 import {sectionIsotopeScheme} from '../display-parameters'
 import {useIsotopes} from './data-manager'
-import {sectionSurfaceProps} from '../link-overlay'
+import {sectionSurfaceProps} from '../../components/link-overlay'
 import {query} from "../../db"
 import sql from '../../sql/carbon-isotopes.sql'
 import allCarbonIsotopes from '../../sql/all-carbon-isotopes.sql'

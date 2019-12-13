@@ -3,7 +3,7 @@ import {useContext} from 'react'
 import {
   SectionPositionProvider,
   SectionLinkOverlay
-} from "../summary-sections/link-overlay"
+} from "../components/link-overlay"
 import {SectionSurfacesContext} from '../summary-sections/data-provider'
 import {getGeneralizedHeight, exportSVG} from './helpers'
 import {FaciesSection} from './column'

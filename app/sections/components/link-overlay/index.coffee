@@ -7,14 +7,22 @@ import {
   useLayoutEffect,
   forwardRef
 } from "react"
-import h from "@macrostrat/hyper"
-import {linkHorizontal} from 'd3-shape'
-import classNames from "classnames"
-import {group, pairs} from 'd3-array'
-import {Notification} from "../../notify"
 import T from "prop-types"
+import {hyperStyled} from "@macrostrat/hyper"
+import classNames from "classnames"
 import update from 'immutability-helper'
-import {expandInnerSize, useSettings, ColumnContext, SVG} from '#'
+import {
+  expandInnerSize,
+  useSettings,
+  ColumnContext,
+  SVG
+} from '#'
+import {group, pairs} from 'd3-array'
+import {linkHorizontal} from 'd3-shape'
+import {Notification} from "../../../notify"
+import styles from './main.styl'
+
+h = hyperStyled(styles)
 
 sectionSurfaceProps = (surface)->
   {surface_type, surface_order} = surface
@@ -295,7 +303,6 @@ getSize = (sectionIndex)->
   w_ = 0
   h_ = 0
   for k,v of sectionIndex
-    console.log v
     {width, height, x, y} = v
     maxX = x+width
     maxY = y+height
@@ -312,10 +319,9 @@ useCanvasSize = ->
   sectionIndex = useContext(SectionObserverContext)
   return getSize(sectionIndex)
 
-SectionLinkOverlay = (props)->
-  {surfaces, showSectionTrackers, connectLines, innerRef} = props
+SectionLinks = (props)->
+  {surfaces, connectLines, innerRef} = props
   return null unless surfaces.length
-
   sectionIndex = useContext(SectionObserverContext)
 
   surfacesNew = prepareLinkData({
@@ -323,17 +329,24 @@ SectionLinkOverlay = (props)->
     sectionIndex
   })
 
+  h 'g.section-links', surfacesNew.map (surface)->
+    h FilteredSectionLink, {surface, connectLines}
+
+SectionLinkOverlay = (props)->
+  {surfaces, showSectionTrackers, connectLines, innerRef} = props
+  return null unless surfaces.length
+
+  sectionIndex = useContext(SectionObserverContext)
   sz = getSize(sectionIndex)
 
   h SVG, {
     # Shouldn't need ID but we apparently do
-    id: "section-link-overlay"
+    className: "section-link-overlay"
     innerRef
     sz...
   }, [
     h.if(showSectionTrackers) SectionTrackerRects
-    h 'g.section-links', surfacesNew.map (surface)->
-      h FilteredSectionLink, {surface, connectLines}
+    h SectionLinks, {connectLines, surfaces}
   ]
 
 SectionLinkOverlay.defaultProps = {
@@ -342,6 +355,7 @@ SectionLinkOverlay.defaultProps = {
 }
 
 export {
+  SectionLinks
   SectionLinkOverlay
   SectionPositionProvider
   SectionPositionContext

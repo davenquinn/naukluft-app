@@ -16,7 +16,7 @@ import {useContext} from 'react'
 import {
   SectionPositionProvider,
   SectionLinkOverlay
-} from "../summary-sections/link-overlay"
+} from "../components/link-overlay"
 import {
   SectionSurfacesProvider
   SectionSurfacesContext
