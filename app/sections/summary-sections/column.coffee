@@ -206,7 +206,6 @@ SVGSectionInner = (props)->
       offsetLeft += tbo+20
     else
       overhangLeft = 25
-      left = tbo
 
   # Expand SVG past bounds of section
 

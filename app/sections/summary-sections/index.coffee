@@ -43,6 +43,14 @@ class SectionColumn extends Component
     style.width ?= 240
     h 'div.section-column', {style}, @props.children
 
+SectionContainer = (props)->
+  {children, minHeight} = props
+  h SectionPositionProvider, [
+    h "div#section-page-inner", {
+      style: {zoom: 1, minHeight}
+    }, children
+  ]
+
 SectionPane = (props) ->
   {sectionPositions, sections
    groupMargin, columnMargin, columnWidth} = props
@@ -83,9 +91,7 @@ SectionPane = (props) ->
   showChemostrat = not options.isotopesPerSection
 
   h 'div#section-pane', {style: {overflow: 'scroll'}}, [
-    h "div#section-page-inner", {
-      style: {zoom: 1, minHeight}
-    }, [
+    h SectionContainer, [
       h SectionLinkOverlay, {
         connectLines: true
         surfaces
@@ -202,16 +208,14 @@ SummarySectionsStatic = (props)->
   }
 
   h SectionSurfacesProvider, [
-    h SectionPositionProvider, [
-      h SettingsProvider, {
-        sectionSettings...
-      }, [
-        h 'div.page.section-page', [
-          h 'div.panel-container', [
-            h SectionPane, {
-              props...,
-            }
-          ]
+    h SettingsProvider, {
+      sectionSettings...
+    }, [
+      h 'div.page.section-page', [
+        h 'div.panel-container', [
+          h SectionPane, {
+            props...,
+          }
         ]
       ]
     ]
