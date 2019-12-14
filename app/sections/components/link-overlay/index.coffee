@@ -54,7 +54,6 @@ SectionPositionProvider = (props)->
       containerPosition = el.getBoundingClientRect()
     else
       containerPosition = {x: 0, y: 0}
-    console.log el
 
     return unless pos?
     return unless scale?
@@ -74,7 +73,6 @@ SectionPositionProvider = (props)->
     globalScale = scale.copy().range(globalRange).clamp(false)
 
     val = {id,x,y, width, scale,globalScale, sz...}
-    console.log id, val
     spec = {[id]: {$set: val}}
     newValue = update value, spec
     setState newValue

@@ -138,19 +138,18 @@ SectionPane = (props) ->
             style = {marginRight, height, width: columnWidth}
 
             h SectionColumn, {key: i, style}, col.map (row)=>
-              {offset, range, height, start, end, rest...} = row
-              offset = sectionOffsets[row.id] or offset
+              {offset, start, clip_end: end, id} = row
+              offset = sectionOffsets[id] or offset
 
               # Clip off the top of some columns...
-              end = row.clip_end
 
               height = end-start
               range = [start, end]
 
               h SVGSectionComponent, {
                 zoom: 0.1,
-                key: row.id,
-                triangleBarRightSide: row.id == 'J'
+                key: id,
+                triangleBarRightSide: id == 'J'
                 showCarbonIsotopes,
                 isotopesPerSection
                 offsetTop: (670-height-offset)
@@ -158,7 +157,7 @@ SectionPane = (props) ->
                 height
                 start
                 end
-                rest...
+                id
               }
       ]
     ]

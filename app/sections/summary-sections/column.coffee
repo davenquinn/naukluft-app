@@ -1,5 +1,4 @@
 import {Component, createElement, createRef, useContext} from "react"
-import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
 import T from 'prop-types'
 import {format} from 'd3-format'
@@ -32,6 +31,11 @@ import {Notification} from "../../notify"
 import {FaciesContext} from "../facies"
 import {MinimalIsotopesColumn} from './chemostrat'
 import {FaciesTractIntervals} from '../column/facies-tracts'
+
+import {hyperStyled} from "@macrostrat/hyper"
+import styles from "./main.styl"
+h = hyperStyled(styles)
+
 
 fmt = format('.1f')
 
@@ -92,8 +96,17 @@ EditOverlay = (props)->
   }
 
 ColumnSummaryAxis = (props)->
-  {height, zoom} = useContext(ColumnContext)
-  h ColumnAxis, {ticks: (height*zoom)/5}
+  {height, zoom, scale, pixelsPerMeter} = useContext(ColumnContext)
+  ratio = pixelsPerMeter*zoom
+
+  # Keep labels from inhabiting the top few pixels (to make space for section labels)
+  topPadding = 30
+  maxVal = scale.domain()[1]-topPadding/ratio
+
+  h ColumnAxis, {
+    ticks: (height*zoom)/5
+    showLabel: (d)-> d < maxVal
+  }
 
 ColumnIsotopes = (props)->
   opts = useSettings()
