@@ -81,10 +81,10 @@ SVGSectionInner = (props)->
         padding: 5
       }, [
         h ColumnSVG, {
-          width: 40
+          width: 30
           padding: 5
         }, [
-          h LithologyColumn, {width: 30}, [
+          h LithologyColumn, {width: 20}, [
             h FaciesTractIntervals
             #h CarbonateDivisions, {minimumHeight: 2}
           ]

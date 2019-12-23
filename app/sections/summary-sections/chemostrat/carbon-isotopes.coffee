@@ -93,15 +93,14 @@ class IsotopesColumnInner extends Component
     {width: innerWidth} = @context
     {left, top, right, bottom} = padding
 
-    h "div.isotopes-column", {
-      style: {marginTop: 6}
-    }, [
+    h "div.isotopes-column", [
       h 'div.section-header.subtle', [
         h "h2",label
       ]
       h 'div.section-outer', [
         h ColumnSVG, {
           innerWidth
+          paddingTop: padding.top
           paddingLeft: padding.left
           paddingRight: padding.right
           paddingBottom: padding.bottom

@@ -106,7 +106,7 @@ SectionPane = (props) ->
       h.if(showChemostrat) ChemostratigraphyColumn, {
         sections
         surfaces
-        showLines: true
+        showLines: false
         options
       }
       h "div#section-container", [
