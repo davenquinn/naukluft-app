@@ -333,7 +333,7 @@ SectionLinks = (props)->
     h FilteredSectionLink, {surface, connectLines}
 
 SectionLinkOverlay = (props)->
-  {surfaces, showSectionTrackers, connectLines, innerRef} = props
+  {surfaces, showSectionTrackers, connectLines, innerRef, className, rest...} = props
   return null unless surfaces.length
 
   sectionIndex = useContext(SectionObserverContext)
@@ -341,9 +341,10 @@ SectionLinkOverlay = (props)->
 
   h SVG, {
     # Shouldn't need ID but we apparently do
-    className: "section-link-overlay"
+    className: classNames("section-link-overlay", className)
     innerRef
     sz...
+    rest...
   }, [
     h.if(showSectionTrackers) SectionTrackerRects
     h SectionLinks, {connectLines, surfaces}

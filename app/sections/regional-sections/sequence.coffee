@@ -1,5 +1,8 @@
 import {hyperStyled} from "@macrostrat/hyper"
-import {useContext} from 'react'
+import {useContext, createRef} from 'react'
+import {toBlob} from 'dom-to-image'
+import {writeFileSync} from 'fs'
+
 import {
   SectionPositionProvider,
   SectionLinkOverlay
@@ -22,21 +25,34 @@ LinkOverlay = (props)->
     section_height = section_height.map(generalize).filter (d)->d?
     {section_height, rest1...}
 
-  h SectionLinkOverlay, {surfaces, rest...}
+  h SectionLinkOverlay, {className: 'sequence-link-overlay', surfaces, rest...}
+
+filenameForID = (id, ext)->
+  return path.join(
+    path.resolve("."),
+    "sections",
+    "regional-sections",
+    require.resolve("./#{id}.#{ext}")
+  )
 
 CorrelationContainer = (props)->
   {id, sections, children, rest...} = props
   domID = "sequence-#{id}"
 
-  innerRef = (node)->
-    exportFilename = path.join(
-      path.resolve("."), "sections",
-      "regional-sections", require.resolve("./#{id}.svg"))
+  outerRef = (node)->
     return unless node?
-    exportSVG(node, exportFilename)
+    blob = await toBlob(node)
+    contents = await blob.stream().getReader().read()
+    arrayBuffer = contents.value
+    writeFileSync(filenameForID(id,"png"), arrayBuffer)
+
+  innerRef = (node)->
+    return unless node?
+    exportSVG(node, filenameForID(id,"svg"))
+
 
   h SectionPositionProvider, [
-    h 'div.sequence', {id: domID}, [
+    h 'div.sequence', {id: domID, ref: outerRef}, [
       h LinkOverlay, {innerRef, sections, rest...}
       h 'div.generalized-sections', children
     ]
@@ -48,7 +64,8 @@ SequenceCorrelations = (props)->
     id,
     sections,
     topSurface,
-    bottomSurface
+    bottomSurface,
+    width: 1200
   }, sections.map ({key,surfaces})->
     start = 0
     # Bottom is the first division with an assigned facies
