@@ -2,7 +2,7 @@
 <!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1200px"
 	 height="318px" viewBox="0 0 1200 318" enable-background="new 0 0 1200 318" xml:space="preserve">
-<g id="Reference">
+<g id="Layer_1">
 	<g display="none">
 		<g display="inline">
 			<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M160,92.1h40 M200,92.1c35,0,35,2.7,70,2.7h40"/>
@@ -150,14 +150,13 @@
 			<path fill="none" stroke="#CCCCCC" d="M160,70h40 M200,70c35,0,35,3.5,70,3.5h40"/>
 		</g>
 		<g>
-			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,123h40 M200,123c35,0,35,11,70,11h40"/>
-			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,123h40 M200,123c35,0,35,11,70,11h40 M310,134c175,0,175,9,350,9
-				h40"/>
+			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,123h40"/>
+			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,122L160,122c51.1,3.6,75,11,125,12.6c0,0,200,8.4,375,8.4h40"/>
 		</g>
 		<g>
 			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,24h40 M200,24c35,0,35-1,70-1h40"/>
-			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,24h40 M200,24c35,0,35-1,70-1h40 M310,23c175,0,175-11.7,350-11.7
-				h40"/>
+			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M160,24h40 M200,24c35,0,35-1,70-1h40 M310,23
+				c175,0,207.6,10.6,382.6,10.6"/>
 		</g>
 		<g>
 			<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M162.1,171c44.5,0,76.2,5.7,124.3,10.3

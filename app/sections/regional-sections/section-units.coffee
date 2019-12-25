@@ -7,7 +7,7 @@ import {findDOMNode} from 'react-dom'
 import {SVG} from "#"
 import {geoPath, geoTransform} from 'd3-geo'
 import {db, storedProcedure} from '../db'
-import sql from '../regional-cross-section/sql/get-generalized.sql'
+import sql from '../regional-cross-section/filled-topology/get-generalized.sql'
 
 import {PolygonComponent} from '../regional-cross-section'
 import {filenameForID} from './svg-export'
@@ -82,13 +82,15 @@ class CrossSectionUnits extends Component
 
     el = select findDOMNode @
     console.log el, main.node()
-    cs = el.select("svg.cross-section")
-      .attr "viewBox", svg.attr("viewBox")
-    cs.select("g.linework")
+
+    for v in ['viewBox', 'width', 'height']
+        el.attr v, svg.attr(v)
+
+    el.select("g.linework")
       .node().appendChild main.node()
 
     pts = svg.select("g#Labels")
-    cs.select("g.overlay")
+    el.select("g.overlay")
       .node().appendChild(pts.node())
 
     ### Get facies data ###
@@ -120,16 +122,12 @@ class CrossSectionUnits extends Component
     @setState {polygons: res}
 
   render: ->
+    {id, rest...} = @props
     {polygons} = @state
-    h 'div', [
-      h SVG, {className: 'cross-section'}, [
-        h PolygonComponent, {polygons}
-        h 'g.linework'
-        h 'g.overlay'
-      ]
+    h SVG, {className: 'cross-section', rest...}, [
+      h PolygonComponent, {polygons}
+      h 'g.linework'
+      h 'g.overlay'
     ]
-
-
-
 
 export {CrossSectionUnits}

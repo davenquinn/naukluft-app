@@ -16,7 +16,7 @@ import {join} from 'path'
 import {db, storedProcedure} from '../db'
 import './main.styl'
 import {PlatformContext} from '../../platform'
-import sql from './sql/get-generalized.sql'
+import sql from './filled-topology/get-generalized.sql'
 
 removeALine = (f)->
   f.substring(f.indexOf("\n") + 1)

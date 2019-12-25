@@ -35,11 +35,16 @@ CorrelationContainer = (props)->
     observer = new MutationObserver exportSequence(id, node)
     observer.observe(node, {childList: true})
 
+  hideLinks = true
+  style = null
+  if hideLinks
+    style = {opacity: 0.2}
+
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID, ref: outerRef}, [
-      h LinkOverlay, {sections, rest...}
+      h LinkOverlay, {sections, style, rest...}
+      h CrossSectionUnits, {id, style: {position: 'absolute', top: 0}}
       h 'div.generalized-sections', children
-      h CrossSectionUnits, {id}
     ]
   ]
 
