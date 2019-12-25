@@ -1,7 +1,5 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {useContext, createRef} from 'react'
-import {toBlob} from 'dom-to-image'
-import {writeFileSync} from 'fs'
 
 import {
   SectionPositionProvider,
@@ -10,7 +8,7 @@ import {
 import {SectionSurfacesContext} from '../summary-sections/data-provider'
 import {getGeneralizedHeight, exportSVG} from './helpers'
 import {FaciesSection} from './column'
-import path from 'path'
+import {exportSequence} from './svg-export'
 
 import styles from './main.styl'
 h = hyperStyled(styles)
@@ -27,63 +25,13 @@ LinkOverlay = (props)->
 
   h SectionLinkOverlay, {className: 'sequence-link-overlay', surfaces, rest...}
 
-filenameForID = (id, ext)->
-  return path.join(
-    path.resolve("."),
-    "sections",
-    "regional-sections",
-    "sequence-data",
-    require.resolve("./#{id}.#{ext}")
-  )
-
 CorrelationContainer = (props)->
   {id, sections, children, rest...} = props
   domID = "sequence-#{id}"
 
-
   outerRef = (node)->
     return unless node?
-
-    observer = new MutationObserver ->
-      overlay = node.querySelector(".sequence-link-overlay")
-      return unless overlay?
-      {x: rootX, y: rootY} = overlay.getBoundingClientRect()
-
-      sections = node.querySelectorAll(".section")
-      return unless sections.length > 0
-
-      g = document.createElementNS("http://www.w3.org/2000/svg", 'g')
-      g.setAttribute("class", "sections")
-
-      for section in sections
-        s1 = section.querySelector("g.lithology-column")
-        {x,y} = section.getBoundingClientRect()
-        s1a = s1.cloneNode(true)
-        t = "translate(#{x-rootX+5}, #{y-rootY+5})"
-        s1a.setAttribute('transform', t)
-        # Adobe Illustrator does not support SVG clipping paths.
-        # clip = s1a.querySelector("clipPath")
-        # clip.parentNode.removeChild(clip)
-        #
-        # r = s1a.querySelector("use.frame")
-        # r.parentNode.removeChild(r)
-
-        clip = s1a.querySelector("defs")
-        clip.parentNode.removeChild(clip)
-
-        s1a.querySelector('.inner').removeAttribute('clip-path')
-
-        r = s1a.querySelector("use")
-        r.parentNode.removeChild(r)
-
-        console.log(s1a)
-        g.appendChild(s1a)
-
-      root = overlay.cloneNode(true)
-      root.appendChild(g)
-
-      exportSVG(root, filenameForID(id,"svg"))
-
+    observer = new MutationObserver exportSequence(id, node)
     observer.observe(node, {childList: true})
 
   h SectionPositionProvider, [

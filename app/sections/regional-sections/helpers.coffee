@@ -26,13 +26,6 @@ getGeneralizedHeight = (sectionData, opts={})->
         return {section: s.section, height: s.bottom, inferred}
     return null
 
-exportSVG = (node, outputFile)->
-  # Should make this work only in Node
-  serializer = new XMLSerializer()
-  return unless node?
-  svgString = serializer.serializeToString(node)
-  writeFileSync(outputFile, svgString, 'utf-8')
-
 updateSectionE = (sections)->
   # Special case for upper Lemoenputs formation in
   # Section E: add 10 m for probable tectonic attenuation of shale
@@ -47,4 +40,4 @@ updateSectionE = (sections)->
     divisions[i].bottom += addedHeight
     divisions[i].top += addedHeight
 
-export {getGeneralizedHeight, exportSVG, updateSectionE}
+export {getGeneralizedHeight, updateSectionE}
