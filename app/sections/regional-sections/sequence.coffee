@@ -62,11 +62,19 @@ CorrelationContainer = (props)->
         t = "translate(#{x-rootX+5}, #{y-rootY+5})"
         s1a.setAttribute('transform', t)
         # Adobe Illustrator does not support SVG clipping paths.
-        #clip = s1a.querySelector("clipPath")
-        #clip.parentNode.removeChild(clip)
+        # clip = s1a.querySelector("clipPath")
+        # clip.parentNode.removeChild(clip)
+        #
+        # r = s1a.querySelector("use.frame")
+        # r.parentNode.removeChild(r)
 
-        #r = s1a.querySelector("use.frame")
-        #r.parentNode.removeChild(r)
+        clip = s1a.querySelector("defs")
+        clip.parentNode.removeChild(clip)
+
+        s1a.querySelector('.inner').removeAttribute('clip-path')
+
+        r = s1a.querySelector("use")
+        r.parentNode.removeChild(r)
 
         console.log(s1a)
         g.appendChild(s1a)
