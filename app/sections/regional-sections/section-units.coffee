@@ -1,22 +1,36 @@
-
-# https://pomax.github.io/bezierjs/
-# http://jsfiddle.net/halfsoft/Gsz2a/
-
-import {Component} from 'react'
-import {findDOMNode} from 'react-dom'
 import h from 'react-hyperscript'
-import {SVG} from '#'
-import {SectionNavigationControl} from '../util'
-import {path} from 'd3-path'
-import {schemeSet3} from 'd3-scale-chromatic'
-import {geoPath, geoTransform} from 'd3-geo'
-import {select} from 'd3-selection'
 import {readFileSync} from 'fs'
 import {join} from 'path'
+import {select} from 'd3-selection'
+import {Component} from 'react'
+import {findDOMNode} from 'react-dom'
+import {SVG} from "#"
+import {geoPath, geoTransform} from 'd3-geo'
 import {db, storedProcedure} from '../db'
-import './main.styl'
-import {PlatformContext} from '../../platform'
-import sql from './sql/get-generalized.sql'
+import sql from '../regional-cross-section/sql/get-generalized.sql'
+
+import {PolygonComponent} from '../regional-cross-section'
+import {filenameForID} from './svg-export'
+import {removeLines} from './util'
+
+editedFile = (id)->
+  filenameForID(id,'svg').replace("sequence-data", "sequence-data-edited")
+
+getEditedSequenceOverlay = (id)->
+  fn = editedFile(id)
+  try
+    svg = readFileSync fn
+  catch
+    return null
+  fst = removeLines(svg.toString(), 2)
+
+  el = document.createElement("div")
+  el.innerHTML = fst
+
+  svg = el.querySelector("svg")
+  lyr2 = el.querySelector("#Layer_2")
+
+  return select(svg)
 
 removeALine = (f)->
   f.substring(f.indexOf("\n") + 1)
@@ -40,66 +54,18 @@ facies_ix = {
   fc: [669,'#4DB6AC']
 }
 
-class PolygonComponent extends Component
-  @contextType: PlatformContext
-  renderDefs: ->
-    {resolveLithologySymbol} = @context
-    patternSize = {width: 30, height: 30}
-    patterns = Object.values(facies_ix)
-    patternLoc = {x:0,y:0}
-
-    h 'defs', patterns.map (d)->
-      id = "pattern-#{d[0]}"
-      h 'pattern', {
-        id
-        key: id
-        patternUnits: "userSpaceOnUse"
-        patternSize...
-      }, [
-        h 'rect', {
-          fill: d[1]
-          patternSize...
-          patternLoc...
-        }
-        h 'image', {
-          xlinkHref: resolveLithologySymbol(d[0], {svg: true})
-          patternLoc...
-          patternSize...
-        }
-      ]
-
-  render: ->
-    {polygons} = @props
-    return null unless polygons?
-    h 'g.polygon-container', [
-      @renderDefs()
-      h 'g.polygons', polygons.map (p, i)->
-        {facies_id, geometry} = p
-        fill = schemeSet3[i%12]
-        if facies_id?
-          fill = "url(#pattern-#{facies_ix[facies_id][0]})"
-        h 'path', {d: generator(geometry), key: i, fill}
-    ]
-
-
-class RegionalCrossSectionPage extends Component
+class CrossSectionUnits extends Component
   constructor: ->
     super arguments...
     @state = {polygons: null}
 
   componentDidMount: ->
-    fn = join __dirname, "stratigraphic-model.svg"
-    svg = readFileSync fn
-    fst = svg.toString()
-    v = removeALine(removeALine(fst))
-    el = select findDOMNode @
+    {id} = @props
+    svg = getEditedSequenceOverlay(id)
+    return unless svg?
     pathData = []
 
-    tcs = el.select("div.temp-cross-section")
-    tcs.html v
-    svg = tcs.select "svg"
-
-    main = svg.select("g#Main")
+    main = svg.select("g#Lines")
 
     ### Get path data ###
     main.selectAll 'path,line,polygon,polyline'
@@ -114,6 +80,8 @@ class RegionalCrossSectionPage extends Component
         coordinates.push coordAtLength(@,len)
         pathData.push coordinates
 
+    el = select findDOMNode @
+    console.log el, main.node()
     cs = el.select("svg.cross-section")
       .attr "viewBox", svg.attr("viewBox")
     cs.select("g.linework")
@@ -154,13 +122,14 @@ class RegionalCrossSectionPage extends Component
   render: ->
     {polygons} = @state
     h 'div', [
-      h SectionNavigationControl
       h SVG, {className: 'cross-section'}, [
         h PolygonComponent, {polygons}
         h 'g.linework'
         h 'g.overlay'
       ]
-      h 'div.temp-cross-section'
     ]
 
-export {RegionalCrossSectionPage, PolygonComponent}
+
+
+
+export {CrossSectionUnits}

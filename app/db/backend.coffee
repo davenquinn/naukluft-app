@@ -4,6 +4,7 @@ import {getUID, getHash} from "./util"
 
 opts = {
   promiseLib: Promise
+  noWarnings: true
   query: (e)=>
     v = queryLibrary.find (d)->
       d.sql == e.query

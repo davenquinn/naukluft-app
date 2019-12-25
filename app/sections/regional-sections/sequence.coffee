@@ -9,6 +9,7 @@ import {SectionSurfacesContext} from '../summary-sections/data-provider'
 import {getGeneralizedHeight, exportSVG} from './helpers'
 import {FaciesSection} from './column'
 import {exportSequence} from './svg-export'
+import {CrossSectionUnits} from './section-units'
 
 import styles from './main.styl'
 h = hyperStyled(styles)
@@ -38,8 +39,10 @@ CorrelationContainer = (props)->
     h 'div.sequence', {id: domID, ref: outerRef}, [
       h LinkOverlay, {sections, rest...}
       h 'div.generalized-sections', children
+      h CrossSectionUnits, {id}
     ]
   ]
+
 
 SequenceCorrelations = (props)->
   {sections, offsets, id, bottomSurface, topSurface, rest...} = props

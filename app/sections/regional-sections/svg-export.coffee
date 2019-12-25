@@ -43,8 +43,6 @@ exportSequence = (id, node)-> ->
 
     r = s1a.querySelector("use")
     r.parentNode.removeChild(r)
-
-    console.log(s1a)
     g.appendChild(s1a)
 
   root = overlay.cloneNode(true)
@@ -52,4 +50,4 @@ exportSequence = (id, node)-> ->
 
   exportSVG(root, filenameForID(id,"svg"))
 
-export {exportSequence}
+export {filenameForID, exportSequence}
