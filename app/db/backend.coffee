@@ -8,7 +8,7 @@ opts = {
     v = queryLibrary.find (d)->
       d.sql == e.query
     #console.log e.query
-    if not v?
+    if not v? and process.env.WARN_NO_SERIALIZATION_SPEC
       console.warn "No serialization spec found matching the query `#{e.query}`.
                     This request will fail on the frontend."
 }
@@ -22,7 +22,8 @@ storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
   fn = resolve(__dirname,fileName)
-  queryFiles[fn] ?= pgp.QueryFile(fn)
+  if not queryFiles[fn]?
+    queryFiles[fn] = pgp.QueryFile(fn)
   return queryFiles[fn]
 
 queryLibrary = []
