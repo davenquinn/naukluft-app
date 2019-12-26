@@ -14,18 +14,20 @@ opts = {
                     This request will fail on the frontend."
 }
 
-pgp = require('pg-promise')(opts)
+pgLib = require('pg-promise')
+pgp = pgLib(opts)
 db = pgp('postgresql:///Naukluft')
 {helpers} = pgp
 
-queryFiles = {}
+pgLib.queryFiles ?= {}
+
 storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
   fn = resolve(__dirname,fileName)
-  if not queryFiles[fn]?
-    queryFiles[fn] = pgp.QueryFile(fn)
-  return queryFiles[fn]
+  if not pgLib.queryFiles[fn]?
+    pgLib.queryFiles[fn] = new pgp.QueryFile(fn)
+  return pgLib.queryFiles[fn]
 
 queryLibrary = []
 # Serialize queries based on query file and opts
