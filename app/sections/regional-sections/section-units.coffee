@@ -54,6 +54,19 @@ facies_ix = {
   fc: [669,'#4DB6AC']
 }
 
+distanceFromLine = (p1,p2,p3)->
+  # distance of p3 from the line defined
+  # between p1 and p2
+  [x1,y1] = p1
+  [x2,y2] = p2
+  [x3,y3] = p3
+  dx = x2-x1
+  dy = y2-y1
+  top = Math.abs(dy*x3-dx*y3+x2*y1-y2*x1)
+  btm = Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2))
+  return top/btm
+
+
 class CrossSectionUnits extends Component
   constructor: ->
     super arguments...
@@ -75,12 +88,21 @@ class CrossSectionUnits extends Component
           coords = Array.from @points, ({x,y})->[x,y]
           pathData.push coords
           return
+
+        threshold = 0.05
         len = @getTotalLength()
         return if len == 0
         pos = 0
         coordinates = []
         while pos < len
           coordinates.push coordAtLength(@,pos)
+
+          if coordinates.length >= 3
+            c1 = coordinates.slice(coordinates.length-3,3)
+            if c1.length == 3
+              dist = distanceFromLine.apply(null, c1)
+              if dist < threshold
+                coordinates.splice(coordinates.length-2,1)
           # pop second to last
           pos += 0.2
         coordinates.push coordAtLength(@,len)
