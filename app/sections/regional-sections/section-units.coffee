@@ -33,9 +33,6 @@ getEditedSequenceOverlay = (id)->
 
   return select(svg)
 
-removeALine = (f)->
-  f.substring(f.indexOf("\n") + 1)
-
 Topology = (props)->
   colorIndex = useFaciesColors()
   h PolygonTopology, {
