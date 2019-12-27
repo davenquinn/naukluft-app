@@ -70,13 +70,19 @@ class CrossSectionUnits extends Component
     ### Get path data ###
     main.selectAll 'path,line,polygon,polyline'
       .each ->
+        console.log @
+        if @points?
+          coords = Array.from @points, ({x,y})->[x,y]
+          pathData.push coords
+          return
         len = @getTotalLength()
         return if len == 0
         pos = 0
         coordinates = []
         while pos < len
           coordinates.push coordAtLength(@,pos)
-          pos += 0.1
+          # pop second to last
+          pos += 0.2
         coordinates.push coordAtLength(@,len)
         pathData.push coordinates
 
@@ -89,9 +95,10 @@ class CrossSectionUnits extends Component
     el.select("g.linework")
       .node().appendChild main.node()
 
-    pts = svg.select("g#Labels")
-    el.select("g.overlay")
-      .node().appendChild(pts.node())
+    pts = svg.select("g#Labels").node()
+    if pts?
+      el.select("g.overlay")
+        .node().appendChild(pts)
 
     ### Get facies data ###
     points = []
@@ -100,7 +107,6 @@ class CrossSectionUnits extends Component
       .each ->
         faciesID = select(@).text()
         {x,y,width,height} = @getBBox()
-        console.log y,height
         {e,f} = @transform.baseVal[0].matrix
         loc = [e+x+width/2,f+y+height/2]
         geometry = {coordinates: loc, type: "Point"}
@@ -111,14 +117,19 @@ class CrossSectionUnits extends Component
     @getPolygons(pathData, points)
 
   getPolygons: (pathData, points)->
+    geometry = {
+      coordinates: pathData,
+      type: 'MultiLineString'
+    }
+
     q = storedProcedure(sql)
+
+    console.log JSON.stringify {geometry, points}
     res = await db.query q, {
-      geometry: {
-        coordinates: pathData,
-        type: 'MultiLineString'
-      }
+      geometry
       points
     }
+    console.log res
     @setState {polygons: res}
 
   render: ->

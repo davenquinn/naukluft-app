@@ -75,6 +75,7 @@ class PolygonComponent extends Component
       @renderDefs()
       h 'g.polygons', polygons.map (p, i)->
         {facies_id, geometry} = p
+        return null unless geometry
         fill = schemeSet3[i%12]
         if facies_id?
           fill = "url(#pattern-#{facies_ix[facies_id][0]})"
