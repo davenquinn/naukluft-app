@@ -241,6 +241,9 @@ SectionLink = (props)->
     # First move to initial height
     {x,y} = pair.source
 
+    if not connectLines?
+      d = null
+
     if not d?
       initialX = x
       if connectLines
@@ -263,7 +266,15 @@ SectionLink = (props)->
       style: {cursor: if onClick then 'pointer' else null}
     }
 
-  h 'g', links
+  if connectLines
+    return h 'path', {
+      d, className, stroke,
+      strokeWidth, fill,
+      onClick
+      style: {cursor: if onClick then 'pointer' else null}
+    }
+  else
+    return h 'g', links
 
 SectionLink.propTypes = {
   connectLines: T.bool
