@@ -249,14 +249,15 @@ SectionLink = (props)->
       if connectLines
         initialX -= width
       d = "M#{initialX},#{y}"
-      if connectLines
-        d += "l#{width},0"
 
-    d += buildLink(pair)
+    linkLine = buildLink(pair)
     if connectLines
-      d += "l#{width},0"
+      linkLine  =  "L"+linkLine.substring(1)
+      linkLine += "l#{width},0"
     else
-      d += "M#{width},0"
+      linkLine += "M#{width},0"
+    d += linkLine
+
     fill = 'none'
 
     h 'path', {

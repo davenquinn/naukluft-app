@@ -24,13 +24,14 @@ LinkOverlay = (props)->
     section_height = section_height.map(generalize).filter (d)->d?
     {section_height, rest1...}
 
-  h SectionLinkOverlay, {className: 'sequence-link-overlay', surfaces, rest...}
+  h SectionLinkOverlay, {className: 'sequence-link-overlay', surfaces, connectLines: true, rest...}
 
 CorrelationContainer = (props)->
   {id, sections, children, rest...} = props
   domID = "sequence-#{id}"
 
   outerRef = (node)->
+    console.log node
     return unless node?
     observer = new MutationObserver exportSequence(id, node)
     observer.observe(node, {childList: true})
@@ -42,9 +43,9 @@ CorrelationContainer = (props)->
 
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID, ref: outerRef}, [
-      h LinkOverlay, {sections, style, rest...}
       h 'div.generalized-sections', children
-      h CrossSectionUnits, {id, style: {position: 'absolute', top: 0}}
+      h CrossSectionUnits, {id}
+      h LinkOverlay, {sections, style, rest...}
     ]
   ]
 

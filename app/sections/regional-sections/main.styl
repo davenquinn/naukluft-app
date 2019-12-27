@@ -6,9 +6,9 @@
     display flex
     flex-direction row
     width 1200px
-    z-index -1
     //justify-content space-between
   .section-column
+    z-index: 10
     flex-grow 1
     &:first-child
       flex-grow 0.2
@@ -19,11 +19,21 @@
 
 .sequence
   position relative
+  &>svg
+    position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+
+.underlay
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  z-index 1
 
 :global
   .section-positioner
     position relative
-  svg.cross-section
-    z-index 1
-  // .sequence-link-overlay
-  //   z-index -10

@@ -42,7 +42,7 @@ Topology = (props)->
       return null unless geometry
       if facies_id?
         return colorIndex[facies_id]
-      return 'transparent'
+      return '#eeeeee'
   }
 
 class CrossSectionUnits extends Component
