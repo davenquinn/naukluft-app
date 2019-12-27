@@ -11,7 +11,7 @@ import sql from '../regional-cross-section/filled-topology/get-generalized.sql'
 
 import {PolygonComponent} from '../regional-cross-section'
 import {filenameForID} from './svg-export'
-import {removeLines} from './util'
+import {removeLines, useFaciesColors} from './util'
 
 editedFile = (id)->
   filenameForID(id,'svg').replace("sequence-data", "sequence-data-edited")
@@ -112,7 +112,7 @@ class CrossSectionUnits extends Component
     console.log el, main.node()
 
     for v in ['viewBox', 'width', 'height']
-        el.attr v, svg.attr(v)
+      el.attr v, svg.attr(v)
 
     el.select("g.linework")
       .node().appendChild main.node()

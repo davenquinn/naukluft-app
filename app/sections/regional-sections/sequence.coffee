@@ -43,8 +43,8 @@ CorrelationContainer = (props)->
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID, ref: outerRef}, [
       h LinkOverlay, {sections, style, rest...}
-      h CrossSectionUnits, {id, style: {position: 'absolute', top: 0}}
       h 'div.generalized-sections', children
+      h CrossSectionUnits, {id, style: {position: 'absolute', top: 0}}
     ]
   ]
 

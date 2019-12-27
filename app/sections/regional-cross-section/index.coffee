@@ -2,7 +2,7 @@
 # https://pomax.github.io/bezierjs/
 # http://jsfiddle.net/halfsoft/Gsz2a/
 
-import {Component} from 'react'
+import {Component, useContext} from 'react'
 import {findDOMNode} from 'react-dom'
 import h from 'react-hyperscript'
 import {SVG} from '#'
@@ -40,48 +40,56 @@ facies_ix = {
   fc: [669,'#4DB6AC']
 }
 
-class PolygonComponent extends Component
-  @contextType: PlatformContext
-  renderDefs: ->
-    {resolveLithologySymbol} = @context
-    patternSize = {width: 30, height: 30}
-    patterns = Object.values(facies_ix)
-    patternLoc = {x:0,y:0}
+TopoPolygon = ({feature, fill})->
+  {geometry} = feature
+  return null unless geometry
+  h 'path', {d: generator(geometry), fill}
 
-    h 'defs', patterns.map (d)->
-      id = "pattern-#{d[0]}"
-      h 'pattern', {
-        id
-        key: id
-        patternUnits: "userSpaceOnUse"
+TopoPolygons = ({polygons, generateFill})->
+  h 'g.polygons', polygons.map (p, i)->
+    fill = generateFill(p,i)
+    h TopoPolygon, {feature: p, fill}
+
+PatternDefs = ({patterns, size})->
+  {resolveLithologySymbol} = useContext(PlatformContext)
+  size ?= 30
+  patternSize = {width: size, height: size}
+  patternLoc = {x:0,y:0}
+
+  h 'defs', patterns.map (d)->
+    id = "pattern-#{d[0]}"
+    h 'pattern', {
+      id
+      key: id
+      patternUnits: "userSpaceOnUse"
+      patternSize...
+    }, [
+      h 'rect', {
+        fill: d[1]
         patternSize...
-      }, [
-        h 'rect', {
-          fill: d[1]
-          patternSize...
-          patternLoc...
-        }
-        h 'image', {
-          xlinkHref: resolveLithologySymbol(d[0], {svg: true})
-          patternLoc...
-          patternSize...
-        }
-      ]
-
-  render: ->
-    {polygons} = @props
-    return null unless polygons?
-    h 'g.polygon-container', [
-      @renderDefs()
-      h 'g.polygons', polygons.map (p, i)->
-        {facies_id, geometry} = p
-        return null unless geometry
-        fill = schemeSet3[i%12]
-        if facies_id?
-          fill = "url(#pattern-#{facies_ix[facies_id][0]})"
-        h 'path', {d: generator(geometry), key: i, fill}
+        patternLoc...
+      }
+      h 'image', {
+        xlinkHref: resolveLithologySymbol(d[0], {svg: true})
+        patternLoc...
+        patternSize...
+      }
     ]
 
+generateFill = (p, i)->
+  {facies_id, geometry} = p
+  return null unless geometry
+  fill = schemeSet3[i%12]
+  if facies_id?
+    fill = "url(#pattern-#{facies_ix[facies_id][0]})"
+  return fill
+
+PolygonComponent = ({polygons})->
+  return null unless polygons?
+  h 'g.polygon-container', [
+    h PatternDefs, {patterns: Object.values(facies_ix), size: 30}
+    h TopoPolygons, {polygons, generateFill}
+  ]
 
 class RegionalCrossSectionPage extends Component
   constructor: ->

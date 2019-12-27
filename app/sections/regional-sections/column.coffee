@@ -17,17 +17,14 @@ import {
   CarbonateDivisions
   ParameterIntervals,
 } from "#/lithology"
+import {useFaciesColors} from './util'
 import {FaciesContext} from '#'
 
 import styles from './main.styl'
 h = hyperStyled(styles)
 
 FaciesTractIntervals = (props)->
-  {faciesTracts} = useContext(FaciesContext)
-  colorIndex = {}
-  faciesTracts.map (d)->
-    colorIndex[d.id] = d.color
-
+  colorIndex = useFaciesColors()
   h ParameterIntervals, {
     parameter: 'facies_tract'
     fillForInterval: (facies_tract, d)->
