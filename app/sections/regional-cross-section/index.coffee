@@ -16,22 +16,19 @@ import {join} from 'path'
 import {db, storedProcedure} from '../db'
 import './main.styl'
 import {PlatformContext} from '../../platform'
-import sql from './filled-topology/get-generalized.sql'
+import {
+  PolygonTopology,
+  extractTextPositions,
+  extractLines
+  removeLines
+} from '../components/polygon-topology'
 import {useAsyncEffect} from 'use-async-effect'
-
-removeALine = (f)->
-  f.substring(f.indexOf("\n") + 1)
 
 coordAtLength = (path, pos)->
   {x,y} = path.getPointAtLength(pos)
   x = Math.round(x*10)/10
   y = Math.round(y*10)/10
   [x,y]
-
-proj = geoTransform {
-  point: (px, py)-> @stream.point(px, py)
-}
-generator = geoPath().projection proj
 
 facies_ix = {
   shale: [620, '#DCEDC8']
@@ -40,16 +37,6 @@ facies_ix = {
   cc: [601,'#006064']
   fc: [669,'#4DB6AC']
 }
-
-TopoPolygon = ({feature, fill})->
-  {geometry} = feature
-  return null unless geometry
-  h 'path', {d: generator(geometry), fill}
-
-TopoPolygons = ({polygons, generateFill})->
-  h 'g.polygons', polygons.map (p, i)->
-    fill = generateFill(p,i)
-    h TopoPolygon, {feature: p, fill}
 
 PatternDefs = ({patterns, size})->
   {resolveLithologySymbol} = useContext(PlatformContext)
@@ -77,31 +64,6 @@ PatternDefs = ({patterns, size})->
       }
     ]
 
-PolygonTopology = (props)->
-  {lines, points, generateFill, children, rest...} = props
-
-  [polygons, setPolygons] = useState(null)
-
-  getPolygons = ->
-    return unless lines? and points?
-    q = storedProcedure(sql)
-    res = await db.query q, {
-      geometry: {
-        coordinates: lines,
-        type: 'MultiLineString'
-      }
-      points
-    }
-    setPolygons(res)
-
-  useAsyncEffect getPolygons, [lines, points]
-
-  return null unless polygons?
-  h 'g.polygon-container', [
-    h TopoPolygons, {polygons, generateFill}
-    children
-  ]
-
 class RegionalCrossSectionPage extends Component
   constructor: ->
     super arguments...
@@ -111,9 +73,8 @@ class RegionalCrossSectionPage extends Component
     fn = join __dirname, "stratigraphic-model.svg"
     svg = readFileSync fn
     fst = svg.toString()
-    v = removeALine(removeALine(fst))
+    v = removeLines(fst, 2)
     el = select findDOMNode @
-    pathData = []
 
     tcs = el.select("div.temp-cross-section")
     tcs.html v
@@ -122,17 +83,8 @@ class RegionalCrossSectionPage extends Component
     main = svg.select("g#Main")
 
     ### Get path data ###
-    main.selectAll 'path,line,polygon,polyline'
-      .each ->
-        len = @getTotalLength()
-        return if len == 0
-        pos = 0
-        coordinates = []
-        while pos < len
-          coordinates.push coordAtLength(@,pos)
-          pos += 0.1
-        coordinates.push coordAtLength(@,len)
-        pathData.push coordinates
+
+    lines = extractLines(main)
 
     cs = el.select("svg.cross-section")
       .attr "viewBox", svg.attr("viewBox")
@@ -144,21 +96,11 @@ class RegionalCrossSectionPage extends Component
       .node().appendChild(pts.node())
 
     ### Get facies data ###
-    points = []
-    facies = svg.select("g#Facies")
-    facies.selectAll 'text'
-      .each ->
-        faciesID = select(@).text()
-        {x,y,width,height} = @getBBox()
-        console.log y,height
-        {e,f} = @transform.baseVal[0].matrix
-        loc = [e+x+width/2,f+y+height/2]
-        geometry = {coordinates: loc, type: "Point"}
-        points.push {type: 'Feature', id: faciesID, geometry}
+    points = extractTextPositions(svg.select("g#Facies"))
 
     svg.remove()
 
-    @setState {lines: pathData, points}
+    @setState {lines, points}
 
   render: ->
     {lines, points} = @state
@@ -183,4 +125,4 @@ class RegionalCrossSectionPage extends Component
       h 'div.temp-cross-section'
     ]
 
-export {RegionalCrossSectionPage, PolygonTopology}
+export {RegionalCrossSectionPage}
