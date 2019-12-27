@@ -6,10 +6,7 @@ import {Component} from 'react'
 import {findDOMNode} from 'react-dom'
 import {SVG} from "#"
 import {geoPath, geoTransform} from 'd3-geo'
-import {db, storedProcedure} from '../db'
-import sql from '../regional-cross-section/filled-topology/get-generalized.sql'
-
-import {PolygonComponent} from '../regional-cross-section'
+import {PolygonTopology} from '../regional-cross-section'
 import {filenameForID} from './svg-export'
 import {removeLines, useFaciesColors} from './util'
 
@@ -66,11 +63,22 @@ distanceFromLine = (p1,p2,p3)->
   btm = Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2))
   return top/btm
 
+Topology = (props)->
+  colorIndex = useFaciesColors()
+  h PolygonTopology, {
+    props...
+    generateFill: (p,i)->
+      {facies_id, geometry} = p
+      return null unless geometry
+      if facies_id?
+        return colorIndex[facies_id]
+      return 'transparent'
+  }
 
 class CrossSectionUnits extends Component
   constructor: ->
     super arguments...
-    @state = {polygons: null}
+    @state = {lines: null, points: null}
 
   componentDidMount: ->
     {id} = @props
@@ -136,29 +144,16 @@ class CrossSectionUnits extends Component
 
     svg.remove()
 
-    @getPolygons(pathData, points)
-
-  getPolygons: (pathData, points)->
-    geometry = {
-      coordinates: pathData,
-      type: 'MultiLineString'
-    }
-
-    q = storedProcedure(sql)
-
-    console.log JSON.stringify {geometry, points}
-    res = await db.query q, {
-      geometry
-      points
-    }
-    console.log res
-    @setState {polygons: res}
+    @setState {lines: pathData, points}
 
   render: ->
     {id, rest...} = @props
-    {polygons} = @state
+    {lines, points} = @state
     h SVG, {className: 'cross-section', rest...}, [
-      h PolygonComponent, {polygons}
+      h Topology, {
+        lines,
+        points
+      }
       h 'g.linework'
       h 'g.overlay'
     ]

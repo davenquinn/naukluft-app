@@ -2,9 +2,9 @@
 # https://pomax.github.io/bezierjs/
 # http://jsfiddle.net/halfsoft/Gsz2a/
 
-import {Component, useContext} from 'react'
+import {Component, useContext, useState, useEffect} from 'react'
 import {findDOMNode} from 'react-dom'
-import h from 'react-hyperscript'
+import h from '@macrostrat/hyper'
 import {SVG} from '#'
 import {SectionNavigationControl} from '../util'
 import {path} from 'd3-path'
@@ -17,6 +17,7 @@ import {db, storedProcedure} from '../db'
 import './main.styl'
 import {PlatformContext} from '../../platform'
 import sql from './filled-topology/get-generalized.sql'
+import {useAsyncEffect} from 'use-async-effect'
 
 removeALine = (f)->
   f.substring(f.indexOf("\n") + 1)
@@ -76,25 +77,35 @@ PatternDefs = ({patterns, size})->
       }
     ]
 
-generateFill = (p, i)->
-  {facies_id, geometry} = p
-  return null unless geometry
-  fill = schemeSet3[i%12]
-  if facies_id?
-    fill = "url(#pattern-#{facies_ix[facies_id][0]})"
-  return fill
+PolygonTopology = (props)->
+  {lines, points, generateFill, children, rest...} = props
 
-PolygonComponent = ({polygons})->
+  [polygons, setPolygons] = useState(null)
+
+  getPolygons = ->
+    return unless lines? and points?
+    q = storedProcedure(sql)
+    res = await db.query q, {
+      geometry: {
+        coordinates: lines,
+        type: 'MultiLineString'
+      }
+      points
+    }
+    setPolygons(res)
+
+  useAsyncEffect getPolygons, [lines, points]
+
   return null unless polygons?
   h 'g.polygon-container', [
-    h PatternDefs, {patterns: Object.values(facies_ix), size: 30}
     h TopoPolygons, {polygons, generateFill}
+    children
   ]
 
 class RegionalCrossSectionPage extends Component
   constructor: ->
     super arguments...
-    @state = {polygons: null}
+    @state = {lines: null, points: null}
 
   componentDidMount: ->
     fn = join __dirname, "stratigraphic-model.svg"
@@ -147,29 +158,29 @@ class RegionalCrossSectionPage extends Component
 
     svg.remove()
 
-    @getPolygons(pathData, points)
-
-  getPolygons: (pathData, points)->
-    q = storedProcedure(sql)
-    res = await db.query q, {
-      geometry: {
-        coordinates: pathData,
-        type: 'MultiLineString'
-      }
-      points
-    }
-    @setState {polygons: res}
+    @setState {lines: pathData, points}
 
   render: ->
-    {polygons} = @state
+    {lines, points} = @state
     h 'div', [
       h SectionNavigationControl
       h SVG, {className: 'cross-section'}, [
-        h PolygonComponent, {polygons}
+        h PolygonTopology, {
+          lines,
+          points,
+          generateFill: (p, i)->
+            {facies_id, geometry} = p
+            return null unless geometry
+            if facies_id?
+              return "url(#pattern-#{facies_ix[facies_id][0]})"
+            return schemeSet3[i%12]
+        }, [
+          h PatternDefs, {patterns: Object.values(facies_ix), size: 30}
+        ]
         h 'g.linework'
         h 'g.overlay'
       ]
       h 'div.temp-cross-section'
     ]
 
-export {RegionalCrossSectionPage, PolygonComponent}
+export {RegionalCrossSectionPage, PolygonTopology}
