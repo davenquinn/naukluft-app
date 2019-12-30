@@ -24,7 +24,12 @@ LinkOverlay = (props)->
     section_height = section_height.map(generalize).filter (d)->d?
     {section_height, rest1...}
 
-  h SectionLinkOverlay, {className: 'sequence-link-overlay', surfaces, connectLines: true, rest...}
+  h SectionLinkOverlay, {
+    className: 'sequence-link-overlay'
+    surfaces,
+    connectLines: true,
+    rest...
+  }
 
 CorrelationContainer = (props)->
   {id, sections, children, rest...} = props

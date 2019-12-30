@@ -25,7 +25,15 @@ coordAtLength = (path, pos)->
   [x,y]
 
 extractLine = (opts={})->(node)->
-  opts.simplifyTheshold ?= 0.05
+  opts.simplifyThreshold ?= 0.02
+  opts.simplify ?= true
+  if node.nodeName == 'line'
+    # Lines don't have getTotalLength or points methods
+    v = (id)-> node.getAttribute(id) or 0
+    return [
+      [v('x1'), v('y1')],
+      [v('x2'), v('y2')]
+    ]
   if node.points?
     # We can extract directly
     return Array.from node.points, ({x,y})->[x,y]
@@ -38,11 +46,11 @@ extractLine = (opts={})->(node)->
   while pos < len
     coordinates.push coordAtLength(node,pos)
 
-    if coordinates.length >= 3
+    if coordinates.length >= 3 and opts.simplify?
       c1 = coordinates.slice(coordinates.length-3,3)
       if c1.length == 3
-        dist = distanceFromLine.apply(null, c1)
-        if dist < opts.simplifyTheshold
+        dist = distanceFromLine(c1[0],c1[2],c1[1])
+        if dist < opts.simplifyThreshold
           coordinates.splice(coordinates.length-2,1)
     # pop second to last
     pos += 0.2

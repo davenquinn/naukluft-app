@@ -35,6 +35,7 @@ PolygonTopology = (props)->
       }
       points
     }
+    console.log res
     setPolygons(res)
 
   useAsyncEffect getPolygons, [lines, points]
