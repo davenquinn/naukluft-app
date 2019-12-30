@@ -1,43 +1,78 @@
 import {SettingsPanel} from "../settings"
-import {FaciesDescriptionSmall} from "../facies"
-import {Button, Silder} from "@blueprintjs/core"
+import {Button, Slider} from "@blueprintjs/core"
 import h from "react-hyperscript"
+import {
+  SettingsProvider as BaseSettingsProvider,
+  useSettings,
+  updateSettings
+} from '#'
+import {
+  BaseSettingsPanel,
+  SettingsSwitch
+  SequenceStratControlPanel
+  EditModeControl
+  SerializedQueriesControl
+} from '../settings'
 
-class SummarySectionsSettings extends SettingsPanel
-  @defaultProps: {
-    reloadCorrelations: ->
-  }
+defaultSettings = {
+  modes: [
+    {value: 'normal', label: 'Normal'}
+    {value: 'skeleton', label: 'Skeleton'}
+  ]
+  showNavigationController: true
+  activeMode: 'normal'
+  showLegend: true
+  showFacies: true
+  showLithology: true
+  showGrainsize: true
+  showFaciesTracts: false
+  # Allows us to test the serialized query mode
+  # we are developing for the web
+  serializedQueries: global.SERIALIZED_QUERIES
+  condensedDisplay: true
+  sectionIDs: []
+  showLithostratigraphy: true
+  showSequenceStratigraphy: true
+  showCarbonIsotopes: true
+  isotopesPerSection: false
+  correctIsotopeRatios: false
+  interactive: true
+}
 
-  renderControls: =>
-    return [
-      h 'h5', "Components"
-      @createSwitch 'showCarbonIsotopes', "Carbon isotopes"
-      @createSwitch 'showOxygenIsotopes', "Oxygen isotopes"
-      @createSwitch 'showLithostratigraphy', "Lithostratigraphic correlations"
-      @createSwitch 'showSequenceStratigraphy', "Sequence-stratigraphic correlations"
-      @createSwitch 'showSymbols', 'Symbols'
-      @createSwitch 'showFacies', 'Facies'
-      @createSwitch 'showLegend', 'Legend'
+SettingsProvider = (props)->
+  {children, overrides...} = props
+  localStorageID = "summary-section-component"
+  h BaseSettingsProvider, {
+    localStorageID,
+    defaultSettings...
+    overrides...
+  }, children
+
+
+SummarySectionsSettings = ->
+  h BaseSettingsPanel, [
+    h 'h5', "Components"
+    h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
+    h SettingsSwitch, {id: 'showOxygenIsotopes', label: "Oxygen isotopes"}
+    h SettingsSwitch, {id: 'isotopesPerSection', label: "Show isotopes for each section"}
+    h SettingsSwitch, {id: 'correctIsotopeRatios', label: "Experimental standard correction"}
+    h SettingsSwitch, {id: 'showLithostratigraphy', label: "Lithostratigraphic correlations"}
+    h SettingsSwitch, {id: 'showSequenceStratigraphy', label: "Sequence-stratigraphic correlations"}
+    h SettingsSwitch, {id: 'showFacies', label: "Facies"}
+    h SettingsSwitch, {id: 'showFaciesTracts', label: "Facies tracts"}
+    h SettingsSwitch, {id: 'showLithology', label: 'Lithology patterns'}
+    h SettingsSwitch, {id: 'showGrainsize', label: 'Grainsize scale'}
+    h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
+    h SettingsSwitch, {id: 'showNotes', label: "Notes"}
+    h SettingsSwitch, {id: 'showLegend', label: "Legend"}
+    h 'hr'
+    h SequenceStratControlPanel
+    h 'div', [
+      h 'h5', "Backend"
+      h EditModeControl
+      h SerializedQueriesControl
       h 'hr'
-      @sequenceStratControls()
-      @debuggingControls()
-      h 'h6', 'Display mode'
-      @createPicker 'modes', 'activeMode'
     ]
-
-class GeneralizedSectionsSettings extends SettingsPanel
-  @defaultProps: {
-    exportSVG: ->
-  }
-  renderControls: =>
-    return [
-      @createSwitch 'showSequenceStratigraphy', 'Sequence-stratigraphic correlations'
-      @createSwitch 'showLithology', 'Simplified lithology'
-      @createSwitch 'showFacies', 'Facies'
-      @createSwitch 'showFaciesTracts', 'Facies tracts'
-      @sequenceStratControls()
-      @debuggingControls()
-      h Button, {onClick: @props.exportSVG}, 'Export SVG'
-    ]
-
-export {SummarySectionsSettings, GeneralizedSectionsSettings}
+  ]
+export {SettingsProvider, useSettings, updateSettings,
+        SummarySectionsSettings, defaultSettings}

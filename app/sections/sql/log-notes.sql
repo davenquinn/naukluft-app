@@ -9,8 +9,8 @@ WITH __photo_notes AS (
 )
 SELECT
   id,
-  start_height::float,
-  end_height::float,
+  coalesce(start_height, end_height)::float height,
+  end_height::float top_height,
   coalesce(end_height-start_height, 0)::float span,
   coalesce(end_height > start_height, false) has_span,
   symbol,
@@ -25,4 +25,7 @@ WHERE section = $1
   AND (
     note IS NOT null OR
     edited_note IS NOT null)
+  AND (
+    start_height IS NOT null OR
+    end_height IS NOT null)
 ORDER BY start_height

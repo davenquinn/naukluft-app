@@ -36,4 +36,4 @@ class SequenceStratProvider extends Component
 
 SequenceStratConsumer = SequenceStratContext.Consumer
 
-export {SequenceStratProvider, SequenceStratConsumer}
+export {SequenceStratProvider, SequenceStratConsumer, SequenceStratContext}

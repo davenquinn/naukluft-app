@@ -3,8 +3,8 @@ SELECT
   image_id,
   date,
   geometry,
-  coalesce(sn.edited_note, sn.note) note,
-  jpeg_path path
+  coalesce(sn.edited_note, sn.note) caption,
+  jpeg_path src
 FROM photo p
 LEFT JOIN section.section_note_photo s
   ON p.id = s.photo_id

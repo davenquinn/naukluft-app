@@ -3,7 +3,7 @@ import Promise from "bluebird"
 import {getUID, getHash} from "./util"
 import {getJSON} from "../util"
 
-if PLATFORM == ELECTRON
+if global.PLATFORM == global.ELECTRON
   {PROJECT_DIR} = process.env
   if not PROJECT_DIR?
     throw "Environment variable PROJECT_DIR must be defined."

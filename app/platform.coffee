@@ -3,6 +3,7 @@ import h from "react-hyperscript"
 import {join, resolve} from "path"
 import LocalStorage from "./sections/storage"
 import update from "immutability-helper"
+import {AssetPathContext} from '#/context'
 
 ## Set whether we are on the backend or frontend
 global.ELECTRON = 'electron'
@@ -59,7 +60,15 @@ class PlatformProvider extends Component
     {children, rest...} = @props
     value = {rest..., restState..., serializedQueries, updateState, computePhotoPath,
              resolveSymbol, resolveLithologySymbol}
-    h PlatformContext.Provider, {value}, children
+
+    {resolveSymbol} = @props
+    if not resolveSymbol?
+      resolveSymbol = @resolveSymbol
+
+    assetPathFunctions = {resolveSymbol, resolveLithologySymbol}
+    h AssetPathContext.Provider, {value: assetPathFunctions}, [
+      h PlatformContext.Provider, {value}, children
+    ]
 
   path: (args...)=>
     join(@state.baseUrl, args...)
@@ -68,6 +77,7 @@ class PlatformProvider extends Component
     @setState val
 
   computePhotoPath: (photo)=>
+    return null unless photo.id?
     if @state.ELECTRON
       return @path( '..', 'Products', 'webroot', 'Sections', 'photos', "#{photo.id}.jpg")
     else

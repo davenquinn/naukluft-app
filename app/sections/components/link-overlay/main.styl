@@ -1,0 +1,28 @@
+
+.section-link-overlay
+  position: absolute
+  top 0
+  left 0
+  bottom 0
+  right 0
+  pointer-events none
+  rect.section-tracker
+    outline: 2px solid alpha(red, 0.2)
+    fill: alpha(red, 0.05)
+  &.skeletal
+    outline: 2px solid alpha(red, 0.2)
+    background: alpha(red, 0.05)
+
+  path.section-link
+    pointer-events all
+    fill none
+    &.inferred
+      stroke-dasharray: 2,4
+    &.commonality-0
+      stroke-width 2
+    &.commonality-2
+      stroke-width 1.5
+      &.inferred
+        stroke-dasharray: 4,8
+    &.commonality-3
+      stroke-width 1

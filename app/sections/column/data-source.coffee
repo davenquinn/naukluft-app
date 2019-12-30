@@ -1,7 +1,8 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import T from "prop-types"
-import {query} from "../db"
+import {query} from "~/db"
+import q from '../sql/lithology.sql'
 
 ColumnSurfacesContext = createContext {}
 
@@ -23,7 +24,8 @@ class ColumnSurfacesProvider extends Component
 
   updateDivisions: =>
     {id} = @props
-    divisions = await query 'lithology', [id]
+    console.log "Updating divisions for all columns."
+    divisions = await query q, [id]
     @setState {divisions}
 
   render: ->

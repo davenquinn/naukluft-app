@@ -1,6 +1,6 @@
-import "@macrostrat/ui-components/ui-init"
 requireFoolWebpack = require 'require-fool-webpack'
 # Because webpack is super annoying
+import '@babel/polyfill' # this seems suspect
 
 import {PlatformContext, PlatformProvider} from "./platform"
 import React from "react"
@@ -8,10 +8,9 @@ import ReactDOM from "react-dom"
 import {HashRouter,Route,Link, Switch} from "react-router-dom"
 import {mouseTrap} from "react-mousetrap"
 import h from "react-hyperscript"
-import {FocusStyleManager} from "@blueprintjs/core"
+import {FocusStyleManager, Icon} from "@blueprintjs/core"
 FocusStyleManager.onlyShowFocusOnTabs()
 
-import {Icon} from "react-fa"
 import {NavBar, NavLink} from "./nav"
 import {SectionIndex} from "./sections"
 #MapLegend = require './map-legend/component'
@@ -20,6 +19,8 @@ import LateralVariation from "./lateral-variation/component"
 import {MapView} from "./map-viewer"
 import {HotkeysTarget, Hotkeys, Hotkey} from "@blueprintjs/core"
 import "@blueprintjs/core/lib/css/blueprint.css"
+import "@blueprintjs/icons/lib/css/blueprint-icons.css"
+#import "@macrostrat/ui-components/lib/index.css"
 
 wrapNavBar = (component)->
   class NavBarPage extends React.Component
@@ -34,7 +35,9 @@ wrapHomeButton = (component)->
     render: ->
       h 'div.page', [
         h 'ul.controls', [
-          h NavLink, to: '/', [h Icon, name: 'home', size: '2x']
+          h NavLink, to: '/', [
+            h Icon, {icon: 'home', size: 24}
+          ]
         ]
         h component
       ]

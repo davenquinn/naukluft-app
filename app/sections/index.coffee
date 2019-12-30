@@ -4,7 +4,6 @@ import styles from "./section-index.styl"
 import h from "react-hyperscript"
 import {Route, Switch,withRouter} from "react-router-dom"
 import {NavLink} from "../nav"
-import {Icon} from "react-fa"
 import {SectionDataProvider, SectionConsumer} from "./section-data"
 import SectionPage from "./single-section"
 import {SummarySections} from "./summary-sections"
@@ -14,13 +13,13 @@ import {FaciesDescriptionPage} from "./facies"
 import {RegionalCrossSectionPage} from "./regional-cross-section"
 import {nest} from "d3"
 
-createSectionLink = (d, base)->
+SectionLink = ({base, id})->
   base ?= "sections/"
-  navLink = h NavLink, to: base+d.id, [
+  h NavLink, {to: base+id}, [
     h 'div', [
       h 'div.title', [
         h 'span', 'Section '
-        h 'span', d.id
+        h 'span', id
       ]
     ]
   ]
@@ -39,7 +38,7 @@ class SectionIndexPage extends Component
       h 'div.location', [
         h 'h2', key
         h 'ul.navigation.sections', values.map (d)->
-          createSectionLink(d)
+          h SectionLink, {id: d.id}
       ]
 
     h 'div#homepage', [

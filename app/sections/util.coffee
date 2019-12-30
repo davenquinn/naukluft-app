@@ -1,28 +1,35 @@
 import {Component, createContext} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
+import {useHistory} from "react-router"
 import {NavLink, BackLink} from "../nav"
-import {Icon} from "react-fa"
+import {Icon, ButtonGroup, Button} from "@blueprintjs/core"
 import T from "prop-types"
+import {LinkButton} from '@macrostrat/ui-components'
+import {SVGNamespaces} from '#'
 import {db, storedProcedure, query} from "./db"
 
-class SectionNavigationControl extends Component
-  render: ->
-    settings = null
-    if @props.toggleSettings
-      settings = h 'li', [
-        h 'a', onClick: @props.toggleSettings, [
-          h Icon, name: 'gear', size: '2x'
-        ]
-      ]
+BackButton = ->
+  history = useHistory()
+  onClick = -> history.goBack()
+  h Button, {
+    icon: 'arrow-left',
+    size: 24,
+    large: true,
+    onClick
+  }
 
-    {children} = @props
-
-    h 'ul.controls', [
-      h BackLink
-      h NavLink, to: '/', [h Icon, name: 'home', size: '2x']
-      settings
-      children
-    ]
+SectionNavigationControl = (props)->
+  {toggleSettings, children} = props
+  h ButtonGroup, {className: 'controls'}, [
+    h BackButton
+    h LinkButton, {to: '/', icon: 'home', large: true}
+    h.if(toggleSettings?) Button, {
+      onClick: toggleSettings,
+      icon: 'cog',
+      large: true
+    }
+    children
+  ]
 
 class KnownSizeComponent extends Component
   constructor: (props)->
@@ -35,16 +42,15 @@ class KnownSizeComponent extends Component
   @__height: ->
     return null
 
-SVGNamespaces = {
-  xmlns: "http://www.w3.org/2000/svg"
-  xmlnsXlink: "http://www.w3.org/1999/xlink"
-}
+rangeForSection = (row)->
+  {start, end, clip_end} = row
+  clip_end ?= end
+  [start, clip_end]
 
-SVGComponent = (props)-> h 'svg', {props..., SVGNamespaces...}
 
 export {
   SectionNavigationControl
-  SVGNamespaces
-  SVGComponent
   KnownSizeComponent
+  SVGNamespaces
+  rangeForSection
 }

@@ -2,7 +2,9 @@ import React from "react"
 import {Link, withRouter} from "react-router-dom"
 import h from "react-hyperscript"
 import style from "./main.styl"
-import {Icon} from "react-fa"
+import {Icon} from "@blueprintjs/core"
+
+console.log style
 
 class NavLink extends React.Component
   render: ->
@@ -14,7 +16,9 @@ class NavLink extends React.Component
 class BackLink extends React.Component
   render: ->
     h 'li', [
-      h 'a', {onClick: @onClick}, [h Icon, name: 'arrow-left', size: '2x']
+      h 'a', {onClick: @onClick}, [
+        h Icon, {icon: 'arrow-left', iconSize: 24}
+      ]
     ]
   onClick: =>
     console.log "Going home"

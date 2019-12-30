@@ -5,9 +5,15 @@ import {Component, createContext} from "react"
 import {db, query, storedProcedure} from "./db"
 import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
+import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
+import {PhotoLibraryProvider} from '#'
 import h from "react-hyperscript"
 import "./main.styl"
+import {IsotopesDataProvider} from './summary-sections/chemostrat/data-manager'
+import sectionSurfaceQuery from "./sql/section-surface.sql"
+import photoQuery from "./sql/photo.sql"
+import sectionsQuery from "./sql/sections.sql"
 
 sectionFilename = (fn)->
   if PLATFORM == ELECTRON
@@ -21,7 +27,7 @@ getSectionData = (opts={})->
   fn = sectionFilename('file-info.json')
   config = await getJSON fn
 
-  query 'sections', null, {baseDir: __dirname}
+  query sectionsQuery
     .map (s)->
       s.id = s.section.trim()
       files = config[s.id] or []
@@ -45,29 +51,38 @@ getSectionData = (opts={})->
 SectionContext = createContext({})
 
 class SectionDataProvider extends Component
+  @contextType: PlatformContext
   constructor: (props)->
     super props
     @state = {
       sections: []
       surfaces: []
+      photos: []
     }
 
   getInitialData: ->
     getSectionData()
       .then (sections)=>@setState {sections}
-    query('section-surface', null, {baseDir: __dirname})
+    query(sectionSurfaceQuery)
       .then (surfaces)=>@setState {surfaces}
+    query(photoQuery)
+      .then (photos)=>@setState {photos}
 
   componentDidMount: ->
     @getInitialData()
 
   render: ->
-    {surfaces, sections} = @state
+    {surfaces, sections, photos} = @state
+    {computePhotoPath} = @context
     # Surfaces really shouldn't be tracked by facies provider
     h LithologyProvider, [
       h FaciesProvider, {surfaces}, [
-        h SequenceStratProvider, null, [
-          h SectionContext.Provider, {value: {sections}}, @props.children
+        h PhotoLibraryProvider, {photos, computePhotoPath}, [
+          h SequenceStratProvider, null, [
+            h IsotopesDataProvider, null, [
+              h SectionContext.Provider, {value: {sections}}, @props.children
+            ]
+          ]
         ]
       ]
     ]
