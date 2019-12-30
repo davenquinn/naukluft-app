@@ -61,7 +61,7 @@ class App extends React.Component
           route '/lateral-variation', wrapNavBar(LateralVariation)
           route '/map', MapView
           #route '/map-legend', wrapNavBar(MapLegend)
-          route '/cross-sections', wrapNavBar(CrossSectionsPage)
+          route '/cross-sections', CrossSectionsPage
         ]
       ]
     ]

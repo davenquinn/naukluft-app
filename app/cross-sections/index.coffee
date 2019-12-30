@@ -1,6 +1,9 @@
 import sql from './get-terrain.sql'
-import {useQuery} from '~/db'
 import {SVG} from '#'
+
+import {useQuery} from '~/db'
+import {useDarkMode} from '~/platform'
+import {NavigationControl} from '~/components'
 
 import {hyperStyled} from '@macrostrat/hyper'
 import styles from './main.styl'
@@ -13,10 +16,15 @@ CrossSectionsPage = ->
   # State management
   res = useQuery(sql)
 
-  h 'div.cross-sections', res.map (d)->
-    h 'div', [
-      h 'h3', d.name
-      h CrossSection
-    ]
+  darkMode = useDarkMode()
+  className = if darkMode then "dark-mode" else null
+  h 'div.cross-sections', {className}, [
+    h NavigationControl
+    h 'div.inner', res.map (d)->
+      h 'div', [
+        h 'h3', d.name
+        h CrossSection
+      ]
+  ]
 
 export {CrossSectionsPage}
