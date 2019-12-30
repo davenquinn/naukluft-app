@@ -13,6 +13,7 @@ import classNames from "classnames"
 import update from 'immutability-helper'
 import {
   expandInnerSize,
+  extractPadding,
   useSettings,
   ColumnContext,
   SVG
@@ -311,7 +312,7 @@ FilteredSectionLink = (props)->
 
   h SectionLink, {props..., stroke, strokeWidth, onClick}
 
-getSize = (sectionIndex)->
+getSize = (sectionIndex, padding={})->
   w_ = 0
   h_ = 0
   for k,v of sectionIndex
@@ -322,9 +323,10 @@ getSize = (sectionIndex)->
       w_ = maxX
     if maxY > h_
       h_ = maxY
-  return {
-    width: w_
-    height: h_
+  return expandInnerSize {
+    innerWidth: w_
+    innerHeight: h_
+    padding...
   }
 
 useCanvasSize = ->
@@ -345,11 +347,19 @@ SectionLinks = (props)->
     h FilteredSectionLink, {surface, connectLines}
 
 SectionLinkOverlay = (props)->
-  {surfaces, showSectionTrackers, connectLines, innerRef, className, rest...} = props
+  {
+    surfaces,
+    showSectionTrackers,
+    connectLines,
+    innerRef,
+    className,
+    rest...
+  } = props
   return null unless surfaces.length
+  padding = extractPadding(rest)
 
   sectionIndex = useContext(SectionObserverContext)
-  sz = getSize(sectionIndex)
+  sz = getSize(sectionIndex, padding)
 
   h SVG, {
     # Shouldn't need ID but we apparently do
@@ -362,9 +372,16 @@ SectionLinkOverlay = (props)->
     h SectionLinks, {connectLines, surfaces}
   ]
 
+SectionLinkOverlay.propTypes = {
+  extraHeight: T.number
+  extraWidth: T.number
+}
+
 SectionLinkOverlay.defaultProps = {
   connectLines: true
   showSectionTrackers: false
+  extraHeight: 0
+  extraWidth: 0
 }
 
 export {

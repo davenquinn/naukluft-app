@@ -48,6 +48,7 @@ SectionPane = (props)->
       topSurface: 15
       bottomSurface: 1
       # Or 20 if we want the correlating sequence boundary
+      paddingBottom: 35
     }
     h SequenceCorrelations, {
       id: "S1"

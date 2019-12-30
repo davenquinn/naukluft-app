@@ -32,7 +32,7 @@ LinkOverlay = (props)->
   }
 
 CorrelationContainer = (props)->
-  {id, sections, children, rest...} = props
+  {id, sections, children, paddingBottom, rest...} = props
   domID = "sequence-#{id}"
 
   outerRef = (node)->
@@ -48,20 +48,23 @@ CorrelationContainer = (props)->
 
   h SectionPositionProvider, [
     h 'div.sequence', {id: domID, ref: outerRef}, [
-      h 'div.generalized-sections', children
+      h 'div.generalized-sections', {style: {paddingBottom}}, children
       h CrossSectionUnits, {id}
-      h LinkOverlay, {sections, style, rest...}
+      h LinkOverlay, {sections, style, paddingBottom, rest...}
     ]
   ]
 
 
 SequenceCorrelations = (props)->
-  {sections, offsets, id, bottomSurface, topSurface, rest...} = props
+  {sections, offsets, id, bottomSurface,
+   topSurface, paddingBottom, rest...} = props
+
   h CorrelationContainer, {
     id,
     sections,
     topSurface,
     bottomSurface,
+    paddingBottom,
     width: 1200
   }, sections.map ({key,surfaces})->
     start = 0
