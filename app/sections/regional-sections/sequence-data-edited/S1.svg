@@ -140,9 +140,9 @@
 	</g>
 </g>
 <g id="Lines">
-	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M4.2,121.9L155,122l0,0c52.5-1,80,11,130,12.6c0,0,200,8.4,375,8.4
+	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M4.2,116.9L155,122l0,0c52.5-1,80,11,130,12.6c0,0,200,8.4,375,8.4
 		l578.1,21"/>
-	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M4.2,171h152.9c44.5,0,81,10.3,129.3,10.3c170.8,0,290.1,105,388.6,112.2
+	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M4.2,170l152.9,5c44.5-4,81,6.3,129.3,6.3c170.8,0,290.1,105,388.6,112.2
 		c99.4,7.3,547,14.4,547,14.4"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M447.3,201.6c0,0,175.7,81.9,209.9,84s147.8,6.8,239,13.5"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M1205.8,274.9c0,0-466-11.5-530.9-12.9c-64.8-1.4-241.4-61.9-241.4-61.9"
@@ -151,22 +151,22 @@
 	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M421.6,186.7c72.1,22.8,156.2,50.2,244.8,57.5
 		c92.1,9.5,129.8,10.5,129.8,10.5"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M1027.4,226c0,0-216.8,2.8-352.4,0s-201.5-25.5-256.8-38"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M4.2,162l152.9-1c35,0,127.9,1.4,127.9,1.4c118.7,0,200,52.6,375,52.6h40
+	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M4.2,161l152.9,4c35-4,127.9-2.6,127.9-2.6c118.7,0,200,52.6,375,52.6h40
 		l178.4,6.7l160,5.3"/>
-	<polyline fill="none" stroke="#FFCCCC" stroke-width="3" points="4.2,92.1 155,92.1 200,92.1 	"/>
+	<polyline fill="none" stroke="#FFCCCC" stroke-width="3" points="4.2,87.1 155,92.1 200,92.1 	"/>
 	<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M200,92.1c35,0,35,2.7,70,2.7h40"/>
 	<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M310,94.8c175,0,175-0.6,350-0.6c0,0,229.7,2,306.3,2.8
 		c33.2,0.3,255.7,17,255.7,17"/>
-	<path fill="none" stroke="#CCCCCC" d="M4.2,69.3L155,70h45c35,0,35,3.5,70,3.5h40c67.5,0,310.2,0.5,365,0.5c33.6,0,533.3,2,533.3,2
+	<path fill="none" stroke="#CCCCCC" d="M4.2,64.3L155,70h45c35,0,35,3.5,70,3.5h40c67.5,0,310.2,0.5,365,0.5c33.6,0,533.3,2,533.3,2
 		"/>
-	<polyline fill="none" stroke="#FFCCCC" stroke-width="1.5" points="4.2,23.5 155,24 200,24 	"/>
+	<polyline fill="none" stroke="#FFCCCC" stroke-width="1.5" points="4.2,18.5 155,24 200,24 	"/>
 	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M200,24c35,0,35-1,70-1h40"/>
 	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M310,23c175,0,175-11.7,350-11.7L1213.2,23"/>
-	<path fill="none" stroke="#CCCCCC" d="M4.2,81H155c0,0,80,0,115,0h40"/>
+	<path fill="none" stroke="#CCCCCC" d="M4.2,76L155,81c0,0,80,0,115,0h40"/>
 	<path fill="none" stroke="#CCCCCC" d="M310,81c175,0,175,9,350,9c0,0,187.4,1,291.1,1.6c32.4,0.2,239.2,13.4,257.2,13.4"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M4.2,55.8L155,58.4h45c35,0,35-7.9,70-7.9h40C485,50.5,485,61,660,61h561.6
+	<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M4.2,50.8L155,58.4h45c35,0,35-7.9,70-7.9h40C485,50.5,485,61,660,61h561.6
 		"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M4.2,100.6L155,99h155c175,0,175,4,350,4c0,0,301.8,1.3,402.3,3.5
+	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M4.2,95.6L155,99h155c175,0,175,4,350,4c0,0,301.8,1.3,402.3,3.5
 		c30.7,0.7,141.7,9.2,141.7,9.2"/>
 	<polyline fill="none" stroke="#CCCCCC" stroke-width="3" points="6.7,5 155,5 200,5 	"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M200,5c35,0,35,0,70,0h40"/>
@@ -176,11 +176,12 @@
 	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M949.8,210.9l-107.4,3l123.9,5.2l-243.4-2"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M1238.1,265.6l-214.6-6.8l54.2-4.2l-50.2-4.3l62.3-7.7l-76-7.8l181.2-6
 		l-177.2-9.8l39.6-4.1l-93.2-2.8c-53.8-1.5-214.4-9.2-289.2-9.2s-190.2-15.9-225.4-21.6L558,191l-61.4-9.6
-		c0,0,130.2,11.5,178.4,12.6s231.2,9,231.2,9l-70.4-6.3l145-2.7c0,0-214.2-6-305.8-6s-342.2-33.8-360.5-33.8s-138,0-163.6,0H4.2"/>
+		c0,0,130.2,11.5,178.4,12.6s231.2,9,231.2,9l-70.4-6.3l145-2.7c0,0-214.2-6-305.8-6s-342.2-33.8-360.5-33.8s-138,0-163.6,4
+		l-146.7-5"/>
 	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M1213.2,124.5c0,0-585.1-7-621.3-7s-266.2-9.8-306.9-9.8
-		s-130-0.8-130-0.8L4.2,106.5"/>
+		s-130-0.8-130-0.8L4.2,101.5"/>
 	<line fill="none" stroke="#CCCCCC" stroke-width="1.5" x1="848.9" y1="305.9" x2="885.1" y2="296.1"/>
-	<path fill="none" stroke="#CCCCCC" d="M4.2,147.3l146.7-3.3l74.9,1H285c0,0,303.4,11.6,390,13.2s546.6,19.5,546.6,19.5"/>
+	<path fill="none" stroke="#CCCCCC" d="M4.2,146.3l146.7,1.7l74.9-3H285c0,0,303.4,11.6,390,13.2s546.6,19.5,546.6,19.5"/>
 	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.5" points="249.9,164.5 215.3,159 233.9,158.2 194.6,151 	"/>
 	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.5" points="450.7,166.6 383.8,164.5 496.6,181.4 	"/>
 	<path fill="none" stroke="#CCCCCC" d="M194.6,72.5l20.1-3.2l-8.2-0.4L191.7,68c0,0,36.6-3.2,63.3-3s72.4,0,72.4,0
@@ -194,9 +195,10 @@
 	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M360.9,114c0,0,88.1-7.5,132.3-15"/>
 	<path fill="none" stroke="#CCCCCC" d="M548,147.3c0,0,16.3-5.5,26.5-7.3"/>
 	<polyline fill="none" stroke="#CCCCCC" stroke-width="1.5" points="432.6,70 466.9,65 440.2,63.4 501,50.5 	"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M4.2,13.5H155c47.3,0,55.3-1.5,130-1.5s257.9-0.9,257.9-0.9l-52.4,8.7"
-		/>
-	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="4.2,18.6 147.3,20.4 225.1,18.7 213.2,15.4 260.2,11.1 	"/>
+	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M5.2,6.5c0,0,57.5,1.2,77,1.8c18.2,0.6,42.9,5.2,72.8,5.2
+		c47.3,0,55.3-1.5,130-1.5s257.9-0.9,257.9-0.9l-52.4,6.7"/>
+	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M5.2,9.7c0,0,125.5,10.1,142.1,10.7c19.4,0.7,77.8-1.7,77.8-1.7
+		l-11.9-3.3l47-4.3"/>
 	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="445.1,15.4 375.7,9.3 418.2,1.5 	"/>
 	<polyline fill="none" stroke="#CCCCCC" points="593.2,11.1 624.8,15.7 748.7,17.9 603.7,19.8 548,20.9 735.2,20.9 716.8,23.5 
 		517.2,28.3 600.7,33.6 744.7,33.6 885.1,38 763.3,41 954.3,43.7 1204,43.7 	"/>
