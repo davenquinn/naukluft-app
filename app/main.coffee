@@ -13,6 +13,7 @@ FocusStyleManager.onlyShowFocusOnTabs()
 
 import {NavBar, NavLink} from "./nav"
 import {SectionIndex} from "./sections"
+import {CrossSectionsPage} from './cross-sections'
 #MapLegend = require './map-legend/component'
 import CarbonIsotopesPage from "./carbon-isotopes"
 import LateralVariation from "./lateral-variation/component"
@@ -60,6 +61,7 @@ class App extends React.Component
           route '/lateral-variation', wrapNavBar(LateralVariation)
           route '/map', MapView
           #route '/map-legend', wrapNavBar(MapLegend)
+          route '/cross-sections', wrapNavBar(CrossSectionsPage)
         ]
       ]
     ]
@@ -93,6 +95,7 @@ Home = ->
       h 'p', 'Data products of research in the Southern Naukluft mountains, for presentation on the web alongside journal publication'
       h 'ul', className: 'navigation', [
         navLink to: '/sections', "Sections"
+        navLink to: '/cross-sections', "Structural cross-sections"
         navLink to: '/carbon-isotopes', "Carbon Isotopes"
         navLink to: '/lateral-variation', "Lateral Variation"
         navLink to: '/map', "Map"
