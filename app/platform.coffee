@@ -33,7 +33,7 @@ DarkModeProvider = (props)->
     {systemPreferences} = require('electron')
     value = systemPreferences.isDarkMode()
   catch
-    value = true
+    value = false
   h DarkModeContext.Provider, {value}, children
 
 useDarkMode = ->
