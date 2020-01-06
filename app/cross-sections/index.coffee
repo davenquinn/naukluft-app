@@ -1,4 +1,5 @@
-import sql from './get-terrain.sql'
+import terrainQuery from './get-terrain.sql'
+import intersectionsQuery from './unit-intersections.sql'
 import {SVG, expandInnerSize} from '#'
 
 import {useQuery} from '~/db'
@@ -10,6 +11,14 @@ import {line} from 'd3-shape'
 import {hyperStyled} from '@macrostrat/hyper'
 import styles from './main.styl'
 h = hyperStyled(styles)
+
+Intersections = (props)->
+  {section} = props
+  res = useQuery(intersectionsQuery, {section})
+  if res?
+    console.log res
+
+  h 'path.unit-intersections'
 
 CrossSection = (props)->
   {geometry, heightRange} = props
@@ -38,6 +47,7 @@ CrossSection = (props)->
 
   d = pathGenerator(coordinates)
 
+
   h SVG, {width, height}, [
     h 'g', {transform: "translate(#{padding},#{padding})"}, [
       h 'path.terrain', {d}
@@ -46,7 +56,7 @@ CrossSection = (props)->
 
 CrossSectionsPage = ->
   # State management
-  res = useQuery(sql)
+  res = useQuery(terrainQuery)
 
   darkMode = useDarkMode()
   className = if darkMode then "dark-mode" else null
