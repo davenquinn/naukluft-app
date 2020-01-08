@@ -45,7 +45,7 @@ import removeIntervalQuery from '../sql/remove-interval.sql'
 
 fmt = format(".1f")
 
-class SectionComponent extends KnownSizeComponent
+class SectionComponent extends Component
   @contextType: ColumnSurfacesContext
   @defaultProps: {
     zoom: 1
@@ -84,7 +84,6 @@ class SectionComponent extends KnownSizeComponent
     @state = {
       editingInterval: {id: null, height: null}
     }
-
 
   render: ->
     {divisions} = @context

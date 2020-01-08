@@ -1,4 +1,4 @@
-import {Component, createContext} from "react"
+import {Component, createContext, useContext} from "react"
 import h from "react-hyperscript"
 import {join, resolve} from "path"
 import LocalStorage from "./sections/storage"
@@ -24,6 +24,20 @@ Platform = Object.freeze {
   WEB: 2
   PRINT: 3
 }
+
+DarkModeContext = createContext(false)
+
+DarkModeProvider = (props)->
+  {children} = props
+  try
+    {systemPreferences} = require('electron')
+    value = systemPreferences.isDarkMode()
+  catch
+    value = false
+  h DarkModeContext.Provider, {value}, children
+
+useDarkMode = ->
+  useContext(DarkModeContext)
 
 PlatformContext = createContext({})
 
@@ -66,8 +80,10 @@ class PlatformProvider extends Component
       resolveSymbol = @resolveSymbol
 
     assetPathFunctions = {resolveSymbol, resolveLithologySymbol}
-    h AssetPathContext.Provider, {value: assetPathFunctions}, [
-      h PlatformContext.Provider, {value}, children
+    h DarkModeProvider, [
+      h AssetPathContext.Provider, {value: assetPathFunctions}, [
+        h PlatformContext.Provider, {value}, children
+      ]
     ]
 
   path: (args...)=>
@@ -121,4 +137,12 @@ class PlatformProvider extends Component
 
 PlatformConsumer = PlatformContext.Consumer
 
-export {PlatformContext, Platform, PlatformProvider, PlatformConsumer}
+export {
+  PlatformContext,
+  Platform,
+  PlatformProvider,
+  PlatformConsumer,
+  DarkModeContext,
+  DarkModeProvider,
+  useDarkMode
+}

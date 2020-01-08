@@ -2,6 +2,8 @@ import {join} from "path"
 import Promise from "bluebird"
 import {getUID, getHash} from "./util"
 import {getJSON} from "../util"
+import {useState} from 'react'
+import useAsyncEffect from 'use-async-effect'
 
 if global.PLATFORM == global.ELECTRON
   {PROJECT_DIR} = process.env
@@ -39,8 +41,21 @@ query = (id, values, opts={})->
   data = getJSON "#{QUERY_DIRECTORY}/#{fn}"
   return data
 
+useQuery = (sql, args=[])->
+  ###
+  A react hook to use the result of a query
+  ###
+  [result, updateResult] = useState([])
+  q = storedProcedure(sql)
+  runQuery = ->
+    res = await db.query(q, args)
+    updateResult(res)
+  useAsyncEffect runQuery, args
+  return result
+
 export {
   query
+  useQuery
   storedProcedure
   db
 }

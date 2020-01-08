@@ -1,6 +1,7 @@
 import {join, dirname, resolve, basename} from "path"
 import Promise from "bluebird"
 import {getUID, getHash} from "./util"
+import {readFileSync} from 'fs'
 
 opts = {
   promiseLib: Promise
@@ -19,15 +20,15 @@ pgp = pgLib(opts)
 db = pgp('postgresql:///Naukluft')
 {helpers} = pgp
 
-pgLib.queryFiles ?= {}
+queryFiles = {}
 
 storedProcedure = (fileName)->
   # Don't hit the filesystem repeatedly
   # in a session
   fn = resolve(__dirname,fileName)
-  if not pgLib.queryFiles[fn]?
-    pgLib.queryFiles[fn] = new pgp.QueryFile(fn)
-  return pgLib.queryFiles[fn]
+  if not queryFiles[fn]?
+    queryFiles[fn] = readFileSync(fn, 'UTF-8')
+  return queryFiles[fn]
 
 queryLibrary = []
 # Serialize queries based on query file and opts
