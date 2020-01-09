@@ -1,3 +1,5 @@
+import '@babel/polyfill'
+
 import React from "react"
 import ReactDOM from "react-dom"
 import {HashRouter,Route,Link, Switch, Redirect} from "react-router-dom"
@@ -14,13 +16,12 @@ import {SectionIndex} from "../sections"
 
 
 route = (path, component, props={})->
-  h Route, {props...,path,component}
+  h Route, {props..., path,component}
 
 class App extends React.Component
   constructor: ->
     super()
-    @state = {}
-    @state.showNavBar = false
+    @state = {showNavBar: false}
   render: ->
     h PlatformProvider, [
       h 'div#root', [
@@ -52,4 +53,3 @@ Router = -> h HashRouter, [
   h(App)
 ]
 ReactDOM.render(React.createElement(Router),document.querySelector('#main'))
-

@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+dist="web-dist"
+
 products="$PROJECT_DIR/versioned/Products"
 fn=$products/webroot
 sections="$fn/sections"
