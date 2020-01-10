@@ -7,7 +7,7 @@ import "d3-selection-multi"
 import {Component, createElement, createContext, useContext} from "react"
 import h from "@macrostrat/hyper"
 import Measure from 'react-measure'
-import {SectionAxis} from "#/axis"
+import {SectionAxis} from "@macrostrat/column-components/dist/esm/axis"
 import classNames from "classnames"
 import chroma from "chroma-js"
 import {AxisBottom} from '@vx/axis'

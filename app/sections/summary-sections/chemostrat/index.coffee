@@ -3,7 +3,7 @@ import {Component, useContext} from "react"
 import update from "immutability-helper"
 import {debounce} from "underscore"
 import * as d3 from "d3"
-import {ColumnProvider, useSettings} from "#"
+import {ColumnProvider, useSettings} from "@macrostrat/column-components"
 import styles from "../main.styl"
 import T from 'prop-types'
 import {

@@ -1,6 +1,6 @@
 import {max} from "d3-array"
 import {Component, useContext, createContext} from "react"
-import {useSettings, SettingsProvider} from "#"
+import {useSettings, SettingsProvider} from "@macrostrat/column-components"
 import {SVGSectionComponent} from "../column"
 import {
   SectionLinkOverlay,

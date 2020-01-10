@@ -4,11 +4,11 @@ import {Component, createElement, useState} from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
 
-import {ColumnAxis} from "#/axis"
-import {ColumnImages} from "#/images"
+import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis"
+import {ColumnImages} from "@macrostrat/column-components/dist/esm/images"
 import {Intent} from "@blueprintjs/core"
-import {GrainsizeAxis} from "#/grainsize"
-import {FloodingSurface, TriangleBars} from "#/flooding-surface"
+import {GrainsizeAxis} from "@macrostrat/column-components/dist/esm/grainsize"
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface"
 import {
   ColumnProvider,
   ColumnContext,
@@ -22,8 +22,8 @@ import {
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner
-} from "#/lithology"
-import {DivisionEditOverlay} from '#/edit-overlay'
+} from "@macrostrat/column-components/dist/esm/lithology"
+import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay'
 import {StatefulComponent} from '@macrostrat/ui-components'
 
 import Samples from "./samples"

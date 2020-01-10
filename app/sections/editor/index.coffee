@@ -5,24 +5,24 @@ import {DeleteButton} from '@macrostrat/ui-components'
 import Select from 'react-select'
 import {format} from "d3-format"
 
-import {FaciesDescriptionSmall, FaciesCard} from "#/editor/facies"
-import {FaciesContext, ColumnContext} from "#/context"
-import {PickerControl} from "#/editor/picker-base"
-import {LabeledControl, IntervalEditorTitle} from "#/editor/util"
+import {FaciesDescriptionSmall, FaciesCard} from "@macrostrat/column-components/dist/esm/editor/facies"
+import {FaciesContext, ColumnContext} from "@macrostrat/column-components/dist/esm/context"
+import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base"
+import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/esm/editor/util"
 #import "react-select/dist/react-select.css"
 
 import {ColumnSurfacesContext} from "../column/data-source"
-import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '#/editor/lithology-picker'
+import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '@macrostrat/column-components/dist/esm/editor/lithology-picker'
 import {
   CorrelatedSurfaceControl,
   SurfaceOrderSlider,
   HorizontalPicker,
   BoundaryStyleControl
   RaisedSelect
-} from '#/editor/controls'
-import {FaciesPicker} from '#/editor/facies/picker'
-import {grainSizes} from "#/grainsize"
-import {IntervalShape} from '#/editor/types'
+} from '@macrostrat/column-components/dist/esm/editor/controls'
+import {FaciesPicker} from '@macrostrat/column-components/dist/esm/editor/facies/picker'
+import {grainSizes} from "@macrostrat/column-components/dist/esm/grainsize"
+import {IntervalShape} from '@macrostrat/column-components/dist/esm/editor/types'
 import T from 'prop-types'
 import {dirname} from "path"
 import {hyperStyled} from "@macrostrat/hyper"

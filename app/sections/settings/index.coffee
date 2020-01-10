@@ -3,7 +3,7 @@ import h from "react-hyperscript"
 import {CSSTransition} from "react-transition-group"
 import {Switch, Slider, Button} from "@blueprintjs/core"
 import {PlatformContext} from "../../platform"
-import {PickerControl} from "#/editor/picker-base"
+import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base"
 import {SequenceStratContext} from "../sequence-strat-context"
 import classNames from "classnames"
 import {useSettings, updateSettings} from '@macrostrat/column-components'

@@ -8,11 +8,11 @@ import updateNoteQuery from '../sql/update-note.sql'
 import setNoteInvisible from '../sql/set-note-invisible.sql'
 
 import {dirname} from 'path'
+import {NotesEditor} from '@macrostrat/column-components/dist/esm/notes'
 import {
   NotesColumn,
-  NoteEditor,
   PhotoOverlay
-} from "#"
+} from "@macrostrat/column-components/dist/esm/notes/editor"
 import {db, storedProcedure, query} from "~/sections/db"
 
 fmt = format(".1f")

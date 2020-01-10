@@ -1,6 +1,6 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {Component, useContext, createContext} from "react"
-import {useSettings, SettingsProvider} from "#"
+import {useSettings, SettingsProvider} from "@macrostrat/column-components"
 import {getSectionData} from "../section-data"
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"

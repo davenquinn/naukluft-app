@@ -4,7 +4,7 @@ import {join} from 'path'
 import {select} from 'd3-selection'
 import {Component} from 'react'
 import {findDOMNode} from 'react-dom'
-import {SVG} from "#"
+import {SVG} from "@macrostrat/column-components"
 import {
   PolygonTopology
   extractLines

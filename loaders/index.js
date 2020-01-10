@@ -13,6 +13,14 @@ const coffeeLoader = {
   options: {sourceMap: true}
 };
 
+const sqlRule = {
+  test: /\.sql$/,
+  use: {
+    loader: path.resolve(__dirname, "./sql-loader.js")
+  },
+  exclude: /node_modules/
+}
+
 const cssModuleLoader = {
   loader: 'css-loader',
   options: {
@@ -23,41 +31,33 @@ const cssModuleLoader = {
   }
 };
 
-function sharedLoaders(isWeb) {
-  let loaders = [
-      {
-      test: /\.coffee$/,
-      use: [babelLoader, coffeeLoader],
-      exclude: /node_modules/
-    },
-    {
-      test: /\.styl$/,
-      use: ["style-loader", cssModuleLoader, "stylus-loader"],
-      exclude: /node_modules/
-    },
-    {
-      test: /\.css$/,
-      use: ["style-loader", cssModuleLoader],
-      exclude: /node_modules/
-    },
-    {
-      test: /\.(js|jsx)$/,
-      use: [babelLoader],
-      exclude: /node_modules/
-    },
-    {
-      test: /\.sql$/,
-      use: {
-        loader: path.resolve(__dirname, "./sql-loader.js")
-      },
-      exclude: /node_modules/
-    }
-  ]
+const cssRule = {
+  test: /\.css$/,
+  use: ["style-loader", cssModuleLoader],
+}
 
-  delete loaders[2].exclude;
+const jsRule = {
+  test: /\.(js|jsx)$/,
+  use: [babelLoader],
+  exclude: /node_modules/
+}
 
-  return loaders;
-};
+const coffeeRule = {
+  test: /\.coffee$/,
+  use: [babelLoader, coffeeLoader],
+  exclude: /node_modules/
+}
+
+const stylusRule = {
+  test: /\.styl$/,
+  use: [
+    "css-hot-loader",
+    require.resolve("mini-css-extract-plugin/dist/loader"),
+    cssModuleLoader,
+    "stylus-loader"
+  ],
+  exclude: /node_modules/
+}
 
 const resolve = {
   extensions: ['.js', '.coffee'],
@@ -68,9 +68,16 @@ const resolve = {
     This is a pretty awful hack to resolve tilde paths. It requires
     that they exist only in the column-components package.
     */
-    "#": path.resolve(__base, 'app', 'bundled-deps', 'column-components', 'src'),
     "~": path.resolve(__base, 'app')
   }
 };
 
-module.exports = {sharedLoaders, resolve};
+module.exports = {
+  coffeeRule,
+  coffeeLoader,
+  babelLoader,
+  cssModuleLoader,
+  sqlRule,
+  stylusRule,
+  resolve
+};

@@ -81,6 +81,6 @@
   },
   "alias": {
     "app": ".",
-    "#": "./bundled-deps/column-components/src"
+    "#": "@macrostrat/column-components/dist"
   }
 }
