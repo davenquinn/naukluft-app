@@ -5,7 +5,7 @@
 import {Component, useContext, useState, useEffect} from 'react'
 import {findDOMNode} from 'react-dom'
 import h from '@macrostrat/hyper'
-import {SVG} from '#'
+import {SVG} from '@macrostrat/column-components'
 import {SectionNavigationControl} from '../util'
 import {path} from 'd3-path'
 import {schemeSet3} from 'd3-scale-chromatic'

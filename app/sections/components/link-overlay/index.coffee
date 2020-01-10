@@ -17,7 +17,7 @@ import {
   useSettings,
   ColumnContext,
   SVG
-} from '#'
+} from '@macrostrat/column-components'
 import {group, pairs} from 'd3-array'
 import {linkHorizontal} from 'd3-shape'
 import {Notification} from "../../../notify"

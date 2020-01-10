@@ -2,7 +2,7 @@ import {useState} from "react"
 import h from "@macrostrat/hyper"
 import T from 'prop-types'
 import {SectionNavigationControl} from "../util"
-import {SettingsProvider} from '#'
+import {SettingsProvider} from '@macrostrat/column-components'
 import classNames from 'classnames'
 
 BaseSectionPage = (props)->

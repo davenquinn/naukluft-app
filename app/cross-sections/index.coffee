@@ -1,6 +1,6 @@
 import terrainQuery from './get-terrain.sql'
 import intersectionsQuery from './unit-intersections.sql'
-import {SVG, expandInnerSize} from '#'
+import {SVG, expandInnerSize} from '@macrostrat/column-components'
 
 import {useQuery} from '~/db'
 import {useDarkMode} from '~/platform'

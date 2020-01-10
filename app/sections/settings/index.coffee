@@ -6,7 +6,7 @@ import {PlatformContext} from "../../platform"
 import {PickerControl} from "#/editor/picker-base"
 import {SequenceStratContext} from "../sequence-strat-context"
 import classNames from "classnames"
-import {useSettings, updateSettings} from '#'
+import {useSettings, updateSettings} from '@macrostrat/column-components'
 import T from 'prop-types'
 import "./main.styl"
 

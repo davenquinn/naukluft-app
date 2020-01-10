@@ -3,6 +3,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const {IgnorePlugin, DefinePlugin} = require('webpack');
 const {sharedLoaders, resolve} = require('./loaders');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 const mode = 'development';
 
@@ -59,11 +60,14 @@ module.exports = {
   },
   resolve,
   entry: {
-    'sections/assets/index': "./app/entrypoints/sections-index.coffee",
+    'assets/web': "./app/web-index.coffee",
   },
   output: {
     path: webRoot,
     filename: "[name].js"
   },
-  plugins
+  plugins: [
+    ...plugins,
+    new HTMLWebpackPlugin({title: "Zebra Nappe"})
+  ]
 };

@@ -28,7 +28,7 @@ import {
   CrossAxisLayoutProvider,
   ColumnLayoutContext
   useSettings
-} from '#'
+} from '@macrostrat/column-components'
 import T from 'prop-types'
 
 fmt = d3.format('.1f')

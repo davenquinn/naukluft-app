@@ -11,7 +11,7 @@ import {BaseSectionPage} from '../components'
 import {SectionNavigationControl} from "../util"
 import {Notification} from "../../notify"
 import {defaultSettings, SettingsPanel} from './settings'
-import {useSettings} from '#'
+import {useSettings} from '@macrostrat/column-components'
 
 SectionMain = (props)->
   # Set up routing to jump to a specific height

@@ -1,5 +1,5 @@
 import h from '@macrostrat/hyper'
-import {ParameterIntervals} from '#'
+import {ParameterIntervals} from '@macrostrat/column-components'
 import {FaciesContext} from '../facies'
 import {useContext} from 'react'
 

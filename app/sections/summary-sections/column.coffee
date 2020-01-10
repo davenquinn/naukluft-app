@@ -4,10 +4,10 @@ import T from 'prop-types'
 import {format} from 'd3-format'
 import * as d3 from 'd3'
 import Box from 'ui-box'
-import {useSettings} from '#'
+import {useSettings} from '@macrostrat/column-components'
 import {withRouter, useHistory} from "react-router-dom"
 
-import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '#'
+import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '@macrostrat/column-components'
 import {ColumnAxis} from "#/axis"
 
 import {ManagedSymbolColumn} from "../components"

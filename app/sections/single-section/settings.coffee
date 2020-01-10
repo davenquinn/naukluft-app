@@ -3,7 +3,7 @@ import {
   SettingsProvider as BaseSettingsProvider,
   useSettings,
   updateSettings
-} from '#'
+} from '@macrostrat/column-components'
 import {
   BaseSettingsPanel,
   SettingsSwitch

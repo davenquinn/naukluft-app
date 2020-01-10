@@ -1,7 +1,7 @@
 import {line} from 'd3-shape'
 import {createContext, useContext} from "react"
 import h from "@macrostrat/hyper"
-import {ColumnLayoutContext} from '#'
+import {ColumnLayoutContext} from '@macrostrat/column-components'
 import T from 'prop-types'
 
 valueAtStdev = (opts)->

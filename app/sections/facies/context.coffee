@@ -1,7 +1,7 @@
 import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import {db, storedProcedure, query} from "../../db"
-import {FaciesContext} from '#/context'
+import {FaciesContext} from '@macrostrat/column-components'
 import setFaciesColorQuery from "./sql/set-facies-color.sql"
 import faciesTractsQuery from "./sql/facies-tracts.sql"
 import faciesQuery from "./sql/facies.sql"

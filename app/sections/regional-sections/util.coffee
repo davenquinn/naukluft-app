@@ -1,5 +1,5 @@
 import {useContext} from 'react'
-import {FaciesContext} from '#'
+import {FaciesContext} from '@macrostrat/column-components'
 
 useFaciesColors = ->
   {faciesTracts} = useContext(FaciesContext)

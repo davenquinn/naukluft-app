@@ -6,7 +6,7 @@ import {
   ColumnBox,
   ColumnProvider,
   ColumnContext
-} from '#'
+} from '@macrostrat/column-components'
 import {
   SectionPositionContext,
   ColumnTracker
@@ -18,7 +18,7 @@ import {
   ParameterIntervals,
 } from "#/lithology"
 import {useFaciesColors} from './util'
-import {FaciesContext} from '#'
+import {FaciesContext} from '@macrostrat/column-components'
 
 import styles from './main.styl'
 h = hyperStyled(styles)

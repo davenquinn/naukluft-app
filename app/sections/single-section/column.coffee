@@ -14,7 +14,7 @@ import {
   ColumnContext,
   ColumnScroller,
   ColumnSVG,
-  GrainsizeLayoutProvider} from '#'
+  GrainsizeLayoutProvider} from '@macrostrat/column-components'
 import {
   LithologyColumn,
   GeneralizedSectionColumn,

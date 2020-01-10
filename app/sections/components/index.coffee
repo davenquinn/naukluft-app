@@ -1,7 +1,7 @@
 import {Component,} from "react"
 import h from "@macrostrat/hyper"
 import T from 'prop-types'
-import {SymbolColumn} from "#/symbol-column"
+import {SymbolColumn} from "@macrostrat/column-components"
 import {query} from "../../db"
 import sql from "../sql/section-symbols.sql"
 

@@ -7,7 +7,7 @@ import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
 import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
-import {PhotoLibraryProvider} from '#'
+import {PhotoLibraryProvider} from '@macrostrat/column-components'
 import h from "react-hyperscript"
 import "./main.styl"
 import {IsotopesDataProvider} from './summary-sections/chemostrat/data-manager'

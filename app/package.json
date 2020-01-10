@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "linklocal"
+    "preinstall": "linklocal && linklocal --list | bulk -c 'npm install'"
   },
   "author": "Daven Quinn",
   "license": "ISC",
@@ -13,7 +13,7 @@
     "@blueprintjs/core": "^3.17.1",
     "@blueprintjs/select": "^3.11.2",
     "@macrostrat/column-components": "file:./bundled-deps/column-components",
-    "@macrostrat/hyper": "git+https://github.com/UW-Macrostrat/hyper.git",
+    "@macrostrat/hyper": "^1.1.5",
     "@macrostrat/ui-components": "file:./bundled-deps/ui-components",
     "@vx/axis": "0.0.192",
     "bluebird": "^3.5.0",

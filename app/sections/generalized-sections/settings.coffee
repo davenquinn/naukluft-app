@@ -4,7 +4,7 @@ import h from "react-hyperscript"
 import {
   useSettings,
   updateSettings
-} from '#'
+} from '@macrostrat/column-components'
 import {
   BaseSettingsPanel,
   SettingsSwitch

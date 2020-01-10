@@ -11,7 +11,7 @@ import {IsotopesComponent} from "../summary-sections/chemostrat"
 import {LithostratKey} from "../summary-sections/lithostrat-key"
 import {Legend} from "../summary-sections/legend"
 import "../summary-sections/main.styl"
-import {useSettings} from '#'
+import {useSettings} from '@macrostrat/column-components'
 import {useContext} from 'react'
 import {
   SectionPositionProvider,

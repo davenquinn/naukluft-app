@@ -4,9 +4,10 @@
   "description": "Application for Naukluft Nappe Complex mapping",
   "main": "index.js",
   "scripts": {
-    "preinstall": "linklocal",
-    "start": "electron-webpack dev",
-    "compile": "electron-webpack",
+    "watch:main": "electron-webpack dev",
+    "watch:column": "cd app/bundled-deps/column-components && npm run dev",
+    "start": "concurrently npm:watch:main npm:watch:column",
+    "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd app && npm install",
     "dev": "scripts/bundle.zsh"
@@ -28,6 +29,7 @@
     "browser-sync-webpack-plugin": "^1.2.0",
     "chalk": "^1.1.3",
     "coffee-loader": "^0.8.0",
+    "html-webpack-plugin": "^3.2.0",
     "nodemon": "^1.11.0",
     "uglifyjs-webpack-plugin": "^1.1.8"
   },
