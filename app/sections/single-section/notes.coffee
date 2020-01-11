@@ -1,6 +1,11 @@
 import {findDOMNode} from "react-dom"
 import {format} from "d3-format"
-import {Component, createElement, useState} from "react"
+import {
+  Component,
+  createElement,
+  useState,
+  useContext
+} from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
 import logNotesQuery from '../sql/log-notes.sql'
@@ -10,6 +15,7 @@ import setNoteInvisible from '../sql/set-note-invisible.sql'
 import {dirname} from 'path'
 import {
   NoteEditor,
+  NoteEditorContext,
   NotesColumn
 } from "@macrostrat/column-components/dist/esm/notes"
 
@@ -24,7 +30,7 @@ fmt = format(".1f")
 PhotoLinks = ({photos})->
   return null unless photos?
   [overlayShown, setOverlayShown] = useState(false)
-  toggleOverlay = =>
+  toggleOverlay = ->
     setOverlayShown(not overlayShown)
 
   tx = "#{photos.length} photo"
@@ -41,22 +47,24 @@ PhotoLinks = ({photos})->
   ]
 
 PhotoNoteComponent = (props)->
-  {note, editable} = props
-  editable ?= false
+  {note} = props
   {note: text, photos} = note
-  if not props.editHandler?
-    editable = false
-  visibility = if editable then 'hidden' else 'inherit'
-  h [
-    h.if(editable) NoteEditor, props
-    h 'p.mc-note-label', {
-      style: {visibility}
-      xmlns: "http://www.w3.org/1999/xhtml"
-    }, [
-      h 'span.text', text
-      " "
-      h PhotoLinks, {photos}
-    ]
+
+  {setEditingNote, editingNote} = useContext(NoteEditorContext)
+  isEditing = editingNote == note
+  visibility = if isEditing then 'hidden' else 'inherit'
+
+  onClick = ->
+    setEditingNote(note)
+
+  h 'p.mc-note-label', {
+    style: {visibility}
+    xmlns: "http://www.w3.org/1999/xhtml"
+    onClick
+  }, [
+    h 'span.text', text
+    " "
+    h PhotoLinks, {photos}
   ]
 
 
@@ -73,8 +81,9 @@ class ManagedNotesColumn extends Component
     notes = await query logNotesQuery, [id]
     @setState {notes}
 
-  onUpdateNote: (noteID, newText)=>
-    console.log arguments
+  onUpdateNote: (newNote, v)=>
+    return unless newNote?
+    {note: newText, id: noteID} = newNote
     # We can't edit on the frontend
     return unless PLATFORM == ELECTRON
     if newText.length == 0
