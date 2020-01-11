@@ -21,7 +21,11 @@ import {
   RaisedSelect
 } from '@macrostrat/column-components/dist/esm/editor/controls'
 import {FaciesPicker} from '@macrostrat/column-components/dist/esm/editor/facies/picker'
-import {grainSizes} from "@macrostrat/column-components/dist/esm/grainsize"
+
+# TODO: understand why we can't do this import
+#import {grainSizes} from "@macrostrat/column-components/dist/esm/grainsize"
+grainSizes = ['ms','s','vf','f','m','c','vc','p']
+
 import {IntervalShape} from '@macrostrat/column-components/dist/esm/editor/types'
 import T from 'prop-types'
 import {dirname} from "path"
@@ -30,6 +34,7 @@ import styles from "./style.styl"
 h = hyperStyled(styles)
 
 import {db, storedProcedure, query} from "~/sections/db"
+
 
 baseDir = dirname require.resolve '..'
 sql = (id)-> storedProcedure(id, {baseDir})

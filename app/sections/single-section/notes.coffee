@@ -8,11 +8,15 @@ import updateNoteQuery from '../sql/update-note.sql'
 import setNoteInvisible from '../sql/set-note-invisible.sql'
 
 import {dirname} from 'path'
-import {NotesEditor} from '@macrostrat/column-components/dist/esm/notes'
 import {
-  NotesColumn,
+  NoteEditor,
+  NotesColumn
+} from "@macrostrat/column-components/dist/esm/notes"
+
+import {
   PhotoOverlay
-} from "@macrostrat/column-components/dist/esm/notes/editor"
+} from "@macrostrat/column-components/dist/esm/photos"
+
 import {db, storedProcedure, query} from "~/sections/db"
 
 fmt = format(".1f")
@@ -45,7 +49,7 @@ PhotoNoteComponent = (props)->
   visibility = if editable then 'hidden' else 'inherit'
   h [
     h.if(editable) NoteEditor, props
-    h 'p.note-label', {
+    h 'p.mc-note-label', {
       style: {visibility}
       xmlns: "http://www.w3.org/1999/xhtml"
     }, [

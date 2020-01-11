@@ -3,8 +3,8 @@ import h from "react-hyperscript"
 import {join, resolve} from "path"
 import LocalStorage from "./sections/storage"
 import update from "immutability-helper"
-import {AssetPathContext} from '@macrostrat/column-components/dist/esm/context'
-
+import {AssetPathProvider, AssetPathContext} from '@macrostrat/column-components/dist/esm/context'
+import {GeologicPatternProvider} from '@macrostrat/column-components'
 ## Set whether we are on the backend or frontend
 global.ELECTRON = 'electron'
 global.WEB = 'web'
@@ -81,8 +81,14 @@ class PlatformProvider extends Component
 
     assetPathFunctions = {resolveSymbol, resolveLithologySymbol}
     h DarkModeProvider, [
-      h AssetPathContext.Provider, {value: assetPathFunctions}, [
-        h PlatformContext.Provider, {value}, children
+      h GeologicPatternProvider, {
+        resolvePattern: @resolveLithologySymbol
+      }, [
+        h AssetPathProvider, {
+          @resolveSymbol
+        }, [
+          h PlatformContext.Provider, {value}, children
+        ]
       ]
     ]
 
@@ -104,7 +110,7 @@ class PlatformProvider extends Component
   resolveSymbol: (sym)=>
     try
       if @state.ELECTRON
-        q = resolve join(BASE_DIR, 'assets', sym)
+        q = resolve(join(BASE_DIR, 'assets', sym))
         return 'file://'+q
       else
         return join BASE_URL, 'assets', sym
