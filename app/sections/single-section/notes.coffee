@@ -11,8 +11,7 @@ import T from "prop-types"
 import logNotesQuery from '../sql/log-notes.sql'
 import updateNoteQuery from '../sql/update-note.sql'
 import setNoteInvisible from '../sql/set-note-invisible.sql'
-
-import {dirname} from 'path'
+import {PlatformContext, Platform} from '~/platform'
 import {
   NoteEditor,
   NoteEditorContext,
@@ -69,6 +68,7 @@ PhotoNoteComponent = (props)->
 
 
 class ManagedNotesColumn extends Component
+  @contextType: PlatformContext
   constructor: (props)->
     super props
     @state = {notes: []}
@@ -85,7 +85,7 @@ class ManagedNotesColumn extends Component
     return unless newNote?
     {note: newText, id: noteID} = newNote
     # We can't edit on the frontend
-    return unless PLATFORM == ELECTRON
+    return unless @context.platform == Platform.ELECTRON
     if newText.length == 0
       sql = storedProcedure(setNoteInvisible)
       await db.none sql, [noteID]
