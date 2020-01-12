@@ -104,4 +104,8 @@ Home = ->
     ]
   ]
 
-ReactDOM.render(React.createElement(Router),document.querySelector('#app'))
+el = document.createElement('div')
+el.id = 'app'
+document.body.appendChild(el)
+
+ReactDOM.render(React.createElement(Router),el)

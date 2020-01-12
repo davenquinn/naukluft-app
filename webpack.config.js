@@ -1,7 +1,14 @@
 const path = require('path');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const {IgnorePlugin, DefinePlugin} = require('webpack');
-const {sharedLoaders, resolve} = require('./loaders');
+const {
+  resolve,
+  coffeeLoader,
+  cssModuleLoader,
+  coffeeRule,
+  jsRule,
+  cssRule
+} = require('./loaders');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
@@ -29,10 +36,27 @@ for (let i of Array.from(ignores)) {
 }
 
 module.exports = {
+  devtool: "source-map",
   mode,
   module: {
     rules: [
-      ...sharedLoaders(true),
+      coffeeRule,
+      {
+        test: /\.sql$/,
+        use: ["null-loader"],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.styl$/,
+        use: [
+          "style-loader",
+          cssModuleLoader,
+          "stylus-loader"
+        ],
+        exclude: /node_modules/
+      },
+      jsRule,
+      cssRule,
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: [
@@ -55,7 +79,6 @@ module.exports = {
           }
         ]
       }
-
     ]
   },
   resolve,
@@ -64,7 +87,8 @@ module.exports = {
   },
   output: {
     path: webRoot,
-    filename: "[name].js"
+    filename: "[name].js",
+    sourceMapFilename: '[file].map'
   },
   plugins: [
     ...plugins,

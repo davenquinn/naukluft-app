@@ -4,7 +4,7 @@ const __base = path.resolve(__dirname, '..');
 const babelLoader = {
   loader: 'babel-loader',
   options: {
-    presets: ['@babel/preset-env'],
+    presets: ['@babel/preset-env', '@babel/preset-react'],
   }
 };
 
@@ -74,9 +74,11 @@ const resolve = {
 
 module.exports = {
   coffeeRule,
+  jsRule,
   coffeeLoader,
   babelLoader,
   cssModuleLoader,
+  cssRule,
   sqlRule,
   stylusRule,
   resolve

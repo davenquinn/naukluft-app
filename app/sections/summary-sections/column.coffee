@@ -15,7 +15,7 @@ import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/
 import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/esm/lithology"
 import {Popover, Position} from "@blueprintjs/core"
 import {SequenceStratContext} from "../sequence-strat-context"
-import {ColumnProvider, ColumnContext} from '@macrostrat/column-components/dist/esm/context'
+import {ColumnProvider, ColumnContext} from '@macrostrat/column-components'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
         LithologyColumnInner, SimpleFrame} from '@macrostrat/column-components/dist/esm/lithology'
 import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay'

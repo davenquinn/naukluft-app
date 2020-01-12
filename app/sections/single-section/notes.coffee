@@ -18,10 +18,10 @@ import {
   NotesColumn
 } from "@macrostrat/column-components/dist/esm/notes"
 
-import {
-  PhotoOverlay
-} from "@macrostrat/column-components/dist/esm/photos"
-
+# import {
+#   PhotoOverlay
+# } from "@macrostrat/column-components/dist/esm/photos"
+#
 import {db, storedProcedure, query} from "~/sections/db"
 
 fmt = format(".1f")
@@ -38,11 +38,11 @@ PhotoLinks = ({photos})->
 
   h [
     h 'a.photos-link', {onClick: toggleOverlay }, tx
-    h PhotoOverlay, {
-      isOpen: overlayShown
-      onClose: toggleOverlay
-      photoIDs: photos
-    }
+    # h PhotoOverlay, {
+    #   isOpen: overlayShown
+    #   onClose: toggleOverlay
+    #   photoIDs: photos
+    # }
   ]
 
 PhotoNoteComponent = (props)->

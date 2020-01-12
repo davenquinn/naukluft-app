@@ -11,7 +11,6 @@ import {path} from 'd3-path'
 import {schemeSet3} from 'd3-scale-chromatic'
 import {geoPath, geoTransform} from 'd3-geo'
 import {select} from 'd3-selection'
-import {readFileSync} from 'fs'
 import {join} from 'path'
 import {db, storedProcedure} from '../db'
 import './main.styl'
@@ -23,6 +22,7 @@ import {
   removeLines
 } from '../components/polygon-topology'
 import {useAsyncEffect} from 'use-async-effect'
+import stratModel from "./stratigraphic-model.svg"
 
 coordAtLength = (path, pos)->
   {x,y} = path.getPointAtLength(pos)
@@ -70,10 +70,7 @@ class RegionalCrossSectionPage extends Component
     @state = {lines: null, points: null}
 
   componentDidMount: ->
-    fn = join __dirname, "stratigraphic-model.svg"
-    svg = readFileSync fn
-    fst = svg.toString()
-    v = removeLines(fst, 2)
+    v = removeLines(stratModel, 2)
     el = select findDOMNode @
 
     tcs = el.select("div.temp-cross-section")

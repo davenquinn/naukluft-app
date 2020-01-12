@@ -6,11 +6,13 @@
   "scripts": {
     "watch:main": "electron-webpack dev",
     "watch:column": "cd app/bundled-deps/column-components && npm run dev",
+    "watch:web": "scripts/bundle.zsh",
+    "compile:web": "webpack -c webpack.config.js",
     "start": "concurrently npm:watch:main npm:watch:column",
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd app && npm install",
-    "dev": "scripts/bundle.zsh"
+    "dev": "concurrently npm:watch:column npm:watch:web"
   },
   "electronWebpack": {
     "main": {
@@ -24,6 +26,9 @@
   "author": "Daven Quinn",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
     "babel-plugin-root-import": "^6.4.1",
     "browser-sync": "^2.13.0",
     "browser-sync-webpack-plugin": "^1.2.0",
@@ -31,17 +36,14 @@
     "coffee-loader": "^0.8.0",
     "html-webpack-plugin": "^3.2.0",
     "nodemon": "^1.11.0",
+    "null-loader": "^3.0.0",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@babel/core": "^7.2.2",
     "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/preset-react": "^7.0.0",
     "@macrostrat/hyper": "^1.1.1",
     "@turf/polygonize": "^5.1.5",
-    "babel-loader": "^8.0.5",
     "bezier-js": "^2.3.1",
     "bluebird": "^3.4.7",
     "browser-request": "^0.3.3",

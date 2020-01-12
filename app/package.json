@@ -50,6 +50,7 @@
     "react-color": "^2.13.8",
     "react-dom": "^16.11.0",
     "react-error-boundary": "^1.2.5",
+    "react-fullscreen": "^0.1.0",
     "react-hyperscript": "^3.0.0",
     "react-hyperscript-helpers": "^1.2.0",
     "react-images": "^1.0.0",

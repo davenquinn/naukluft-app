@@ -3,13 +3,19 @@ import h from "react-hyperscript"
 import {join, resolve} from "path"
 import LocalStorage from "./sections/storage"
 import update from "immutability-helper"
-import {AssetPathProvider, AssetPathContext} from '@macrostrat/column-components/dist/esm/context'
-import {GeologicPatternProvider} from '@macrostrat/column-components'
+import {
+  AssetPathProvider,
+  AssetPathContext
+} from '@macrostrat/column-components/dist/esm/context'
+import {
+  GeologicPatternProvider
+} from '@macrostrat/column-components'
 ## Set whether we are on the backend or frontend
 global.ELECTRON = 'electron'
 global.WEB = 'web'
 global.PLATFORM = ELECTRON
 global.SERIALIZED_QUERIES = false
+global.BASE_DIR = null
 try
   require 'electron'
   global.BASE_DIR = resolve join(__dirname,'..')
@@ -46,6 +52,8 @@ class PlatformProvider extends Component
     WEB = false
     ELECTRON = true
     platform = Platform.ELECTRON
+    global.BASE_DIR ?= join(__dirname, "..")
+
     baseUrl = 'file://'+resolve(BASE_DIR)
     editable = true
     if global.PLATFORM == WEB
@@ -72,8 +80,15 @@ class PlatformProvider extends Component
     if @state.platform == Platform.WEB
       serializedQueries = true
     {children, rest...} = @props
-    value = {rest..., restState..., serializedQueries, updateState, computePhotoPath,
-             resolveSymbol, resolveLithologySymbol}
+    value = {
+      rest...,
+      restState...,
+      serializedQueries,
+      updateState,
+      computePhotoPath,
+      resolveSymbol,
+      resolveLithologySymbol
+    }
 
     {resolveSymbol} = @props
     if not resolveSymbol?
