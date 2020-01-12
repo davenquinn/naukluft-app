@@ -1,4 +1,4 @@
-import {join, resolve} from "path"
+import {join, resolve, basename} from "path"
 import Promise from "bluebird"
 import {getUID, getHash} from "./util"
 import {getJSON} from "../util"
@@ -54,14 +54,19 @@ query = (id, values, opts={})->
       .then ->
         db.query storedProcedure(id, {baseDir}), values
 
-  # We get JSON from our library of stored queries
-  fn = "#{id}-#{getHash(id,values)}.json"
-  clogs = "Getting query file `#{fn}` for query `#{id}`"
+  # Get JSON from our library of stored queries
+  v = basename(id,'.sql')
+  __log = "Getting query file `#{fn}` for query `#{id}`"
+  console.log(v,values)
   if values?
-    clogs += " with values #{values}"
-  console.log(clogs)
-  data = getJSON join(QUERY_DIRECTORY,fn)
-  return data
+    __log += " with values #{values}"
+    fn = "#{v}-#{getHash(v,values)}.json"
+  else
+    fn = "#{v}.json"
+
+  console.log(__log)
+
+  return getJSON join(QUERY_DIRECTORY,fn)
 
 useQuery = (sql, args=[])->
   ###

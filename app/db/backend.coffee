@@ -1,7 +1,7 @@
 import {join, dirname, resolve, basename} from "path"
 import Promise from "bluebird"
-import {getUID, getHash} from "./util"
 import {readFileSync} from 'fs'
+{getUID, getHash} = require("./util")
 
 opts = {
   promiseLib: Promise
@@ -15,6 +15,7 @@ opts = {
                     This request will fail on the frontend."
 }
 
+# Create database connection
 pgLib = require('pg-promise')
 pgp = pgLib(opts)
 db = pgp('postgresql:///Naukluft')
@@ -37,9 +38,12 @@ class SerializableQuery
     query = storedProcedure(@fileName)
     @id = basename(@fileName, '.sql')
     @sql = pgp.as.format(query, @values)
-    @uid = getUID @fileName, @values
-    @hash = getHash @fileName, @values
-    @outputFile = "#{@id}-#{@hash}.json"
+    @uid = getUID @id, @values
+    @hash = getHash @id, @values
+    if @values?
+      @outputFile = "#{@id}-#{@hash}.json"
+    else
+      @outputFile = "#{@id}.json"
     queryLibrary.push(@)
   getData: -> db.query @sql
 
