@@ -20,7 +20,7 @@ sectionFilename = (fn)->
     dataDir = process.env.NAUKLUFT_DATA_DIR
     return join dataDir, "Sections", "Digitized Images", "web-images", fn
   else
-    return join BASE_URL, 'images', fn
+    return join BASE_URL, 'section-images', fn
 
 getSectionData = (opts={})->
   opts.verbose ?= false

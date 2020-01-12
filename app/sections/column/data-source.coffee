@@ -2,7 +2,7 @@ import {Component, createContext} from "react"
 import h from "react-hyperscript"
 import T from "prop-types"
 import {query} from "~/db"
-import q from '../sql/lithology.sql'
+import q from '../sql/section-lithology.sql'
 
 ColumnSurfacesContext = createContext {}
 

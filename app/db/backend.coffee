@@ -71,17 +71,27 @@ import sectionsQuery from "../sections/sql/sections.sql"
 new SerializableQuery(sectionsQuery)
 import sectionSurface from "../sections/sql/section-surface.sql"
 new SerializableQuery(sectionSurface)
+import allCarbonIsotopes from "../sections/sql/all-carbon-isotopes.sql"
+new SerializableQuery(allCarbonIsotopes)
+
 import carbonIsotopes from "../sections/sql/carbon-isotopes.sql"
 new SerializableQuery(carbonIsotopes)
+
+import photoQuery from '../sections/sql/photo.sql'
+new SerializableQuery(photoQuery)
+
+import lithQuery from '../sections/lithology/lithology.sql'
+new SerializableQuery(lithQuery)
+import ftQuery from '../sections/facies/sql/facies-tracts.sql'
+new SerializableQuery(ftQuery)
 
 import sq1 from '../sections/sql/flooding-surface.sql'
 #import sq2 from '../sections/sql/section-samples.sql'
 import sq3 from '../sections/sql/section-symbols.sql'
-import sq4 from '../sections/sql/lithology.sql'
+import sq4 from '../sections/sql/section-lithology.sql'
 import sq5 from '../sections/sql/log-notes.sql'
-import sq6 from '../sections/sql/photo.sql'
 
-allSectionQueries =  [sq1,sq3,sq4,sq5,sq6]
+allSectionQueries =  [sq1,sq3,sq4,sq5]
 
 alreadyLoaded = false
 createSerializedQueries = (sectionLabels)->
