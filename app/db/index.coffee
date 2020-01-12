@@ -1,4 +1,4 @@
-import {join} from "path"
+import {join, resolve} from "path"
 import Promise from "bluebird"
 import {getUID, getHash} from "./util"
 import {getJSON} from "../util"
@@ -11,6 +11,23 @@ if global.PLATFORM == global.ELECTRON
     throw "Environment variable PROJECT_DIR must be defined."
   {db, storedProcedure, serializableQueries} = require './backend'
   QUERY_DIRECTORY = join(PROJECT_DIR,"versioned","Products","webroot","queries")
+
+  ## Dump query spec to file
+  # On every app load, get list of queries and write out to file
+  do ->
+    library = await serializableQueries()
+    vals = library.map (d)->
+      v1 = Object.fromEntries(Object.entries(d))
+      delete v1.sql
+      return v1
+
+    # Make directories
+    mkdirp = require('mkdirp')
+    {writeFileSync} = require('fs')
+    dn = resolve(join(__dirname, '..', '..', 'build'))
+    mkdirp.sync(dn)
+    res = JSON.stringify(vals, null, 4)
+    return writeFileSync(join(dn,'query-spec.json'), res)
 else
   QUERY_DIRECTORY = join(BASE_URL,"queries")
 
@@ -21,6 +38,8 @@ query = (id, values, opts={})->
   getting query variables
   ###
   {baseDir} = opts
+  if not id?
+    return Promise.resolve([])
   if not SERIALIZED_QUERIES
     # Get data directly from database (only works on backend)
     func = -> db.query storedProcedure(id, {baseDir}), values
@@ -36,9 +55,12 @@ query = (id, values, opts={})->
         db.query storedProcedure(id, {baseDir}), values
 
   # We get JSON from our library of stored queries
-  fn = id+"_"+getHash(id,values)+'.json'
-  console.log "Getting query file `#{fn}` for query `#{id}` with values #{values}"
-  data = getJSON "#{QUERY_DIRECTORY}/#{fn}"
+  fn = "#{id}-#{getHash(id,values)}.json"
+  clogs = "Getting query file `#{fn}` for query `#{id}`"
+  if values?
+    clogs += " with values #{values}"
+  console.log(clogs)
+  data = getJSON join(QUERY_DIRECTORY,fn)
   return data
 
 useQuery = (sql, args=[])->

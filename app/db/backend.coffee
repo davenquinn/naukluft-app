@@ -39,9 +39,9 @@ class SerializableQuery
     @sql = pgp.as.format(query, @values)
     @uid = getUID @fileName, @values
     @hash = getHash @fileName, @values
+    @outputFile = "#{@id}-#{@hash}.json"
     queryLibrary.push(@)
   getData: -> db.query @sql
-  filename: -> @id+'_'+@hash+'.json'
 
 import q1 from "../lateral-variation/sql/boundary-heights.sql"
 new SerializableQuery(q1)
@@ -71,13 +71,13 @@ import carbonIsotopes from "../sections/sql/carbon-isotopes.sql"
 new SerializableQuery(carbonIsotopes)
 
 import sq1 from '../sections/sql/flooding-surface.sql'
-import sq2 from '../sections/sql/section-samples.sql'
+#import sq2 from '../sections/sql/section-samples.sql'
 import sq3 from '../sections/sql/section-symbols.sql'
 import sq4 from '../sections/sql/lithology.sql'
 import sq5 from '../sections/sql/log-notes.sql'
 import sq6 from '../sections/sql/photo.sql'
 
-allSectionQueries =  [sq1,sq2,sq3,sq4,sq5,sq6]
+allSectionQueries =  [sq1,sq3,sq4,sq5,sq6]
 
 alreadyLoaded = false
 createSerializedQueries = (sectionLabels)->
@@ -94,7 +94,6 @@ serializableQueries = ->
   sectionLabels = sections.map (d)->d.section
   createSerializedQueries(sectionLabels)
   return queryLibrary
-
 
 export {
   db, storedProcedure, serializableQueries, helpers

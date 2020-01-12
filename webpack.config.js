@@ -43,7 +43,7 @@ module.exports = {
       coffeeRule,
       {
         test: /\.sql$/,
-        use: ["null-loader"],
+        use: ["filename-loader"],
         exclude: /node_modules/
       },
       {
@@ -62,7 +62,9 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-            options: {}
+            options: {
+              outputPath: 'fonts/'
+            }
           }
         ]
       },

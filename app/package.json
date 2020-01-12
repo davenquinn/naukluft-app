@@ -10,7 +10,7 @@
   "author": "Daven Quinn",
   "license": "ISC",
   "dependencies": {
-    "@blueprintjs/core": "^3.17.1",
+    "@blueprintjs/core": "^3.22.3",
     "@blueprintjs/select": "^3.11.2",
     "@macrostrat/column-components": "file:./bundled-deps/column-components",
     "@macrostrat/hyper": "^1.1.5",
