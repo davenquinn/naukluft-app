@@ -1,4 +1,3 @@
-import {SettingsPanel} from "../settings"
 import {Button, Slider} from "@blueprintjs/core"
 import h from "react-hyperscript"
 import {
@@ -49,9 +48,9 @@ SettingsProvider = (props)->
   }, children
 
 
-SummarySectionsSettings = ->
-  h BaseSettingsPanel, [
-    h 'h5', "Components"
+SummarySectionsSettings = ({isOpen})->
+  h BaseSettingsPanel, {isOpen}, [
+    h 'h3', "Components"
     h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
     h SettingsSwitch, {id: 'showOxygenIsotopes', label: "Oxygen isotopes"}
     h SettingsSwitch, {id: 'isotopesPerSection', label: "Show isotopes for each section"}
@@ -65,13 +64,11 @@ SummarySectionsSettings = ->
     h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
     h SettingsSwitch, {id: 'showNotes', label: "Notes"}
     h SettingsSwitch, {id: 'showLegend', label: "Legend"}
-    h 'hr'
     h SequenceStratControlPanel
     h 'div', [
-      h 'h5', "Backend"
+      h 'h3', "Backend"
       h EditModeControl
       h SerializedQueriesControl
-      h 'hr'
     ]
   ]
 export {SettingsProvider, useSettings, updateSettings,

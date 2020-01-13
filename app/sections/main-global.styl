@@ -5,22 +5,9 @@ ul
   list-style: none
   padding-left: 0
 
-
-body
-  background-color: white
-  user-select: none
-*
-  box-sizing: border-box
-  &:focus
-    outline: none
-
-input[type=checkbox]:focus
-  outline: 0
-
 .page.section-page
   width: 100%
   flex-grow: 1
-  background-color: white
   display: flex
   flex-direction: row
   height 100vh
@@ -177,3 +164,9 @@ div.facies.bp3-card
     p
       margin 0.3em
       flex 1
+
+/*
+@media(prefers-color-scheme: dark)
+  svg.section .backdrop .underlay
+    fill: #232327 !important
+*/

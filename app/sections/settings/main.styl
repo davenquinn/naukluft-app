@@ -1,31 +1,28 @@
-width=180px
+width=300px
 
 :global(#settings)
-  width: width
   border-left: 2px solid #444
-  height: 100vh
-  overflow-y scroll
-  padding: 1em
   h2:first-child
     margin-top: 0
 
-  &.settings-enter
-    width: 0em
-    padding: 0em
-    &.settings-enter-active
-      transition: width 1000ms, padding 1000ms, border-left-width 1000m
-      padding 1em
-      border-left-width 2px
-      width: width
+.settings-panel
+  height: 100vh
+  overflow-y scroll
+  transition: width 800ms ease-in-out
+  padding: 1em
+  padding-left 2em
+  width: width
+  border-left 1px solid #888
+  box-shadow: inset 4px 0px 5px 0px #aaa
 
-  &.settings-leave
+  &.settings-enter,&.settings-exit
+    width 0em
+
+  &.settings-enter-active
     width: width
-    padding: 0em
-    &.settings-leave-active
-      width: 0em
-      transition: width 1000ms, border-left-width 1000ms, padding 1000ms
-      padding 0em
-      border-left-width: 0
+
+  &.settings-exit-active
+    width: 0em
 
   div
     margin-bottom: 1em

@@ -2,6 +2,7 @@ import {useState} from "react"
 import h from "@macrostrat/hyper"
 import T from 'prop-types'
 import {SectionNavigationControl} from "../util"
+import {Drawer} from "@blueprintjs/core"
 import {SettingsProvider} from '@macrostrat/column-components'
 import classNames from 'classnames'
 
@@ -25,7 +26,7 @@ BaseSectionPage = (props)->
           children
         ]
       ]
-      h.if(showSettings) settingsPanel
+      h settingsPanel, {isOpen: showSettings}
     ]
   ]
 

@@ -64,7 +64,7 @@ SequenceStratControlPanel = (props)->
   value = useContext(SequenceStratContext)
   {actions} = value
   h 'div', props, [
-    h 'h5', 'Sequence stratigraphy'
+    h 'h3', 'Sequence stratigraphy'
     h Switch, {
       checked: value.showFloodingSurfaces
       label: "Flooding surfaces"
@@ -87,14 +87,16 @@ SequenceStratControlPanel = (props)->
   ]
 
 BaseSettingsPanel = (props)->
-  {children} = props
+  {children, isOpen} = props
+  isOpen ?= false
   h CSSTransition, {
+    in: isOpen
     classNames: "settings"
-    timeout: {exit: 1000, enter: 1000}
+    unmountOnExit: true
+    timeout: 1000
   }, [
-    h 'div#settings.settings', {key: 'settings'}, [
+    h 'div.settings-panel', [
       h 'h2', 'Settings'
-      h 'hr'
       children
     ]
   ]

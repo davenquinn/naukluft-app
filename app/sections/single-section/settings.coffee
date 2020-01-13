@@ -53,21 +53,20 @@ SettingsProvider = (props)->
   }, children
 
 
-SettingsPanel = ->
-  h BaseSettingsPanel, [
-    h 'h5', "Components"
+SettingsPanel = ({isOpen})->
+
+  h BaseSettingsPanel, {isOpen}, [
+    h 'h3', "Components"
     h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
     h SettingsSwitch, {id: 'showFacies', label: "Facies"}
     h SettingsSwitch, {id: 'showFaciesTracts', label: "Facies tracts"}
     h SettingsSwitch, {id: 'showSymbols', label: 'Symbols'}
     h SettingsSwitch, {id: 'showNotes', label: "Notes"}
-    h 'hr'
     h SequenceStratControlPanel
     h 'div', [
-      h 'h5', "Backend"
+      h 'h3', "Backend"
       h EditModeControl
       h SerializedQueriesControl
-      h 'hr'
     ]
   ]
 
