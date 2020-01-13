@@ -1,3 +1,6 @@
+###
+This will only build with Parcel
+###
 import h from 'react-hyperscript'
 import {PlatformProvider} from '../../../platform'
 import '../../../bundled-deps/column-components/src/main.styl'

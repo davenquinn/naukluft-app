@@ -1,14 +1,17 @@
 import h from '@macrostrat/hyper'
-import {render} from 'react-dom'
 import {RegionalSections} from './main'
-import {StaticFigureWrapper} from '../summary-sections/static-figure/wrapper'
+import {BaseSectionPage} from '../components'
 
-RegionalSectionsFigure = (props)->
-  h StaticFigureWrapper, [
+settingsPanel = 'div'
+defaultSettings = {}
+
+RegionalSectionsPage = (props)->
+  h BaseSectionPage, {
+    id: 'regional-sections'
+    settingsPanel,
+    defaultSettings
+  }, [
     h RegionalSections
   ]
 
-wrapper = (el, opts, cb)->
-  render(h(RegionalSectionsFigure), el, cb)
-
-export default wrapper
+export {RegionalSectionsPage}

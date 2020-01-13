@@ -1,18 +1,16 @@
 import {safeLoad} from "js-yaml"
 import Promise from "bluebird"
+import {get} from 'axios'
 
 getJSON = (url)->
   if window? and PLATFORM != ELECTRON
-    console.log "Web backend found!!"
     # We are using a web-like backend
     console.log "Requesting json at #{url}"
-    return new Promise (resolve, reject)->
-      req = require 'browser-request'
-      req {uri: url, json: true}, (err, response)->
-        if err?
-          reject(err)
-          return
-        resolve(response.body)
+    {status, data} = await get(url)
+    if not data?
+      throw "Request failed with status code #{status}"
+    console.log data
+    return data
   else
     # Assume we can do a direct require
     {readFileSync} = require 'fs'

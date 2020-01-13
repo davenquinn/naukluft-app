@@ -1,5 +1,4 @@
 import h from 'react-hyperscript'
-import {readFileSync} from 'fs'
 import {join} from 'path'
 import {select} from 'd3-selection'
 import {Component} from 'react'
@@ -13,13 +12,23 @@ import {
 } from '../components/polygon-topology'
 import {filenameForID} from './svg-export'
 import {useFaciesColors} from './util'
+import s1 from './sequence-data-edited/S1.svg'
+import s2 from './sequence-data-edited/S2.svg'
+import s3 from './sequence-data-edited/S3.svg'
+
+fileMap = {
+  S1: s1,
+  S2: s2,
+  S3: s3
+}
 
 editedFile = (id)->
-  filenameForID(id,'svg').replace("sequence-data", "sequence-data-edited")
+  return fileMap[id]
 
 getEditedSequenceOverlay = (id)->
   fn = editedFile(id)
   try
+    {readFileSync} = require('fs')
     svg = readFileSync fn
   catch
     return null

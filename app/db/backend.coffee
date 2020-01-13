@@ -80,10 +80,16 @@ new SerializableQuery(carbonIsotopes)
 import photoQuery from '../sections/sql/photo.sql'
 new SerializableQuery(photoQuery)
 
+# Section lithology
 import lithQuery from '../sections/lithology/lithology.sql'
 new SerializableQuery(lithQuery)
 import ftQuery from '../sections/facies/sql/facies-tracts.sql'
 new SerializableQuery(ftQuery)
+
+# Generalized sections
+import generalizedSections from '../sections/sql/generalized-section.sql'
+new SerializableQuery(generalizedSections)
+
 
 import sq1 from '../sections/sql/flooding-surface.sql'
 #import sq2 from '../sections/sql/section-samples.sql'

@@ -27,26 +27,26 @@ getSectionData = (opts={})->
   fn = sectionFilename('file-info.json')
   config = await getJSON fn
 
-  query sectionsQuery
-    .map (s)->
-      s.id = s.section.trim()
-      files = config[s.id] or []
-      s.range = [s.start, s.end]
-      # Height in meters
-      s.height = s.end-s.start
+  data = await query sectionsQuery
+  data.map (s)->
+    s.id = s.section.trim()
+    files = config[s.id] or []
+    s.range = [s.start, s.end]
+    # Height in meters
+    s.height = s.end-s.start
 
-      scaleFactor = files.height/s.height
-      if opts.verbose
-        console.log "Section #{s.id} scale factor: #{scaleFactor} px/m"
+    scaleFactor = files.height/s.height
+    if opts.verbose
+      console.log "Section #{s.id} scale factor: #{scaleFactor} px/m"
 
-      sz = 427
-      s.scaleFactor = scaleFactor
-      s.imageFiles = [1..files.n].map (i)->
-        filename = sectionFilename("section_#{s.id}_#{i}.png")
-        remaining = files.height-(i-1)*sz
-        height = if remaining > sz then sz else remaining
-        {width: sz, height, filename}
-      return s
+    sz = 427
+    s.scaleFactor = scaleFactor
+    s.imageFiles = [1..files.n].map (i)->
+      filename = sectionFilename("section_#{s.id}_#{i}.png")
+      remaining = files.height-(i-1)*sz
+      height = if remaining > sz then sz else remaining
+      {width: sz, height, filename}
+    return s
 
 SectionContext = createContext({})
 

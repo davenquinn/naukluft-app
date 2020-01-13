@@ -1,11 +1,11 @@
 import path from 'path'
-import {writeFileSync} from 'fs'
 
 exportSVG = (node, outputFile)->
   # Should make this work only in Node
   serializer = new XMLSerializer()
   return unless node?
   svgString = serializer.serializeToString(node)
+  {writeFileSync} = require('fs')
   writeFileSync(outputFile, svgString, 'utf-8')
 
 filenameForID = (id, ext)->

@@ -10,7 +10,7 @@ import {SummarySections} from "./summary-sections"
 import {GeneralizedSections} from "./generalized-sections"
 import {SectionNavigationControl} from "./util"
 import {FaciesDescriptionPage} from "./facies"
-import {RegionalCrossSectionPage} from "./regional-cross-section"
+import {RegionalSectionsPage} from "./regional-sections"
 import {nest} from "d3"
 import ErrorBoundary from 'react-error-boundary'
 import "@macrostrat/column-components/dist/column-components.css"
@@ -76,63 +76,61 @@ wrapWithSections = (component)=> (props)=>
     h(component, {sections, props...}, null)
 
 
-class SectionIndex extends Component
-  render: =>
-    {match} = @props
-    h SectionDataProvider, [
-      h Switch, [
-        h Route, {
-          path: match.url+'/'
-          exact: true
-          render: withRouter (props)=>
-            h wrapWithSections(SectionIndexPage), props
-        }
-        h Route, {
-          path: match.url+'/summary'
-          exact: true
-          render: => h(wrapWithSections(SummarySections))
-        }
-        h Route, {
-          path: match.url+'/generalized'
-          exact: true
-          render: =>
-            h(wrapWithSections(GeneralizedSections))
-        }
-        h Route, {
-          path: match.url+'/facies-descriptions'
-          exact: true
-          render: => h(FaciesDescriptionPage, {}, null)
-        }
-        h Route, {
-          path: match.url+'/all'
-          exact: true
-          render: => h(AllSections, {sections}, null)
-        }
-        h Route, {
-          path: match.url+'/regional'
-          exact: true
-          render: => h(RegionalCrossSectionPage, {}, null)
-        }
-        h Route, {
-          path: match.url+'/:id/height/:height', render: (props)->
-            h SectionConsumer, null, ({sections})->
-              {id,height} = props.match.params
-              section = sections.find (d)->d.id == id
-              if not section?
-                return h 'div'
-              h SectionPage, {section, height}
-        }
-        h Route, {
-          path: match.url+'/:id/',
-          render: (props)->
-            h SectionConsumer, null, ({sections})->
-              {id,height} = props.match.params
-              section = sections.find (d)->d.id == id
-              if not section?
-                return h 'div'
-              h SectionPage, {section}
-        }
-      ]
+SectionIndex = ({match})->
+  h SectionDataProvider, [
+    h Switch, [
+      h Route, {
+        path: match.url+'/'
+        exact: true
+        render: withRouter (props)=>
+          h wrapWithSections(SectionIndexPage), props
+      }
+      h Route, {
+        path: match.url+'/summary'
+        exact: true
+        render: => h(wrapWithSections(SummarySections))
+      }
+      h Route, {
+        path: match.url+'/generalized'
+        exact: true
+        render: =>
+          h(wrapWithSections(GeneralizedSections))
+      }
+      h Route, {
+        path: match.url+'/facies-descriptions'
+        exact: true
+        render: => h(FaciesDescriptionPage, {}, null)
+      }
+      h Route, {
+        path: match.url+'/all'
+        exact: true
+        render: => h(AllSections, {sections}, null)
+      }
+      h Route, {
+        path: match.url+'/regional'
+        exact: true
+        render: => h(RegionalSectionsPage, {}, null)
+      }
+      h Route, {
+        path: match.url+'/:id/height/:height', render: (props)->
+          h SectionConsumer, null, ({sections})->
+            {id,height} = props.match.params
+            section = sections.find (d)->d.id == id
+            if not section?
+              return h 'div'
+            h SectionPage, {section, height}
+      }
+      h Route, {
+        path: match.url+'/:id/',
+        render: (props)->
+          h SectionConsumer, null, ({sections})->
+            {id,height} = props.match.params
+            section = sections.find (d)->d.id == id
+            if not section?
+              return h 'div'
+            h SectionPage, {section}
+      }
     ]
+  ]
 
 export {SectionIndex, SectionDataProvider}

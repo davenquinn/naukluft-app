@@ -10,6 +10,7 @@ import {getGeneralizedHeight, exportSVG} from './helpers'
 import {FaciesSection} from './column'
 import {exportSequence} from './svg-export'
 import {CrossSectionUnits} from './section-units'
+import {PlatformContext, Platform} from '~/platform'
 
 import styles from './main.styl'
 h = hyperStyled(styles)
@@ -35,11 +36,15 @@ CorrelationContainer = (props)->
   {id, sections, children, paddingBottom, rest...} = props
   domID = "sequence-#{id}"
 
+  ctx = useContext(PlatformContext)
+
   outerRef = (node)->
-    console.log node
     return unless node?
     observer = new MutationObserver exportSequence(id, node)
     observer.observe(node, {childList: true})
+
+  if ctx.platform != Platform.ELECTRON
+    outerRef = null
 
   hideLinks = true
   style = null

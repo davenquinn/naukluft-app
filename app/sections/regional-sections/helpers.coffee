@@ -1,5 +1,3 @@
-import {writeFileSync} from 'fs'
-
 getGeneralizedHeight = (sectionData, opts={})->
   # Manage the top and bottom heights allowed
   # using only the first section
