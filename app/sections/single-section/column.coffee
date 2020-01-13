@@ -135,6 +135,8 @@ class SectionComponent extends Component
                 scrollToHeight: parseFloat(scrollToHeight),
                 paddingTop: @props.padding.top
                 onScrolled: (height)=>
+                  return unless height?
+                  return if isNaN(height)
                   Notification.show {
                     message: "Section #{id} @ #{fmt(height)} m"
                     intent: Intent.PRIMARY
@@ -201,7 +203,7 @@ class SectionComponent extends Component
                         visible: true
                         id
                         width: @props.logWidth
-                        inEditMode: @props.isEditable
+                        editable: @props.isEditable
                         transform: "translate(#{@props.innerWidth})"
                       }
                     ]

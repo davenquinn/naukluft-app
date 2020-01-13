@@ -8,10 +8,12 @@ import {
 } from "react"
 import h from "@macrostrat/hyper"
 import T from "prop-types"
+import useAsyncEffect from 'use-async-effect'
 import logNotesQuery from '../sql/log-notes.sql'
 import updateNoteQuery from '../sql/update-note.sql'
 import setNoteInvisible from '../sql/set-note-invisible.sql'
 import {PlatformContext, Platform} from '~/platform'
+import {useSettings} from '@macrostrat/column-components'
 import {
   NoteEditor,
   NoteEditorContext,
@@ -22,7 +24,7 @@ import {
 #   PhotoOverlay
 # } from "@macrostrat/column-components/dist/esm/photos"
 #
-import {db, storedProcedure, query} from "~/sections/db"
+import {db, query, storedProcedure} from "~/db"
 
 fmt = format(".1f")
 
@@ -67,41 +69,47 @@ PhotoNoteComponent = (props)->
   ]
 
 
-class ManagedNotesColumn extends Component
-  @contextType: PlatformContext
-  constructor: (props)->
-    super props
-    @state = {notes: []}
+ManagedNotesColumn = (props)->
+  {platform} = useContext(PlatformContext)
+  {inEditMode} = useSettings()
 
-  componentDidMount: =>
-    @updateNotes()
+  {id, rest...} = props
+  [notes, setNotes] = useState([])
 
-  updateNotes: =>
-    {id} = @props
+  # State management
+  updateNotes = ->
     notes = await query logNotesQuery, [id]
-    @setState {notes}
+    console.log(notes)
+    setNotes(notes)
 
-  onUpdateNote: (newNote, v)=>
+  # Get initial notes from query
+  useAsyncEffect(updateNotes, [])
+
+  onUpdateNote = (newNote, v)->
     return unless newNote?
     {note: newText, id: noteID} = newNote
     # We can't edit on the frontend
-    return unless @context.platform == Platform.ELECTRON
+    return unless platform == Platform.ELECTRON
     if newText.length == 0
       sql = storedProcedure(setNoteInvisible)
-      await db.none sql, [noteID]
+      await db.none(sql, [noteID])
     else
       sql = storedProcedure(updateNoteQuery)
-      await db.none sql, [noteID, newText]
-    @updateNotes()
+      await db.none(sql, [noteID, newText])
+    updateNotes()
     console.log "Note #{noteID} edited"
 
-  render: ->
-    {notes} = @state
-    h NotesColumn, {
-      notes,
-      noteComponent: PhotoNoteComponent
-      @onUpdateNote
-      @props...
-    }
+  editable = inEditMode
+  if platform != Platform.ELECTRON
+    onUpdateNote = null
+    editable = false
+
+  h NotesColumn, {
+    notes,
+    rest...
+    noteComponent: PhotoNoteComponent
+    onUpdateNote
+    editable
+  }
 
 export {ManagedNotesColumn}
