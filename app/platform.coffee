@@ -49,8 +49,6 @@ PlatformContext = createContext({})
 
 class PlatformProvider extends Component
   constructor: (props)->
-    WEB = false
-    ELECTRON = true
     platform = Platform.ELECTRON
     global.BASE_DIR ?= join(__dirname, "..")
 
@@ -58,15 +56,16 @@ class PlatformProvider extends Component
     editable = true
     if global.PLATFORM == WEB
       platform = Platform.WEB
-      WEB = true
       editable = false
-      baseUrl = BASE_URL
+      baseUrl = "/"
 
     super props
     @state = {
-      serializedQueries: not ELECTRON
+      serializedQueries: not platform == Platform.ELECTRON
       inEditMode: false
-      platform, WEB, ELECTRON, editable, baseUrl
+      platform,
+      editable,
+      baseUrl
     }
 
     @storage = new LocalStorage 'edit-mode'
@@ -115,7 +114,7 @@ class PlatformProvider extends Component
 
   computePhotoPath: (photo)=>
     return null unless photo.id?
-    if @state.ELECTRON
+    if @state.platform == Platform.ELECTRON
       return @path( '..', 'Products', 'webroot', 'Sections', 'photos', "#{photo.id}.jpg")
     else
       return @path( 'photos', "#{photo.id}.jpg")
@@ -123,12 +122,13 @@ class PlatformProvider extends Component
     return photo.path
 
   resolveSymbol: (sym)=>
+    console.log(sym)
     try
-      if @state.ELECTRON
+      if @state.platform == Platform.ELECTRON
         q = resolve(join(BASE_DIR, 'assets', sym))
         return 'file://'+q
       else
-        return join BASE_URL, 'assets', sym
+        return join BASE_URL, 'column-symbols', sym
     catch
       return ''
 
@@ -136,16 +136,14 @@ class PlatformProvider extends Component
     {svg} = opts
     svg ?= false
     return null if not id?
-    try
-      if @state.ELECTRON
-        fp = "png/#{id}.png"
-        if svg then fp = "svg/#{id}.svg"
-        q = join process.env.PROJECT_DIR, "versioned/deps/geologic-patterns/assets", fp
-        return 'file://'+q
-      else
-        return @path 'assets','lithology-patterns', "#{id}.png"
-    catch
-      return ''
+    if @state.platform == Platform.ELECTRON
+      fp = "png/#{id}.png"
+      if svg then fp = "svg/#{id}.svg"
+      proj = process.env.PROJECT_DIR or ""
+      q = join proj, "versioned/deps/geologic-patterns/assets", fp
+      return 'file://'+q
+    else
+      return @path 'lithology-patterns', "#{id}.png"
 
   componentDidUpdate: (prevProps, prevState)->
     # Shim global state

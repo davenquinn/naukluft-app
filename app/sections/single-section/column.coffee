@@ -5,7 +5,7 @@ import h from "@macrostrat/hyper"
 import T from "prop-types"
 
 import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis"
-import {ColumnImages} from "@macrostrat/column-components/dist/esm/images"
+import {ColumnImages} from "./images"
 import {Intent} from "@blueprintjs/core"
 import {GrainsizeAxis} from "@macrostrat/column-components/dist/esm/grainsize"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface"

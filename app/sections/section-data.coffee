@@ -9,11 +9,11 @@ import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
 import {PhotoLibraryProvider} from '@macrostrat/column-components'
 import h from "react-hyperscript"
-import "./main.styl"
 import {IsotopesDataProvider} from './summary-sections/chemostrat/data-manager'
 import sectionSurfaceQuery from "./sql/section-surface.sql"
 import photoQuery from "./sql/photo.sql"
 import sectionsQuery from "./sql/sections.sql"
+import "./main.styl"
 
 sectionFilename = (fn)->
   if PLATFORM == ELECTRON
