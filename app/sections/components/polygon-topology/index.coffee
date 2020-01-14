@@ -1,3 +1,8 @@
+###
+A set of tools to polygonize a topology using PostGIS.
+Basically, this is a poor man's Adobe Illustrator Live Paint.
+###
+
 import h from '@macrostrat/hyper'
 import {geoPath, geoTransform} from 'd3-geo'
 import {db, storedProcedure} from '../../db'

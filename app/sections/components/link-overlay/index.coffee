@@ -14,6 +14,7 @@ import update from 'immutability-helper'
 import {
   expandInnerSize,
   extractPadding,
+  removePadding,
   useSettings,
   ColumnContext,
   SVG
@@ -373,15 +374,11 @@ SectionLinkOverlay = (props)->
   ]
 
 SectionLinkOverlay.propTypes = {
-  extraHeight: T.number
-  extraWidth: T.number
 }
 
 SectionLinkOverlay.defaultProps = {
   connectLines: true
   showSectionTrackers: false
-  extraHeight: 0
-  extraWidth: 0
 }
 
 export {

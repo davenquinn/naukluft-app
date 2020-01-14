@@ -3,6 +3,7 @@ import {join} from 'path'
 import {select} from 'd3-selection'
 import {Component} from 'react'
 import {findDOMNode} from 'react-dom'
+import {get} from 'axios'
 import {SVG} from "@macrostrat/column-components"
 import {
   PolygonTopology
@@ -16,22 +17,23 @@ import s1 from './sequence-data-edited/S1.svg'
 import s2 from './sequence-data-edited/S2.svg'
 import s3 from './sequence-data-edited/S3.svg'
 
-fileMap = {
+fileNames = {
   S1: s1,
   S2: s2,
   S3: s3
 }
 
-editedFile = (id)->
-  return fileMap[id]
-
-getEditedSequenceOverlay = (id)->
-  fn = editedFile(id)
+getFile = (id)->
+  fn = fileNames[id]
   try
     {readFileSync} = require('fs')
-    svg = readFileSync fn
+    svg = readFileSync(fn, 'utf-8')
+    return Promise.resolve(svg)
   catch
-    return null
+    return get(fn, {responseType: 'text'})
+
+getEditedSequenceOverlay = (id)->
+  svg = await getFile(id)
   fst = removeLines(svg.toString(), 2)
 
   el = document.createElement("div")
@@ -60,13 +62,18 @@ class CrossSectionUnits extends Component
     @state = {lines: null, points: null}
 
   componentDidMount: ->
+    @extractTopology()
+
+  extractTopology: =>
     {id} = @props
-    svg = getEditedSequenceOverlay(id)
+    console.log(id)
+    svg = await getEditedSequenceOverlay(id)
+    console.log(svg)
     return unless svg?
 
     main = svg.select("g#Lines")
     ### Get path data ###
-    lines = extractLines(main)
+    #lines = extractLines(main)
 
     el = select findDOMNode @
 
@@ -82,11 +89,11 @@ class CrossSectionUnits extends Component
         .node().appendChild(pts)
 
     ### Get facies data ###
-    points = extractTextPositions(svg.select("g#Facies"))
+    #points = extractTextPositions(svg.select("g#Facies"))
 
     svg.remove()
 
-    @setState {lines, points}
+    #@setState {lines, points}
 
   render: ->
     {id, rest...} = @props
