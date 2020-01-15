@@ -162,20 +162,16 @@ prepareLinkData = (props)->
       sectionSurfaces[section] ?= []
       sectionSurfaces[section].push {surface_id, height, inferred, certainty}
 
-  # Backdoor way to get section stacks
-  vals = Object.values(sectionIndex)
-  sectionStacks = group vals, (d)->d.x
+  # Backdoor way to get section stacks (group by column x position)
+  sectionStacks = group Object.values(sectionIndex), (d)->d.x
 
   buildSectionStack = surfacesBuilder({sectionSurfaces, sectionIndex})
 
-  stackSurfaces = []
   ## Build up stacked sections
-  sectionStacks.forEach (stackedSections, key)->
+  stackSurfaces = Array.from sectionStacks, ([x, stackedSections])->
+    values = buildSectionStack(stackedSections)
     # Save generated index to appropriate stack
-    stackSurfaces.push {
-      x: parseFloat(key)
-      values: buildSectionStack(stackedSections)
-    }
+    return {x,values}
 
   # Turn back into surface-oriented list
   return surfaces.map (s)->
@@ -222,12 +218,10 @@ SectionLink = (props)->
   fillSectionWidth = true
   __gapCommand = if fillSectionWidth then 'l' else 'M'
 
-  values = [section_height...]
-
   sectionIndex = useContext(SectionObserverContext)
 
-  heights = values.map (v)->
-    {section, height, inferred, inDomain} = v
+  heights = section_height.map (v)->
+    {section, height, inferred, inDomain, certainty} = v
     {globalScale, x: x0, width} = sectionIndex[section]
     return {
       x0
@@ -236,6 +230,7 @@ SectionLink = (props)->
       inferred
       inDomain
       section
+      certainty
     }
 
   heights.sort (a,b)-> a.x0 - b.x0
@@ -247,7 +242,7 @@ SectionLink = (props)->
 
   pathData = pairs heights, (a,b)->
     inferred = (a.inferred or b.inferred)
-    certainty = Math.min((a.certainty or 10), (b.certainty or 10))
+    certainty = Math.min((a.certainty), (b.certainty))
     source = {x: a.x1, y: a.y, section: a.section}
     target = {x: b.x0, y: b.y, section: b.section}
     {inDomain} = b
