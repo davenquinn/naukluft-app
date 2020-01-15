@@ -3,7 +3,8 @@ SELECT
   json_agg(json_build_object(
       'section',section,
       'height', height,
-      'inferred', inferred
+      'inferred', inferred,
+      'certainty', null
   )) section_height,
   lower_unit,
   upper_unit
@@ -18,7 +19,8 @@ SELECT
   json_agg(json_build_object(
       'section',section::text,
       'height', bottom,
-      'inferred', false
+      'inferred', false,
+      'certainty', surface_certainty
   )) section_height,
   min(surface_order) AS surface_order,
   mode() WITHIN GROUP (ORDER BY surface_type) AS surface_type,

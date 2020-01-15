@@ -53,7 +53,11 @@ SectionContainer = (props)->
 
 SectionPane = (props) ->
   {sectionPositions, sections
-   groupMargin, columnMargin, columnWidth} = props
+   groupMargin,
+   columnMargin,
+   columnWidth,
+   tightenSpacing
+   } = props
 
   {surfaces} = useContext(SectionSurfacesContext)
 
@@ -93,7 +97,7 @@ SectionPane = (props) ->
   h 'div#section-pane', {style: {overflow: 'scroll'}}, [
     h SectionContainer, [
       h SectionLinkOverlay, {
-        connectLines: true
+        connectLines: false
         surfaces
       }
       # h LithostratKey, {
@@ -116,10 +120,11 @@ SectionPane = (props) ->
           if location == 'Tsams'
             marginRight = 0
           # Tighten spacing for Onis and Naukluft
-          if i == 0
-            marginRight /= 2.5
-          if i == 1
-            marginRight = 30
+          if tightenSpacing
+            if i == 0
+              marginRight /= 2.5
+            if i == 1
+              marginRight = 30
 
           style = {marginRight, height}
 
@@ -163,9 +168,14 @@ SectionPane = (props) ->
     ]
   ]
 
+SectionPane.defaultProps = {
+  tightenSpacing: true
+}
+
 SectionPane.propTypes = {
   sections: T.arrayOf(T.object).isRequired
   surfaces: T.arrayOf(T.object).isRequired
+  tightenSpacing: T.bool
 }
 
 class SummarySectionsBase extends Component

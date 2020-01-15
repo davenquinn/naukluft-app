@@ -21,7 +21,8 @@ import {
 } from '@macrostrat/column-components'
 import {group, pairs} from 'd3-array'
 import {linkHorizontal} from 'd3-shape'
-import {Notification} from "../../../notify"
+import {Notification} from "~/notify"
+import {SectionLinkPath} from './path'
 import styles from './main.styl'
 
 h = hyperStyled(styles)
@@ -115,6 +116,38 @@ withinDomain = (scale, height)->
   d = scale.domain()
   return d[0] < height < d[1]
 
+surfacesBuilder = (props)->(stackedSections)->
+  {sectionSurfaces, sectionIndex} = props
+  surfacesIndex = {}
+  # Logic for determining which section's surface is rendered
+  # within a stack (typically the section that is not inferred)
+
+  for section in stackedSections
+    {id: section_id} = section
+    section_surfaces = sectionSurfaces[section_id] or []
+    # Define a function to return domain
+    {globalScale} = sectionIndex[section_id]
+
+    # Naive logic
+    for surface in section_surfaces
+      s1 = surfacesIndex[surface.surface_id]
+      if s1?
+        # We already have a surface defined
+        if withinDomain(globalScale, s1.height)
+          if s1.inferred and not section.inferred
+            continue
+        if not withinDomain(globalScale, surface.height)
+          continue
+      surfacesIndex[surface.surface_id] = {section: section_id, surface...}
+  # Convert to an array
+  surfacesArray = (v for k,v of surfacesIndex)
+  # Add the pixel height
+  for surface in surfacesArray
+    {globalScale} = sectionIndex[surface.section]
+    surface.y = globalScale(surface.height)
+    surface.inDomain = withinDomain(globalScale, surface.height)
+  return surfacesArray
+
 prepareLinkData = (props)->
   {surfaces, sectionIndex} = props
   return null unless surfaces.length
@@ -125,49 +158,23 @@ prepareLinkData = (props)->
   sectionSurfaces = {}
   for {surface_id, section_height} in surfaces
     continue unless surface_id? # weed out lithostratigraphy for now
-    for {section, height, inferred} in section_height
+    for {section, height, inferred, certainty} in section_height
       sectionSurfaces[section] ?= []
-      sectionSurfaces[section].push {surface_id, height, inferred}
+      sectionSurfaces[section].push {surface_id, height, inferred, certainty}
 
   # Backdoor way to get section stacks
   vals = Object.values(sectionIndex)
   sectionStacks = group vals, (d)->d.x
 
+  buildSectionStack = surfacesBuilder({sectionSurfaces, sectionIndex})
+
   stackSurfaces = []
+  ## Build up stacked sections
   sectionStacks.forEach (stackedSections, key)->
-    surfacesIndex = {}
-    # Logic for determining which section's surface is rendered
-    # within a stack (typically the section that is not inferred)
-
-    for section in stackedSections
-      {id: section_id} = section
-      section_surfaces = sectionSurfaces[section_id] or []
-      # Define a function to return domain
-      {globalScale} = sectionIndex[section_id]
-
-      # Naive logic
-      for surface in section_surfaces
-        s1 = surfacesIndex[surface.surface_id]
-        if s1?
-          # We already have a surface defined
-          if withinDomain(globalScale, s1.height)
-            if s1.inferred and not section.inferred
-              continue
-          if not withinDomain(globalScale, surface.height)
-            continue
-        surfacesIndex[surface.surface_id] = {section: section_id, surface...}
-    # Convert to an array
-    surfacesArray = (v for k,v of surfacesIndex)
-    # Add the pixel height
-    for surface in surfacesArray
-      {globalScale} = sectionIndex[surface.section]
-      surface.y = globalScale(surface.height)
-      surface.inDomain = withinDomain(globalScale, surface.height)
-
     # Save generated index to appropriate stack
     stackSurfaces.push {
       x: parseFloat(key)
-      values: surfacesArray
+      values: buildSectionStack(stackedSections)
     }
 
   # Turn back into surface-oriented list
@@ -198,11 +205,22 @@ buildLink = linkHorizontal()
   .y (d)->d.y
 
 SectionLink = (props)->
-  {connectLines, surface, stroke, strokeWidth, onClick} = props
+  {
+    connectLines,
+    surface,
+    stroke,
+    strokeWidth,
+    onClick
+  } = props
   stroke ?= 'black'
   strokeWidth ?= 1
   {section_height, surface_id, unit_commonality,
    type, note} = surface
+
+  # CURRENTLY PRIVATE API to allow section gaps to be filled
+  # or not when connectLines = false
+  fillSectionWidth = true
+  __gapCommand = if fillSectionWidth then 'l' else 'M'
 
   values = [section_height...]
 
@@ -224,18 +242,23 @@ SectionLink = (props)->
 
   return null if heights.length < 2
 
+  __LinkPath = (props)->
+    h SectionLinkPath, {className, stroke, strokeWidth, onClick, props...}
+
   pathData = pairs heights, (a,b)->
     inferred = (a.inferred or b.inferred)
+    certainty = Math.min((a.certainty or 10), (b.certainty or 10))
     source = {x: a.x1, y: a.y, section: a.section}
     target = {x: b.x0, y: b.y, section: b.section}
     {inDomain} = b
     width = b.x1-b.x0
-    {source, target, inferred, width}
+    {source, target, inferred, certainty, width}
 
   d = null
+  certainty = 10
   links = for pair,i in pathData
     unit_commonality ?= 0
-    {inferred,width} = pair
+    {inferred,width, certainty} = pair
     className = classNames(
       "section-link"
       type
@@ -257,25 +280,15 @@ SectionLink = (props)->
       linkLine  =  "L"+linkLine.substring(1)
       linkLine += "l#{width},0"
     else
-      linkLine += "M#{width},0"
+      linkLine += "#{__gapCommand}#{width},0"
     d += linkLine
 
     fill = 'none'
 
-    h 'path', {
-      d, className, stroke,
-      strokeWidth, fill,
-      onClick
-      style: {cursor: if onClick then 'pointer' else null}
-    }
+    h __LinkPath, {d, certainty}
 
   if connectLines
-    return h 'path', {
-      d, className, stroke,
-      strokeWidth, fill,
-      onClick
-      style: {cursor: if onClick then 'pointer' else null}
-    }
+    return h __LinkPath, {d, certainty}
   else
     return h 'g', links
 

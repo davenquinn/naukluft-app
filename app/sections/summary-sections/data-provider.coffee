@@ -1,28 +1,15 @@
-import {useEffect, createContext, useState} from 'react'
+import {createContext} from 'react'
 import h from 'react-hyperscript'
 import {nest} from "d3-collection"
 import lithostratSurface from './sql/lithostratigraphy-surface.sql'
-import {query} from "../../db"
+import {useQuery} from "~/db"
 
 SectionSurfacesContext = createContext()
 
 SectionSurfacesProvider = (props)->
   {children} = props
-  [state, setState] = useState({surfaces: []})
-
-  getData = ->
-    query(lithostratSurface)
-      .then (surfaces)->
-        surfaces.reverse()
-        setState {surfaces}
-    return
-
-  useEffect getData, []
-
-  h SectionSurfacesContext.Provider, {
-    value: state
-  }, children
-
+  surfaces = useQuery(lithostratSurface)
+  h(SectionSurfacesContext.Provider, {value: {surfaces}}, children)
 
 groupSectionData = (sections, {stackGroups, groupOrder})->
   ###
