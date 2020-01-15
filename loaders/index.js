@@ -4,7 +4,7 @@ const __base = path.resolve(__dirname, '..');
 const babelLoader = {
   loader: 'babel-loader',
   options: {
-    presets: ['@babel/preset-env', '@babel/preset-react'],
+    presets: ['@babel/preset-env', '@babel/preset-react', "@babel/preset-typescript"],
   }
 };
 
@@ -37,7 +37,7 @@ const cssRule = {
 }
 
 const jsRule = {
-  test: /\.(js|jsx)$/,
+  test: /\.(js|jsx|ts|tsx)$/,
   use: [babelLoader],
   exclude: /node_modules/
 }
@@ -60,7 +60,7 @@ const stylusRule = {
 }
 
 const resolve = {
-  extensions: ['.js', '.coffee'],
+  extensions: ['.js', '.coffee', '.ts'],
   alias: {
     app: path.resolve(__base, 'app/'),
     react: path.resolve(__base,'./app/node_modules/react'),
