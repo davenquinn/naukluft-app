@@ -22,10 +22,7 @@ import {
 } from '@macrostrat/column-components/dist/cjs/editor/controls'
 import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker'
 
-# TODO: understand why we can't do this import
-#import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize"
-grainSizes = ['ms','s','vf','f','m','c','vc','p']
-
+import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize"
 import {IntervalShape} from '@macrostrat/column-components/dist/cjs/editor/types'
 import T from 'prop-types'
 import {dirname} from "path"

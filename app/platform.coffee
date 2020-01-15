@@ -125,7 +125,7 @@ class PlatformProvider extends Component
     console.log(sym)
     try
       if @state.platform == Platform.ELECTRON
-        q = resolve(join(BASE_DIR, 'assets', sym))
+        q = resolve(join(BASE_DIR, 'assets', 'column-patterns', sym))
         return 'file://'+q
       else
         return join BASE_URL, 'column-symbols', sym

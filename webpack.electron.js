@@ -1,5 +1,6 @@
 const path = require("path");
 const merge = require('webpack-merge');
+const {IgnorePlugin} = require('webpack');
 const {
   coffeeRule,
   sqlRule,
@@ -8,6 +9,7 @@ const {
 } = require('./loaders');
 
 const modifyConfig = (cfg)=>{
+
   cfg.module.rules = [
     ...cfg.module.rules,
     coffeeRule,
@@ -16,7 +18,7 @@ const modifyConfig = (cfg)=>{
   ];
 
   cfg.resolve = merge(cfg.resolve, resolve);
-  console.log(cfg)
+  console.log(cfg);
   return cfg
 }
 
