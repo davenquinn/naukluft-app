@@ -8,17 +8,17 @@ import {useSettings} from '@macrostrat/column-components'
 import {withRouter, useHistory} from "react-router-dom"
 
 import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '@macrostrat/column-components'
-import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis"
+import {ColumnAxis} from "@macrostrat/column-components/dist/cjs/axis"
 
 import {ManagedSymbolColumn} from "../components"
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface"
-import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/esm/lithology"
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/cjs/flooding-surface"
+import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/cjs/lithology"
 import {Popover, Position} from "@blueprintjs/core"
 import {SequenceStratContext} from "../sequence-strat-context"
 import {ColumnProvider, ColumnContext} from '@macrostrat/column-components'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner,
-        LithologyColumnInner, SimpleFrame} from '@macrostrat/column-components/dist/esm/lithology'
-import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay'
+        LithologyColumnInner, SimpleFrame} from '@macrostrat/column-components/dist/cjs/lithology'
+import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-overlay'
 
 import {ColumnTracker} from '../components/link-overlay'
 import {

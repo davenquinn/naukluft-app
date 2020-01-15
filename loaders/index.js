@@ -45,7 +45,7 @@ const jsRule = {
 const coffeeRule = {
   test: /\.coffee$/,
   use: [babelLoader, coffeeLoader],
-  exclude: /node_modules/
+  exclude: [/node_modules/,/__static-figure/]
 }
 
 const stylusRule = {

@@ -2,11 +2,11 @@
 This will only build with Parcel
 ###
 import h from 'react-hyperscript'
-import {PlatformProvider} from '../../../platform'
-import '../../../bundled-deps/column-components/src/main.styl'
-import symbols from '../../../../assets/**/*.svg'
-import {SectionDataProvider} from '../../section-data'
+import {PlatformProvider} from '../platform'
+import symbols from '../../assets/**/*.svg'
+import {SectionDataProvider} from '../sections/section-data'
 import './fonts.css'
+import "../bundled-deps/column-components/dist/column-components.css"
 
 resolveSymbol = (sym)->
   return null unless sym?

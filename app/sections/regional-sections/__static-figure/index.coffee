@@ -1,7 +1,7 @@
 import h from '@macrostrat/hyper'
 import {render} from 'react-dom'
-import {RegionalSections} from './main'
-import {StaticFigureWrapper} from '../summary-sections/static-figure/wrapper'
+import {RegionalSections} from '../main'
+import {StaticFigureWrapper} from '~/__static-figure/wrapper'
 
 ###
 Endpoint for figure generation

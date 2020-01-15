@@ -1,8 +1,8 @@
 import h from 'react-hyperscript'
 import {render} from 'react-dom'
-import {SummarySectionsFigure} from './main'
-import {SectionConsumer} from '../../section-data'
-import {StaticFigureWrapper} from './wrapper'
+import {SummarySectionsFigure} from '../main'
+import {SectionConsumer} from '~/sections/section-data'
+import {StaticFigureWrapper} from '~/__static-figure/wrapper'
 
 fn = (props)->
   h StaticFigureWrapper, [

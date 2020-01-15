@@ -1,7 +1,7 @@
 import {query, storedProcedure} from "~/sections/db"
 import {format} from "d3-format"
 import {Component} from "react"
-import {ColumnContext} from "@macrostrat/column-components/dist/esm/context"
+import {ColumnContext} from "@macrostrat/column-components/dist/cjs/context"
 import h from "react-hyperscript"
 import sectionSamplesQuery from '../sql/section-samples.sql'
 

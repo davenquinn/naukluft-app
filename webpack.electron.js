@@ -16,7 +16,7 @@ const modifyConfig = (cfg)=>{
   ];
 
   cfg.resolve = merge(cfg.resolve, resolve);
-  console.log(JSON.stringify(cfg, null, 4))
+  console.log(cfg)
   return cfg
 }
 

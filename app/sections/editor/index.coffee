@@ -5,28 +5,28 @@ import {DeleteButton} from '@macrostrat/ui-components'
 import Select from 'react-select'
 import {format} from "d3-format"
 
-import {FaciesDescriptionSmall, FaciesCard} from "@macrostrat/column-components/dist/esm/editor/facies"
-import {FaciesContext, ColumnContext} from "@macrostrat/column-components/dist/esm/context"
-import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base"
-import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/esm/editor/util"
+import {FaciesDescriptionSmall, FaciesCard} from "@macrostrat/column-components/dist/cjs/editor/facies"
+import {FaciesContext, ColumnContext} from "@macrostrat/column-components/dist/cjs/context"
+import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base"
+import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/cjs/editor/util"
 #import "react-select/dist/react-select.css"
 
 import {ColumnSurfacesContext} from "../column/data-source"
-import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '@macrostrat/column-components/dist/esm/editor/lithology-picker'
+import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '@macrostrat/column-components/dist/cjs/editor/lithology-picker'
 import {
   CorrelatedSurfaceControl,
   SurfaceOrderSlider,
   HorizontalPicker,
   BoundaryStyleControl
   RaisedSelect
-} from '@macrostrat/column-components/dist/esm/editor/controls'
-import {FaciesPicker} from '@macrostrat/column-components/dist/esm/editor/facies/picker'
+} from '@macrostrat/column-components/dist/cjs/editor/controls'
+import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker'
 
 # TODO: understand why we can't do this import
-#import {grainSizes} from "@macrostrat/column-components/dist/esm/grainsize"
+#import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize"
 grainSizes = ['ms','s','vf','f','m','c','vc','p']
 
-import {IntervalShape} from '@macrostrat/column-components/dist/esm/editor/types'
+import {IntervalShape} from '@macrostrat/column-components/dist/cjs/editor/types'
 import T from 'prop-types'
 import {dirname} from "path"
 import {hyperStyled} from "@macrostrat/hyper"

@@ -16,7 +16,7 @@ import {
   FaciesColumnInner,
   CarbonateDivisions
   ParameterIntervals,
-} from "@macrostrat/column-components/dist/esm/lithology"
+} from "@macrostrat/column-components/dist/cjs/lithology"
 import {useFaciesColors} from './util'
 import {FaciesContext} from '@macrostrat/column-components'
 

@@ -1,2 +1,2 @@
-import fn from './sections/summary-sections/static-figure'
+import fn from './sections/summary-sections/__static-figure'
 export default fn
