@@ -19,11 +19,11 @@ import {
   ColumnContext,
   SVG
 } from '@macrostrat/column-components'
-import {group, pairs} from 'd3-array'
+import {pairs} from 'd3-array'
 import {linkHorizontal} from 'd3-shape'
 import {Notification} from "~/notify"
 import {SectionLinkPath} from './path'
-import {surfacesBuilder} from './build-links'
+import {prepareLinkData} from './build-links'
 import styles from './main.styl'
 
 h = hyperStyled(styles)
@@ -112,43 +112,6 @@ ColumnTracker.propTypes = {
   width: T.number
   id: T.string.isRequired
 }
-
-prepareLinkData = (props)->
-  {surfaces, sectionIndex} = props
-  return null unless surfaces.length
-
-  ## Deconflict surfaces
-  ## The below is a fairly complex way to make sure multiple surfaces
-  ## aren't connected in the same stack.
-  sectionSurfaces = {}
-  for {surface_id, section_height} in surfaces
-    continue unless surface_id? # weed out lithostratigraphy for now
-    for {section, height, inferred, certainty} in section_height
-      sectionSurfaces[section] ?= []
-      sectionSurfaces[section].push {surface_id, height, inferred, certainty}
-
-  # Backdoor way to get section stacks (group by column x position)
-  sectionStacks = group Object.values(sectionIndex), (d)->d.x
-
-  buildSectionStack = surfacesBuilder({sectionSurfaces, sectionIndex})
-
-  ## Build up stacked sections
-  stackSurfaces = Array.from sectionStacks, ([x, stackedSections])->
-    values = buildSectionStack(stackedSections)
-    # Save generated index to appropriate stack
-    return {x,values}
-
-  # Turn back into surface-oriented list
-  return surfaces.map (s)->
-    id = s.surface_id
-    v = {s...}
-    return v unless id?
-    heights = []
-    for {values} in stackSurfaces
-      val = values.find (d)->id == d.surface_id
-      heights.push(val) if val?
-    v.section_height = heights
-    return v
 
 # https://www.particleincell.com/2012/bezier-splines/
 
