@@ -26,6 +26,8 @@
   "author": "Daven Quinn",
   "license": "ISC",
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/preset-typescript": "^7.8.3",
