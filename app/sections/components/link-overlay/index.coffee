@@ -23,6 +23,7 @@ import {group, pairs} from 'd3-array'
 import {linkHorizontal} from 'd3-shape'
 import {Notification} from "~/notify"
 import {SectionLinkPath} from './path'
+import {surfacesBuilder} from './build-links'
 import styles from './main.styl'
 
 h = hyperStyled(styles)
@@ -111,42 +112,6 @@ ColumnTracker.propTypes = {
   width: T.number
   id: T.string.isRequired
 }
-
-withinDomain = (scale, height)->
-  d = scale.domain()
-  return d[0] < height < d[1]
-
-surfacesBuilder = (props)->(stackedSections)->
-  {sectionSurfaces, sectionIndex} = props
-  surfacesIndex = {}
-  # Logic for determining which section's surface is rendered
-  # within a stack (typically the section that is not inferred)
-
-  for section in stackedSections
-    {id: section_id} = section
-    section_surfaces = sectionSurfaces[section_id] or []
-    # Define a function to return domain
-    {globalScale} = sectionIndex[section_id]
-
-    # Naive logic
-    for surface in section_surfaces
-      s1 = surfacesIndex[surface.surface_id]
-      if s1?
-        # We already have a surface defined
-        if withinDomain(globalScale, s1.height)
-          if s1.inferred and not section.inferred
-            continue
-        if not withinDomain(globalScale, surface.height)
-          continue
-      surfacesIndex[surface.surface_id] = {section: section_id, surface...}
-  # Convert to an array
-  surfacesArray = (v for k,v of surfacesIndex)
-  # Add the pixel height
-  for surface in surfacesArray
-    {globalScale} = sectionIndex[surface.section]
-    surface.y = globalScale(surface.height)
-    surface.inDomain = withinDomain(globalScale, surface.height)
-  return surfacesArray
 
 prepareLinkData = (props)->
   {surfaces, sectionIndex} = props

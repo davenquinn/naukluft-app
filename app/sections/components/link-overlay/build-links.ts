@@ -8,51 +8,45 @@
  */
 const withinDomain = function(scale, height){
   const d = scale.domain();
-  return d[0] < height && height < d[1];
+  return d[0] < height < d[1];
 };
 
 const surfacesBuilder = props => (function(stackedSections) {
-  let globalScale, section, surface;
   const {sectionSurfaces, sectionIndex} = props;
   const surfacesIndex = {};
   // Logic for determining which section's surface is rendered
   // within a stack (typically the section that is not inferred)
 
-  for (section of Array.from(stackedSections)) {
+  for (const section of stackedSections) {
     const {id: section_id} = section;
     const section_surfaces = sectionSurfaces[section_id] || [];
     // Define a function to return domain
-    ({globalScale} = sectionIndex[section_id]);
+    const {globalScale} = sectionIndex[section_id]
 
     // Naive logic
-    for (surface of Array.from(section_surfaces)) {
-      const s1 = surfacesIndex[surface.surface_id];
-      if (s1 != null) {
-        // We already have a surface defined
-        if (withinDomain(globalScale, s1.height)) {
-          if (s1.inferred && !section.inferred) {
-            continue;
-          }
-        }
-        if (!withinDomain(globalScale, surface.height)) {
-          continue;
-        }
+    for (const surface of section_surfaces) {
+      // Get an already existing entry for this surface in the column stack
+      const prevEntry = surfacesIndex[surface.surface_id];
+      if (prevEntry != null) {
+        /*
+        We already have a surface defined, so now we need to decide whether
+        to override it...
+        */
+        // This logic kinda sucks
+        const prevInDomain = withinDomain(globalScale, prevEntry.height);
+        //const poorer = prevInDomain && prevEntry.inferred && !section.inferred
+        if (prevInDomain) continue;
+        if (!withinDomain(globalScale, surface.height)) continue;
       }
       surfacesIndex[surface.surface_id] = {section: section_id, ...surface};
     }
   }
   // Convert to an array
-  const surfacesArray = ((() => {
-    const result = [];
-    for (let k in surfacesIndex) {
-      const v = surfacesIndex[k];
-      result.push(v);
-    }
-    return result;
-  })());
+  const surfacesArray = Object.values(surfacesIndex);
+
   // Add the pixel height
-  for (surface of Array.from(surfacesArray)) {
-    ({globalScale} = sectionIndex[surface.section]);
+  for (const surface of Array.from(surfacesArray)) {
+    const {globalScale} = sectionIndex[surface.section];
     surface.y = globalScale(surface.height);
     surface.inDomain = withinDomain(globalScale, surface.height);
   }
