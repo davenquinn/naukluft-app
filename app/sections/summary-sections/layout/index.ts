@@ -11,19 +11,38 @@ import {
 
 const h = hyperStyled(styles)
 
+interface SectionImage {
+  filename: string,
+  width: number,
+  height: number
+}
+
+interface SectionData {
+  end: number,
+  clip_end: number,
+  height: number,
+  start: number,
+  range: [number, number],
+  location: string,
+  imageFiles?: SectionImage[],
+  scaleFactor: number,
+  offset: number
+}
+
+
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-function groupSectionData(sections, {stackGroups, groupOrder}){
+function groupSectionData(sections: SectionData[], {stackGroups, groupOrder}){
   /*
   Create groups of sections
   */
   const stackGroup = d=> {
-    for (let g of Array.from(stackGroups)) {
-      if (g.indexOf(d.id) !== -1) {
+    for (let g of stackGroups) {
+      if (g.indexOf(d.id) != -1) {
         return g;
       }
     }
@@ -41,7 +60,7 @@ function groupSectionData(sections, {stackGroups, groupOrder}){
     .entries(sections);
 
   // Change key names to be more semantic
-  for (let g of Array.from(sectionGroups)) {
+  for (let g of sectionGroups) {
     g.columns = g.values.map(col => col.values);
     delete g.values;
     g.location = g.key;
@@ -53,7 +72,13 @@ function groupSectionData(sections, {stackGroups, groupOrder}){
   return sectionGroups;
 };
 
-function ArrangedSections(props){
+interface ArrangedSectionsProps {
+  sections: SectionData[],
+  groupMargin?: number,
+  location: string
+}
+
+function ArrangedSections(props: ArrangedSectionsProps){
   const {sections, tightenSpacing, groupMargin, location, ...rest} = props;
   const height = 1800;
   const groupedSections = groupSectionData(sections, {stackGroups, groupOrder});
