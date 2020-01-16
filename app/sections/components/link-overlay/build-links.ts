@@ -63,8 +63,11 @@ const prepareLinkData = function(props){
   //# aren't connected in the same stack.
   // Should probably do this with a group by
   const sectionSurfaces = {};
-  for (const {surface_id, section_height} of surfaces) {
-    if (surface_id == null) continue; // weed out lithostratigraphy for now
+
+  // weed out lithostratigraphy for now
+  const sequenceStratSurfaces = surfaces.filter(d => d.surface_id != null)
+
+  for (const {surface_id, section_height} of sequenceStratSurfaces) {
     for (let {section, ...rest} of section_height) {
       if (sectionSurfaces[section] == null) { sectionSurfaces[section] = []; }
       sectionSurfaces[section].push({surface_id, ...rest});
@@ -84,7 +87,7 @@ const prepareLinkData = function(props){
   });
 
   // Turn back into surface-oriented list
-  return surfaces.map(s =>{
+  return sequenceStratSurfaces.map(s =>{
     if (s.surface_id == null) return s;
     const v = {
       ...s,
