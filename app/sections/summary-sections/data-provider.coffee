@@ -9,6 +9,7 @@ SectionSurfacesContext = createContext()
 SectionSurfacesProvider = (props)->
   {children} = props
   surfaces = useQuery(lithostratSurface)
+  return null unless surfaces?
   h(SectionSurfacesContext.Provider, {value: {surfaces}}, children)
 
 groupSectionData = (sections, {stackGroups, groupOrder})->
