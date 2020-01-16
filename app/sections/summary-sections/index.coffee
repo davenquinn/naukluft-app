@@ -21,14 +21,13 @@ import {
   SequenceStratContext
 } from "../sequence-strat-context"
 import {LithostratKey} from "./lithostrat-key"
-import {SectionGroup} from "./layout"
+import {ArrangedSections} from "./layout"
 import {Legend} from "./legend"
 import {BaseSectionPage} from '../components'
 import {SummarySectionsSettings, defaultSettings} from './settings'
 import {
   SectionSurfacesContext,
   SectionSurfacesProvider,
-  groupSectionData
 } from './data-provider'
 import "../main.styl"
 import styles from "./main.styl"
@@ -43,37 +42,6 @@ SectionContainer = (props)->
       style: {zoom: 1, minHeight}
     }, children
   ]
-
-GroupedSections = (props)->
-  {sections, tightenSpacing, groupMargin, location, rest...} = props
-  height = 1800
-  groupedSections = groupSectionData(sections, {stackGroups, groupOrder})
-
-  h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
-    marginRight = groupMargin
-    # Tighten spacing for Onis and Naukluft
-    if location == 'Tsams'
-      marginRight = 0
-
-    if tightenSpacing
-      if i == 0
-        marginRight /= 2.5
-      if i == 1
-        marginRight = 30
-
-    style = {marginRight, height}
-
-    if location == 'Büllsport'
-      style = {position: 'absolute', top: 0, right: 0}
-
-    h SectionGroup, {
-      key: location,
-      location,
-      style
-      columns
-      height
-      rest...
-    }
 
 SectionPane = (props) ->
   {sections
@@ -134,7 +102,7 @@ SectionPane = (props) ->
       }
       h "div#section-container", [
         h.if(showLegend) Legend
-        h GroupedSections, {
+        h ArrangedSections, {
           sections
           groupMargin,
           columnMargin,
