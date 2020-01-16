@@ -11,13 +11,13 @@ import {
   MinimalIsotopesColumn
 } from './carbon-isotopes'
 import {rangeForSection} from '../../util'
-import {LocationGroup} from "../layout"
+import {LayoutGroup} from "../layout"
 
 h = hyperStyled(styles)
 
 ChemostratigraphyGroup = (props)->
   {range, children} = props
-  h LocationGroup, {
+  h LayoutGroup, {
     name: null
     className: 'chemostratigraphy'
   }, (

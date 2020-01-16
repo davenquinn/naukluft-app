@@ -1,9 +1,9 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {useSettings} from "@macrostrat/column-components"
-import {SVGSectionComponent} from "./column"
-import {LocationGroup} from './layout'
-import styles from "./main.styl"
-import {sectionOffsets} from "./display-parameters"
+import {SVGSectionComponent} from "../column"
+import {LayoutGroup} from './layout-group'
+import styles from "../main.styl"
+import {sectionOffsets} from "../display-parameters"
 
 const h = hyperStyled(styles)
 
@@ -19,7 +19,7 @@ const SectionGroup = props =>{
 
   const {showCarbonIsotopes, isotopesPerSection} = useSettings()
 
-  return h(LocationGroup, rest, columns.map((col, i)=>{
+  return h(LayoutGroup, rest, columns.map((col, i)=>{
     let marginRight = columnMargin
 
     if (i == columns.length-1) marginRight = 0
@@ -52,4 +52,4 @@ const SectionGroup = props =>{
   }))
 }
 
-export {SectionGroup, SectionColumn}
+export {LayoutGroup, SectionGroup, SectionColumn}

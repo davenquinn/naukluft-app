@@ -21,8 +21,7 @@ import {
   SequenceStratContext
 } from "../sequence-strat-context"
 import {LithostratKey} from "./lithostrat-key"
-import {LocationGroup} from './layout'
-import {SectionGroup} from "./section-group"
+import {SectionGroup} from "./layout"
 import {Legend} from "./legend"
 import {BaseSectionPage} from '../components'
 import {SummarySectionsSettings, defaultSettings} from './settings'
@@ -45,8 +44,39 @@ SectionContainer = (props)->
     }, children
   ]
 
+GroupedSections = (props)->
+  {sections, tightenSpacing, groupMargin, location, rest...} = props
+  height = 1800
+  groupedSections = groupSectionData(sections, {stackGroups, groupOrder})
+
+  h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
+    marginRight = groupMargin
+    # Tighten spacing for Onis and Naukluft
+    if location == 'Tsams'
+      marginRight = 0
+
+    if tightenSpacing
+      if i == 0
+        marginRight /= 2.5
+      if i == 1
+        marginRight = 30
+
+    style = {marginRight, height}
+
+    if location == 'Büllsport'
+      style = {position: 'absolute', top: 0, right: 0}
+
+    h SectionGroup, {
+      key: location,
+      location,
+      style
+      columns
+      height
+      rest...
+    }
+
 SectionPane = (props) ->
-  {sectionPositions, sections
+  {sections
    groupMargin,
    columnMargin,
    columnWidth,
@@ -74,16 +104,11 @@ SectionPane = (props) ->
   {offset, location, rest...} = row
   location = null
 
-  groupedSections = groupSectionData(sections, {stackGroups, groupOrder})
-
-  height = 1800
   # Pre-compute section positions
   if showTriangleBars
     columnWidth += 25
 
   paddingLeft = if showTriangleBars then 90 else 30
-
-  minHeight = 1500
 
   options = useSettings()
   showChemostrat = not options.isotopesPerSection
@@ -109,31 +134,13 @@ SectionPane = (props) ->
       }
       h "div#section-container", [
         h.if(showLegend) Legend
-        h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
-          marginRight = groupMargin
-          # Tighten spacing for Onis and Naukluft
-          if tightenSpacing
-            if location == 'Tsams'
-              marginRight = 0
-            if i == 0
-              marginRight /= 2.5
-            if i == 1
-              marginRight = 30
-
-          style = {marginRight, height}
-
-          if location == 'Büllsport'
-            style = {position: 'absolute', top: 0, right: 0}
-
-          h SectionGroup, {
-            columnMargin,
-            columnWidth,
-            key: location,
-            location,
-            style
-            columns
-            height
-          }
+        h GroupedSections, {
+          sections
+          groupMargin,
+          columnMargin,
+          columnWidth
+          tightenSpacing
+        }
       ]
     ]
   ]
