@@ -185,7 +185,6 @@ prepareLinkData = (props)->
     v.section_height = heights
     return v
 
-
 # https://www.particleincell.com/2012/bezier-splines/
 
 SectionTrackerRects = (props)->
@@ -242,7 +241,7 @@ SectionLink = (props)->
 
   pathData = pairs heights, (a,b)->
     inferred = (a.inferred or b.inferred)
-    certainty = Math.min((a.certainty), (b.certainty))
+    certainty = Math.min((a.certainty or 10), (b.certainty or 10))
     source = {x: a.x1, y: a.y, section: a.section}
     target = {x: b.x0, y: b.y, section: b.section}
     {inDomain} = b
