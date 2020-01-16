@@ -11,7 +11,7 @@ import {
   MinimalIsotopesColumn
 } from './carbon-isotopes'
 import {rangeForSection} from '../../util'
-import {LocationGroup} from '../layout'
+import {LocationGroup} from "../layout"
 
 h = hyperStyled(styles)
 

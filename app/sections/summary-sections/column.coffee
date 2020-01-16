@@ -2,7 +2,6 @@ import {Component, createElement, createRef, useContext} from "react"
 import Measure from 'react-measure'
 import T from 'prop-types'
 import {format} from 'd3-format'
-import * as d3 from 'd3'
 import Box from 'ui-box'
 import {useSettings} from '@macrostrat/column-components'
 import {withRouter, useHistory} from "react-router-dom"

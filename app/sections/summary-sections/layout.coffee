@@ -1,23 +1,21 @@
 import {hyperStyled} from '@macrostrat/hyper'
-import {Component} from 'react'
 import styles from './main.styl'
 
 h = hyperStyled(styles)
 
-class LocationGroup extends Component
-  @defaultProps: {
-    offsetTop: 0
-  }
-  render: ->
-    {id, name, location, width,
-     children, style, className} = @props
-    name ?= location
-    id ?= location
-    style ?= {}
-    style.width ?= width
-    h 'div.location-group', {id, style, className}, [
-      h 'h1', {}, name
-      h 'div.location-group-body', {}, children
-    ]
+LocationGroup = ({id, name, location, width, children, style, className})->
+  name ?= location
+  id ?= location
+  style ?= {}
+  style.width ?= width
+
+  h 'div.location-group', {id, style, className}, [
+    h 'h1', null, name
+    h 'div.location-group-body', null, children
+  ]
+
+LocationGroup.defaultProps = {
+  offsetTop: 0
+}
 
 export {LocationGroup}

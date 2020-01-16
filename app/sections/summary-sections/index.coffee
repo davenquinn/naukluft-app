@@ -51,6 +51,41 @@ SectionContainer = (props)->
     }, children
   ]
 
+SectionGroup = (props)->
+  {columns, columnMargin, columnWidth, height, rest...} = props
+
+  {showCarbonIsotopes,
+   isotopesPerSection} = useSettings()
+
+  h LocationGroup, rest, columns.map (col, i)->
+    marginRight = columnMargin
+
+    if i == columns.length-1
+      marginRight = 0
+    style = {marginRight, height, width: columnWidth}
+
+    h SectionColumn, {key: i, style}, col.map (row)=>
+      {offset, start, clip_end: end, id} = row
+      offset = sectionOffsets[id] or offset
+
+      # Clip off the top of some columns...
+
+      height = end-start
+
+      h SVGSectionComponent, {
+        zoom: 0.1,
+        key: id,
+        triangleBarRightSide: id == 'J'
+        showCarbonIsotopes,
+        isotopesPerSection
+        offsetTop: (670-height-offset)
+        range: [start, end]
+        height
+        start
+        end
+        id
+      }
+
 SectionPane = (props) ->
   {sectionPositions, sections
    groupMargin,
@@ -117,10 +152,10 @@ SectionPane = (props) ->
         h.if(showLegend) Legend
         h 'div.grouped-sections', groupedSections.map ({location, columns}, i)->
           marginRight = groupMargin
-          if location == 'Tsams'
-            marginRight = 0
           # Tighten spacing for Onis and Naukluft
           if tightenSpacing
+            if location == 'Tsams'
+              marginRight = 0
             if i == 0
               marginRight /= 2.5
             if i == 1
@@ -131,39 +166,15 @@ SectionPane = (props) ->
           if location == 'Büllsport'
             style = {position: 'absolute', top: 0, right: 0}
 
-          h LocationGroup, {
+          h SectionGroup, {
+            columnMargin,
+            columnWidth,
             key: location,
             location,
             style
-          }, columns.map (col, i)->
-            marginRight = columnMargin
-
-            if i == columns.length-1
-              marginRight = 0
-            style = {marginRight, height, width: columnWidth}
-
-            h SectionColumn, {key: i, style}, col.map (row)=>
-              {offset, start, clip_end: end, id} = row
-              offset = sectionOffsets[id] or offset
-
-              # Clip off the top of some columns...
-
-              height = end-start
-              range = [start, end]
-
-              h SVGSectionComponent, {
-                zoom: 0.1,
-                key: id,
-                triangleBarRightSide: id == 'J'
-                showCarbonIsotopes,
-                isotopesPerSection
-                offsetTop: (670-height-offset)
-                range
-                height
-                start
-                end
-                id
-              }
+            columns
+            height
+          }
       ]
     ]
   ]
