@@ -22,6 +22,7 @@ import {
 } from "../sequence-strat-context"
 import {LithostratKey} from "./lithostrat-key"
 import {LocationGroup} from './layout'
+import {SectionGroup} from "./section-group"
 import {Legend} from "./legend"
 import {BaseSectionPage} from '../components'
 import {SummarySectionsSettings, defaultSettings} from './settings'
@@ -36,13 +37,6 @@ import T from 'prop-types'
 
 h = hyperStyled(styles)
 
-class SectionColumn extends Component
-  render: ->
-    {style} = @props
-    style.position = 'relative'
-    style.width ?= 240
-    h 'div.section-column', {style}, @props.children
-
 SectionContainer = (props)->
   {children, minHeight} = props
   h SectionPositionProvider, [
@@ -50,41 +44,6 @@ SectionContainer = (props)->
       style: {zoom: 1, minHeight}
     }, children
   ]
-
-SectionGroup = (props)->
-  {columns, columnMargin, columnWidth, height, rest...} = props
-
-  {showCarbonIsotopes,
-   isotopesPerSection} = useSettings()
-
-  h LocationGroup, rest, columns.map (col, i)->
-    marginRight = columnMargin
-
-    if i == columns.length-1
-      marginRight = 0
-    style = {marginRight, height, width: columnWidth}
-
-    h SectionColumn, {key: i, style}, col.map (row)=>
-      {offset, start, clip_end: end, id} = row
-      offset = sectionOffsets[id] or offset
-
-      # Clip off the top of some columns...
-
-      height = end-start
-
-      h SVGSectionComponent, {
-        zoom: 0.1,
-        key: id,
-        triangleBarRightSide: id == 'J'
-        showCarbonIsotopes,
-        isotopesPerSection
-        offsetTop: (670-height-offset)
-        range: [start, end]
-        height
-        start
-        end
-        id
-      }
 
 SectionPane = (props) ->
   {sectionPositions, sections
@@ -228,14 +187,20 @@ SummarySectionsStatic = (props)->
   }
 
   h SectionSurfacesProvider, [
-    h SettingsProvider, {
-      sectionSettings...
-    }, [
-      h 'div.page.section-page', [
-        h 'div.panel-container', [
-          h SectionPane, {
-            props...,
-          }
+    h SectionPositionProvider, [
+      h SettingsProvider, {
+        sectionSettings...
+
+      }, [
+        h 'div.page.section-page', [
+          h 'div.panel-container', [
+            h SectionPane, {
+              groupMargin: 400
+              columnMargin: 100
+              columnWidth: 150
+              props...,
+            }
+          ]
         ]
       ]
     ]
