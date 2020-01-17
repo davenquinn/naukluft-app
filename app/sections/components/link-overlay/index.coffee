@@ -87,6 +87,9 @@ SectionPositionProvider = (props)->
     ]
   ]
 
+useSectionPositions = ->
+  useContext(SectionObserverContext)
+
 ColumnTracker = (props)->
   ###
   Tracks a column's position and reports
@@ -322,6 +325,7 @@ export {
   SectionPositionProvider
   SectionPositionContext
   sectionSurfaceProps
+  useSectionPositions
   ColumnTracker
   prepareLinkData
   useCanvasSize

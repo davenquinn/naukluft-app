@@ -2,6 +2,9 @@ import {SectionGroup} from './section-group'
 import {hyperStyled} from "@macrostrat/hyper"
 import styles from "../main.styl"
 import {nest} from "d3-collection"
+import {group} from "d3-array"
+import {SectionData} from './defs'
+// This should be wrapped into a context
 import {
   groupOrder,
   stackGroups,
@@ -11,79 +14,33 @@ import {
 
 const h = hyperStyled(styles)
 
-interface SectionImage {
-  filename: string,
-  width: number,
-  height: number
-}
-
-interface SectionData {
-  end: number,
-  clip_end: number,
-  height: number,
-  start: number,
-  range: [number, number],
-  location: string,
-  imageFiles?: SectionImage[],
-  scaleFactor: number,
-  offset: number
-}
-
-
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-function groupSectionData(sections: SectionData[], {stackGroups, groupOrder}){
-  /*
-  Create groups of sections
-  */
-  const stackGroup = d=> {
-    for (let g of stackGroups) {
-      if (g.indexOf(d.id) != -1) {
-        return g;
-      }
-    }
-    return d.id;
-  };
-
-  const indexOf = arr => d => arr.indexOf(d);
-
-  let __ix = indexOf(stackGroups);
-
-  const sectionGroups = nest()
-    .key(d => d.location)
-    .key(stackGroup)
-    .sortKeys((a, b) => __ix(a)-__ix(b))
-    .entries(sections);
-
-  // Change key names to be more semantic
-  for (let g of sectionGroups) {
-    g.columns = g.values.map(col => col.values);
-    delete g.values;
-    g.location = g.key;
-    delete g.key;
+// This might be a bad type declaration
+const orderLike = <T,U>(arr: T[], accessor: (U)=>T)=>{
+  return (a: U, b: U): number =>{
+    /*
+    Function to sort an array like another array
+    */
+    let acc = accessor ?? function(d){ return d }
+    return arr.indexOf(acc(a)) - arr.indexOf(acc(b))
   }
-
-  __ix = indexOf(groupOrder);
-  sectionGroups.sort((a, b) => __ix(a.location)-__ix(b.location));
-  return sectionGroups;
-};
+}
 
 interface ArrangedSectionsProps {
   sections: SectionData[],
-  groupMargin?: number,
+  groupMargin: number,
   location: string
 }
 
 function ArrangedSections(props: ArrangedSectionsProps){
   const {sections, tightenSpacing, groupMargin, location, ...rest} = props;
   const height = 1800;
-  const groupedSections = groupSectionData(sections, {stackGroups, groupOrder});
 
-  return h('div.grouped-sections', groupedSections.map(function({location, columns}, i){
+  let groups = Array.from(group(sections, d => d.location))
+  // Group order should become a prop or context
+  groups.sort(orderLike(groupOrder, d=>d[0]))
+
+  return h('div.grouped-sections', groups.map((entry, i)=>{
+    const [location, sections]: [string, SectionData[]] = entry
     let marginRight = groupMargin;
     // Tighten spacing for Onis and Naukluft
     if (tightenSpacing) {
@@ -108,7 +65,7 @@ function ArrangedSections(props: ArrangedSectionsProps){
       key: location,
       location,
       style,
-      columns,
+      sections,
       height,
       ...rest
     });
