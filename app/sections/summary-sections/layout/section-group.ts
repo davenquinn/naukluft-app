@@ -38,7 +38,7 @@ const SectionGroup = (props: SectionGroupProps)=>{
   let columns = group(sections, d => stackGroups.findIndex(v => v.includes(d.section)))
   columns = Array.from(columns)
   columns.sort((a,b)=> a[0]-b[0])
-  columns = columns.map(a => a = a[1])
+  const columnData: SectionData[][] = columns.map(a => a = a[1])
 
   // Get topmost column position
   const sectionIDs = sections.map(d => d.section)
@@ -47,16 +47,32 @@ const SectionGroup = (props: SectionGroupProps)=>{
   const top = Math.min(...positions.map(d => d.y))
   const titleOffset = top-90
 
+  //let colWidth = positions[0]?.width ?? 150
+
   const {showCarbonIsotopes, isotopesPerSection} = useSettings()
 
-  return h(LayoutGroup, {titleOffset, ...rest}, columns.map((col, i)=>{
+  return h(LayoutGroup, {titleOffset, ...rest}, columnData.map((sections, i)=>{
     let marginRight = columnMargin
 
     if (i == columns.length-1) marginRight = 0
 
-    const style = {marginRight, height, width: columnWidth}
+    const getWidth = (sections)=>{
+      for (let s of sections) {
+        let sPos = pos[s.section]
+        if (sPos != null) {
+          console.log(sPos)
+          const w = sPos.width + sPos.paddingLeft + sPos.paddingRight
+          if (w > 0) return w
+        }
+      }
+      return 150
+    }
 
-    return h(SectionColumn, {key: i, style}, col.map((row)=>{
+    const width = getWidth(sections)
+    //console.log(width)
+    const style = {marginRight, height, width}
+
+    return h(SectionColumn, {key: i, style}, sections.map((row)=>{
       let {offset} = row
       const {start, clip_end: end, id} = row
       offset = sectionOffsets[id] ?? offset

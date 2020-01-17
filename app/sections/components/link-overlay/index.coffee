@@ -5,8 +5,10 @@ import {
   useState,
   useRef,
   useLayoutEffect,
+  useEffect,
   forwardRef
 } from "react"
+import useConstant from 'use-constant'
 import T from "prop-types"
 import {hyperStyled} from "@macrostrat/hyper"
 import classNames from "classnames"
@@ -19,6 +21,7 @@ import {
   ColumnContext,
   SVG
 } from '@macrostrat/column-components'
+import {debounce} from 'underscore'
 import {pairs} from 'd3-array'
 import {linkHorizontal} from 'd3-shape'
 import {Notification} from "~/notify"
@@ -46,14 +49,17 @@ sectionSurfaceProps = (surface)->
 SectionPositionContext = createContext()
 SectionObserverContext = createContext({})
 
-SectionPositionProvider = (props)->
-  {children} = props
-  container = useRef()
+class SectionPositionProvider extends Component
+  constructor: (props)->
+    super props
+    @container = null
+    @state = {value: {}}
+    @spec = null
+    @debouncedUpdate = debounce(@update, 200)
 
-  [value, setState] = useState({})
-
-  setPosition = (id, scale, pos, otherProps)->
-    el = container.current
+  setPosition: (id, scale, pos, otherProps)=>
+    {value} = @state
+    el = @container
     if el?
       containerPosition = el.getBoundingClientRect()
     else
@@ -61,14 +67,16 @@ SectionPositionProvider = (props)->
 
     return unless pos?
     return unless scale?
+
     {x,y, width} = pos
     x -= containerPosition.x
     y -= containerPosition.y
+
     if value[id]?
-      return if x == value[id].x and y == value[id].y
+      return if x == value[id].x and y == value[id].y and width == value[id].width
 
     {width: innerWidth, padding, rest...} = otherProps
-    return null unless scale?
+
     [min, max] = scale.range()
     innerHeight = Math.abs(max-min)
     sz = expandInnerSize {innerWidth, innerHeight, padding, rest...}
@@ -77,15 +85,29 @@ SectionPositionProvider = (props)->
     globalScale = scale.copy().range(globalRange).clamp(false)
 
     val = {id,x,y, width, scale,globalScale, sz...}
-    spec = {[id]: {$set: val}}
-    newValue = update value, spec
-    setState newValue
+    @accumulateChanges {[id]: {$set: val}}
 
-  h 'div.section-positioner', {ref: container}, [
-    h SectionPositionContext.Provider, {value: setPosition}, [
-      h SectionObserverContext.Provider, {value}, children
+  accumulateChanges: (spec)=>
+    oldSpec = @spec or {}
+    @spec = {oldSpec..., spec...}
+    @debouncedUpdate()
+
+  update: =>
+    return unless @spec?
+    value = update(@state.value, @spec)
+    console.log(@spec)
+    @spec = null
+    @setState {value}
+
+  render: ->
+    {children} = @props
+    {value} = @state
+
+    h 'div.section-positioner', {ref: (ref)=>@container = ref }, [
+      h SectionPositionContext.Provider, {value: @setPosition}, [
+        h SectionObserverContext.Provider, {value}, children
+      ]
     ]
-  ]
 
 useSectionPositions = ->
   useContext(SectionObserverContext)
@@ -107,7 +129,7 @@ ColumnTracker = (props)->
     rect = ref.current.getBoundingClientRect()
     setPosition(id, scale, rect, rest)
 
-  useLayoutEffect(runPositioner)
+  useEffect(runPositioner)
 
   h 'div', {className, ref}, children
 
