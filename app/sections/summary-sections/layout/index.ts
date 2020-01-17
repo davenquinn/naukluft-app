@@ -35,6 +35,7 @@ function ArrangedSections(props: ArrangedSectionsProps){
   const {sections, tightenSpacing, groupMargin, location, ...rest} = props;
   const height = 1800;
 
+  // Divide sections into groups by location
   let groups = Array.from(group(sections, d => d.location))
   // Group order should become a prop or context
   groups.sort(orderLike(groupOrder, d=>d[0]))

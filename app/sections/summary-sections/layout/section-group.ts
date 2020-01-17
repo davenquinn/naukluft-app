@@ -21,7 +21,8 @@ interface SectionGroupProps {
   sections: SectionData[],
   columnMargin: number,
   columnWidth: number,
-  height: number
+  height: number,
+  location: string
 }
 
 const SectionGroup = (props: SectionGroupProps)=>{
@@ -42,9 +43,9 @@ const SectionGroup = (props: SectionGroupProps)=>{
   // Get topmost column position
   const sectionIDs = sections.map(d => d.section)
   const pos: SectionPositions = useSectionPositions()
-  const positions = Object.values(pos).filter(d => sectionIDs.includes(d))
-  const top = Math.min(positions.map(d => d.y))
-  const titleOffset = top-30
+  const positions = Object.values(pos).filter(d => sectionIDs.includes(d.id))
+  const top = Math.min(...positions.map(d => d.y))
+  const titleOffset = top-90
 
   const {showCarbonIsotopes, isotopesPerSection} = useSettings()
 
