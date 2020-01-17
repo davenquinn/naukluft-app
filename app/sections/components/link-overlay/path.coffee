@@ -5,20 +5,19 @@ SectionLinkPath = (props)->
   {onClick, certainty, style, rest...} = props
 
   certainty ?= 10
-  console.log certainty
   # dash array for certainty
-  strokeDashArray = null
+  strokeDasharray = null
   if certainty < 8
-    strokeDashArray = "6 2"
+    strokeDasharray = "6 2"
   else if certainty < 5
-    strokeDashArray = "6 6"
+    strokeDasharray = "6 6"
 
   h 'path', {
     onClick
     fill: 'none'
     style: {
       cursor: if onClick then 'pointer' else null,
-      strokeDashArray
+      strokeDasharray
       style...
     }
     rest...
