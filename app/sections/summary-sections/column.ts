@@ -112,29 +112,6 @@ const ColumnIsotopes = function(props){
  ])
 }
 
-const calcColumnWidth = function(props){
- const {baseWidth} = props
- const o = useSettings()
-
- let width = baseWidth
- width += 40 // Symbol column
-
- if (o.isotopesPerSection) {
-   if (o.showCarbonIsotopes) {
-     width += 40
-   }
-   if (o.showOxygenIsotopes) {
-     width += 40
-   }
- }
-
- if (o.showTriangleBars) {
-   width += 40
- }
-
- return width
-}
-
 const ColumnUnderlay = function(props){
  let {width, paddingLeft} = props
  const {pixelHeight} = useContext(ColumnContext)
@@ -149,24 +126,19 @@ const ColumnUnderlay = function(props){
 }
 
 const SVGSectionInner = function(props){
-  let offsetLeft
-  let {id, zoom, padding, lithologyWidth,
-    innerWidth, onResize, marginLeft,
-    showFacies,
+  let {
+    id,
+    padding,
+    innerWidth,
     showWhiteUnderlay,
-    height,
     range,
     offsetTop,
-    marginTop,
     absolutePosition,
     children
   } = props
 
   const {inEditMode} = useContext(PlatformContext)
 
-  const innerHeight = height*zoom
-
-  const {left, top, right, bottom} = padding
   const {
     sequenceStratOrder,
     showFloodingSurfaces,
@@ -180,14 +152,8 @@ const SVGSectionInner = function(props){
    isotopesPerSection
  } = useSettings()
 
- const outerHeight = innerHeight+(top+bottom)
- let outerWidth = innerWidth+(left+right)
-
  let {divisions} = useContext(ColumnSurfacesContext)
  divisions = divisions.filter(d => !d.schematic)
-
- const overhangLeft = 0
- const overhangRight = 0
 
  let overallWidth = 120
  overallWidth += 42 // Symbol column
@@ -201,32 +167,23 @@ const SVGSectionInner = function(props){
      chemostratWidth += 40
    }
  }
-
  overallWidth += chemostratWidth
-
- const {triangleBarsOffset: tbo, triangleBarRightSide: onRight} = props
- marginLeft -= tbo
- const marginRight = 0
- outerWidth += tbo
 
  let triangleBarTranslate = 0
  let mainTranslate = 0
 
-
- let underlayPaddingLeft: number = left
- let underlayPaddingRight: number = 0
+ let underlayPaddingLeft: number = padding.left
  let underlayWidth = 300
 
  if (showTriangleBars) {
    overallWidth += 40
-   if (onRight) {
+   if (props.triangleBarRightSide) {
      triangleBarTranslate = 160+chemostratWidth
      underlayPaddingLeft = 0
-     underlayWidth = 146
+     underlayWidth = 146+chemostratWidth
      overallWidth += 6
    } else {
      mainTranslate = 48
-     offsetLeft = -tbo+35
      underlayPaddingLeft -= 35
    }
  }
@@ -266,8 +223,8 @@ const SVGSectionInner = function(props){
        }, [
          h(EditOverlay, {
            id,
-           allowEditing: true,
-           left: left+mainTranslate,
+           allowEditing: inEditMode,
+           left: padding.left+mainTranslate,
            top: padding.top
          }),
          h(ColumnSVG, {
@@ -323,18 +280,13 @@ SVGSectionInner.defaultProps = {
  isotopeColumnWidth: 40,
  offsetTop: null,
  marginTop: null,
- useRelativePositioning: true,
- showTriangleBars: false,
- trackVisibility: false,
  innerWidth: 100,
  height: 100, // Section height in meters
  lithologyWidth: 40,
  showWhiteUnderlay: true,
  showFacies: true,
  absolutePosition: true,
- triangleBarsOffset: 0,
  triangleBarRightSide: false,
- onResize() {},
  marginLeft: -10,
  padding: {
    left: 30,
