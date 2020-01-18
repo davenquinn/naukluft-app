@@ -1,4 +1,4 @@
-import {Component, createContext} from "react"
+import {Component, createContext, useContext} from "react"
 import h from "react-hyperscript"
 import T from "prop-types"
 import {query} from "~/db"
@@ -39,5 +39,6 @@ class ColumnSurfacesProvider extends Component
 
 useColumnSurfaces = (id)->
   {divisions} = useContext(ColumnSurfacesContext)
+  divisions.filter (d)->d.section_id == id
 
-export {ColumnSurfacesContext, ColumnSurfacesProvider}
+export {ColumnSurfacesContext, ColumnSurfacesProvider, useColumnSurfaces}

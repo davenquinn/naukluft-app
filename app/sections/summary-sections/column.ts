@@ -15,10 +15,6 @@ import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner} from '@mac
 import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-overlay'
 
 import {ColumnTracker} from '../components/link-overlay'
-import {
- ColumnSurfacesProvider,
- ColumnSurfacesContext
-} from '../column/data-source'
 import {PlatformContext} from "../../platform"
 import {IntervalEditor} from "../editor"
 import {MinimalIsotopesColumn} from './chemostrat'
@@ -125,7 +121,7 @@ const ColumnUnderlay = function(props){
  })
 }
 
-const SVGSectionInner = function(props){
+const SVGSectionComponent = function(props){
   let {
     id,
     padding,
@@ -264,7 +260,7 @@ const SVGSectionInner = function(props){
 }
 
 
-SVGSectionInner.defaultProps = {
+SVGSectionComponent.defaultProps = {
  zoom: 1,
  inEditMode: false,
  isotopeColumnWidth: 40,
@@ -286,17 +282,11 @@ SVGSectionInner.defaultProps = {
  }
 }
 
-SVGSectionInner.propTypes = {
+SVGSectionComponent.propTypes = {
  //inEditMode: T.bool
  absolutePosition: T.bool,
  isotopesPerSection: T.bool,
  offsetTop: T.number
 }
 
-
-const SVGSectionComponent = function(props){
- const {id, divisions} = props
- return h(ColumnSurfacesProvider, {id, divisions}, h(SVGSectionInner, props))
-}
-
-export {SVGSectionComponent, SVGSectionInner}
+export {SVGSectionComponent}

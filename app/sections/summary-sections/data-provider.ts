@@ -7,7 +7,7 @@ import {
   ColumnProvider as BaseColumnProvider,
   ColumnContext
 } from '@macrostrat/column-components'
-import {ColumnSurfacesContext} from '../column/data-source'
+import {useColumnSurfaces} from '../column/data-source'
 
 const SectionSurfacesContext = createContext(null)
 
@@ -31,7 +31,7 @@ const ColumnProvider = (props)=>{
   const {sections} = useContext(SectionDataContext)
   const row = sections.find(d => d.id == id)
 
-  let {divisions} = useContext(ColumnSurfacesContext)
+  let divisions = useColumnSurfaces(id)
   if (filterDivisions != null) {
     divisions = divisions.filter(filterDivisions)
   }
