@@ -71,7 +71,7 @@ class SectionComponent extends Component
     padding: {
       left: 30
       top: 30
-      right: 0
+      right: 30
       bottom: 30
     }
   }
@@ -170,6 +170,7 @@ class SectionComponent extends Component
                   paddingLeft: @props.padding.left
                   paddingTop: @props.padding.top
                   paddingBottom: @props.padding.bottom
+                  paddingRight: @props.padding.right
                 }, [
                   h ColumnAxis, {ticks}
                   h.if(@props.showFaciesTracts) LithologyColumn, {width: lithologyWidth}, [

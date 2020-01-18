@@ -30,7 +30,6 @@ const SectionGroup = (props: SectionGroupProps)=>{
     sections,
     columnMargin,
     columnWidth,
-    height,
     ...rest
   } = props
 
@@ -45,7 +44,8 @@ const SectionGroup = (props: SectionGroupProps)=>{
   const pos: SectionPositions = useSectionPositions()
   const positions = Object.values(pos).filter(d => sectionIDs.includes(d.id))
   const top = Math.min(...positions.map(d => d.y))
-  const titleOffset = top-90
+  const height = Math.max(...positions.map(d=>d.y+d.height))
+  const titleOffset = top-120
 
   //let colWidth = positions[0]?.width ?? 150
 
