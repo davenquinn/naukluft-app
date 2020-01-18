@@ -153,7 +153,7 @@ const SVGSectionInner = function(props){
  } = useSettings()
 
  let {divisions} = useContext(ColumnSurfacesContext)
- divisions = divisions.filter(d => !d.schematic)
+ //divisions = divisions.filter(d => !d.schematic)
 
  let overallWidth = 120
  overallWidth += 42 // Symbol column

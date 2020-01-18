@@ -48,7 +48,7 @@ getSectionData = (opts={})->
       {width: sz, height, filename}
     return s
 
-SectionContext = createContext({})
+SectionDataContext = createContext({})
 
 class SectionDataProvider extends Component
   @contextType: PlatformContext
@@ -80,13 +80,13 @@ class SectionDataProvider extends Component
         h PhotoLibraryProvider, {photos, computePhotoPath}, [
           h SequenceStratProvider, null, [
             h IsotopesDataProvider, null, [
-              h SectionContext.Provider, {value: {sections}}, @props.children
+              h SectionDataContext.Provider, {value: {sections}}, @props.children
             ]
           ]
         ]
       ]
     ]
 
-SectionConsumer = SectionContext.Consumer
+SectionConsumer = SectionDataContext.Consumer
 
-export { getSectionData, SectionDataProvider, SectionConsumer }
+export { getSectionData, SectionDataProvider, SectionConsumer, SectionDataContext }

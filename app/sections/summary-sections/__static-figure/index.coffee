@@ -6,10 +6,7 @@ import {StaticFigureWrapper} from '~/__static-figure/wrapper'
 
 fn = (props)->
   h StaticFigureWrapper, [
-    h SectionConsumer, null, ({sections})=>
-      if sections.length == 0
-        return h 'div'
-      h SummarySectionsStatic, {sections}
+    h SummarySectionsStatic, {sections}
   ]
 
 

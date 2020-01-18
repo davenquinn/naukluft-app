@@ -5,6 +5,7 @@ import {getSectionData} from "../section-data"
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
+import {SectionDataContext} from '../section-data'
 import {
   SectionLinkOverlay,
   SectionPositionProvider
@@ -161,6 +162,8 @@ SummarySectionsStatic = (props)->
     showFacies: true
   }
 
+  sections = useContext(SectionDataContext)
+
   h SectionSurfacesProvider, [
     h SectionPositionProvider, [
       h SettingsProvider, {
@@ -173,6 +176,7 @@ SummarySectionsStatic = (props)->
               groupMargin: 400
               columnMargin: 100
               columnWidth: 150
+              sections
               props...,
             }
           ]
