@@ -10,7 +10,7 @@ import {ManagedSymbolColumn} from "../components"
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/cjs/flooding-surface"
 import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/cjs/lithology"
 import {SequenceStratContext} from "../sequence-strat-context"
-import {ColumnProvider, ColumnContext} from '@macrostrat/column-components'
+import {ColumnProvider, ColumnContext} from './data-provider'
 import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner} from '@macrostrat/column-components/dist/cjs/lithology'
 import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-overlay'
 
@@ -131,7 +131,6 @@ const SVGSectionInner = function(props){
     padding,
     innerWidth,
     showWhiteUnderlay,
-    range,
     offsetTop,
     absolutePosition,
     children
@@ -151,9 +150,6 @@ const SVGSectionInner = function(props){
    showOxygenIsotopes,
    isotopesPerSection
  } = useSettings()
-
- let {divisions} = useContext(ColumnSurfacesContext)
- //divisions = divisions.filter(d => !d.schematic)
 
  let overallWidth = 120
  overallWidth += 42 // Symbol column
@@ -196,12 +192,7 @@ const SVGSectionInner = function(props){
 
  const grainsizeScaleStart = 40
 
- return h(ColumnProvider, {
-   range,
-   height: props.height,
-   zoom: 0.1,
-   divisions
- }, [
+ return h(ColumnProvider, {id}, [
    h(ColumnBox, {
      className: 'section-container',
      offsetTop,
@@ -276,7 +267,6 @@ const SVGSectionInner = function(props){
 SVGSectionInner.defaultProps = {
  zoom: 1,
  inEditMode: false,
- skeletal: false,
  isotopeColumnWidth: 40,
  offsetTop: null,
  marginTop: null,
@@ -298,7 +288,6 @@ SVGSectionInner.defaultProps = {
 
 SVGSectionInner.propTypes = {
  //inEditMode: T.bool
- range: T.arrayOf(T.number).isRequired,
  absolutePosition: T.bool,
  isotopesPerSection: T.bool,
  offsetTop: T.number

@@ -3,7 +3,11 @@ import h from 'react-hyperscript'
 import lithostratSurface from './sql/lithostratigraphy-surface.sql'
 import {useQuery} from "~/db"
 import {SectionDataContext} from '../section-data'
-import {ColumnProvider as BaseColumnProvider} from '@macrostrat/column-components'
+import {
+  ColumnProvider as BaseColumnProvider,
+  ColumnContext
+} from '@macrostrat/column-components'
+import {ColumnSurfacesContext} from '../column/data-source'
 
 const SectionSurfacesContext = createContext(null)
 
@@ -22,23 +26,39 @@ const ColumnProvider = (props)=>{
   Centralized provider for a single column
   identified by ID.
   */
-  const {id, zoom} = props
+  const {id, zoom, children, filterDivisions} = props
 
-  const sections = useContext(SectionDataContext)
-  const row = sections.filter(d => d.id == id)
+  const {sections} = useContext(SectionDataContext)
+  const row = sections.find(d => d.id == id)
+
+  let {divisions} = useContext(ColumnSurfacesContext)
+  if (filterDivisions != null) {
+    divisions = divisions.filter(filterDivisions)
+  }
 
   const {start, clip_end: end} = row
   // Clip off the top of some columns...
   const height = end-start
   const range = [start, end]
 
-  let {divisions} = useContext(ColumnSurfacesContext)
-
-
   return h(BaseColumnProvider, {
     divisions,
-
+    height,
+    range,
+    zoom,
+    children
   })
 }
 
-export {SectionSurfacesContext, SectionSurfacesProvider}
+ColumnProvider.defaultProps = {
+  zoom: 0.1,
+  // This filter should possibly always be used
+  filterDivisions: d => !d.schematic
+}
+
+export {
+  SectionSurfacesContext,
+  SectionSurfacesProvider,
+  ColumnProvider,
+  ColumnContext
+}

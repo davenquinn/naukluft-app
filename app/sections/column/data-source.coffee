@@ -35,4 +35,7 @@ class ColumnSurfacesProvider extends Component
     value = {divisions, updateDivisions}
     h ColumnSurfacesContext.Provider, {value}, children
 
+useColumnSurfaces = (id)->
+  useContext(ColumnSurfacesContext)
+
 export {ColumnSurfacesContext, ColumnSurfacesProvider}
