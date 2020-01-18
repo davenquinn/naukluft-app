@@ -1,7 +1,8 @@
-SELECT l.id,
+SELECT
+ l.id,
  l.facies,
  l.facies_tract,
- l.section,
+ l.section::text section_id,
  f.color AS facies_color,
  l.lithology,
  l.covered,
@@ -25,5 +26,4 @@ FROM section.section_lithology l
   LEFT JOIN section.facies f ON l.facies = f.id
   LEFT JOIN section.lithology v ON l.lithology = v.id
   JOIN section.section s ON s.id = l.section
-WHERE section = $1::text
 ORDER BY bottom;

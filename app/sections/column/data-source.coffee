@@ -25,7 +25,9 @@ class ColumnSurfacesProvider extends Component
   updateDivisions: =>
     {id} = @props
     console.log "Updating divisions for all columns."
-    divisions = await query q, [id]
+    divisions = await query q
+    if id?
+      divisions = divisions.filter (d)->d.section_id == id
     @setState {divisions}
 
   render: ->
@@ -36,6 +38,6 @@ class ColumnSurfacesProvider extends Component
     h ColumnSurfacesContext.Provider, {value}, children
 
 useColumnSurfaces = (id)->
-  useContext(ColumnSurfacesContext)
+  {divisions} = useContext(ColumnSurfacesContext)
 
 export {ColumnSurfacesContext, ColumnSurfacesProvider}
