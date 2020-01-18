@@ -13,18 +13,22 @@ import {
 } from '../components/polygon-topology'
 import {filenameForID} from './svg-export'
 import {useFaciesColors} from './util'
-import s1 from './sequence-data-edited/S1.svg'
-import s2 from './sequence-data-edited/S2.svg'
-import s3 from './sequence-data-edited/S3.svg'
+import S1 from './sequence-data-edited/S1.svg'
+import S2 from './sequence-data-edited/S2.svg'
+import S3 from './sequence-data-edited/S3.svg'
 
-fileNames = {
-  S1: s1,
-  S2: s2,
-  S3: s3
-}
+fileNames = {S1,S2,S3}
 
 getFile = (id)->
   fn = fileNames[id]
+  # encoded as a data URI (Electron-webpack)
+  if fn.startsWith("data:image/svg+xml;base64,")
+    return atob(fn.split(',')[1])
+  # Webpack for S1, for some reason
+  else if fn.startsWith("imgs")
+    {data} = await get(fn, {responseType: 'text'})
+    return data
+
   try
     {readFileSync} = require('fs')
     svg = readFileSync(fn, 'utf-8')
@@ -34,6 +38,7 @@ getFile = (id)->
 
 getEditedSequenceOverlay = (id)->
   svg = await getFile(id)
+  console.log(svg)
   fst = removeLines(svg.toString(), 2)
 
   el = document.createElement("div")
@@ -73,7 +78,7 @@ class CrossSectionUnits extends Component
 
     main = svg.select("g#Lines")
     ### Get path data ###
-    #lines = extractLines(main)
+    lines = extractLines(main)
 
     el = select findDOMNode @
 
@@ -89,11 +94,11 @@ class CrossSectionUnits extends Component
         .node().appendChild(pts)
 
     ### Get facies data ###
-    #points = extractTextPositions(svg.select("g#Facies"))
+    points = extractTextPositions(svg.select("g#Facies"))
 
     svg.remove()
 
-    #@setState {lines, points}
+    @setState {lines, points}
 
   render: ->
     {id, rest...} = @props

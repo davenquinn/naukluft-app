@@ -34,7 +34,7 @@ const modifyConfig = (cfg)=>{
     "@babel/plugin-proposal-optional-chaining"
   ]
 
-  //console.log(jsRule, JSON.stringify(jsRule.use.options.presets, null, 4));
+  console.log(jsRule, JSON.stringify(cfg.module.rules, null, 4));
 
   return cfg
 }
