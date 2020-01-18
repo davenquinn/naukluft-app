@@ -32,6 +32,7 @@ defaultSettings = {
   sectionIDs: []
   showLithostratigraphy: true
   showSequenceStratigraphy: true
+  showTriangleBars: true
   showCarbonIsotopes: true
   isotopesPerSection: false
   correctIsotopeRatios: false

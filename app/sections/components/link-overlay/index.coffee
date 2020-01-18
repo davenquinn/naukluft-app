@@ -220,10 +220,12 @@ SectionLink = (props)->
       initialX = x
       if connectLines
         initialX -= width
+      else if fillSectionWidth
+        initialX -= width/2
       d = "M#{initialX},#{y}"
 
     linkLine = buildLink(pair)
-    if connectLines
+    if connectLines or fillSectionWidth
       linkLine  =  "L"+linkLine.substring(1)
       linkLine += "l#{width},0"
     else
