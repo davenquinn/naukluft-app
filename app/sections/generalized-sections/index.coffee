@@ -56,6 +56,12 @@ LinkOverlay = (props)->
 
   h SectionLinkOverlay, {surfaces}
 
+# Should allow switching between offset types
+stratOffsets = {
+  Onis: 0
+  Ubisis: 300
+  Tsams: 200
+}
 
 SectionPane = (props)->
   {surfaces} = useContext(GeneralizedSurfacesContext)
@@ -70,8 +76,8 @@ SectionPane = (props)->
 
   offsets = {
     Onis: 0
-    Ubisis: 300
-    Tsams: 200
+    Ubisis: 270
+    Tsams: 0
   }
 
   h 'div#section-pane', {style: {overflow: 'scroll'}}, [
