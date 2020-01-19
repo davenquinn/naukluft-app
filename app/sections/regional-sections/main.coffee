@@ -1,6 +1,6 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {group} from 'd3-array'
-import {GeneralizedSurfacesContext} from '../generalized-sections/data-provider'
+import {SectionSurfacesContext} from '../generalized-sections/data-provider'
 import {useContext} from 'react'
 import {useCanvasSize} from "../components/link-overlay"
 import {updateSectionE} from './helpers'
@@ -13,7 +13,7 @@ import styles2 from './main.styl'
 h = hyperStyled({styles...,styles2...})
 
 SectionPane = (props)->
-  {surfaces} = useContext(GeneralizedSurfacesContext)
+  {surfaces} = useContext(SectionSurfacesContext)
   sz = useCanvasSize()
   surfaceMap = group surfaces, (s)->s.section
   sections = Array.from surfaceMap, ([key,surfaces])->

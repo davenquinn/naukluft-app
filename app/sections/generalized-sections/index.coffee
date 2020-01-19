@@ -3,15 +3,18 @@ import {group} from 'd3-array'
 
 import {BaseSectionPage} from '../components/base-page'
 import {
-  GeneralizedSurfacesContext,
-  GeneralizedSurfacesProvider
+  ColumnDivisionsContext,
+  GeneralizedDivisionsProvider
 } from './data-provider'
 import {GeneralizedSectionSettings, defaultSettings} from "./settings"
 import {IsotopesComponent} from "../summary-sections/chemostrat"
 import {LithostratKey} from "../summary-sections/lithostrat-key"
 import {Legend} from "../summary-sections/legend"
 import "../summary-sections/main.styl"
-import {useSettings} from '@macrostrat/column-components'
+import {
+  useSettings,
+  ColumnProvider
+} from '@macrostrat/column-components'
 import {useContext} from 'react'
 import {
   SectionPositionProvider,
@@ -21,17 +24,25 @@ import {
   SectionSurfacesProvider
   SectionSurfacesContext
 } from '../summary-sections/data-provider'
-import {SVGSectionComponent} from '../summary-sections/column'
+import {SVGSectionInner} from '../summary-sections/column'
 import styles from './main.styl'
 h = hyperStyled(styles)
 
 GeneralizedSection = (props)->
-  {id} = props
+  {range, height, divisions, zoom, rest...} = props
+  {id} = rest
   h 'div.section-column', {className: id}, [
-    h SVGSectionComponent, {
-      props...
-      absolutePosition: false
-    }
+    h ColumnProvider, {
+      range
+      height
+      divisions
+      zoom
+    }, [
+      h SVGSectionInner, {
+        rest...
+        absolutePosition: false
+      }
+    ]
   ]
 
 getGeneralizedHeight = (sectionData)->(surface)->
@@ -64,8 +75,8 @@ stratOffsets = {
 }
 
 SectionPane = (props)->
-  {surfaces} = useContext(GeneralizedSurfacesContext)
-  surfaceMap = group surfaces, (s)->s.section
+  {divisions} = useContext(ColumnDivisionsContext)
+  surfaceMap = group divisions, (s)->s.section
   sections = Array.from surfaceMap, ([key,surfaces])->
     surfaces.sort (a,b)->a.bottom-b.bottom
     return {key,surfaces}
@@ -121,7 +132,7 @@ GeneralizedSectionsInner = (props)->
 
 GeneralizedSections = (props)->
   h SectionSurfacesProvider, [
-    h GeneralizedSurfacesProvider, [
+    h GeneralizedDivisionsProvider, [
       h SectionPositionProvider, [
         h GeneralizedSectionsInner
       ]

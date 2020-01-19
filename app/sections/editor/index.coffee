@@ -11,7 +11,7 @@ import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picke
 import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/cjs/editor/util"
 #import "react-select/dist/react-select.css"
 
-import {ColumnSurfacesContext} from "../column/data-source"
+import {ColumnDivisionsContext} from "../column/data-source"
 import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '@macrostrat/column-components/dist/cjs/editor/lithology-picker'
 import {
   CorrelatedSurfaceControl,
@@ -228,7 +228,7 @@ class ModalEditor extends Component
     @props.onUpdate()
 
 class IntervalEditor extends Component
-  @contextType: ColumnSurfacesContext
+  @contextType: ColumnDivisionsContext
   @defaultProps: {
     onUpdate: ->
     onNext: ->

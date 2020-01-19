@@ -121,7 +121,7 @@ const ColumnUnderlay = function(props){
  })
 }
 
-const SVGSectionComponent = function(props){
+const SVGSectionInner = function(props){
   let {
     id,
     padding,
@@ -188,79 +188,77 @@ const SVGSectionComponent = function(props){
 
  const grainsizeScaleStart = 40
 
- return h(ColumnProvider, {id}, [
-   h(ColumnBox, {
-     className: 'section-container',
-     offsetTop,
-     width: overallWidth,
-     marginLeft: 0,
-     marginRight: 0,
-     absolutePosition
+ return h(ColumnBox, {
+   className: 'section-container',
+   offsetTop,
+   width: overallWidth,
+   marginLeft: 0,
+   marginRight: 0,
+   absolutePosition
+ }, [
+   h('div.section-header', [
+     h("h2", {style: {zIndex: 20, marginLeft: mainTranslate}}, id)
+   ]),
+   h(ColumnTracker, {
+     className: 'section-outer', id,
+     paddingTop: 10
    }, [
-     h('div.section-header', [
-       h("h2", {style: {zIndex: 20, marginLeft: mainTranslate}}, id)
-     ]),
-     h(ColumnTracker, {
-       className: 'section-outer', id,
-       paddingTop: 10
+     h(GrainsizeLayoutProvider, {
+       width: innerWidth,
+       grainsizeScaleStart
      }, [
-       h(GrainsizeLayoutProvider, {
-         width: innerWidth,
-         grainsizeScaleStart
+       h(EditOverlay, {
+         id,
+         allowEditing: inEditMode,
+         left: padding.left+mainTranslate,
+         top: padding.top
+       }),
+       h(ColumnSVG, {
+         width: overallWidth,
+         paddingTop: padding.top,
+         paddingBottom: padding.bottom,
+         paddingLeft: padding.left
        }, [
-         h(EditOverlay, {
-           id,
-           allowEditing: inEditMode,
-           left: padding.left+mainTranslate,
-           top: padding.top
+         h.if(showWhiteUnderlay)(ColumnUnderlay, {
+           width: underlayWidth,
+           paddingLeft: underlayPaddingLeft,
          }),
-         h(ColumnSVG, {
-           width: overallWidth,
-           paddingTop: padding.top,
-           paddingBottom: padding.bottom,
-           paddingLeft: padding.left
-         }, [
-           h.if(showWhiteUnderlay)(ColumnUnderlay, {
-             width: underlayWidth,
-             paddingLeft: underlayPaddingLeft,
+         h('g.main', {transform: `translate(${mainTranslate})`},  [
+           h.if(showFloodingSurfaces)(FloodingSurface, {
+             offsetLeft: -floodingSurfaceStart,
+             lineWidth: floodingSurfaceStart
            }),
-           h('g.main', {transform: `translate(${mainTranslate})`},  [
-             h.if(showFloodingSurfaces)(FloodingSurface, {
-               offsetLeft: -floodingSurfaceStart,
-               lineWidth: floodingSurfaceStart
-             }),
-             h(ColumnSummaryAxis),
-             h(ColumnMain),
-             h(ManagedSymbolColumn, {
-               left: 90,
-               id
-             }),
-             h(ColumnIsotopes, {
-               id,
-               columnWidth: props.isotopeColumnWidth
-             })
-           ]),
-           h('g.sequence-strat', {transform: `translate(${triangleBarTranslate})`}, [
-             h.if(showTriangleBars)(TriangleBars, {
-               id,
-               offsetLeft: 0,
-               lineWidth: 20,
-               orders: [
-                 sequenceStratOrder,
-                 sequenceStratOrder-1
-               ]
-             })
-           ])
+           h(ColumnSummaryAxis),
+           h(ColumnMain),
+           h(ManagedSymbolColumn, {
+             left: 90,
+             id
+           }),
+           h(ColumnIsotopes, {
+             id,
+             columnWidth: props.isotopeColumnWidth
+           })
+         ]),
+         h('g.sequence-strat', {transform: `translate(${triangleBarTranslate})`}, [
+           h.if(showTriangleBars)(TriangleBars, {
+             id,
+             offsetLeft: 0,
+             lineWidth: 20,
+             orders: [
+               sequenceStratOrder,
+               sequenceStratOrder-1
+             ]
+           })
          ])
-       ]),
-       children
-     ])
+       ])
+     ]),
+     children
    ])
  ])
 }
 
 
-SVGSectionComponent.defaultProps = {
+SVGSectionInner.defaultProps = {
  zoom: 1,
  inEditMode: false,
  isotopeColumnWidth: 40,
@@ -282,11 +280,15 @@ SVGSectionComponent.defaultProps = {
  }
 }
 
-SVGSectionComponent.propTypes = {
+SVGSectionInner.propTypes = {
  //inEditMode: T.bool
  absolutePosition: T.bool,
  isotopesPerSection: T.bool,
  offsetTop: T.number
 }
 
-export {SVGSectionComponent}
+const SVGSectionComponent = (props)=>{
+  return h(ColumnProvider, {id: props.id}, h(SVGSectionInner, props))
+}
+
+export {SVGSectionInner, SVGSectionComponent}

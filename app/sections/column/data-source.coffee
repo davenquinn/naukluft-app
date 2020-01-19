@@ -4,9 +4,9 @@ import T from "prop-types"
 import {query} from "~/db"
 import q from '../sql/section-lithology.sql'
 
-ColumnSurfacesContext = createContext {}
+ColumnDivisionsContext = createContext {}
 
-class ColumnSurfacesProvider extends Component
+class ColumnDivisionsProvider extends Component
   ###
   # Makes sure divisions are defined for sections
   ###
@@ -35,10 +35,10 @@ class ColumnSurfacesProvider extends Component
     {divisions} = @state
     {updateDivisions} = @
     value = {divisions, updateDivisions}
-    h ColumnSurfacesContext.Provider, {value}, children
+    h ColumnDivisionsContext.Provider, {value}, children
 
-useColumnSurfaces = (id)->
-  {divisions} = useContext(ColumnSurfacesContext)
+useColumnDivisions = (id)->
+  {divisions} = useContext(ColumnDivisionsContext)
   divisions.filter (d)->d.section_id == id
 
-export {ColumnSurfacesContext, ColumnSurfacesProvider, useColumnSurfaces}
+export {ColumnDivisionsContext, ColumnDivisionsProvider, useColumnDivisions}

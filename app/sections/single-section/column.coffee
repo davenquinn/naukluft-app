@@ -32,8 +32,8 @@ import {ModalEditor} from "../editor"
 import {Notification} from "../../notify"
 import {SequenceStratConsumer} from "../sequence-strat-context"
 import {
-  ColumnSurfacesProvider,
-  ColumnSurfacesContext
+  ColumnDivisionsProvider,
+  ColumnDivisionsContext
 } from "../column/data-source"
 import {SVGNamespaces, KnownSizeComponent} from "../util"
 import {ManagedNotesColumn} from "./notes"
@@ -46,7 +46,7 @@ import removeIntervalQuery from '../sql/remove-interval.sql'
 fmt = format(".1f")
 
 class SectionComponent extends Component
-  @contextType: ColumnSurfacesContext
+  @contextType: ColumnDivisionsContext
   @defaultProps: {
     zoom: 1
     offset: 0
@@ -262,7 +262,7 @@ SectionComponentHOC = (props)->
   {id, divisions} = props
   h SequenceStratConsumer, null, (value)->
     {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = value
-    h ColumnSurfacesProvider, {id, divisions}, (
+    h ColumnDivisionsProvider, {id, divisions}, (
       h SectionComponent, {showTriangleBars, showFloodingSurfaces, sequenceStratOrder, props...}
     )
 

@@ -8,7 +8,7 @@ import {LithologyProvider} from './lithology'
 import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
 import {PhotoLibraryProvider} from '@macrostrat/column-components'
-import {ColumnSurfacesProvider} from "./column/data-source"
+import {ColumnDivisionsProvider} from "./column/data-source"
 import h from "react-hyperscript"
 import {IsotopesDataProvider} from './summary-sections/chemostrat/data-manager'
 import sectionSurfaceQuery from "./sql/section-surface.sql"
@@ -77,7 +77,7 @@ class SectionDataProvider extends Component
     {computePhotoPath} = @context
     # Surfaces really shouldn't be tracked by facies provider
     h LithologyProvider, [
-      h ColumnSurfacesProvider, [
+      h ColumnDivisionsProvider, [
         h FaciesProvider, {surfaces}, [
           h PhotoLibraryProvider, {photos, computePhotoPath}, [
             h SequenceStratProvider, null, [
