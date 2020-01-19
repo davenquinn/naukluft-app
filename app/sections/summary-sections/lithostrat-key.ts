@@ -7,14 +7,18 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from "@macrostrat/hyper"
-import {Component, createRef} from "react"
-import {query} from "../../db"
-import {scaleLinear} from 'd3-scale'
-import {SVGNamespaces, KnownSizeComponent} from "../util"
-import sql from './sql/lithostratigrapy-names.sql'
+import {Component, createRef, useContext} from "react"
+import {useQuery} from "~/db"
+import {ColumnSVG} from '@macrostrat/column-components'
+import {
+  SectionSurfacesContext,
+  ColumnProvider,
+  ColumnContext
+} from './data-provider'
+import sql from './sql/lithostratigraphy-names.sql'
 
 const LSLabel = (props)=>{
-  const {y, name, width, extend} = this.props
+  const {y, name, width, extend} = props
   const x2 = extend ? width : 0
   return h('g.label', {transform: `translate(${width},${y})`}, [
     h('line', {
@@ -32,110 +36,75 @@ const LSLabel = (props)=>{
 
 LSLabel.defaultProps = { width: 20, extend: false}
 
-class LithostratigraphyColumn extends Component {
-  constructor(props){
-    super(props)
-    this.state = {names: []}
-    query('lithostratigraphy-names', null, {baseDir: __dirname})
-      .then(names=> {
-        return this.setState({names})
-    })
+const LithostratigraphyColumn = (props)=>{
+  const names = useQuery(sql)
+  let {surfaces} = useContext(SectionSurfacesContext)
+  const {scale} = useContext(ColumnContext)
+
+  if (names == null) {
+    return null
   }
 
-  render() {
-    let transform
-    let {surfaces, scale} = this.props
-    const {names} = this.state
+  surfaces = surfaces
+    .filter(d => d.type === 'lithostrat')
+    .map(function(d){
+      const {section_height, ...rest} = d
+      const {height} = section_height.find(v => v.section === 'J')
+      return {height, ...rest}})
 
-    surfaces = surfaces
-      .filter(d => d.type === 'lithostrat')
-      .map(function(d){
-        const {section_height, ...rest} = d
-        const {height} = section_height.find(v => v.section === 'J')
-        return {height, ...rest}})
+  surfaces.sort((a, b) => a.height - b.height)
 
-    surfaces.sort((a, b) => a.height - b.height)
+  const formations = []
+  const members = []
 
-    const __formations = []
-    const __members = []
-    for (var d of Array.from(surfaces)) {
-      const y = scale(d.height)
-      transform = `translate(0,${y}) rotate(-90)`
-      const surfaceData = names.find(v => v.id === d.upper_unit)
-      if (surfaceData == null) { continue }
-      if (surfaceData.level === 3) {
-        __formations.push(h(LSLabel, {y, name: surfaceData.short_name, extend: true}))
-        continue
-      }
-      if (d.commonality === 2) {
-        __formations.push(h(LSLabel, {y, name: surfaceData.formation_short_name}))
-      }
-
-      __members.push(h(LSLabel, {y, name: surfaceData.short_name}))
+  let transform
+  for (var d of Array.from(surfaces)) {
+    const y = scale(d.height)
+    transform = `translate(0,${y}) rotate(-90)`
+    const surfaceData = names.find(v => v.id === d.upper_unit)
+    if (surfaceData == null) { continue }
+    if (surfaceData.level === 3) {
+      formations.push(h(LSLabel, {y, name: surfaceData.short_name, extend: true}))
+      continue
+    }
+    if (d.commonality === 2) {
+      formations.push(h(LSLabel, {y, name: surfaceData.formation_short_name}))
     }
 
-    return h('g.lithostratigraphy', [
-      h('g.formations', {style: {fontSize: 20}}, __formations),
-      h('g.members', {transform: "translate(20)",style: {fontSize: 14, fontStyle: 'italic'}}, __members)
-    ])
+    members.push(h(LSLabel, {y, name: surfaceData.short_name}))
   }
+
+  return h('g.lithostratigraphy', [
+    h('g.formations', {style: {fontSize: 20}}, formations),
+    h('g.members', {transform: "translate(20)", style: {fontSize: 14, fontStyle: 'italic'}}, members)
+  ])
 }
 
-class BaseSVGSectionComponent extends KnownSizeComponent {
-  constructor(props){
-    super(props)
-  }
+const BaseSVGSectionComponent = (props)=>{
+  let {padding, innerWidth} = props
+  let {left, right} = padding
 
-  render() {
-    let {id, zoom, padding, lithologyWidth,
-     innerWidth, onResize, marginLeft,
-     showFacies, height, clip_end, surfaces} = this.props
+  const outerWidth = innerWidth+(left+right)
 
-    const innerHeight = height*this.props.pixelsPerMeter*this.props.zoom
 
-    let {left, top, right, bottom} = padding
+  // Set up number of ticks
 
-    const scaleFactor = this.props.scaleFactor/this.props.pixelsPerMeter
+  const transform = `translate(${left} ${props.padding.top})`
 
-    this.state.scale.range([innerHeight, 0])
-    const outerHeight = innerHeight+(top+bottom)
-    const outerWidth = innerWidth+(left+right)
-
-    const {heightOfTop} = this.props
-    //const marginTop = heightOfTop*this.props.pixelsPerMeter*this.props.zoom
-
-    [bottom,top] = this.props.range
-
-    const {scale, divisions} = this.state
-
-    ({
-      zoom
-    } = this.props)
-
-    // Set up number of ticks
-
-    const style = {
-      width: outerWidth,
-      height: outerHeight,
-      marginTop: 12,
-      marginLeft
-    }
-
-    const transform = `translate(${left} ${this.props.padding.top})`
-
-    const minWidth = outerWidth
-    return h("div.section-container", {
-      style: {minWidth}
-    }, [
-      h('div.section-outer', [
-        h("svg.section", {style, ...SVGNamespaces}, [
+  const minWidth = outerWidth
+  return h("div.section-container.lithostratigraphy-names", {
+    style: {minWidth}
+  }, [
+    h('div.section-outer', [
+      h(ColumnProvider, {id: 'J'}, [
+        h(ColumnSVG, {width: 50}, [
           h('g.backdrop', {transform}, [
-            h(LithostratigraphyColumn, {scale, divisions, surfaces})
+            h(LithostratigraphyColumn)
           ])
         ])
       ])
     ])
-  }
+  ])
 }
 
 BaseSVGSectionComponent.defaultProps = {

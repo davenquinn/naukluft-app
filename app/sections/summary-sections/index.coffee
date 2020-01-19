@@ -88,13 +88,11 @@ SectionPane = (props) ->
         connectLines: false
         surfaces
       }
-      # h LithostratKey, {
-      #   zoom: 0.1,
-      #   key: "key",
-      #   surfaces,
-      #   offset
-      #   rest...
-      # }
+      h LithostratKey, {
+        zoom: 0.1,
+        key: "key",
+        offset
+      }
       h.if(showChemostrat) ChemostratigraphyColumn, {
         sections
         surfaces
