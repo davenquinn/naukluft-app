@@ -27,10 +27,11 @@
     .section-break
       // Make sure we have pixel-perfect borders
       padding-left 6px
-      &:first-child
-        margin-bottom 0.5px
       &:last-child
         border-top width solid black
+        margin-top 1px
+        &:first-child
+          margin-bottom 1px
       border-bottom width solid black
       // Make text vertical
       writing-mode vertical-lr
@@ -38,6 +39,7 @@
       text-align: center
     .section-break-title
       font-weight 600
+      padding-bottom 0.5em
 
 
 :global

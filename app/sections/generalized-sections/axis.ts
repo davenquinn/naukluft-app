@@ -4,7 +4,7 @@ import {
   ColumnAxis,
   expandDivisionsByKey
 } from '@macrostrat/column-components'
-import {useContext} from 'react'
+import {useContext, useRef, useState, useLayoutEffect} from 'react'
 import styles from './main.styl'
 import {format} from 'd3-format'
 
@@ -34,35 +34,63 @@ const GeneralizedAxis = function(props){
  const maxVal = scale.domain()[1]-(topPadding/ratio)
 
  return h(ColumnAxis, {
-   ticks: (height*zoom)/2,
-   tickSize: 4,
+   ticks: (height*zoom),
+   tickSize: 2,
    showLabel(d){ return false }
  })
 }
 
+interface SectionBreakProps {
+  division: GeneralizedDivision
+  textPadding?: number
+}
+
+const SectionBreak = (props: SectionBreakProps)=>{
+  const {scaleClamped} = useContext(ColumnContext)
+  const {division: d} = props
+  const btm = scaleClamped(d.bottom)
+  const top = scaleClamped(d.top)
+  const height = btm-top
+  const heightM = d.top-d.bottom
+  const textPadding = props.textPadding ?? 10
+
+  const ref = useRef<HTMLElement>()
+    const [rect, setRect] = useState<DOMRect>(null)
+
+  useLayoutEffect(()=>{
+    if (ref.current == null) return
+    const rect = ref.current.getBoundingClientRect()
+    setRect(rect)
+  }, [ref])
+
+  const textHeight = rect?.height ?? 0
+  console.log(rect?.height, height)
+  const showPrefix = (textHeight < height-2*textPadding)
+
+
+  return h("div.section-break", {
+    style: {height},
+    className: `section-${d.original_section}`
+  }, [
+    h('span', {ref}, [
+      h('span.section-break-title', [
+        h.if(showPrefix)('span.prefix', "Section "),
+        h('span.section-id', `${d.original_section}`)
+      ]),
+      h('span.height', `${Math.round(heightM)} m`)
+    ])
+  ])
+}
+
 const GeneralizedBreaks = (props)=>{
-  const {scaleClamped, divisions} = useContext(ColumnContext)
+  const {divisions} = useContext(ColumnContext)
 
   let breaks: GeneralizedDivision[] = expandDivisionsByKey(divisions, 'original_section')
   breaks.reverse()
 
-  return h('div.generalized-breaks', breaks.map((d,i)=>{
-    const btm = scaleClamped(d.bottom)
-    const top = scaleClamped(d.top)
-    const height = btm-top
-    const heightM = d.top-d.bottom
-
-    return h("div.section-break", {
-      style: {height},
-      className: `section-${d.original_section}`
-    }, [
-      h('span.section-break-title', [
-        h('span.prefix', "Section "),
-        h('span.section-id', `${d.original_section}`)
-      ]),
-      h('span', `${Math.round(heightM)} m`)
-    ])
-  }))
+  return h('div.generalized-breaks',
+    breaks.map(division=>h(SectionBreak, {division}))
+  )
 }
 
 export {GeneralizedAxis, GeneralizedBreaks}

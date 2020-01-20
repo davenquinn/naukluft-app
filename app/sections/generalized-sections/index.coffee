@@ -79,6 +79,13 @@ stratOffsets = {
   Tsams: 200
 }
 
+compactOffsets = {
+    Onis: 0
+    Ubisis: 270
+    Tsams: 0
+  }
+
+
 SectionPane = (props)->
   {divisions} = useContext(ColumnDivisionsContext)
   surfaceMap = group divisions, (s)->s.section
@@ -90,11 +97,7 @@ SectionPane = (props)->
   sections.sort (a,b)->
     order.indexOf(a.key)-order.indexOf(b.key)
 
-  offsets = {
-    Onis: 0
-    Ubisis: 270
-    Tsams: 0
-  }
+  offsets = stratOffsets
 
   h 'div#section-pane', {style: {overflow: 'scroll'}}, [
     h "div#section-page-inner", [
