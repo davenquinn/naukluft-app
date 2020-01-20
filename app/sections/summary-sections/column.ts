@@ -128,8 +128,7 @@ const SVGSectionInner = function(props){
     innerWidth,
     showWhiteUnderlay,
     offsetTop,
-    absolutePosition,
-    children
+    absolutePosition
   } = props
 
   const {inEditMode} = useContext(PlatformContext)
@@ -228,7 +227,7 @@ const SVGSectionInner = function(props){
              offsetLeft: -floodingSurfaceStart,
              lineWidth: floodingSurfaceStart
            }),
-           h(ColumnSummaryAxis),
+           h(props.axisComponent),
            h(ColumnMain),
            h(ManagedSymbolColumn, {
              left: 90,
@@ -252,32 +251,40 @@ const SVGSectionInner = function(props){
          ])
        ])
      ]),
-     children
+     h("div.section-children", {
+       style: {
+         marginTop: padding.top,
+         marginLeft: padding.left+mainTranslate
+       }
+     }, [
+       props.children
+     ])
    ])
  ])
 }
 
 
 SVGSectionInner.defaultProps = {
- zoom: 1,
- inEditMode: false,
- isotopeColumnWidth: 40,
- offsetTop: null,
- marginTop: null,
- innerWidth: 100,
- height: 100, // Section height in meters
- lithologyWidth: 40,
- showWhiteUnderlay: true,
- showFacies: true,
- absolutePosition: true,
- triangleBarRightSide: false,
- marginLeft: -10,
- padding: {
-   left: 30,
-   top: 10,
-   right: 20,
-   bottom: 28
- }
+  axisComponent: ColumnSummaryAxis,
+  zoom: 1,
+  inEditMode: false,
+  isotopeColumnWidth: 40,
+  offsetTop: null,
+  marginTop: null,
+  innerWidth: 100,
+  height: 100, // Section height in meters
+  lithologyWidth: 40,
+  showWhiteUnderlay: true,
+  showFacies: true,
+  absolutePosition: true,
+  triangleBarRightSide: false,
+  marginLeft: -10,
+  padding: {
+    left: 30,
+    top: 10,
+    right: 20,
+    bottom: 28
+  }
 }
 
 SVGSectionInner.propTypes = {

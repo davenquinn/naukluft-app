@@ -25,11 +25,12 @@ import {
   SectionSurfacesContext
 } from '../summary-sections/data-provider'
 import {SVGSectionInner} from '../summary-sections/column'
+import {GeneralizedAxis, GeneralizedBreaks} from './axis'
 import styles from './main.styl'
 h = hyperStyled(styles)
 
 GeneralizedSection = (props)->
-  {range, height, divisions, zoom, rest...} = props
+  {range, height, divisions, zoom, offsetTop, rest...} = props
   {id} = rest
   h 'div.section-column', {className: id}, [
     h ColumnProvider, {
@@ -40,8 +41,12 @@ GeneralizedSection = (props)->
     }, [
       h SVGSectionInner, {
         rest...
+        offsetTop
         absolutePosition: false
-      }
+        axisComponent: GeneralizedAxis
+      }, [
+        h GeneralizedBreaks
+      ]
     ]
   ]
 

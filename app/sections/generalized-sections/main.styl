@@ -11,5 +11,36 @@
     &:last-child
       margin-right 4em
 
+
   .section-column.Onis
     margin-right 200px
+
+  width=1.5px
+  .generalized-breaks
+    position absolute
+    top 0
+    left -24px
+    // Not sure why we have to do this pixel transform
+    transform translate(0,-0.5px)
+    width 24px
+    //border-top width solid black
+    .section-break
+      // Make sure we have pixel-perfect borders
+      padding-left 6px
+      &:first-child
+        margin-bottom 0.5px
+      &:last-child
+        border-top width solid black
+      border-bottom width solid black
+      // Make text vertical
+      writing-mode vertical-lr
+      transform: rotate(180deg)
+      text-align: center
+    .section-break-title
+      font-weight 600
+
+
+:global
+  svg.section
+    g.axis .tick line
+      stroke-width 1.5px
