@@ -37,7 +37,6 @@ function __range__(left, right, inclusive) {
   return range
 }
 
-
 const getSectionData = async function(opts={}){
   if (opts.verbose == null) { opts.verbose = false }
   const fn = sectionFilename('file-info.json')
@@ -73,12 +72,12 @@ const PhotoLibraryProvider = function({children}) {
   return h(BasePhotoLibraryProvider, {photos, computePhotoPath}, children)
 }
 
-const SectionDataContext = createContext({})
+const SectionDataContext = createContext([])
 const SectionProvider = ({children})=>{
   const [sections, setSections] = useState(null)
   useAsyncEffect(async ()=>setSections(await getSectionData()), [])
   if (sections == null) return null
-  return h(SectionDataContext.Provider, {value: {sections}}, children)
+  return h(SectionDataContext.Provider, {value: sections}, children)
 }
 
 const SectionDataProvider = compose(
