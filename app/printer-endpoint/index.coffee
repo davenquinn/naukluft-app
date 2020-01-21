@@ -14,8 +14,8 @@ import "../sections/settings.styl"
 import "../main.styl"
 
 module.exports = (el, cb)->
-
-  sections = await getSectionData()
+  ## Need to replace this with new code...
+  ##sections = await getSectionData()
 
   class Page extends Component
     render: ->

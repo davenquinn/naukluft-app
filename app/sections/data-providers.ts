@@ -8,7 +8,8 @@
 import {getJSON} from "../util"
 import {join} from "path"
 import Promise from "bluebird"
-import {Component, createContext, useContext} from "react"
+import useAsyncEffect from 'use-async-effect'
+import {Component, createContext, useContext, useState} from "react"
 import {useQuery} from '~/db'
 import {db, query, storedProcedure} from "./db"
 import {FaciesProvider} from "./facies"
@@ -82,36 +83,20 @@ const PhotoLibraryProvider = function({children}) {
   return h(BasePhotoLibraryProvider, {photos, computePhotoPath}, children)
 }
 
-const SectionDataContext = createContext({sections: []})
+const SectionDataContext = createContext({})
+const SectionProvider = (props)=>{
+  const {children} = props
+  const [sections, setSections] = useState(null)
+  useAsyncEffect(async ()=>setSections(await getSectionData()), [])
+  if (sections == null) return null
+  return h(SectionDataContext.Provider, {value: {sections}}, children)
+}
 
 class SectionDataProvider extends Component {
-  static initClass() {
-    this.contextType = PlatformContext
-  }
   constructor(props){
     super(props)
-    this.state = {
-      sections: [],
-      surfaces: [],
-      photos: []
-    }
   }
-
-  getInitialData() {
-    getSectionData()
-      .then(sections=> this.setState({sections}))
-    return query(sectionSurfaceQuery)
-      .then(surfaces=> this.setState({surfaces}))
-  }
-
-  componentDidMount() {
-    return this.getInitialData()
-  }
-
   render() {
-    const {surfaces, sections} = this.state
-    if (sections == null) return null
-    console.log(sections)
     // Surfaces really shouldn't be tracked by facies provider
     return h(LithologyProvider, [
       h(ColumnDivisionsProvider, [
@@ -120,7 +105,7 @@ class SectionDataProvider extends Component {
             h(PhotoLibraryProvider, [
               h(SequenceStratProvider, null, [
                 h(IsotopesDataProvider, null, [
-                  h(SectionDataContext.Provider, {value: {sections}}, this.props.children)
+                  h(SectionProvider, null, this.props.children)
                 ])
               ])
             ])
@@ -130,7 +115,6 @@ class SectionDataProvider extends Component {
     ])
   }
 }
-SectionDataProvider.initClass()
 
 const SectionConsumer = SectionDataContext.Consumer
 
