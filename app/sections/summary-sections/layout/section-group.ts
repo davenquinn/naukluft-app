@@ -60,7 +60,6 @@ const SectionGroup = (props: SectionGroupProps)=>{
       for (let s of sections) {
         let sPos = pos[s.section]
         if (sPos != null) {
-          console.log(sPos)
           const w = sPos.width + sPos.paddingLeft + sPos.paddingRight
           if (w > 0) return w
         }

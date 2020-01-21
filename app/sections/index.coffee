@@ -70,7 +70,7 @@ class SectionIndexPage extends Component
     ]
 
 wrapWithSections = (component)=> (props)=>
-  h SectionConsumer, null, ({sections})=>
+  h SectionConsumer, null, (sections)=>
     if sections.length == 0
       return h 'div'
     h(component, {sections, props...}, null)

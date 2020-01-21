@@ -28,7 +28,7 @@ const ColumnProvider = (props)=>{
   */
   const {id, zoom, children, filterDivisions} = props
 
-  const {sections} = useContext(SectionDataContext)
+  const sections = useContext(SectionDataContext)
   if (sections == null) return null
   const row = sections.find(d => d.id == id)
 
