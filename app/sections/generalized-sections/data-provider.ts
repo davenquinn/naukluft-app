@@ -1,6 +1,7 @@
 import h from 'react-hyperscript'
 import sql from '../sql/generalized-section.sql'
 import {useQuery} from "~/db"
+import {useContext} from 'react'
 import {ColumnDivisionsContext} from '../column/data-source'
 
 const GeneralizedDivisionsProvider = (props)=>{
