@@ -1,37 +1,43 @@
-const babelLoader = {
-  loader: 'babel-loader',
-  options: {
-    presets: ['@babel/preset-env']
-  }
-};
+const path = require("path");
+const merge = require('webpack-merge');
+const {IgnorePlugin} = require('webpack');
+const {
+  coffeeRule,
+  sqlRule,
+  stylusRule,
+  resolve
+} = require('./loaders');
+const {version} = require("electron/package.json");
 
-const coffeeLoader = {
-  loader: 'coffee-loader',
-  options: {sourceMap: true}
-};
+const modifyConfig = (cfg)=>{
 
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.coffee$/,
-        use: [babelLoader, coffeeLoader],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.styl$/,
-        use: ["style-loader","css-loader", "stylus-loader"],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-        exclude: /node_modules/
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.js', '.coffee']
-  }
+  cfg.module.rules = [
+    ...cfg.module.rules,
+    coffeeRule,
+    sqlRule,
+    stylusRule
+  ];
+
+  cfg.resolve = merge(cfg.resolve, resolve);
+
+  // Modify javascript rule for typescript
+  jsRule = cfg.module.rules[0]
+  jsRule.test = /\.(js|jsx|ts|tsx)$/
+  jsRule.use.options.presets = [
+    ["@babel/preset-env", {modules: false, targets: {electron: version}}],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
+
+  jsRule.use.options.plugins = [
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-class-properties"
+  ]
+
+  console.log(jsRule, JSON.stringify(cfg.module.rules, null, 4));
+
+  return cfg
 }
 
+module.exports = modifyConfig;

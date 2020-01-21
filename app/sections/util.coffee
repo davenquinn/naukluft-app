@@ -1,26 +1,8 @@
 import {Component} from "react"
-import h from "react-hyperscript"
-import {NavLink, BackLink} from "../nav"
-import {Icon} from "react-fa"
-
-class SectionNavigationControl extends Component
-  render: ->
-    settings = null
-    if @props.toggleSettings
-      settings = h 'li', [
-        h 'a', onClick: @props.toggleSettings, [
-          h Icon, name: 'gear', size: '2x'
-        ]
-      ]
-
-    {children} = @props
-
-    h 'ul.controls', [
-      h BackLink
-      h NavLink, to: '/', [h Icon, name: 'home', size: '2x']
-      settings
-      children
-    ]
+import h from "@macrostrat/hyper"
+import {LinkButton} from '@macrostrat/ui-components'
+import {SVGNamespaces} from '@macrostrat/column-components'
+import {NavigationControl as SectionNavigationControl} from '~/components'
 
 class KnownSizeComponent extends Component
   constructor: (props)->
@@ -33,13 +15,15 @@ class KnownSizeComponent extends Component
   @__height: ->
     return null
 
-SVGNamespaces = {
-  xmlns: "http://www.w3.org/2000/svg"
-  xmlnsXlink: "http://www.w3.org/1999/xlink"
-}
+rangeForSection = (row)->
+  {start, end, clip_end} = row
+  clip_end ?= end
+  [start, clip_end]
+
 
 export {
   SectionNavigationControl
-  SVGNamespaces
   KnownSizeComponent
+  SVGNamespaces
+  rangeForSection
 }

@@ -1,14 +1,21 @@
-import {Component, createContext} from "react"
+import {Component, createContext, useContext} from "react"
 import h from "react-hyperscript"
 import {join, resolve} from "path"
 import LocalStorage from "./sections/storage"
 import update from "immutability-helper"
-
+import {
+  AssetPathProvider,
+  AssetPathContext
+} from '@macrostrat/column-components/dist/cjs/context'
+import {
+  GeologicPatternProvider
+} from '@macrostrat/column-components'
 ## Set whether we are on the backend or frontend
 global.ELECTRON = 'electron'
 global.WEB = 'web'
 global.PLATFORM = ELECTRON
 global.SERIALIZED_QUERIES = false
+global.BASE_DIR = null
 try
   require 'electron'
   global.BASE_DIR = resolve join(__dirname,'..')
@@ -19,31 +26,46 @@ catch
 console.log "Running application on #{PLATFORM}"
 
 Platform = Object.freeze {
-  DESKTOP: 1
+  ELECTRON: 1
   WEB: 2
   PRINT: 3
 }
 
-PlatformContext = createContext()
+DarkModeContext = createContext(false)
+
+DarkModeProvider = (props)->
+  {children} = props
+  try
+    {systemPreferences} = require('electron')
+    value = systemPreferences.isDarkMode()
+  catch
+    value = false
+  h DarkModeContext.Provider, {value}, children
+
+useDarkMode = ->
+  useContext(DarkModeContext)
+
+PlatformContext = createContext({})
 
 class PlatformProvider extends Component
   constructor: (props)->
-    WEB = false
-    ELECTRON = true
     platform = Platform.ELECTRON
+    global.BASE_DIR ?= join(__dirname, "..")
+
     baseUrl = 'file://'+resolve(BASE_DIR)
     editable = true
     if global.PLATFORM == WEB
       platform = Platform.WEB
-      WEB = true
       editable = false
-      baseUrl = BASE_URL
+      baseUrl = "/"
 
     super props
     @state = {
-      serializedQueries: not ELECTRON
+      serializedQueries: not platform == Platform.ELECTRON
       inEditMode: false
-      platform, WEB, ELECTRON, editable, baseUrl
+      platform,
+      editable,
+      baseUrl
     }
 
     @storage = new LocalStorage 'edit-mode'
@@ -57,9 +79,32 @@ class PlatformProvider extends Component
     if @state.platform == Platform.WEB
       serializedQueries = true
     {children, rest...} = @props
-    value = {rest..., restState..., serializedQueries, updateState, computePhotoPath,
-             resolveSymbol, resolveLithologySymbol}
-    h PlatformContext.Provider, {value}, children
+    value = {
+      rest...,
+      restState...,
+      serializedQueries,
+      updateState,
+      computePhotoPath,
+      resolveSymbol,
+      resolveLithologySymbol
+    }
+
+    {resolveSymbol} = @props
+    if not resolveSymbol?
+      resolveSymbol = @resolveSymbol
+
+    assetPathFunctions = {resolveSymbol, resolveLithologySymbol}
+    h DarkModeProvider, [
+      h GeologicPatternProvider, {
+        resolvePattern: @resolveLithologySymbol
+      }, [
+        h AssetPathProvider, {
+          @resolveSymbol
+        }, [
+          h PlatformContext.Provider, {value}, children
+        ]
+      ]
+    ]
 
   path: (args...)=>
     join(@state.baseUrl, args...)
@@ -68,7 +113,8 @@ class PlatformProvider extends Component
     @setState val
 
   computePhotoPath: (photo)=>
-    if @state.ELECTRON
+    return null unless photo.id?
+    if @state.platform == Platform.ELECTRON
       return @path( '..', 'Products', 'webroot', 'Sections', 'photos', "#{photo.id}.jpg")
     else
       return @path( 'photos', "#{photo.id}.jpg")
@@ -76,24 +122,28 @@ class PlatformProvider extends Component
     return photo.path
 
   resolveSymbol: (sym)=>
+    console.log(sym)
     try
-      if @state.ELECTRON
-        q = resolve join(BASE_DIR, 'assets', sym)
+      if @state.platform == Platform.ELECTRON
+        q = resolve(join(BASE_DIR, 'assets', 'column-patterns', sym))
         return 'file://'+q
       else
-        return join BASE_URL, 'assets', sym
+        return join BASE_URL, 'column-symbols', sym
     catch
       return ''
 
-  resolveLithologySymbol: (id)=>
-    try
-      if @state.ELECTRON
-        q = require.resolve "geologic-patterns/assets/png/#{id}.png"
-        return 'file://'+q
-      else
-        return @path 'assets', 'lithology-patterns',"#{id}.png"
-    catch
-      return ''
+  resolveLithologySymbol: (id, opts={})=>
+    {svg} = opts
+    svg ?= false
+    return null if not id?
+    if @state.platform == Platform.ELECTRON
+      fp = "png/#{id}.png"
+      if svg then fp = "svg/#{id}.svg"
+      proj = process.env.PROJECT_DIR or ""
+      q = join proj, "versioned/deps/geologic-patterns/assets", fp
+      return 'file://'+q
+    else
+      return @path 'lithology-patterns', "#{id}.png"
 
   componentDidUpdate: (prevProps, prevState)->
     # Shim global state
@@ -106,4 +156,12 @@ class PlatformProvider extends Component
 
 PlatformConsumer = PlatformContext.Consumer
 
-export {PlatformContext, Platform, PlatformProvider, PlatformConsumer}
+export {
+  PlatformContext,
+  Platform,
+  PlatformProvider,
+  PlatformConsumer,
+  DarkModeContext,
+  DarkModeProvider,
+  useDarkMode
+}

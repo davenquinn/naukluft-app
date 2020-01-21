@@ -1,11 +1,16 @@
-import {join} from "path"
+import {join, resolve, basename} from "path"
 import Promise from "bluebird"
 import {getUID, getHash} from "./util"
 import {getJSON} from "../util"
+import {useState} from 'react'
+import useAsyncEffect from 'use-async-effect'
 
-if PLATFORM == ELECTRON
+if global.PLATFORM == global.ELECTRON
+  {PROJECT_DIR} = process.env
+  if not PROJECT_DIR?
+    throw "Environment variable PROJECT_DIR must be defined."
   {db, storedProcedure, serializableQueries} = require './backend'
-  QUERY_DIRECTORY = join(process.env.PROJECT_DIR,"versioned","Products","webroot","queries")
+  QUERY_DIRECTORY = join(PROJECT_DIR,"versioned","Products","webroot","queries")
 else
   QUERY_DIRECTORY = join(BASE_URL,"queries")
 
@@ -16,29 +21,37 @@ query = (id, values, opts={})->
   getting query variables
   ###
   {baseDir} = opts
-  if not SERIALIZED_QUERIES
+  if not id?
+    res = []
+  if global.PLATFORM == global.ELECTRON
     # Get data directly from database (only works on backend)
-    func = -> db.query storedProcedure(id, {baseDir}), values
-    if not __queryList?
-      ## Get a list of potentially serializable queries
-      # before returning queries
-      p = serializableQueries()
-        .then (d)-> __queryList = d
+    res = await db.query storedProcedure(id, {baseDir}), values
+  else
+    # Get JSON from our library of stored queries
+    v = basename(id,'.sql')
+    console.log(v,values)
+    if values?
+      fn = "#{v}-#{getHash(v,values)}.json"
     else
-      p = null
-    return Promise.resolve(p)
-      .then ->
-        db.query storedProcedure(id, {baseDir}), values
+      fn = "#{v}.json"
 
-  # We get JSON from our library of stored queries
-  fn = id+"_"+getHash(id,values)+'.json'
-  console.log "Getting query file `#{fn}` for query `#{id}` with values #{values}"
-  data = getJSON "#{QUERY_DIRECTORY}/#{fn}"
-  return data
+    res = await getJSON join(QUERY_DIRECTORY,fn)
+  return res
+
+useQuery = (sql, args=[])->
+  ###
+  A react hook to use the result of a query
+  ###
+  [result, updateResult] = useState(null)
+  runQuery = ->
+    res = await query(sql, args)
+    updateResult(res)
+  useAsyncEffect runQuery, args
+  return result
 
 export {
   query
+  useQuery
   storedProcedure
   db
 }
-

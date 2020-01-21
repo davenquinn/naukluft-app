@@ -1,0 +1,45 @@
+.section-pane-static
+  width 1200px
+  height 1200px // figure out how to automate this
+  .generalized-sections
+    flex-grow 1
+    display flex
+    flex-direction row
+    width 1200px
+    //justify-content space-between
+  .section-column
+    z-index: 10
+    flex-grow 1
+    &:first-child
+      flex-grow 0.2
+      margin-left: 10em
+    &:last-child
+      flex-grow 0
+      margin-right: 500px
+
+.sequence
+  position relative
+  &>svg
+    position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+
+.underlay
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  z-index 1
+
+:global
+  .section-positioner
+    position relative
+
+  .section-page.regional-sections
+    .section-pane-static
+      width 1300px
+      height 900px
+      margin 2em 4em

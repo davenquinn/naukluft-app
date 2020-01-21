@@ -1,0 +1,29 @@
+width=300px
+
+:global(#settings)
+  border-left: 2px solid #444
+  h2:first-child
+    margin-top: 0
+
+.settings-panel
+  height: 100vh
+  overflow-y scroll
+  transition: width 800ms ease-in-out
+  padding: 1em
+  padding-left 2em
+  width: width
+  border-left 1px solid #aaa
+  box-shadow:-4px 0px 5px 0px #aaa
+  z-index 20
+
+  &.settings-enter,&.settings-exit
+    width 0em
+
+  &.settings-enter-active
+    width: width
+
+  &.settings-exit-active
+    width: 0em
+
+  div
+    margin-bottom: 1em

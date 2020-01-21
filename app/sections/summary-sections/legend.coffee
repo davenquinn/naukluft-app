@@ -1,8 +1,9 @@
 import {Component} from "react"
 import h from "react-hyperscript"
 import classNames from "classnames"
-import {SymbolLegend} from "../column/symbol-column"
-import {FaciesDescriptionSmall, FaciesContext, FaciesSwatch} from "../facies-descriptions"
+import {SymbolLegend} from "@macrostrat/column-components/dist/cjs/symbol-column"
+import {FaciesContext} from "@macrostrat/column-components"
+import {FaciesDescriptionSmall, FaciesSwatch} from "@macrostrat/column-components/dist/cjs/editor/facies"
 
 class FaciesLegend extends Component
   @defaultProps: {

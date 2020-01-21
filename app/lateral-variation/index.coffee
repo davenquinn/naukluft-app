@@ -6,7 +6,7 @@ import {flatten, zip} from "underscore"
 import "./main.styl"
 import "../main.styl"
 import {query as baseQuery} from "../db"
-import {lithology} from "stratigraphic-column/src/sed-patterns"
+#import {lithology} from "stratigraphic-column/src/sed-patterns"
 import labels from "./labels.json"
 
 query = (id)->

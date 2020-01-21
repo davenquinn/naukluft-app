@@ -4,7 +4,7 @@ import "./main.styl"
 import {select} from "d3-selection"
 import h from "react-hyperscript"
 import moment from "moment"
-import {getSectionData} from "../sections/section-data"
+import {getSectionData} from "../sections/data-providers"
 import {SectionPanel} from "../sections/panel"
 import CarbonIsotopesPanel from "../carbon-isotopes"
 import LateralVariation from "../lateral-variation/component"
@@ -14,8 +14,8 @@ import "../sections/settings.styl"
 import "../main.styl"
 
 module.exports = (el, cb)->
-
-  sections = await getSectionData()
+  ## Need to replace this with new code...
+  ##sections = await getSectionData()
 
   class Page extends Component
     render: ->
