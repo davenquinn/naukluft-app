@@ -1,17 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {getJSON} from "../util"
 import {join} from "path"
-import Promise from "bluebird"
 import useAsyncEffect from 'use-async-effect'
-import {Component, createContext, useContext, useState} from "react"
-import {useQuery} from '~/db'
-import {db, query, storedProcedure} from "./db"
+import {createContext, useContext, useState} from "react"
+import {query, useQuery} from '~/db'
 import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
 import {PlatformContext} from '../platform'
@@ -23,7 +14,6 @@ import {ColumnDivisionsProvider} from "./column/data-source"
 import {SymbolProvider} from './components/symbols'
 import h, {compose} from "@macrostrat/hyper"
 import {IsotopesDataProvider} from './summary-sections/chemostrat/data-manager'
-import sectionSurfaceQuery from "./sql/section-surface.sql"
 import photoQuery from "./sql/photo.sql"
 import sectionsQuery from "./sql/sections.sql"
 import "./main.styl"
@@ -84,37 +74,23 @@ const PhotoLibraryProvider = function({children}) {
 }
 
 const SectionDataContext = createContext({})
-const SectionProvider = (props)=>{
-  const {children} = props
+const SectionProvider = ({children})=>{
   const [sections, setSections] = useState(null)
   useAsyncEffect(async ()=>setSections(await getSectionData()), [])
   if (sections == null) return null
   return h(SectionDataContext.Provider, {value: {sections}}, children)
 }
 
-class SectionDataProvider extends Component {
-  constructor(props){
-    super(props)
-  }
-  render() {
-    // Surfaces really shouldn't be tracked by facies provider
-    return h(LithologyProvider, [
-      h(ColumnDivisionsProvider, [
-        h(SymbolProvider, [
-          h(FaciesProvider, [
-            h(PhotoLibraryProvider, [
-              h(SequenceStratProvider, null, [
-                h(IsotopesDataProvider, null, [
-                  h(SectionProvider, null, this.props.children)
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-}
+const SectionDataProvider = compose(
+  LithologyProvider,
+  ColumnDivisionsProvider,
+  SymbolProvider,
+  FaciesProvider,
+  PhotoLibraryProvider,
+  SequenceStratProvider,
+  IsotopesDataProvider,
+  SectionProvider
+)
 
 const SectionConsumer = SectionDataContext.Consumer
 
