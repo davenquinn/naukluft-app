@@ -90,14 +90,17 @@ new SerializableQuery(ftQuery)
 import generalizedSections from '../sections/sql/generalized-section.sql'
 new SerializableQuery(generalizedSections)
 
+import symbols from '../sections/sql/symbols.sql'
+new SerializableQuery(symbols)
+
+
 
 import sq1 from '../sections/sql/flooding-surface.sql'
 #import sq2 from '../sections/sql/section-samples.sql'
-import sq3 from '../sections/sql/section-symbols.sql'
 import sq4 from '../sections/sql/section-lithology.sql'
 import sq5 from '../sections/sql/log-notes.sql'
 
-allSectionQueries =  [sq1,sq3,sq4,sq5]
+allSectionQueries =  [sq1,sq4,sq5]
 
 alreadyLoaded = false
 createSerializedQueries = (sectionLabels)->

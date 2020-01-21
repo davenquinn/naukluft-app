@@ -1,7 +1,7 @@
 import h from 'react-hyperscript'
 import {render} from 'react-dom'
 import {SummarySectionsStatic} from '../index'
-import {SectionConsumer} from '~/sections/section-data'
+import {SectionConsumer} from '~/sections/data-providers'
 import {StaticFigureWrapper} from '~/__static-figure/wrapper'
 
 fn = (props)->

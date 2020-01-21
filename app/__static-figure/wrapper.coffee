@@ -4,7 +4,7 @@ This will only build with Parcel
 import h from 'react-hyperscript'
 import {PlatformProvider} from '../platform'
 #import symbols from '../../assets/**/*.svg'
-import {SectionDataProvider} from '../sections/section-data'
+import {SectionDataProvider} from '../sections/data-providers'
 import './fonts.css'
 import "../bundled-deps/column-components/dist/column-components.css"
 

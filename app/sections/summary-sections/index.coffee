@@ -1,11 +1,11 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {Component, useContext, createContext} from "react"
 import {useSettings, SettingsProvider} from "@macrostrat/column-components"
-import {getSectionData} from "../section-data"
+import {getSectionData} from "../data-providers"
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {SVGSectionComponent} from "./column"
 import {SectionNavigationControl} from "../util"
-import {SectionDataContext} from '../section-data'
+import {SectionDataContext} from '../data-providers'
 import {
   SectionLinkOverlay,
   SectionPositionProvider

@@ -2,7 +2,7 @@ import {createContext, useContext} from 'react'
 import h from 'react-hyperscript'
 import lithostratSurface from './sql/lithostratigraphy-surface.sql'
 import {useQuery} from "~/db"
-import {SectionDataContext} from '../section-data'
+import {SectionDataContext} from '../data-providers'
 import {
   ColumnProvider as BaseColumnProvider,
   ColumnContext
@@ -29,6 +29,7 @@ const ColumnProvider = (props)=>{
   const {id, zoom, children, filterDivisions} = props
 
   const {sections} = useContext(SectionDataContext)
+  if (sections == null) return null
   const row = sections.find(d => d.id == id)
 
   let divisions = useColumnDivisions(id)

@@ -4,7 +4,7 @@ import h from "@macrostrat/hyper"
 import "../main.styl"
 import {NavLink} from "../../nav"
 import LocalStorage from "../storage"
-import {getSectionData} from "../section-data"
+import {getSectionData} from "../data-providers"
 import {SectionComponent} from "./column"
 import {PlatformContext} from "../../platform"
 import {BaseSectionPage} from '../components'
