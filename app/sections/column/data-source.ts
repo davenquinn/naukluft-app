@@ -14,7 +14,7 @@ import q from '../sql/section-lithology.sql';
 interface ColumnDivision {
   id: number,
   surface: number,
-  section_id: number,
+  section_id: string,
   bottom: number,
   top: number
 }

@@ -122,7 +122,7 @@ const SectionPane = function(props){
         }
         // Top of the last section is taken as the height
         // at which to clip off errant facies
-        const end = parseFloat(surfaces[surfaces.length-1].section_end);
+        const end = parseFloat(surfaces[surfaces.length-1].top);
 
         return h(GeneralizedSection, {
           id: key,

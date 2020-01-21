@@ -7,23 +7,11 @@ import {
 import {useContext, useRef, useState, useLayoutEffect} from 'react'
 import styles from './main.styl'
 import {format} from 'd3-format'
+import {GeneralizedDivision} from './types'
 
 const fmt = format('i')
 
 const h = hyperStyled(styles)
-
-interface GeneralizedDivision {
-  id: number,
-  section: string,
-  original_section: string,
-  original_bottom: number,
-  original_top: number,
-  bottom: number,
-  top: number,
-  facies_color: string,
-  surface: number,
-  section_end: number
-}
 
 const GeneralizedAxis = function(props){
  const {height, zoom, scale, pixelsPerMeter} = useContext(ColumnContext)
