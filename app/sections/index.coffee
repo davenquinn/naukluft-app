@@ -113,7 +113,7 @@ SectionIndex = ({match})->
       }
       h Route, {
         path: match.url+'/:id/height/:height', render: (props)->
-          h SectionConsumer, null, ({sections})->
+          h SectionConsumer, null, (sections)->
             {id,height} = props.match.params
             section = sections.find (d)->d.id == id
             if not section?
@@ -123,7 +123,7 @@ SectionIndex = ({match})->
       h Route, {
         path: match.url+'/:id/',
         render: (props)->
-          h SectionConsumer, null, ({sections})->
+          h SectionConsumer, null, (sections)->
             {id,height} = props.match.params
             section = sections.find (d)->d.id == id
             if not section?
