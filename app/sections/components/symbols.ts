@@ -1,4 +1,4 @@
-import h from "@macrostrat/hyper";
+import h from 'react-hyperscript'
 import {SymbolColumn} from "@macrostrat/column-components";
 import {useQuery} from "~/db";
 import sql from "../sql/section-symbols.sql";

@@ -1,6 +1,6 @@
 import {hyperStyled} from "@macrostrat/hyper"
 import {group} from 'd3-array'
-import {SectionSurfacesContext} from '../generalized-sections/data-provider'
+import {ColumnDivisionsContext} from '../generalized-sections/data-provider'
 import {useContext} from 'react'
 import {useCanvasSize} from "../components/link-overlay"
 import {updateSectionE} from './helpers'
@@ -13,12 +13,12 @@ import styles2 from './main.styl'
 h = hyperStyled({styles...,styles2...})
 
 SectionPane = (props)->
-  {surfaces} = useContext(SectionSurfacesContext)
+  {divisions} = useContext(ColumnDivisionsContext)
   sz = useCanvasSize()
-  surfaceMap = group surfaces, (s)->s.section
-  sections = Array.from surfaceMap, ([key,surfaces])->
-    surfaces.sort (a,b)->a.bottom-b.bottom
-    return {key,surfaces}
+  surfaceMap = group divisions, (s)->s.section
+  sections = Array.from surfaceMap, ([key,divisions])->
+    divisions.sort (a,b)->a.bottom-b.bottom
+    return {key,divisions}
 
   updateSectionE(sections)
 

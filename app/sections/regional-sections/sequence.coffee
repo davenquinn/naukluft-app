@@ -71,16 +71,16 @@ SequenceCorrelations = (props)->
     bottomSurface,
     paddingBottom,
     width: 1200
-  }, sections.map ({key,surfaces})->
+  }, sections.map ({key,divisions})->
     start = 0
     # Bottom is the first division with an assigned facies
-    for d in surfaces
+    for d in divisions
       if d.facies? and d.facies != 'none'
         start = d.bottom
         break
     # Top of the last section is taken as the height
     # at which to clip off errant facies
-    end = surfaces[surfaces.length-1].top
+    end = divisions[divisions.length-1].top
 
     h FaciesSection, {
       id: key
@@ -88,7 +88,7 @@ SequenceCorrelations = (props)->
       key,
       offsetTop: offsets[key] or 0
       range: [start, end]
-      divisions: surfaces
+      divisions
       bottomSurface
       topSurface
       rest...
