@@ -31,7 +31,8 @@ const modifyConfig = (cfg)=>{
 
   jsRule.use.options.plugins = [
     "@babel/plugin-proposal-nullish-coalescing-operator",
-    "@babel/plugin-proposal-optional-chaining"
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-class-properties"
   ]
 
   console.log(jsRule, JSON.stringify(cfg.module.rules, null, 4));
