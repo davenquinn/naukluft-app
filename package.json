@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch:main": "electron-webpack dev",
-    "watch:column": "cd app/bundled-deps/column-components && npm run dev",
+    "watch:column": "cd app/bundledDeps/column-components && npm run dev",
     "watch:web": "scripts/bundle.zsh",
     "compile:web": "webpack -c webpack.config.js",
     "start": "concurrently npm:watch:main npm:watch:column",

@@ -6,7 +6,6 @@ import {PlatformContext, PlatformProvider} from "./platform"
 import React from "react"
 import ReactDOM from "react-dom"
 import {HashRouter,Route,Link, Switch} from "react-router-dom"
-import {mouseTrap} from "react-mousetrap"
 import h from "react-hyperscript"
 import {FocusStyleManager, Icon} from "@blueprintjs/core"
 FocusStyleManager.onlyShowFocusOnTabs()

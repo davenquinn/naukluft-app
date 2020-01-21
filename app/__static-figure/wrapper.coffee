@@ -6,7 +6,7 @@ import {PlatformProvider} from '../platform'
 #import symbols from '../../assets/**/*.svg'
 import {SectionDataProvider} from '../sections/data-providers'
 import './fonts.css'
-import "../bundled-deps/column-components/dist/column-components.css"
+import "../bundledDeps/column-components/dist/column-components.css"
 
 resolveSymbol = (sym)->
   return null unless sym?

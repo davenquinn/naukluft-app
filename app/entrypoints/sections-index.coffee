@@ -3,7 +3,6 @@ import '@babel/polyfill'
 import React from "react"
 import ReactDOM from "react-dom"
 import {HashRouter,Route,Link, Switch, Redirect} from "react-router-dom"
-import {mouseTrap} from "react-mousetrap"
 import h from "react-hyperscript"
 import {FocusStyleManager} from "@blueprintjs/core"
 FocusStyleManager.onlyShowFocusOnTabs()

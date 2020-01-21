@@ -8,7 +8,6 @@ import {
   useEffect,
   forwardRef
 } from "react"
-import useConstant from 'use-constant'
 import T from "prop-types"
 import {hyperStyled} from "@macrostrat/hyper"
 import classNames from "classnames"
