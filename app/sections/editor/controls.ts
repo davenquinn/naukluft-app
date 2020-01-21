@@ -38,9 +38,9 @@ class CorrelatedSurfaceControl extends Component {
     const {onChange, interval} = this.props;
 
     const options = surfaces.map(d => ({
-      value: d.id,
+      value: d.surface_id,
       label: h("div.correlated-surface-row", [
-        h("span.bp3-code", d.id),
+        h("span.bp3-code", d.surface_id),
         " ",
         h("span", d.note)
       ])
