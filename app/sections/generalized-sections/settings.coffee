@@ -21,6 +21,7 @@ defaultSettings = {
     #{value: 'sequence-stratigraphy', label: 'Sequence Strat.'}
   ]
   showFacies: true
+  showSymbols: true
   showLithology: true
   showGrainsize: true
   showFaciesTracts: false

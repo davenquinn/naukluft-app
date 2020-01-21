@@ -22,6 +22,7 @@ defaultSettings = {
   activeMode: 'normal'
   showLegend: true
   showFacies: true
+  showSymbols: true
   showLithology: true
   showGrainsize: true
   showFaciesTracts: false
