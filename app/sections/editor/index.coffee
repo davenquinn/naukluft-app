@@ -14,12 +14,12 @@ import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components
 import {ColumnDivisionsContext} from "../column/data-source"
 import {LithologyPicker, LithologySymbolPicker, FillPatternControl} from '@macrostrat/column-components/dist/cjs/editor/lithology-picker'
 import {
-  CorrelatedSurfaceControl,
   SurfaceOrderSlider,
   HorizontalPicker,
   BoundaryStyleControl
   RaisedSelect
 } from '@macrostrat/column-components/dist/cjs/editor/controls'
+import {CorrelatedSurfaceControl} from './controls'
 import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker'
 
 import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize"
