@@ -1,5 +1,5 @@
 import {Component, useContext} from "react"
-import h from "react-hyperscript"
+import h from "@macrostrat/hyper"
 import {CSSTransition} from "react-transition-group"
 import {Switch, Slider, Button} from "@blueprintjs/core"
 import {PlatformContext} from "../../platform"

@@ -64,7 +64,6 @@ const SectionBreak = (props: SectionBreakProps)=>{
   }, [ref])
 
   const textHeight = rect?.height ?? 0
-  console.log(rect?.height, height)
   const showPrefix = (textHeight < height-2*textPadding)
 
 

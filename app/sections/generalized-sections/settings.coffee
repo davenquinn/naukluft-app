@@ -28,17 +28,16 @@ defaultSettings = {
   showSequenceStratigraphy: true
 }
 
-GeneralizedSectionSettings = ->
-  h BaseSettingsPanel, [
-    h 'h5', "Components"
+GeneralizedSectionSettings = ({isOpen})->
+  h BaseSettingsPanel, {isOpen}, [
+    h 'h3', "Components"
     h SettingsSwitch, {id: 'showSequenceStratigraphy', label: "Sequence-stratigraphic correlations"}
-    h SettingsSwitch, {id: 'showLithology', label: "Simplified lithology"}
+    h SettingsSwitch, {id: 'showLithology', label: "Lithology patterns"}
     h SettingsSwitch, {id: 'showFacies', label: "Facies"}
     h SettingsSwitch, {id: 'showFaciesTracts', label: 'Facies tracts'}
-    h 'hr'
     h SequenceStratControlPanel
     h 'div', [
-      h 'h5', "Backend"
+      h 'h3', "Backend"
       h SerializedQueriesControl
     ]
   ]
