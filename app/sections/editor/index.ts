@@ -7,28 +7,22 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 let helpers;
-import {findDOMNode} from "react-dom";
 import {Component, useContext} from "react";
 import {Dialog, Button, Intent, ButtonGroup, Alert, Slider, Switch} from "@blueprintjs/core";
 import {DeleteButton} from '@macrostrat/ui-components';
-import Select from 'react-select';
 import {format} from "d3-format";
 
-import {FaciesDescriptionSmall, FaciesCard} from "@macrostrat/column-components/dist/cjs/editor/facies";
-import {FaciesContext, ColumnContext} from "@macrostrat/column-components/dist/cjs/context";
+import {FaciesContext} from "@macrostrat/column-components";
 import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base";
 import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/cjs/editor/util";
-//import "react-select/dist/react-select.css"
 
 import {ColumnDivisionsContext} from "../column/data-source";
 import {
   LithologyPicker,
   LithologySymbolPicker,
-  FillPatternControl
 } from '@macrostrat/column-components/dist/cjs/editor/lithology-picker';
 import {
   SurfaceOrderSlider,
-  HorizontalPicker,
   BoundaryStyleControl,
   RaisedSelect
 } from '@macrostrat/column-components/dist/cjs/editor/controls';
@@ -36,8 +30,6 @@ import {CorrelatedSurfaceControl} from './controls';
 import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker';
 
 import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize";
-import {IntervalShape} from '@macrostrat/column-components/dist/cjs/editor/types';
-import T from 'prop-types';
 import {dirname} from "path";
 import {hyperStyled} from "@macrostrat/hyper";
 import styles from "./style.styl";
@@ -116,7 +108,7 @@ const FaciesTractControl = function(props){
   });
 };
 
-const updateInterval = async function(id, columns){
+const updateIntervalQuery = async function(id, columns){
   const {TableName, update} = helpers;
   const tbl = new TableName("section_lithology", "section");
 
@@ -126,155 +118,138 @@ const updateInterval = async function(id, columns){
   return await db.none(s);
 };
 
-class ModalEditor extends Component {
-  static initClass() {
-    this.defaultProps = {onUpdate() {}};
-  }
-  constructor(props){
-    super(props);
-    this.state = {
-      facies: [],
-      isAlertOpen: false
-    };
-  }
-  render() {
-    const {interval, height, section} = this.props;
-    if (interval == null) { return null; }
-    const {id, top, bottom, facies} = interval;
-    const hgt = fmt(height);
-    const txt = `interval starting at ${hgt} m`;
+const ModalEditor = (props)=>{
+  const {interval, height, section} = props;
+  if (interval == null) { return null; }
+  const {id, top, bottom, facies} = interval;
+  const hgt = fmt(height);
+  const txt = `interval starting at ${hgt} m`;
 
-    return h(Dialog, {
-      className: "bp3-minimal",
-      title: h(IntervalEditorTitle, {
-        title: `Section ${section}`,
-        interval
-      }),
-      isOpen: this.props.isOpen,
-      onClose: this.props.closeDialog,
-      style: {top: '10%', zIndex: 3, position: 'relative'}
-    }, [
-      h('div.bp3-dialog-body', [
-        h(LithologyControls, {
-          interval,
-          update: this.update
-        }),
-        h(LabeledControl, {
-          title: 'Grainsize',
-          is: PickerControl,
-          vertical: false,
-          isNullable: true,
-          states: grainSizes.map(d => ({
-            label: d,
-            value: d
-          })),
-          activeState: interval.grainsize,
-          onUpdate: grainsize=> {
-            return this.update({grainsize});
-          }
-        }),
-        h(Switch, {
-          label: 'Covered',
-          checked: interval.covered,
-          onChange: d=> {
-            return this.update({covered: !interval.covered});
-          }
-        }),
-        h(LabeledControl, {
-          title: 'Surface expression',
-          is: BoundaryStyleControl,
-          interval,
-          onUpdate: d=> this.update({definite_boundary: d})
-        }),
-        h(LabeledControl, {
-          title: 'Facies',
-          is: FaciesPicker,
-          interval,
-          onChange: facies=> this.update({facies})
-        }),
-        h(LabeledControl, {
-          title: 'Facies tract',
-          is: FaciesTractControl,
-          interval,
-          onUpdate: option=> {
-            const facies_tract = option.value;
-            return this.update({facies_tract});
-          }
-        }),
-        h(LabeledControl, {
-          title: 'Surface type',
-          is: PickerControl,
-          vertical: false,
-          isNullable: true,
-          states: surfaceTypes,
-          activeState: interval.surface_type,
-          onUpdate: surface_type=> {
-            return this.update({surface_type});
-          }
-        }),
-        h(LabeledControl, {
-          title: 'Surface order',
-          is: SurfaceOrderSlider,
-          interval,
-          onChange: this.update
-        }),
-        h(LabeledControl, {
-          title: 'Flooding surface (negative is regression)',
-          is: PickerControl,
-          vertical: false,
-          isNullable: true,
-          states: floodingSurfaceOrders.map(function(d){
-            let lbl = `${d}`;
-            if ((d == null)) { lbl = 'None'; }
-            return {label: d, value: d};}),
-          activeState: interval.flooding_surface_order,
-          onUpdate: flooding_surface_order=> {
-            return this.update({flooding_surface_order});
-          }
-        }),
-        h(LabeledControl, {
-          title: 'Correlated surface',
-          is: CorrelatedSurfaceControl,
-          interval,
-          onChange: this.update
-        }),
-        h(ButtonGroup, [
-          h(DeleteButton, {
-            itemDescription: "the "+txt,
-            handleDelete: () => {
-              if (this.props.removeInterval == null) { return; }
-              return this.props.removeInterval(id);
-            }
-          }, "Delete this interval"),
-          h(Button, {
-            onClick: () => {
-              if (this.props.addInterval == null) { return; }
-              return this.props.addInterval(height);
-            }
-          }, `Add interval starting at ${fmt(height)} m`)
-        ])
-      ])
-    ]);
-  }
-
-  update = async columns=> {
-    await updateInterval(this.props.interval.id, columns);
-    return this.props.onUpdate();
+  const updateInterval = async columns => {
+    await updateIntervalQuery(props.interval.id, columns);
+    return props.onUpdate();
   };
+
+  return h(Dialog, {
+    className: "bp3-minimal",
+    title: h(IntervalEditorTitle, {
+      title: `Section ${section}`,
+      interval
+    }),
+    isOpen: props.isOpen,
+    onClose: props.closeDialog,
+    style: {top: '10%', zIndex: 3, position: 'relative'}
+  }, [
+    h('div.bp3-dialog-body', [
+      h(LithologyControls, {
+        interval,
+        update: updateInterval
+      }),
+      h(LabeledControl, {
+        title: 'Grainsize',
+        is: PickerControl,
+        vertical: false,
+        isNullable: true,
+        states: grainSizes.map(d => ({
+          label: d,
+          value: d
+        })),
+        activeState: interval.grainsize,
+        onUpdate: grainsize=> {
+          return updateInterval({grainsize});
+        }
+      }),
+      h(Switch, {
+        label: 'Covered',
+        checked: interval.covered,
+        onChange: d=> {
+          return updateInterval({covered: !interval.covered});
+        }
+      }),
+      h(LabeledControl, {
+        title: 'Surface expression',
+        is: BoundaryStyleControl,
+        interval,
+        onUpdate: d=> updateInterval({definite_boundary: d})
+      }),
+      h(LabeledControl, {
+        title: 'Facies',
+        is: FaciesPicker,
+        interval,
+        onChange: facies=> updateInterval({facies})
+      }),
+      h(LabeledControl, {
+        title: 'Facies tract',
+        is: FaciesTractControl,
+        interval,
+        onUpdate: option=> {
+          const facies_tract = option.value;
+          return updateInterval({facies_tract});
+        }
+      }),
+      h(LabeledControl, {
+        title: 'Surface type',
+        is: PickerControl,
+        vertical: false,
+        isNullable: true,
+        states: surfaceTypes,
+        activeState: interval.surface_type,
+        onUpdate: surface_type=> {
+          return updateInterval({surface_type});
+        }
+      }),
+      h(LabeledControl, {
+        title: 'Surface order',
+        is: SurfaceOrderSlider,
+        interval,
+        onChange: updateInterval
+      }),
+      h(LabeledControl, {
+        title: 'Flooding surface (negative is regression)',
+        is: PickerControl,
+        vertical: false,
+        isNullable: true,
+        states: floodingSurfaceOrders.map(function(d){
+          let lbl = `${d}`;
+          if ((d == null)) { lbl = 'None'; }
+          return {label: d, value: d};}),
+        activeState: interval.flooding_surface_order,
+        onUpdate: flooding_surface_order=> {
+          return updateInterval({flooding_surface_order});
+        }
+      }),
+      h(LabeledControl, {
+        title: 'Correlated surface',
+        is: CorrelatedSurfaceControl,
+        interval,
+        onChange: updateInterval
+      }),
+      h(ButtonGroup, [
+        h(DeleteButton, {
+          itemDescription: "the "+txt,
+          handleDelete: () => {
+            if (props.removeInterval == null) return
+            return props.removeInterval(id);
+          }
+        }, "Delete this interval"),
+        h(Button, {
+          onClick: () => {
+            if (props.addInterval == null) return
+            return props.addInterval(height);
+          }
+        }, `Add interval starting at ${fmt(height)} m`)
+      ])
+    ])
+  ]);
 }
-ModalEditor.initClass();
+
+ModalEditor.defaultProps = {onUpdate() {}}
 
 class IntervalEditor extends Component {
   constructor(...args) {
-    {
-      // Hack: trick Babel/TypeScript into allowing this before super.
-      if (false) { super(); }
-      let thisFn = (() => { return this; }).toString();
-      let thisName = thisFn.match(/return (?:_assertThisInitialized\()*(\w+)\)*;/)[1];
-      eval(`${thisName} = this;`);
-    }
+    super(...args)
     this.updateFacies = this.updateFacies.bind(this);
-    super(...args);
+
   }
 
   static initClass() {
