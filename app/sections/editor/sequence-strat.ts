@@ -6,44 +6,18 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let helpers;
-import {Component, useContext} from "react";
-import {Dialog, Button, Intent, ButtonGroup, Alert, Slider, Switch} from "@blueprintjs/core";
-import {DeleteButton} from '@macrostrat/ui-components';
-import {format} from "d3-format";
+import {Tabs, Tab, Slider} from "@blueprintjs/core";
 
-import {FaciesContext} from "@macrostrat/column-components";
 import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base";
-import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/cjs/editor/util";
+import {LabeledControl} from "@macrostrat/column-components/dist/cjs/editor/util";
 
-import {ColumnDivisionsContext} from "../column/data-source";
 import {
-  LithologyPicker,
-  LithologySymbolPicker,
-} from '@macrostrat/column-components/dist/cjs/editor/lithology-picker';
-import {
-  SurfaceOrderSlider,
-  BoundaryStyleControl,
-  RaisedSelect
+  SurfaceOrderSlider
 } from '@macrostrat/column-components/dist/cjs/editor/controls';
-import {CorrelatedSurfaceControl} from './controls';
-import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker';
 
-import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize";
-import {dirname} from "path";
 import {hyperStyled} from "@macrostrat/hyper";
 import styles from "./style.styl";
 const h = hyperStyled(styles);
-
-import {db, storedProcedure, query} from "~/sections/db";
-
-const baseDir = dirname(require.resolve('..'));
-const sql = id => storedProcedure(id, {baseDir});
-try {
-  ({helpers} = require('~/db/backend'));
-} catch (error) {
-  ({});
-}
 
 const floodingSurfaceOrders = [-1,-2,-3,-4,-5,null,5,4,3,2,1];
 
@@ -52,10 +26,17 @@ const surfaceTypes = [
   {value: 'sb', label: 'Sequence boundary'}
 ];
 
-const SequenceStratControls = (props)=>{
-  const {interval, updateInterval} = props
+const faciesTransitions = [
+  {value: 1, label: 'Flooding (transgression)'},
+  {value: -1, label: 'Shallowing (regression)'}
+];
 
-  return h('div.sequence-strat', [
+const Panel = (props)=>h('div.tab-panel', props)
+
+
+const SurfaceTypeControls = (props)=>{
+  const {interval, updateInterval} = props
+  return h(Panel, [
     h(LabeledControl, {
       title: 'Surface type',
       is: PickerControl,
@@ -72,21 +53,57 @@ const SequenceStratControls = (props)=>{
       is: SurfaceOrderSlider,
       interval,
       onChange: updateInterval
-    }),
+    })
+  ])
+}
+
+const FaciesTransitionsControls = (props)=>{
+  const {interval, updateInterval} = props
+
+  const {flooding_surface_order} = interval
+  console.log(flooding_surface_order)
+
+  const ix = Math.sign(flooding_surface_order)
+
+  return h(Panel, [
     h(LabeledControl, {
-      title: 'Flooding surface (negative is regression)',
+      title: 'Facies transition',
       is: PickerControl,
       vertical: false,
       isNullable: true,
-      states: floodingSurfaceOrders.map(function(d){
-        let lbl = `${d}`;
-        if ((d == null)) { lbl = 'None'; }
-        return {label: d, value: d};}),
-      activeState: interval.flooding_surface_order,
-      onUpdate: flooding_surface_order=> {
-        return updateInterval({flooding_surface_order});
+      states: faciesTransitions,
+      activeState: ix,
+      onUpdate: ix=> {
+        if (ix == null) updateInterval({flooding_surface_order: null})
+        const newOrder = ix*Math.abs(flooding_surface_order)
+        return updateInterval({flooding_surface_order: newOrder});
       }
+    }),
+    h(LabeledControl, {
+      title: 'Importance',
+      is: Slider,
+      min: 1,
+      max: 5,
+      disabled: flooding_surface_order == null,
+      stepSize: 1,
+      value: Math.abs(flooding_surface_order ?? 5),
+      showTrackFill: false,
+      onChange: num => updateInterval({flooding_surface_order: ix*num})
     })
+  ])
+}
+
+const SequenceStratControls = (props)=>{
+  const {interval, updateInterval} = props
+  return h(Tabs, {id: 'sequence-strat-controls', large: true}, [
+    h(Tab, {
+      id: 'new',
+      panel: h(SurfaceTypeControls, {interval, updateInterval})
+  }, "Sequence stratigraphy"),
+  h(Tab, {
+    id: 'old',
+    panel: h(FaciesTransitionsControls, {interval, updateInterval})
+    }, "Facies transition")
   ])
 }
 
