@@ -28,6 +28,7 @@ import {
 } from '@macrostrat/column-components/dist/cjs/editor/controls';
 import {CorrelatedSurfaceControl} from './controls';
 import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker';
+import {SequenceStratControls} from './sequence-strat'
 
 import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize";
 import {dirname} from "path";
@@ -187,37 +188,7 @@ const ModalEditor = (props)=>{
           return updateInterval({facies_tract});
         }
       }),
-      h(LabeledControl, {
-        title: 'Surface type',
-        is: PickerControl,
-        vertical: false,
-        isNullable: true,
-        states: surfaceTypes,
-        activeState: interval.surface_type,
-        onUpdate: surface_type=> {
-          return updateInterval({surface_type});
-        }
-      }),
-      h(LabeledControl, {
-        title: 'Surface order',
-        is: SurfaceOrderSlider,
-        interval,
-        onChange: updateInterval
-      }),
-      h(LabeledControl, {
-        title: 'Flooding surface (negative is regression)',
-        is: PickerControl,
-        vertical: false,
-        isNullable: true,
-        states: floodingSurfaceOrders.map(function(d){
-          let lbl = `${d}`;
-          if ((d == null)) { lbl = 'None'; }
-          return {label: d, value: d};}),
-        activeState: interval.flooding_surface_order,
-        onUpdate: flooding_surface_order=> {
-          return updateInterval({flooding_surface_order});
-        }
-      }),
+      h(SequenceStratControls, {updateInterval, interval}),
       h(LabeledControl, {
         title: 'Correlated surface',
         is: CorrelatedSurfaceControl,
