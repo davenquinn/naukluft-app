@@ -119,9 +119,9 @@ const updateIntervalQuery = async function(id, columns){
   return await db.none(s);
 };
 
-const ModalEditor = (props)=>{
+const EditorInner = (props)=>{
+
   const {interval, height, section} = props;
-  if (interval == null) { return null; }
   const {id, top, bottom, facies} = interval;
   const hgt = fmt(height);
   const txt = `interval starting at ${hgt} m`;
@@ -131,16 +131,7 @@ const ModalEditor = (props)=>{
     return props.onUpdate();
   };
 
-  return h(Dialog, {
-    className: "bp3-minimal",
-    title: h(IntervalEditorTitle, {
-      title: `Section ${section}`,
-      interval
-    }),
-    isOpen: props.isOpen,
-    onClose: props.closeDialog,
-    style: {top: '10%', zIndex: 3, position: 'relative'}
-  }, [
+  return h('div.editor-inner', [
     h('div.bp3-dialog-body', [
       h(LithologyControls, {
         interval,
@@ -211,6 +202,26 @@ const ModalEditor = (props)=>{
         }, `Add interval starting at ${fmt(height)} m`)
       ])
     ])
+  ])
+}
+
+const ModalEditor = (props)=>{
+  const {interval, section, ...rest} = props;
+  if (interval == null) return null
+
+  return h(Dialog, {
+    className: "bp3-minimal",
+    title: h(IntervalEditorTitle, {
+      title: `Section ${section}`,
+      interval
+    }),
+    isOpen: props.isOpen,
+    onClose: props.closeDialog,
+    style: {top: '10%', zIndex: 3, position: 'relative'}
+  }, [
+    h('div.bp3-dialog-body', [
+      h(EditorInner, {interval, ...rest})
+    ])
   ]);
 }
 
@@ -220,7 +231,6 @@ class IntervalEditor extends Component {
   constructor(...args) {
     super(...args)
     this.updateFacies = this.updateFacies.bind(this);
-
   }
 
   static initClass() {

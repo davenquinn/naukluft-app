@@ -103,7 +103,7 @@ const SequenceStratControls = (props)=>{
   h(Tab, {
     id: 'old',
     panel: h(FaciesTransitionsControls, {interval, updateInterval})
-    }, "Facies transition")
+  }, "Facies trends")
   ])
 }
 
