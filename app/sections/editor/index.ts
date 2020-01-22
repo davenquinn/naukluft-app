@@ -8,7 +8,7 @@
  */
 let helpers;
 import {Component, useContext} from "react";
-import {Dialog, Button, Intent, ButtonGroup, Alert, Slider, Switch} from "@blueprintjs/core";
+import {Drawer, Button, Intent, ButtonGroup, Switch} from "@blueprintjs/core";
 import {DeleteButton} from '@macrostrat/ui-components';
 import {format} from "d3-format";
 
@@ -199,7 +199,7 @@ const EditorInner = (props)=>{
             if (props.addInterval == null) return
             return props.addInterval(height);
           }
-        }, `Add interval starting at ${fmt(height)} m`)
+        }, `Add division at ${fmt(height)} m`)
       ])
     ])
   ])
@@ -209,19 +209,19 @@ const ModalEditor = (props)=>{
   const {interval, section, ...rest} = props;
   if (interval == null) return null
 
-  return h(Dialog, {
-    className: "bp3-minimal",
+  return h(Drawer, {
+    className: "bp3-minimal editor-drawer",
     title: h(IntervalEditorTitle, {
       title: `Section ${section}`,
       interval
     }),
     isOpen: props.isOpen,
-    onClose: props.closeDialog,
-    style: {top: '10%', zIndex: 3, position: 'relative'}
+    hasBackdrop: false,
+    enforceFocus: false,
+    //usePortal: false,
+    onClose: props.closeDialog
   }, [
-    h('div.bp3-dialog-body', [
-      h(EditorInner, {interval, ...rest})
-    ])
+    h(EditorInner, {interval, ...rest})
   ]);
 }
 

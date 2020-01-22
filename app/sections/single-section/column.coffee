@@ -161,6 +161,7 @@ class SectionComponent extends Component
               }, [
                 h DivisionEditOverlay, {
                   onClick: @onEditInterval
+                  editingInterval: interval
                   top: padding.top
                   left: padding.left
                   allowEditing: true
