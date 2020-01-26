@@ -82,6 +82,12 @@ const fmt = function(d){
   return val;
 };
 
+const DivisionNavigationControl = (props)=>{
+  return h(ButtonGroup, {vertical: true, small: true}, [
+    h(Button, {small: true, icon: 'caret-up'}),
+    h(Button, {small: true, icon: 'caret-down'})
+  ])
+}
 
 const FaciesTractControl = function(props){
   const {faciesTracts} = useContext(FaciesContext);
@@ -131,97 +137,106 @@ const EditorInner = (props)=>{
     return props.onUpdate();
   };
 
-  return h('div.editor-inner', [
-    h('div.bp3-dialog-body', [
-      h(LithologyControls, {
-        interval,
-        update: updateInterval
-      }),
-      h(LabeledControl, {
-        title: 'Grainsize',
-        is: PickerControl,
-        vertical: false,
-        isNullable: true,
-        states: grainSizes.map(d => ({
-          label: d,
-          value: d
-        })),
-        activeState: interval.grainsize,
-        onUpdate: grainsize=> {
-          return updateInterval({grainsize});
-        }
-      }),
-      h(Switch, {
-        label: 'Covered',
-        checked: interval.covered,
-        onChange: d=> {
-          return updateInterval({covered: !interval.covered});
-        }
-      }),
-      h(LabeledControl, {
-        title: 'Surface expression',
-        is: BoundaryStyleControl,
-        interval,
-        onUpdate: d=> updateInterval({definite_boundary: d})
-      }),
-      h(LabeledControl, {
-        title: 'Facies',
-        is: FaciesPicker,
-        interval,
-        onChange: facies=> updateInterval({facies})
-      }),
-      h(LabeledControl, {
-        title: 'Facies tract',
-        is: FaciesTractControl,
-        interval,
-        onUpdate: option=> {
-          const facies_tract = option.value;
-          return updateInterval({facies_tract});
-        }
-      }),
-      h(SequenceStratControls, {updateInterval, interval}),
-      h(LabeledControl, {
-        title: 'Correlated surface',
-        is: CorrelatedSurfaceControl,
-        interval,
-        onChange: updateInterval
-      }),
-      h(ButtonGroup, [
-        h(DeleteButton, {
-          itemDescription: "the "+txt,
-          handleDelete: () => {
-            if (props.removeInterval == null) return
-            return props.removeInterval(id);
-          }
-        }, "Delete this interval"),
-        h(Button, {
-          onClick: () => {
-            if (props.addInterval == null) return
-            return props.addInterval(height);
-          }
-        }, `Add division at ${fmt(height)} m`)
-      ])
-    ])
-  ])
-}
-
-const ModalEditor = (props)=>{
-  const {interval, section, ...rest} = props;
   if (interval == null) return null
 
-  return h(Drawer, {
-    className: "bp3-minimal editor-drawer",
-    title: h(IntervalEditorTitle, {
+  return h('div.editor-inner', [
+    h(IntervalEditorTitle, {
       title: `Section ${section}`,
       interval
     }),
-    isOpen: props.isOpen,
+    h(DivisionNavigationControl),
+    h(LithologyControls, {
+      interval,
+      update: updateInterval
+    }),
+    h(LabeledControl, {
+      title: 'Grainsize',
+      is: PickerControl,
+      vertical: false,
+      isNullable: true,
+      states: grainSizes.map(d => ({
+        label: d,
+        value: d
+      })),
+      activeState: interval.grainsize,
+      onUpdate: grainsize=> {
+        return updateInterval({grainsize});
+      }
+    }),
+    h(Switch, {
+      label: 'Covered',
+      checked: interval.covered,
+      onChange: d=> {
+        return updateInterval({covered: !interval.covered});
+      }
+    }),
+    h(LabeledControl, {
+      title: 'Surface expression',
+      is: BoundaryStyleControl,
+      interval,
+      onUpdate: d=> updateInterval({definite_boundary: d})
+    }),
+    h(LabeledControl, {
+      title: 'Facies',
+      is: FaciesPicker,
+      interval,
+      onChange: facies=> updateInterval({facies})
+    }),
+    h(LabeledControl, {
+      title: 'Facies tract',
+      is: FaciesTractControl,
+      interval,
+      onUpdate: option=> {
+        const facies_tract = option.value;
+        return updateInterval({facies_tract});
+      }
+    }),
+    h(SequenceStratControls, {updateInterval, interval}),
+    h(LabeledControl, {
+      title: 'Correlated surface',
+      is: CorrelatedSurfaceControl,
+      interval,
+      onChange: updateInterval
+    }),
+    h(ButtonGroup, [
+      h(DeleteButton, {
+        itemDescription: "the "+txt,
+        handleDelete: () => {
+          if (props.removeInterval == null) return
+          return props.removeInterval(id);
+        }
+      }, "Delete this interval"),
+      h(Button, {
+        onClick: () => {
+          if (props.addInterval == null) return
+          return props.addInterval(height);
+        }
+      }, `Add division at ${fmt(height)} m`)
+    ]),
+  ])
+}
+
+
+
+const ModalEditor = (props: ModalEditorProps)=>{
+  const {
+    interval,
+    section,
+    isOpen,
+    closeDialog,
+    ...rest
+  } = props;
+
+  return h(Drawer, {
+    className: "bp3-minimal editor-drawer",
+    title: "Edit interval",
+    isOpen,
     hasBackdrop: false,
     enforceFocus: false,
-    //usePortal: false,
-    onClose: props.closeDialog
+    canOutsideClickClose: false,
+    onClose: closeDialog
   }, [
-    h(EditorInner, {interval, ...rest})
+    h(EditorInner, {interval, section, ...rest})
   ]);
 }
 
@@ -245,7 +260,6 @@ class IntervalEditor extends Component {
   render() {
     const {interval, height, section} = this.props;
     if (interval == null) { return null; }
-    const {id, top, bottom, facies} = interval;
     const hgt = fmt(height);
 
     return h('div.interval-editor', [
