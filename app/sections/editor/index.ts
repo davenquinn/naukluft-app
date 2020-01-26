@@ -16,7 +16,7 @@ import {FaciesContext} from "@macrostrat/column-components";
 import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base";
 import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/cjs/editor/util";
 
-import {ColumnDivisionsContext} from "../column/data-source";
+import {ColumnDivision, ColumnDivisionsContext} from "../column/data-source";
 import {
   LithologyPicker,
   LithologySymbolPicker,
@@ -26,7 +26,11 @@ import {
   BoundaryStyleControl,
   RaisedSelect
 } from '@macrostrat/column-components/dist/cjs/editor/controls';
-import {CorrelatedSurfaceControl} from './controls';
+import {
+  CorrelatedSurfaceControl,
+  DivisionNavigationControl,
+  Direction
+} from './controls';
 import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker';
 import {SequenceStratControls} from './sequence-strat'
 
@@ -82,13 +86,6 @@ const fmt = function(d){
   return val;
 };
 
-const DivisionNavigationControl = (props)=>{
-  return h(ButtonGroup, {vertical: true, small: true}, [
-    h(Button, {small: true, icon: 'caret-up'}),
-    h(Button, {small: true, icon: 'caret-down'})
-  ])
-}
-
 const FaciesTractControl = function(props){
   const {faciesTracts} = useContext(FaciesContext);
   if ((faciesTracts == null)) {
@@ -125,10 +122,17 @@ const updateIntervalQuery = async function(id, columns){
   return await db.none(s);
 };
 
-const EditorInner = (props)=>{
+interface EditorProps {
+  moveCursor(dir: Direction): void,
+  interval: ColumnDivision,
+  height: number,
+  section: string
+}
+
+const EditorInner = (props: EditorProps)=>{
 
   const {interval, height, section} = props;
-  const {id, top, bottom, facies} = interval;
+  const {id, facies} = interval;
   const hgt = fmt(height);
   const txt = `interval starting at ${hgt} m`;
 
@@ -144,7 +148,10 @@ const EditorInner = (props)=>{
       title: `Section ${section}`,
       interval
     }),
-    h(DivisionNavigationControl),
+    h(DivisionNavigationControl, {
+      moveCursor: props.moveCursor,
+      editingInterval: interval.id
+    }),
     h(LithologyControls, {
       interval,
       update: updateInterval
@@ -313,5 +320,5 @@ class IntervalEditor extends Component {
 }
 IntervalEditor.initClass();
 
-
+export {Direction}
 export {ModalEditor, IntervalEditor};

@@ -19,35 +19,31 @@ import {GrainsizeAxis} from "@macrostrat/column-components/dist/cjs/grainsize";
 import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/cjs/flooding-surface";
 import {
   ColumnProvider,
-  ColumnContext,
   ColumnScroller,
   ColumnSVG,
   GrainsizeLayoutProvider} from '@macrostrat/column-components';
 import {
   LithologyColumn,
   GeneralizedSectionColumn,
-  SimplifiedLithologyColumn,
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner
 } from "@macrostrat/column-components/dist/cjs/lithology";
 import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-overlay';
-import {StatefulComponent} from '@macrostrat/ui-components';
 
 import Samples from "./samples";
 import {ManagedSymbolColumn} from "../components";
-import {ModalEditor} from "../editor";
+import {ModalEditor, Direction} from "../editor";
 import {Notification} from "../../notify";
 import {SequenceStratConsumer} from "../sequence-strat-context";
 import {
-  ColumnDivisionsProvider,
+  useColumnDivisions,
   ColumnDivisionsContext
 } from "../column/data-source";
-import {SVGNamespaces, KnownSizeComponent} from "../util";
 import {ManagedNotesColumn} from "./notes";
 import {FaciesTractIntervals} from '../column/facies-tracts';
 
-import {db, storedProcedure, query} from "~/sections/db";
+import {db, storedProcedure} from "~/sections/db";
 import addIntervalQuery from '../sql/add-interval.sql';
 import removeIntervalQuery from '../sql/remove-interval.sql';
 
@@ -101,12 +97,17 @@ class SectionComponent extends Component {
   }
 
   render() {
-    const {divisions} = this.context;
-    let {id, zoom,
-     scrollToHeight, height, range,
-     lithologyWidth, padding
-    } = this.props;
-    ({lithologyWidth, zoom, id, padding} = this.props);
+
+    const {
+      lithologyWidth,
+      zoom,
+      id,
+      height,
+      padding,
+      divisions
+    } = this.props
+
+    let {scrollToHeight, range} = this.props;
     const {logWidth, isEditable} = this.props;
 
     const {editingInterval} = this.state;
@@ -115,9 +116,6 @@ class SectionComponent extends Component {
     let txt = zoom > 0.5 ? "Section " : "";
     txt += id;
 
-    ({lithologyWidth, zoom, id, height} = this.props);
-
-    const {left, top, right, bottom} = this.props.padding;
 
     const ticks = height/10;
 
@@ -166,6 +164,7 @@ class SectionComponent extends Component {
                 isOpen: (interval != null),
                 interval,
                 height: editingInterval.height,
+                moveCursor: this.moveEditorCursor,
                 section: id,
                 closeDialog: () => {
                   console.log("Closing dialog");
@@ -173,7 +172,6 @@ class SectionComponent extends Component {
                 },
                 addInterval: this.addInterval,
                 removeInterval: this.removeInterval,
-                moveCursor: this.moveEditorCursor,
                 onUpdate: this.onIntervalUpdated
               }),
               h(GrainsizeLayoutProvider, {
@@ -288,10 +286,25 @@ class SectionComponent extends Component {
     return this.setState({editingInterval: {id:null}});
   };
 
-  moveEditorCursor(direction){
-    return console.log(direction);
-  }
+  moveEditorCursor(direction: Direction){
+    const {divisions} = this.props
+    const id  = this.state.editingInterval.id
+    let ix = divisions.findIndex(d=>d.id == id)
 
+    switch(direction) {
+      case Direction.Down: {
+        if (ix > 0) ix -= 1
+        break
+      }
+      case Direction.Up: {
+        if (ix < divisions.length-1) ix += 1
+        break
+      }
+    }
+    const {id: newID} = divisions[ix]
+    this.setState({editingInterval: {id: newID}})
+
+  }
   componentDidUpdate(prevProps, prevState){
     if (this.state.editingInterval !== prevState.editingInterval) {
       return console.log(this.state.editingInterval);
@@ -301,12 +314,17 @@ class SectionComponent extends Component {
 SectionComponent.initClass();
 
 const SectionComponentHOC = function(props){
-  const {id, divisions} = props;
+  const divisions = useColumnDivisions(props.id)
+
   return h(SequenceStratConsumer, null, function(value){
     const {showTriangleBars, showFloodingSurfaces, sequenceStratOrder} = value;
-    return h(ColumnDivisionsProvider, {id, divisions}, (
-      h(SectionComponent, {showTriangleBars, showFloodingSurfaces, sequenceStratOrder, ...props})
-    ));
+    return h(SectionComponent, {
+      showTriangleBars,
+      showFloodingSurfaces,
+      sequenceStratOrder,
+      divisions,
+      ...props
+    })
   });
 };
 

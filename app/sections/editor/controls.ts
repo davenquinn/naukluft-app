@@ -1,14 +1,17 @@
 /*
  * decaffeinate suggestions:
+ * DS001: Remove Babel/TypeScript constructor workaround
  * DS102: Remove unnecessary code created because of implicit returns
  * DS206: Consider reworking classes to avoid initClass
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
+
 import {useContext} from "react";
 import {
   RaisedSelect
 } from '@macrostrat/column-components/dist/cjs/editor/controls'
+import {ButtonGroup, Button} from "@blueprintjs/core";
 import {
   SectionSurfacesContext
 } from '../summary-sections/data-provider'
@@ -53,6 +56,26 @@ const CorrelatedSurfaceControl = (props)=>{
   });
 }
 
+enum Direction {
+  Up = 'up',
+  Down = 'down'
+}
+
+interface NavigationControlProps {
+  moveCursor: (direction: Direction)=> void,
+  editingInterval?: number
+}
+
+const DivisionNavigationControl = (props: NavigationControlProps)=>{
+  const {moveCursor} = props;
+  return h(ButtonGroup, {vertical: true, small: true}, [
+    h(Button, {small: true, icon: 'caret-up', onClick: ()=>moveCursor(Direction.Up)}),
+    h(Button, {small: true, icon: 'caret-down', onClick: ()=>moveCursor(Direction.Down)})
+  ])
+}
+
 export {
-  CorrelatedSurfaceControl
+  CorrelatedSurfaceControl,
+  DivisionNavigationControl,
+  Direction
 };
