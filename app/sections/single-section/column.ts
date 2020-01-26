@@ -6,9 +6,8 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {findDOMNode} from "react-dom";
 import {format} from "d3-format";
-import {Component, createElement, useState} from "react";
+import {Component} from "react";
 import h from "@macrostrat/hyper";
 import T from "prop-types";
 

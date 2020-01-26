@@ -66,9 +66,7 @@ const LithologyControls = function(props){
       interval,
       onChange: lithology=> update({lithology})
     }),
-    h(LabeledControl, {
-      title: 'Lithology symbol',
-      is: LithologySymbolPicker,
+    h(LithologySymbolPicker, {
       interval,
       onChange: d=> update({fillPattern: d})
     })
