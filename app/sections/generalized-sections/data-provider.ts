@@ -145,7 +145,7 @@ const GeneralizedDivisionsProvider = (props)=>{
         bottomIx = sectionDivisions.findIndex(d=>d.surface==range.lower_surface)
       }
       if (range.upper_surface != null) {
-        topIx = sectionDivisions.findIndex(d=>d.surface==range.upper_surface)-1
+        topIx = sectionDivisions.findIndex(d=>d.surface==range.upper_surface)
       }
       sectionDivisions = sectionDivisions.slice(bottomIx,topIx)
       const height = sectionDivisions[sectionDivisions.length-1].top-sectionDivisions[0].bottom

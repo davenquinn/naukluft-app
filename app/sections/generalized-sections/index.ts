@@ -55,30 +55,28 @@ const GeneralizedSection = function(props){
   ]);
 };
 
-const getGeneralizedHeight = sectionData => (function(surface) {
-  // Gets heights of a surface in stacked sections
-  const {section, height, inferred} = surface;
-  for (let {key, surfaces} of Array.from(sectionData)) {
-    for (let s of Array.from(surfaces)) {
-      if (s.original_section.trim() !== section.trim()) { continue; }
-      if (s.original_bottom !== height) { continue; }
-      return {section: s.section, height: s.bottom, inferred};
-    }
-  }
-  return null;
-});
+function compactMap<A,B>(arr: A[], mapper: (arg0: A)=>B): B[] {
+  return arr.map(mapper).filter(d => d != null)
+}
+
+const match = (d, v): boolean => {
+  return d.original_section == v.section && d.original_bottom == v.height
+}
 
 const LinkOverlay = function(props){
-  const {sections} = props;
-  let {surfaces} = useContext(SectionSurfacesContext);
-  const generalize = getGeneralizedHeight(sections);
+  const {divisions} = useContext(ColumnDivisionsContext)
+  const {surfaces} = useContext(SectionSurfacesContext);
 
-  surfaces = surfaces.map(function({section_height, ...rest}){
-    // Update surfaces to use generalized section heights
-    section_height = section_height.map(generalize).filter(d => d != null);
-    return {section_height, ...rest};});
+  const newSurfaces = surfaces.map(surface => {
+    const section_height = compactMap(surface.section_height, v =>{
+      const div = divisions.find(d => match(d,v))
+      if (div == null) return null
+      return {...v, height: div.bottom, section: div.section_id}
+    })
+    return {...surface, section_height}
+  })
 
-  return h(SectionLinkOverlay, {surfaces});
+  return h(SectionLinkOverlay, {surfaces: newSurfaces});
 };
 
 // Should allow switching between offset types
