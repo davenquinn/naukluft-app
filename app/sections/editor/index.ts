@@ -8,7 +8,8 @@
  */
 let helpers;
 import {Component, useContext} from "react";
-import {Drawer, Button, Intent, ButtonGroup, Switch, Tab, Slider, AnchorButton} from "@blueprintjs/core";
+import {Drawer, Button, Intent, ButtonGroup, Switch, Tab, Slider} from "@blueprintjs/core";
+import {AppDrawer} from '~/components'
 import {DeleteButton} from '@macrostrat/ui-components';
 import {format} from "d3-format";
 
@@ -322,13 +323,10 @@ const ModalEditor = (props: ModalEditorProps)=>{
     ...rest
   } = props;
 
-  return h(Drawer, {
+  return h(AppDrawer, {
     className: "bp3-minimal editor-drawer",
     title: "Edit interval",
     isOpen,
-    hasBackdrop: false,
-    enforceFocus: false,
-    canOutsideClickClose: false,
     onClose: closeDialog
   }, [
     h(EditorInner, {interval, section, ...rest})

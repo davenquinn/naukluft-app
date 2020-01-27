@@ -5,6 +5,7 @@ import {Switch, Slider, Button} from "@blueprintjs/core"
 import {PlatformContext} from "../../platform"
 import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base"
 import {SequenceStratContext} from "../sequence-strat-context"
+import {AppDrawer} from '~/components'
 import classNames from "classnames"
 import {useSettings, updateSettings} from '@macrostrat/column-components'
 import T from 'prop-types'
@@ -87,20 +88,15 @@ SequenceStratControlPanel = (props)->
   ]
 
 BaseSettingsPanel = (props)->
-  {children, isOpen} = props
+  {children, isOpen, onClose} = props
   isOpen ?= false
-  h CSSTransition, {
-    in: isOpen
-    classNames: "settings"
-    unmountOnExit: true
-    timeout: 1000
-  }, [
-    h 'div.settings-panel', [
-      h 'h2', 'Settings'
-      children
-    ]
-  ]
 
+  h AppDrawer, {
+    isOpen,
+    title: 'Settings'
+    children
+    onClose
+  }
 
 export {
   SettingsSwitch
