@@ -97,11 +97,11 @@ const compactOffsets = {
 
 const SectionPane = function(props){
   const {divisions} = useContext(ColumnDivisionsContext);
-  const surfaceMap = group(divisions, s => s.section);
+  const surfaceMap = group(divisions, s => s.section_id);
   const sections = Array.from(surfaceMap, function([key,surfaces]){
     surfaces.sort((a, b) => a.bottom-b.bottom);
     return {key,surfaces};
-});
+  });
 
   const order = ['Onis', 'Ubisis', 'Tsams'];
   sections.sort((a, b) => order.indexOf(a.key)-order.indexOf(b.key));
