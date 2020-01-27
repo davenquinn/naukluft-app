@@ -16,7 +16,7 @@ tectonicSectionOffsets = {
 # A more stratigraphically focused set of section offsets
 # (shows progradation downdip)
 sectionOffsets = {
-  A: -250
+  A: -280
   B: -50
   C: 50
   D: 200

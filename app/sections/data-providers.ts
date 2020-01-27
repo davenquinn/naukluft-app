@@ -7,6 +7,7 @@ import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
 import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
+import {SectionSurfacesProvider} from './summary-sections/data-provider'
 import {
   PhotoLibraryProvider as BasePhotoLibraryProvider
 } from '@macrostrat/column-components'
@@ -86,6 +87,7 @@ const SectionDataProvider = compose(
   SymbolProvider,
   FaciesProvider,
   PhotoLibraryProvider,
+  SectionSurfacesProvider,
   SequenceStratProvider,
   IsotopesDataProvider,
   SectionProvider

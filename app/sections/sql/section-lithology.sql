@@ -19,6 +19,7 @@ SELECT
  l.grainsize,
  l.surface_type,
  l.surface_order,
+ l.surface_certainty,
  COALESCE(COALESCE(l.fill_pattern, v.pattern), l.lithology) AS fill_pattern
 FROM section.section_lithology l
   LEFT JOIN section.lithology_tree t ON l.lithology = t.id

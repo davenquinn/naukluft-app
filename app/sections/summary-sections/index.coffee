@@ -145,14 +145,12 @@ class SummarySectionsBase extends Component
     ]
 
 SummarySections = (props)->
-  h SectionSurfacesProvider, [
-    h SectionPositionProvider, [
-      h SequenceStratConsumer, null, ({actions, rest...})->
-        h SummarySectionsBase, {
-          props...,
-          rest...
-        }
-    ]
+  h SectionPositionProvider, [
+    h SequenceStratConsumer, null, ({actions, rest...})->
+      h SummarySectionsBase, {
+        props...,
+        rest...
+      }
   ]
 
 SummarySectionsStatic = (props)->

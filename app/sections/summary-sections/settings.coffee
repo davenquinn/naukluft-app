@@ -50,8 +50,8 @@ SettingsProvider = (props)->
   }, children
 
 
-SummarySectionsSettings = ({isOpen})->
-  h BaseSettingsPanel, {isOpen}, [
+SummarySectionsSettings = ({isOpen, onClose})->
+  h BaseSettingsPanel, {isOpen, onClose}, [
     h 'h3', "Components"
     h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
     h SettingsSwitch, {id: 'showOxygenIsotopes', label: "Oxygen isotopes"}
