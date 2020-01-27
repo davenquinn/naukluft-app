@@ -26,7 +26,10 @@ BaseSectionPage = (props)->
           children
         ]
       ]
-      h settingsPanel, {isOpen: showSettings}
+      h settingsPanel, {
+        isOpen: showSettings,
+        onClose: -> setShowSettings(false)
+      }
     ]
   ]
 
