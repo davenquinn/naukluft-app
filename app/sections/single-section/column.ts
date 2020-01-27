@@ -180,6 +180,7 @@ class SectionComponent extends Component {
                 h(DivisionEditOverlay, {
                   onClick: this.onEditInterval,
                   editingInterval: interval,
+                  selectedHeight: this.state.editingInterval.height,
                   top: padding.top,
                   left: padding.left,
                   allowEditing: true

@@ -94,16 +94,17 @@ const FaciesTransitionsControls = (props)=>{
 }
 
 const SequenceStratControls = (props)=>{
-  const {interval, updateInterval} = props
-  return h(Tabs, {id: 'sequence-strat-controls', large: true}, [
+  const {interval, updateInterval, children} = props
+  return h(Tabs, {id: 'sequence-strat-controls', large: false}, [
     h(Tab, {
       id: 'new',
       panel: h(SurfaceTypeControls, {interval, updateInterval})
   }, "Sequence stratigraphy"),
-  h(Tab, {
-    id: 'old',
-    panel: h(FaciesTransitionsControls, {interval, updateInterval})
-  }, "Facies trends")
+    h(Tab, {
+      id: 'old',
+      panel: h(FaciesTransitionsControls, {interval, updateInterval})
+    }, "Facies trends"),
+    children
   ])
 }
 

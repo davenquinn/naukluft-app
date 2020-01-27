@@ -8,7 +8,7 @@
  */
 let helpers;
 import {Component, useContext} from "react";
-import {Drawer, Button, Intent, ButtonGroup, Switch} from "@blueprintjs/core";
+import {Drawer, Button, Intent, ButtonGroup, Switch, Tab, Slider, AnchorButton} from "@blueprintjs/core";
 import {DeleteButton} from '@macrostrat/ui-components';
 import {format} from "d3-format";
 
@@ -120,8 +120,103 @@ const updateIntervalQuery = async function(id, columns){
   return await db.none(s);
 };
 
+interface IntervalControlsProps {
+  height?: number,
+  interval: ColumnDivision,
+  addInterval(a0: number): void,
+  removeInterval(a0: number): void
+}
+
+const IntervalControls = (props: IntervalControlsProps)=>{
+  const {height, interval} = props
+  const hgt = fmt(height);
+  const txt = ` (${hgt} m)`;
+
+  let buttonText = "Add interval"
+  if (height != null) buttonText += txt
+
+  return h(ButtonGroup, {className: 'interval-controls', vertical: true}, [
+    h(Button, {
+      disabled: height == null,
+      onClick: () => {
+        if (props.addInterval == null) return
+        return props.addInterval(height);
+      }
+    }, buttonText),
+    h(DeleteButton, {
+      itemDescription: `the interval starting at ${fmt(interval.bottom)}`,
+      handleDelete: () => {
+        if (props.removeInterval == null) return
+        return props.removeInterval(id);
+      }
+    }, "Delete interval")
+  ])
+}
+
+const MetaControls = (props)=>{
+  const {moveCursor, interval, section, children} = props
+
+  return h("div.meta-controls", [
+    h(DivisionNavigationControl, {
+      moveCursor,
+      editingInterval: interval.id
+    }),
+    h(IntervalEditorTitle, {
+      title: `Section ${section}`,
+      interval
+    }),
+    children
+  ])
+}
+
+const ClearableSlider = (props)=> {
+  return h('div.clearable-slider', [
+    h('div.inner', [
+      h(Slider, {
+        ...props,
+        value: props.value ?? 10,
+        showTrackFill: false
+      })
+    ]),
+    h("div", [
+      h(Button, {
+        small: true,
+        minimal: true,
+        intent: Intent.DANGER,
+        icon: 'cross',
+        disabled: props.value == null,
+        onClick: (evt)=>{
+          props.onChange(null)
+        }
+      })
+    ])
+  ])
+}
+
+const CorrelationControls = (props)=>{
+  const {interval, updateInterval} = props
+  return h([
+    h(LabeledControl, {
+      title: 'Correlated surface',
+      is: CorrelatedSurfaceControl,
+      interval,
+      onChange: updateInterval
+    }),
+    h(LabeledControl, {
+      is: ClearableSlider,
+      title: "Surface certainty",
+      value: interval.surface_certainty,
+      onChange(c) {
+        updateInterval({surface_certainty: c})
+      }
+    })
+  ])
+}
+
 interface EditorProps {
   moveCursor(dir: Direction): void,
+  addInterval(height: number): void,
+  removeInterval(id: number): void,
   interval: ColumnDivision,
   height: number,
   section: string
@@ -129,10 +224,15 @@ interface EditorProps {
 
 const EditorInner = (props: EditorProps)=>{
 
-  const {interval, height, section} = props;
+  const {
+    interval,
+    height,
+    section,
+    moveCursor,
+    addInterval,
+    removeInterval
+  } = props;
   const {id, facies} = interval;
-  const hgt = fmt(height);
-  const txt = `interval starting at ${hgt} m`;
 
   const updateInterval = async columns => {
     await updateIntervalQuery(props.interval.id, columns);
@@ -142,14 +242,20 @@ const EditorInner = (props: EditorProps)=>{
   if (interval == null) return null
 
   return h('div.editor-inner', [
-    h(IntervalEditorTitle, {
-      title: `Section ${section}`,
-      interval
-    }),
-    h(DivisionNavigationControl, {
-      moveCursor: props.moveCursor,
-      editingInterval: interval.id
-    }),
+    h(MetaControls, {
+      section,
+      interval,
+      moveCursor
+    }, [
+      h(IntervalControls, {
+        interval,
+        height,
+        addInterval,
+        removeInterval,
+        vertical: true,
+        small: true
+      })
+    ]),
     h(LithologyControls, {
       interval,
       update: updateInterval
@@ -196,28 +302,12 @@ const EditorInner = (props: EditorProps)=>{
         return updateInterval({facies_tract});
       }
     }),
-    h(SequenceStratControls, {updateInterval, interval}),
-    h(LabeledControl, {
-      title: 'Correlated surface',
-      is: CorrelatedSurfaceControl,
-      interval,
-      onChange: updateInterval
-    }),
-    h(ButtonGroup, [
-      h(DeleteButton, {
-        itemDescription: "the "+txt,
-        handleDelete: () => {
-          if (props.removeInterval == null) return
-          return props.removeInterval(id);
-        }
-      }, "Delete this interval"),
-      h(Button, {
-        onClick: () => {
-          if (props.addInterval == null) return
-          return props.addInterval(height);
-        }
-      }, `Add division at ${fmt(height)} m`)
-    ]),
+    h(SequenceStratControls, {updateInterval, interval}, [
+      h(Tab, {
+        id: 'correlation',
+        panel: h(CorrelationControls, {interval, updateInterval})
+      }, "Correlations"),
+    ])
   ])
 }
 
