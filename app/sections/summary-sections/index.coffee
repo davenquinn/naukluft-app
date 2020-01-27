@@ -25,6 +25,7 @@ import {LithostratKey} from "./lithostrat-key"
 import {ArrangedSections} from "./layout"
 import {Legend} from "./legend"
 import {BaseSectionPage} from '../components'
+import {EditorProvider} from './editor'
 import {SummarySectionsSettings, defaultSettings} from './settings'
 import {
   SectionSurfacesContext,
@@ -146,11 +147,13 @@ class SummarySectionsBase extends Component
 
 SummarySections = (props)->
   h SectionPositionProvider, [
-    h SequenceStratConsumer, null, ({actions, rest...})->
-      h SummarySectionsBase, {
-        props...,
-        rest...
-      }
+    h EditorProvider, [
+      h SequenceStratConsumer, null, ({actions, rest...})->
+        h SummarySectionsBase, {
+          props...,
+          rest...
+        }
+    ]
   ]
 
 SummarySectionsStatic = (props)->

@@ -70,7 +70,8 @@ const SectionBreak = (props: SectionBreakProps)=>{
 }
 
 const GeneralizedBreaks = (props)=>{
-  const {divisions} = useContext(ColumnContext)
+  let {divisions} = useContext(ColumnContext)
+  divisions = divisions.filter(d=>d.original_section != null)
 
   let breaks: GeneralizedDivision[] = expandDivisionsByKey(divisions, 'original_section')
   breaks.reverse()

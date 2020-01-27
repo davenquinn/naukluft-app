@@ -120,7 +120,6 @@ const GeneralizedDivisionsProvider = (props)=>{
   Provides all surfaces used in Summary Sections diagram
   */
   const {children} = props
-  const divisionsA = useQuery(sql) ?? []
 
   let allDivisions = useContext(ColumnDivisionsContext).divisions
   // sorting of input is not guaranteed
@@ -133,6 +132,14 @@ const GeneralizedDivisionsProvider = (props)=>{
   let divisions: GeneralizedDivision[] = []
 
   for (const [locality, breaks] of Array.from(groupedBreaks)) {
+    divisions.push({
+      section_id: locality,
+      bottom: -50,
+      top: 0,
+      surface_type: 'mfs',
+      surface_order: 0,
+      original_section: null
+    })
     let baseOffset = 0
     const sectionRanges = calculateSectionRanges(breaks)
     for (const range of sectionRanges) {

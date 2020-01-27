@@ -2,6 +2,7 @@ import {useContext} from "react"
 import T from 'prop-types'
 import {useSettings} from '@macrostrat/column-components'
 import {useHistory} from "react-router-dom"
+import {EditorContext} from './editor'
 
 import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '@macrostrat/column-components'
 import {ColumnAxis} from "@macrostrat/column-components/dist/cjs/axis"
@@ -52,9 +53,17 @@ const EditOverlay = function(props){
  } catch (error) {
    navigateTo = ()=>{}
  }
+
+
+ const {onEditInterval, editingInterval} = useContext(EditorContext)
+
  let {id, ...rest} = props
- const onClick = function({height}){
-   ({id} = props)
+ const onClick = function({height, event, division}){
+   if (event.shiftKey && onEditInterval != null) {
+     onEditInterval(division)
+     return
+   }
+
    let path = `/sections/${id}`
    if (height != null) {
      path += `/height/${height}`
@@ -65,10 +74,7 @@ const EditOverlay = function(props){
  }
 
  return h(DivisionEditOverlay, {
-   showInfoBox: true,
-   renderEditorPopup: (interval)=> {
-     h.if(interval != null)(IntervalEditor, {interval})
-   },
+   showInfoBox: false,
    onClick,
    ...rest
  })

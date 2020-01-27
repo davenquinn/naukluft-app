@@ -220,7 +220,6 @@ interface EditorProps {
   removeInterval(id: number): void,
   interval: ColumnDivision,
   height: number,
-  section: string
 }
 
 const EditorInner = (props: EditorProps)=>{
@@ -228,7 +227,6 @@ const EditorInner = (props: EditorProps)=>{
   const {
     interval,
     height,
-    section,
     moveCursor,
     addInterval,
     removeInterval
@@ -244,7 +242,7 @@ const EditorInner = (props: EditorProps)=>{
 
   return h('div.editor-inner', [
     h(MetaControls, {
-      section,
+      section: interval.section_id,
       interval,
       moveCursor
     }, [
@@ -312,12 +310,14 @@ const EditorInner = (props: EditorProps)=>{
   ])
 }
 
-
+interface ModalEditorProps extends EditorProps {
+  closeDialog: ()=>void,
+  isOpen: boolean
+}
 
 const ModalEditor = (props: ModalEditorProps)=>{
   const {
     interval,
-    section,
     isOpen,
     closeDialog,
     ...rest
@@ -329,7 +329,7 @@ const ModalEditor = (props: ModalEditorProps)=>{
     isOpen,
     onClose: closeDialog
   }, [
-    h(EditorInner, {interval, section, ...rest})
+    h(EditorInner, {interval, ...rest})
   ]);
 }
 
