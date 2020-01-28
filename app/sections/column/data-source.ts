@@ -24,7 +24,7 @@ interface ColumnDivisionManager {
   updateDivisions: () => void
 }
 
-const ColumnDivisionsContext = createContext<ColumnDivisionManager>({});
+const ColumnDivisionsContext = createContext<ColumnDivisionManager>();
 
 class ColumnDivisionsProvider extends Component {
   static initClass() {

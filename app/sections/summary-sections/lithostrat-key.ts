@@ -7,7 +7,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from "@macrostrat/hyper"
-import {Component, createRef, useContext} from "react"
+import {Component, useContext} from "react"
 import {useQuery} from "~/db"
 import {ColumnSVG} from '@macrostrat/column-components'
 import {

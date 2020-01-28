@@ -17,7 +17,6 @@ import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-o
 
 import {ColumnTracker} from '../components/link-overlay'
 import {PlatformContext} from "../../platform"
-import {IntervalEditor} from "../editor"
 import {MinimalIsotopesColumn} from './chemostrat'
 import {FaciesTractIntervals} from '../column/facies-tracts'
 
@@ -76,6 +75,7 @@ const EditOverlay = function(props){
  return h(DivisionEditOverlay, {
    showInfoBox: false,
    onClick,
+   editingInterval,
    ...rest
  })
 }

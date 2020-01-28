@@ -10,7 +10,7 @@
 import {useContext} from "react";
 import {
   RaisedSelect
-} from '@macrostrat/column-components/dist/cjs/editor/controls'
+} from '@macrostrat/column-components/dist/cjs/editor'
 import {ButtonGroup, Button} from "@blueprintjs/core";
 import {
   SectionSurfacesContext

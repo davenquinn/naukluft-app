@@ -26,7 +26,7 @@ import {
   SurfaceOrderSlider,
   BoundaryStyleControl,
   RaisedSelect
-} from '@macrostrat/column-components/dist/cjs/editor/controls';
+} from '@macrostrat/column-components/dist/cjs/editor';
 import {
   CorrelatedSurfaceControl,
   DivisionNavigationControl,
