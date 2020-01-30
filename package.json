@@ -4,15 +4,16 @@
   "description": "Application for Naukluft Nappe Complex mapping",
   "main": "index.js",
   "scripts": {
+    "prebuild": "rm -rf app/.cache && rm -rf dist",
     "watch:main": "electron-webpack dev",
     "watch:column": "cd app/bundledDeps/column-components && npm run dev",
     "watch:web": "scripts/bundle.zsh",
     "compile:web": "webpack -c webpack.config.js",
-    "start": "concurrently npm:watch:main npm:watch:column",
+    "start": "npm run prebuild && concurrently npm:watch:main npm:watch:column",
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd app && npm install",
-    "dev": "concurrently npm:watch:column npm:watch:web"
+    "dev": "npm run prebuild && concurrently npm:watch:column npm:watch:web"
   },
   "electronWebpack": {
     "main": {
@@ -39,6 +40,7 @@
     "chalk": "^1.1.3",
     "coffee-loader": "^0.8.0",
     "coffeescript": "^2.5.0",
+    "concurrently": "^5.1.0",
     "esm": "^3.2.25",
     "filename-loader": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
