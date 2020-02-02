@@ -1,7 +1,7 @@
 import h from '@macrostrat/hyper'
 import {createContext, useState} from 'react'
 import {ColumnDivision} from '../column/data-source'
-import {ModalEditor} from '../editor'
+import {ModalEditor, Direction} from '../editor'
 
 interface EditorCtx {
   onEditInterval: (arg0: ColumnDivision)=>void
@@ -24,7 +24,11 @@ const EditorProvider = props =>{
     h(ModalEditor, {
       interval: editingInterval,
       isOpen: editingInterval != null,
-      closeDialog() {setEditingInterval(null)}
+      closeDialog() {setEditingInterval(null)},
+      moveCursor(dir: Direction) {
+
+
+      }
     }),
     children
   ])

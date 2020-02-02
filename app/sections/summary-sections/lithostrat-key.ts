@@ -9,11 +9,10 @@
 import h from "@macrostrat/hyper"
 import {Component, useContext} from "react"
 import {useQuery} from "~/db"
-import {ColumnSVG} from '@macrostrat/column-components'
+import {ColumnSVG, ColumnContext} from '@macrostrat/column-components'
 import {
   SectionSurfacesContext,
-  ColumnProvider,
-  ColumnContext
+  SummaryColumnProvider,
 } from './data-provider'
 import sql from './sql/lithostratigraphy-names.sql'
 
@@ -96,7 +95,7 @@ const BaseSVGSectionComponent = (props)=>{
     style: {minWidth}
   }, [
     h('div.section-outer', [
-      h(ColumnProvider, {id: 'J'}, [
+      h(SummaryColumnProvider, {id: 'J'}, [
         h(ColumnSVG, {width: 50}, [
           h('g.backdrop', {transform}, [
             h(LithostratigraphyColumn)

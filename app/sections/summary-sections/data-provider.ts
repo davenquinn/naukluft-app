@@ -3,10 +3,7 @@ import h from 'react-hyperscript'
 import lithostratSurface from './sql/lithostratigraphy-surface.sql'
 import {useQuery} from "~/db"
 import {SectionDataContext} from '../data-providers'
-import {
-  ColumnProvider as BaseColumnProvider,
-  ColumnContext
-} from '@macrostrat/column-components'
+import {ColumnProvider} from '@macrostrat/column-components'
 import {useColumnDivisions} from '../column/data-source'
 
 const SectionSurfacesContext = createContext(null)
@@ -21,7 +18,7 @@ const SectionSurfacesProvider = (props)=>{
   return h(SectionSurfacesContext.Provider, {value: {surfaces}}, children)
 }
 
-const ColumnProvider = (props)=>{
+const SummaryColumnProvider = (props)=>{
   /*
   Centralized provider for a single column
   identified by ID.
@@ -42,7 +39,7 @@ const ColumnProvider = (props)=>{
   const height = end-start
   const range = [start, end]
 
-  return h(BaseColumnProvider, {
+  return h(ColumnProvider, {
     divisions,
     height,
     range,
@@ -51,7 +48,7 @@ const ColumnProvider = (props)=>{
   })
 }
 
-ColumnProvider.defaultProps = {
+SummaryColumnProvider.defaultProps = {
   zoom: 0.1,
   // This filter should possibly always be used
   filterDivisions: d => !d.schematic
@@ -60,6 +57,5 @@ ColumnProvider.defaultProps = {
 export {
   SectionSurfacesContext,
   SectionSurfacesProvider,
-  ColumnProvider,
-  ColumnContext
+  SummaryColumnProvider
 }

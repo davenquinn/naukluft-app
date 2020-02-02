@@ -11,11 +11,11 @@ import {Component} from "react";
 import h from "@macrostrat/hyper";
 import T from "prop-types";
 
-import {ColumnAxis} from "@macrostrat/column-components/dist/cjs/axis";
+import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis";
 import {ColumnImages} from "./images";
 import {Intent} from "@blueprintjs/core";
-import {GrainsizeAxis} from "@macrostrat/column-components/dist/cjs/grainsize";
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/cjs/flooding-surface";
+import {GrainsizeAxis} from "@macrostrat/column-components/dist/esm/grainsize";
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface";
 import {
   ColumnProvider,
   ColumnScroller,
@@ -27,8 +27,8 @@ import {
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner
-} from "@macrostrat/column-components/dist/cjs/lithology";
-import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-overlay';
+} from "@macrostrat/column-components/dist/esm/lithology";
+import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay';
 
 import Samples from "./samples";
 import {ManagedSymbolColumn} from "../components";
