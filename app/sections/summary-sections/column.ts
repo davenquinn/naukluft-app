@@ -13,7 +13,11 @@ import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-comp
 import {SequenceStratContext} from "../sequence-strat-context"
 import {SummaryColumnProvider} from './data-provider'
 import {ColumnContext} from '@macrostrat/column-components'
-import {SimplifiedLithologyColumn, CoveredOverlay, FaciesColumnInner} from '@macrostrat/column-components/dist/esm/lithology'
+import {
+  SimplifiedLithologyColumn,
+  CoveredOverlay,
+  FaciesColumnInner
+} from '@macrostrat/column-components/dist/esm/lithology'
 import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay'
 
 import {ColumnTracker} from '../components/link-overlay'
@@ -54,10 +58,10 @@ const EditOverlay = function(props){
    navigateTo = ()=>{}
  }
 
-
- const {onEditInterval, editingInterval} = useContext(EditorContext)
-
  let {id, ...rest} = props
+ const {onEditInterval, editingInterval: interval} = useContext(EditorContext)
+ const editingInterval = interval?.section_id == id ? interval : null
+
  const onClick = function({height, event, division}){
    if (event.shiftKey && onEditInterval != null) {
      onEditInterval(division)

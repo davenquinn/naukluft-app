@@ -81,7 +81,7 @@ SectionPane = (props) ->
   paddingLeft = if showTriangleBars then 90 else 30
 
   options = useSettings()
-  showChemostrat = not options.isotopesPerSection
+  showChemostrat = options.correlatedIsotopes
 
   h 'div#section-pane', {style: {overflow: 'scroll'}}, [
     h SectionContainer, [

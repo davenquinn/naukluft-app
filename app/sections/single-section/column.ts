@@ -90,7 +90,6 @@ class SectionComponent extends Component {
       editingInterval: {id: null, height: null}
     };
     this.onEditInterval = this.onEditInterval.bind(this);
-    this.onIntervalUpdated = this.onIntervalUpdated.bind(this);
     this.moveEditorCursor = this.moveEditorCursor.bind(this);
 
   }
@@ -171,7 +170,6 @@ class SectionComponent extends Component {
                 },
                 addInterval: this.addInterval,
                 removeInterval: this.removeInterval,
-                onUpdate: this.onIntervalUpdated
               }),
               h(GrainsizeLayoutProvider, {
                 width: grainsizeWidth+columnLeftMargin,
@@ -255,11 +253,6 @@ class SectionComponent extends Component {
     const {id} = division;
     console.log(id);
     return this.setState({editingInterval: {id, height}});
-  }
-
-  onIntervalUpdated() {
-    // Could potentially make this fetch less
-    return this.context.updateDivisions();
   }
 
   addInterval = async height=> {

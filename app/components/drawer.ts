@@ -6,15 +6,15 @@ const h = hyperStyled(styles)
 
 const AppDrawer = (props)=>{
   const {className, children, ...rest} = props
-  return h(Drawer, {
-    className: classNames(className, 'app-drawer'),
-    hasBackdrop: false,
-    enforceFocus: false,
-    canOutsideClickClose: false,
-    ...rest
-  }, [
-    h("div.content", null, children)
-  ])
+  return h('div.app-drawer-outer', null,
+    h(Drawer, {
+      className: classNames(className, 'app-drawer'),
+      hasBackdrop: false,
+      enforceFocus: false,
+      canOutsideClickClose: false,
+      ...rest
+    }, h("div.content", null, children))
+  )
 }
 
 export {AppDrawer}

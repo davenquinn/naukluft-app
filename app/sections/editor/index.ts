@@ -214,39 +214,9 @@ interface EditorProps {
   height: number,
 }
 
-const EditorInner = (props: EditorProps)=>{
-
-  const {
-    interval,
-    height,
-    moveCursor,
-    addInterval,
-    removeInterval
-  } = props;
-  const {id, facies} = interval;
-
-  const updateInterval = async columns => {
-    await updateIntervalQuery(props.interval.id, columns);
-    return props.onUpdate();
-  };
-
-  if (interval == null) return null
-
-  return h('div.editor-inner', [
-    h(MetaControls, {
-      section: interval.section_id,
-      interval,
-      moveCursor
-    }, [
-      h(IntervalControls, {
-        interval,
-        height,
-        addInterval,
-        removeInterval,
-        vertical: true,
-        small: true
-      })
-    ]),
+const DetailControls = (props)=>{
+  const {interval, updateInterval} = props;
+  return h('div.detail-controls', [
     h(LithologyControls, {
       interval,
       update: updateInterval
@@ -277,8 +247,14 @@ const EditorInner = (props: EditorProps)=>{
       is: BoundaryStyleControl,
       interval,
       onUpdate: d=> updateInterval({definite_boundary: d})
-    }),
-    h(LabeledControl, {
+    })
+  ])
+}
+
+const SummaryControls = (props)=>{
+  const {interval, updateInterval} = props
+  return h("div.summary-controls", [
+      h(LabeledControl, {
       title: 'Facies',
       is: FaciesPicker,
       interval,
@@ -302,6 +278,45 @@ const EditorInner = (props: EditorProps)=>{
   ])
 }
 
+const EditorInner = (props: EditorProps)=>{
+
+  const {
+    interval,
+    height,
+    moveCursor,
+    addInterval,
+    removeInterval,
+    showDetails
+  } = props;
+  const {id, facies} = interval;
+
+  const updateInterval = async columns => {
+    await updateIntervalQuery(props.interval.id, columns);
+    return props.onUpdate();
+  };
+
+  if (interval == null) return null
+
+  return h('div.editor-inner', [
+    h(MetaControls, {
+      section: interval.section_id,
+      interval,
+      moveCursor
+    }, [
+      h.if(showDetails)(IntervalControls, {
+        interval,
+        height,
+        addInterval,
+        removeInterval,
+        vertical: true,
+        small: true
+      })
+    ]),
+    h.if(showDetails)(DetailControls, {interval, updateInterval}),
+    h(SummaryControls, {interval, updateInterval})
+  ])
+}
+
 interface ModalEditorProps extends EditorProps {
   closeDialog: ()=>void,
   isOpen: boolean
@@ -315,88 +330,27 @@ const ModalEditor = (props: ModalEditorProps)=>{
     ...rest
   } = props;
 
+  const {updateDivisions} = useContext(ColumnDivisionsContext)
+
   return h(AppDrawer, {
     className: "bp3-minimal editor-drawer",
     title: "Edit interval",
     isOpen,
     onClose: closeDialog
   }, [
-    h(EditorInner, {interval, ...rest})
+    h(EditorInner, {
+      interval,
+      ...rest,
+      onUpdate() {
+        updateDivisions()
+      }
+    })
   ]);
 }
 
-ModalEditor.defaultProps = {onUpdate() {}}
-
-class IntervalEditor extends Component {
-  constructor(...args) {
-    super(...args)
-    this.updateFacies = this.updateFacies.bind(this);
-  }
-
-  static initClass() {
-    this.contextType = ColumnDivisionsContext;
-    this.defaultProps = {
-      onUpdate() {},
-      onNext() {},
-      onPrev() {},
-      onClose() {}
-    };
-  }
-  render() {
-    const {interval, height, section} = this.props;
-    if (interval == null) { return null; }
-    const hgt = fmt(height);
-
-    return h('div.interval-editor', [
-      h(LabeledControl, {
-        title: 'Facies tract',
-        is: FaciesTractControl,
-        interval,
-        onUpdate: option=> {
-          const facies_tract = option.value;
-          return this.update({facies_tract});
-        }
-      }),
-      h(LabeledControl, {
-        title: 'Surface type',
-        is: PickerControl,
-        vertical: false,
-        isNullable: true,
-        states: surfaceTypes,
-        activeState: interval.surface_type,
-        onUpdate: surface_type=> {
-          return this.update({surface_type});
-        }
-      }),
-      h(LabeledControl, {
-        title: 'Surface order',
-        is: SurfaceOrderSlider,
-        interval,
-        onChange: this.update
-      }),
-      h(LabeledControl, {
-        title: 'Correlated surface',
-        is: CorrelatedSurfaceControl,
-        interval,
-        onChange: this.update
-      })
-    ]);
-  }
-  updateFacies(facies){
-    const {interval} = this.props;
-    let selected = facies.id;
-    if (selected === interval.facies) {
-      selected = null;
-    }
-    return this.update({facies: selected});
-  }
-
-  update = async columns=> {
-    await updateInterval(this.props.interval.id, columns);
-    return this.context.updateDivisions();
-  };
+ModalEditor.defaultProps = {
+  onUpdate() {},
+  showDetails: false
 }
-IntervalEditor.initClass();
 
-export {Direction}
-export {ModalEditor, IntervalEditor};
+export {Direction, ModalEditor};

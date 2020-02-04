@@ -61,7 +61,6 @@ const FaciesTransitionsControls = (props)=>{
   const {interval, updateInterval} = props
 
   const {flooding_surface_order} = interval
-  console.log(flooding_surface_order)
 
   const ix = Math.sign(flooding_surface_order)
 

@@ -35,6 +35,7 @@ defaultSettings = {
   showSequenceStratigraphy: true
   showTriangleBars: true
   showCarbonIsotopes: true
+  correlatedIsotopes: true
   isotopesPerSection: false
   correctIsotopeRatios: false
   interactive: true
@@ -53,10 +54,14 @@ SettingsProvider = (props)->
 SummarySectionsSettings = ({isOpen, onClose})->
   h BaseSettingsPanel, {isOpen, onClose}, [
     h 'h3', "Components"
-    h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
-    h SettingsSwitch, {id: 'showOxygenIsotopes', label: "Oxygen isotopes"}
-    h SettingsSwitch, {id: 'isotopesPerSection', label: "Show isotopes for each section"}
-    h SettingsSwitch, {id: 'correctIsotopeRatios', label: "Experimental standard correction"}
+    h 'h4', "Isotopes"
+    h "div.panel", [
+      h SettingsSwitch, {id: 'showCarbonIsotopes', label: "Carbon isotopes"}
+      h SettingsSwitch, {id: 'showOxygenIsotopes', label: "Oxygen isotopes"}
+      h SettingsSwitch, {id: 'correlatedIsotopes', label: "Show correlated isotopes"}
+      h SettingsSwitch, {id: 'isotopesPerSection', label: "Show isotopes for each section"}
+      h SettingsSwitch, {id: 'correctIsotopeRatios', label: "Experimental standard correction"}
+    ]
     h SettingsSwitch, {id: 'showLithostratigraphy', label: "Lithostratigraphic correlations"}
     h SettingsSwitch, {id: 'showSequenceStratigraphy', label: "Sequence-stratigraphic correlations"}
     h SettingsSwitch, {id: 'showFacies', label: "Facies"}

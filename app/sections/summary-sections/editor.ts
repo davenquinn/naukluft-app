@@ -1,6 +1,6 @@
 import h from '@macrostrat/hyper'
-import {createContext, useState} from 'react'
-import {ColumnDivision} from '../column/data-source'
+import {createContext, useContext, useState} from 'react'
+import {ColumnDivision, ColumnDivisionsContext, useColumnDivisions} from '../column/data-source'
 import {ModalEditor, Direction} from '../editor'
 
 interface EditorCtx {
@@ -13,21 +13,36 @@ const EditorContext = createContext<EditorCtx>(null)
 const EditorProvider = props =>{
   const {children} = props
 
-  const [editingInterval, setEditingInterval] = useState<ColumnDivision>(null)
+  const allDivisions = useContext(ColumnDivisionsContext).divisions
+
+  const [editingIntervalIx, setEditingInterval] = useState<number>(null)
   const onEditInterval = (interval: ColumnDivision)=>{
-    setEditingInterval(interval)
+    const ix = allDivisions.findIndex(d => d.id == interval.id)
+    console.log(ix)
+    setEditingInterval(ix)
   }
+  const editingInterval = allDivisions[editingIntervalIx]
 
   const value = {editingInterval, onEditInterval}
+
+  const divisions = useColumnDivisions(editingInterval?.section_id)
 
   return h(EditorContext.Provider, {value}, [
     h(ModalEditor, {
       interval: editingInterval,
       isOpen: editingInterval != null,
+      showDetails: false,
       closeDialog() {setEditingInterval(null)},
       moveCursor(dir: Direction) {
-
-
+        let ix = divisions.findIndex(d=>d.id == editingInterval?.id)
+        if (dir == Direction.Up) {
+          ix += 1
+        } else if (dir == Direction.Down) {
+          ix -= 1
+        }
+        console.log(ix)
+        ix = Math.min(Math.max(0,ix),divisions.length-1)
+        onEditInterval(divisions[ix])
       }
     }),
     children
