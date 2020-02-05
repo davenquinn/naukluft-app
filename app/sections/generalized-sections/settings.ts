@@ -19,19 +19,15 @@ import {
 } from '../settings';
 
 const defaultSettings = {
-  settingsPanelIsActive: false,
-  modes: [
-    {value: 'normal', label: 'Normal'},
-    {value: 'skeleton', label: 'Skeleton'}
-    //{value: 'sequence-stratigraphy', label: 'Sequence Strat.'}
-  ],
   showFacies: true,
   showSymbols: true,
   showLithology: true,
   showGrainsize: true,
   showFaciesTracts: false,
   showSimplifiedLithology: true,
-  showSequenceStratigraphy: true
+  showSequenceStratigraphy: true,
+  showCarbonIsotopes: true,
+  showOxygenIsotopes: true
 };
 
 const GeneralizedSectionSettings = ({isOpen}) => h(BaseSettingsPanel, {isOpen}, [

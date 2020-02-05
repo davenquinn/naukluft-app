@@ -1,10 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {hyperStyled} from "@macrostrat/hyper";
 import {group} from 'd3-array';
 
@@ -30,6 +23,7 @@ import {
 } from '../summary-sections/data-provider';
 import {SVGSectionInner} from '../summary-sections/column';
 import {GeneralizedAxis, GeneralizedBreaks} from './axis';
+import {ChemostratigraphyColumn} from "./chemostrat"
 import styles from './main.styl';
 const h = hyperStyled(styles);
 
@@ -92,7 +86,6 @@ const compactOffsets = {
     Tsams: 0
   };
 
-
 const SectionPane = function(props){
   const {divisions} = useContext(ColumnDivisionsContext);
   const surfaceMap = group(divisions, s => s.section_id);
@@ -106,9 +99,17 @@ const SectionPane = function(props){
 
   const offsets = stratOffsets;
 
+  const showChemostrat = true
+
   return h('div#section-pane', {style: {overflow: 'scroll'}}, [
     h("div#section-page-inner", [
       h(LinkOverlay, {sections}),
+      h.if(showChemostrat)(ChemostratigraphyColumn, {
+        sections,
+        surfaces: [],
+        showLines: false,
+        keySection: 'Onis'
+      }),
       h('div.generalized-sections', sections.map(function({key,surfaces}){
         let start = 0;
         // Bottom is the first division with an assigned facies
