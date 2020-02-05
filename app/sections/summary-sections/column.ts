@@ -180,15 +180,21 @@ const SVGSectionInner = function(props){
  let underlayWidth = 300
 
  if (showTriangleBars) {
-   overallWidth += 40
+   // How many bars are we rendering?
+   const nOrders = sequenceStratOrder[1]-sequenceStratOrder[0]+1
+
+   //40
+   const triangleBarWidth = 20*nOrders
+   overallWidth += triangleBarWidth
    if (props.triangleBarRightSide) {
-     triangleBarTranslate = 160+chemostratWidth
+     triangleBarTranslate = 120+triangleBarWidth+chemostratWidth
      underlayPaddingLeft = 0
      underlayWidth = 146+chemostratWidth
      overallWidth += 6
    } else {
-     mainTranslate = 48
-     underlayPaddingLeft -= 35
+     triangleBarTranslate = 20*(nOrders-2)
+     mainTranslate = triangleBarWidth+8
+     underlayPaddingLeft -= 35+triangleBarTranslate
    }
  }
 
@@ -256,10 +262,8 @@ const SVGSectionInner = function(props){
              id,
              offsetLeft: 0,
              lineWidth: 20,
-             orders: [
-               sequenceStratOrder,
-               sequenceStratOrder-1
-             ]
+             minOrder: sequenceStratOrder[0],
+             maxOrder: sequenceStratOrder[1]
            })
          ])
        ])

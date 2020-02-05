@@ -1,7 +1,7 @@
 import {Component, useContext} from "react"
 import h from "@macrostrat/hyper"
 import {CSSTransition} from "react-transition-group"
-import {Switch, Slider, Button} from "@blueprintjs/core"
+import {Switch, RangeSlider, Button} from "@blueprintjs/core"
 import {PlatformContext} from "../../platform"
 import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base"
 import {SequenceStratContext} from "../sequence-strat-context"
@@ -76,11 +76,10 @@ SequenceStratControlPanel = (props)->
       label: "Triangle bars"
       onChange: actions.toggleBooleanState("showTriangleBars")
     }
-    h Slider, {
+    h RangeSlider, {
       min: 0,
       max: 5,
       stepSize: 1,
-      showTrackFill: false,
       value: value.sequenceStratOrder
       onChange: (v)->
         actions.updateState({sequenceStratOrder:v})

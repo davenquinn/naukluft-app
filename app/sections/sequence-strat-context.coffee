@@ -11,7 +11,7 @@ class SequenceStratProvider extends Component
     @state = {
       showTriangleBars: true
       showFloodingSurfaces: false
-      sequenceStratOrder: 3
+      sequenceStratOrder: [0,1]
     }
 
     @storage = new LocalStorage 'sequence-strat'
