@@ -140,11 +140,16 @@ const SectionInner = (props: SectionInnerProps)=>{
 
   const ticks = height/10;
 
+  let paddingLeft = props.padding.left + 40
+
+  const nOrders = sequenceStratOrder[1]-sequenceStratOrder[0]+1
+
   const shouldRenderGeneralized = activeDisplayMode === 'generalized';
   const shouldShowImages = (zoom >= 0.25) && !shouldRenderGeneralized;
 
   let lithologyLeftMargin = 0;
   if (showFaciesTracts) lithologyLeftMargin += lithologyWidth;
+  if (showTriangleBars) paddingLeft += 25*nOrders
 
   const columnLeftMargin = lithologyLeftMargin + lithologyWidth;
 
@@ -180,12 +185,12 @@ const SectionInner = (props: SectionInnerProps)=>{
                 editingInterval,
                 selectedHeight: editingHeight,
                 top: padding.top,
-                left: padding.left,
+                left: paddingLeft,
                 allowEditing: inEditMode
               }),
               h(ColumnSVG, {
                 innerWidth: props.innerWidth + props.logWidth,
-                paddingLeft: props.padding.left,
+                paddingLeft,
                 paddingTop: props.padding.top,
                 paddingBottom: props.padding.bottom,
                 paddingRight: props.padding.right
@@ -215,7 +220,7 @@ const SectionInner = (props: SectionInnerProps)=>{
                     h.if(showCarbonIsotopes)(Samples, {section_id: id}),
                     h.if(showFloodingSurfaces)(FloodingSurface),
                     h.if(showTriangleBars)(TriangleBars, {
-                      offsetLeft: -85,
+                      offsetLeft: -40-25*nOrders,
                       lineWidth: 25,
                       minOrder: sequenceStratOrder[0],
                       maxOrder: sequenceStratOrder[1]
@@ -233,7 +238,10 @@ const SectionInner = (props: SectionInnerProps)=>{
               ])
             ]),
             h.if(shouldShowImages)(ColumnImages, {
-              padding: props.padding,
+              padding: {
+                ...props.padding,
+                left: paddingLeft
+              },
               lithologyWidth: columnLeftMargin,
               imageFiles: props.imageFiles,
               extraSpace: zoom > 0.5 ? 2.5*zoom : 0,

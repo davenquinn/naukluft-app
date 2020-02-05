@@ -15,7 +15,7 @@ const Samples = (props)=>{
 
   return h('g.samples', samples.map(d => {
     const y = scale(d.orig_height)
-    const x = -30
+    const x = -40
     const transform = `translate(${x} ${y})`
     return h("g.sample", {transform, key: d.analysis_id}, [
       h("circle", {cx: 0, cy: 0, r: 2*zoom}),
