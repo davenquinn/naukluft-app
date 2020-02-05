@@ -70,8 +70,7 @@ PhotoNoteComponent = (props)->
 
 
 ManagedNotesColumn = (props)->
-  {platform} = useContext(PlatformContext)
-  {inEditMode} = useSettings()
+  {platform, inEditMode} = useContext(PlatformContext)
 
   {id, rest...} = props
   [notes, setNotes] = useState([])
@@ -100,9 +99,9 @@ ManagedNotesColumn = (props)->
     console.log "Note #{noteID} edited"
 
   editable = inEditMode
-  if platform != Platform.ELECTRON
-    onUpdateNote = null
-    editable = false
+  #if platform != Platform.ELECTRON
+  #  onUpdateNote = null
+  #  editable = false
 
   h NotesColumn, {
     notes,

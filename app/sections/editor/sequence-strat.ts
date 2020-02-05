@@ -19,8 +19,6 @@ import {hyperStyled} from "@macrostrat/hyper";
 import styles from "./style.styl";
 const h = hyperStyled(styles);
 
-const floodingSurfaceOrders = [-1,-2,-3,-4,-5,null,5,4,3,2,1];
-
 const surfaceTypes = [
   {value: 'mfs', label: 'Maximum flooding surface'},
   {value: 'sb', label: 'Sequence boundary'}
@@ -44,9 +42,7 @@ const SurfaceTypeControls = (props)=>{
       isNullable: true,
       states: surfaceTypes,
       activeState: interval.surface_type,
-      onUpdate: surface_type=> {
-        return updateInterval({surface_type});
-      }
+      onUpdate: surface_type => updateInterval({surface_type})
     }),
     h(LabeledControl, {
       title: 'Surface order',

@@ -14,13 +14,6 @@ import {
 
 defaultSettings = {
   zoom: 1
-  settingsPanelIsActive: false
-  inEditMode: false
-  modes: [
-    {value: 'normal', label: 'Normal'}
-    {value: 'skeleton', label: 'Skeleton'}
-    #{value: 'sequence-stratigraphy', label: 'Sequence Strat.'}
-  ]
   activeMode: 'normal'
   displayModes: [
     {value: 'image', label: 'Full-resolution'}
@@ -36,11 +29,9 @@ defaultSettings = {
   # Allows us to test the serialized query mode
   # we are developing for the web
   serializedQueries: global.SERIALIZED_QUERIES
-  dragdealer: false
   condensedDisplay: true
   sectionIDs: []
   showCarbonIsotopes: false
-  dragPosition: {x: 500, y: 500}
 }
 
 SettingsProvider = (props)->

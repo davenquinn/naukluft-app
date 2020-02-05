@@ -102,11 +102,6 @@ SectionIndex = ({match})->
         render: => h(FaciesDescriptionPage, {}, null)
       }
       h Route, {
-        path: match.url+'/all'
-        exact: true
-        render: => h(AllSections, {sections}, null)
-      }
-      h Route, {
         path: match.url+'/regional'
         exact: true
         render: => h(RegionalSectionsPage, {}, null)

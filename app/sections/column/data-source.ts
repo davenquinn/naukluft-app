@@ -66,7 +66,7 @@ class ColumnDivisionsProvider extends Component {
 }
 ColumnDivisionsProvider.initClass();
 
-const useColumnDivisions = function(id){
+const useColumnDivisions = function(id: string){
   const {divisions} = useContext(ColumnDivisionsContext);
   return divisions.filter(d => d.section_id === id);
 };
