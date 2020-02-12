@@ -8,8 +8,9 @@ import {SectionNavigationControl} from "../util"
 import {SectionDataContext} from '../data-providers'
 import {
   SectionLinkOverlay,
+  SectionContainer,
   SectionPositionProvider
-} from "../components/link-overlay"
+} from "../components"
 import {
   groupOrder,
   stackGroups,
@@ -36,14 +37,6 @@ import styles from "./main.styl"
 import T from 'prop-types'
 
 h = hyperStyled(styles)
-
-SectionContainer = (props)->
-  {children, minHeight} = props
-  h SectionPositionProvider, [
-    h "div#section-page-inner", {
-      style: {zoom: 1, minHeight}
-    }, children
-  ]
 
 SectionPane = (props) ->
   {sections

@@ -4,19 +4,23 @@ import {group} from 'd3-array';
 import {BaseSectionPage} from '../components/base-page';
 import {
   ColumnDivisionsContext,
-  GeneralizedDivisionsProvider
+  GeneralizedDataProvider
 } from './data-provider';
+import {useColumnDivisions, ColumnDivision} from '../column/data-source'
 import {GeneralizedSectionSettings, defaultSettings} from "./settings";
 import "../summary-sections/main.styl";
+import {LithostratigraphyColumn} from "../summary-sections/lithostrat-key"
 import {
   useSettings,
-  ColumnProvider
+  ColumnProvider,
+  ColumnSVG
 } from '@macrostrat/column-components';
 import {useContext} from 'react';
 import {
   SectionPositionProvider,
-  SectionLinkOverlay
-} from "../components/link-overlay";
+  SectionLinkOverlay,
+  SectionContainer
+} from "../components";
 import {
   SectionSurfacesProvider,
   SectionSurfacesContext
@@ -49,29 +53,50 @@ const GeneralizedSection = function(props){
   ]);
 };
 
-function compactMap<A,B>(arr: A[], mapper: (arg0: A)=>B): B[] {
-  return arr.map(mapper).filter(d => d != null)
+const rangeForDivisions = (divisions: ColumnDivision[]): [number, number] => {
+  const start = divisions[0].bottom
+  const end = divisions[divisions.length-1].top
+  return [start, end]
 }
 
-const match = (d, v): boolean => {
-  return d.original_section == v.section && d.original_bottom == v.height
+const GeneralizedLithostratKey = (props)=>{
+
+  let {padding, innerWidth, keySection} = props
+  let {left, right} = padding
+
+  let divisions = useColumnDivisions(keySection)
+  const range = rangeForDivisions(divisions)
+
+  // Set up number of ticks
+  const transform = `translate(${left} ${props.padding.top})`
+  const minWidth = innerWidth+(left+right)
+
+  return h('div', {style: {marginLeft: 20}}, [
+    h("div.section-container.lithostratigraphy-names", {
+      style: {minWidth}
+    }, [
+      h(ColumnProvider, {range, divisions, zoom: 0.1}, [
+        h(ColumnSVG, {width: 50}, [
+          h('g.backdrop', {transform}, [
+            h(LithostratigraphyColumn, {keySection})
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 
-const LinkOverlay = function(props){
-  const {divisions} = useContext(ColumnDivisionsContext)
-  const {surfaces} = useContext(SectionSurfacesContext);
+GeneralizedLithostratKey.defaultProps = {
+  keySection: 'Onis',
+  innerWidth: 40,
+  padding: {
+    left: 5,
+    top: 30,
+    right: 5,
+    bottom: 10
+  }
+}
 
-  const newSurfaces = surfaces.map(surface => {
-    const section_height = compactMap(surface.section_height, v =>{
-      const div = divisions.find(d => match(d,v))
-      if (div == null) return null
-      return {...v, height: div.bottom, section: div.section_id}
-    })
-    return {...surface, section_height}
-  })
-
-  return h(SectionLinkOverlay, {surfaces: newSurfaces});
-};
 
 // Should allow switching between offset types
 const stratOffsets = {
@@ -101,12 +126,18 @@ const SectionPane = function(props){
 
   const showChemostrat = true
 
-  return h('div#section-pane', {style: {overflow: 'scroll'}}, [
-    h("div#section-page-inner", [
-      h(LinkOverlay, {sections}),
+  return h("div#section-pane", [
+    h(SectionContainer, [
+      h(SectionLinkOverlay),
+      h(GeneralizedLithostratKey, {
+        zoom: 0.1,
+        key: "key",
+        keySection: 'Onis',
+        offset: 0
+      }),
       h.if(showChemostrat)(ChemostratigraphyColumn, {
         sections,
-        surfaces: [],
+        surfaces: useContext(SectionSurfacesContext).surfaces,
         showLines: false,
         keySection: 'Onis'
       }),
@@ -134,9 +165,10 @@ const SectionPane = function(props){
           range: [start, end],
           height: end-start,
           divisions: surfaces
-        });}))
+        });}
+      ))
     ])
-  ]);
+  ])
 };
 
 
@@ -148,12 +180,14 @@ const GeneralizedSectionsInner = props => h(BaseSectionPage, {
   h(SectionPane)
 ]);
 
-const GeneralizedSections = props => h(SectionSurfacesProvider, [
-  h(GeneralizedDivisionsProvider, [
-    h(SectionPositionProvider, [
-      h(GeneralizedSectionsInner)
+const GeneralizedSections = props => {
+  return h(SectionSurfacesProvider, [
+    h(GeneralizedDataProvider, [
+      h(SectionPositionProvider, [
+        h(GeneralizedSectionsInner)
+      ])
     ])
-  ])
-]);
+  ]);
+}
 
 export {GeneralizedSections};

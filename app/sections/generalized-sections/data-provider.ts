@@ -1,8 +1,8 @@
 import h from 'react-hyperscript'
-import sql from '../sql/generalized-section.sql'
 import {useQuery} from "~/db"
 import {useContext} from 'react'
 import {ColumnDivision, ColumnDivisionsContext} from '../column/data-source'
+import {SectionSurfacesContext} from '../summary-sections/data-provider'
 import {GeneralizedDivision} from './types'
 import breakQuery from './breaks.sql'
 import {group, pairs} from 'd3-array'
@@ -119,8 +119,6 @@ const GeneralizedDivisionsProvider = (props)=>{
   /*
   Provides all surfaces used in Summary Sections diagram
   */
-  const {children} = props
-
   let allDivisions = useContext(ColumnDivisionsContext).divisions
   // sorting of input is not guaranteed
   allDivisions.sort((a,b)=>a.bottom-b.bottom)
@@ -161,7 +159,42 @@ const GeneralizedDivisionsProvider = (props)=>{
     }
   }
   // We should probably provide a pre-grouped map instead of a filterable list
-  return h(ColumnDivisionsContext.Provider, {value: {divisions}}, children)
+  return h(ColumnDivisionsContext.Provider, {value: {divisions}}, props.children)
 }
 
-export {GeneralizedDivisionsProvider, ColumnDivisionsContext}
+// Surfaces
+
+const match = (d, v): boolean => {
+  return d.original_section == v.section && d.original_bottom == v.height
+}
+
+
+function compactMap<A,B>(arr: A[], mapper: (arg0: A)=>B): B[] {
+  return arr.map(mapper).filter(d => d != null)
+}
+
+const GeneralizedSurfacesProvider = (props)=>{
+  // Repackage section surfaces with respect to new generalized sections
+  const {surfaces} = useContext(SectionSurfacesContext)
+  const {divisions} = useContext(ColumnDivisionsContext)
+
+  const newSurfaces = surfaces.map(surface => {
+    const section_height = compactMap(surface.section_height, v =>{
+      const div = divisions.find(d => match(d,v))
+      if (div == null) return null
+      return {...v, height: div.bottom, section: div.section_id}
+    })
+    return {...surface, section_height}
+  })
+
+  return h(SectionSurfacesContext.Provider,
+           {value: {surfaces: newSurfaces}}, props.children)
+}
+
+const GeneralizedDataProvider = (props)=>{
+  return h(GeneralizedDivisionsProvider, null,
+    h(GeneralizedSurfacesProvider, null, props.children)
+  )
+}
+
+export {GeneralizedDataProvider, ColumnDivisionsContext}

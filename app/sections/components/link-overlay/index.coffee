@@ -27,6 +27,9 @@ import {Notification} from "~/notify"
 import {SectionLinkPath} from './path'
 import {prepareLinkData} from './build-links'
 import styles from './main.styl'
+import {SectionSurfacesContext} from '../../summary-sections/data-provider'
+
+
 
 h = hyperStyled(styles)
 
@@ -317,8 +320,12 @@ SectionLinkOverlay = (props)->
     className,
     rest...
   } = props
-  return null unless surfaces.length
   padding = extractPadding(rest)
+
+  # Get surfaces from context if unset
+  surfaces ?= useContext(SectionSurfacesContext).surfaces
+  return null unless surfaces?
+  return null unless surfaces.length
 
   sectionIndex = useContext(SectionObserverContext)
   sz = getSize(sectionIndex, padding)

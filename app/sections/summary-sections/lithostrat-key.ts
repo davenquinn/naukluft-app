@@ -1,11 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import h from "@macrostrat/hyper"
 import {Component, useContext} from "react"
 import {useQuery} from "~/db"
@@ -36,6 +28,7 @@ const LSLabel = (props)=>{
 LSLabel.defaultProps = { width: 20, extend: false}
 
 const LithostratigraphyColumn = (props)=>{
+  const {keySection} = props
   const names = useQuery(sql)
   let {surfaces} = useContext(SectionSurfacesContext)
   const {scale} = useContext(ColumnContext)
@@ -44,22 +37,28 @@ const LithostratigraphyColumn = (props)=>{
     return null
   }
 
+  const findSurfaceHeight = (d)=>{
+    console.log(d)
+    const {section_height, ...rest} = d
+    return {
+      height: section_height?.find(v => v.section === keySection)?.height,
+      ...rest
+    }
+  }
+
   surfaces = surfaces
     .filter(d => d.type === 'lithostrat')
-    .map(function(d){
-      const {section_height, ...rest} = d
-      const {height} = section_height.find(v => v.section === 'J')
-      return {height, ...rest}})
+    .map(findSurfaceHeight)
+    .filter(d => d.height != null)
 
   surfaces.sort((a, b) => a.height - b.height)
 
   const formations = []
   const members = []
 
-  let transform
-  for (var d of Array.from(surfaces)) {
+  for (const d of surfaces) {
     const y = scale(d.height)
-    transform = `translate(0,${y}) rotate(-90)`
+    const transform = `translate(0,${y}) rotate(-90)`
     const surfaceData = names.find(v => v.id === d.upper_unit)
     if (surfaceData == null) { continue }
     if (surfaceData.level === 3) {
@@ -69,7 +68,6 @@ const LithostratigraphyColumn = (props)=>{
     if (d.commonality === 2) {
       formations.push(h(LSLabel, {y, name: surfaceData.formation_short_name}))
     }
-
     members.push(h(LSLabel, {y, name: surfaceData.short_name}))
   }
 
@@ -79,15 +77,17 @@ const LithostratigraphyColumn = (props)=>{
   ])
 }
 
+LithostratigraphyColumn.defaultProps = {
+  keySection: 'J'
+}
+
 const BaseSVGSectionComponent = (props)=>{
-  let {padding, innerWidth} = props
+  let {padding, innerWidth, keySection} = props
   let {left, right} = padding
 
   const outerWidth = innerWidth+(left+right)
 
-
   // Set up number of ticks
-
   const transform = `translate(${left} ${props.padding.top})`
 
   const minWidth = outerWidth
@@ -98,7 +98,7 @@ const BaseSVGSectionComponent = (props)=>{
       h(SummaryColumnProvider, {id: 'J'}, [
         h(ColumnSVG, {width: 50}, [
           h('g.backdrop', {transform}, [
-            h(LithostratigraphyColumn)
+            h(LithostratigraphyColumn, keySection)
           ])
         ])
       ])
@@ -138,4 +138,4 @@ class LithostratKey extends Component {
   }
 }
 
-export {LithostratKey}
+export {LithostratKey, LithostratigraphyColumn}
