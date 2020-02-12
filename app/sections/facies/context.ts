@@ -14,13 +14,13 @@ import faciesQuery from "./sql/facies.sql";
 
 class FaciesProvider extends Component {
   constructor(props){
-    this.getFaciesColor = this.getFaciesColor.bind(this);
     super(props);
     this.state = {
       facies: [],
       faciesTracts: [],
       __colorMap: {}
     };
+    this.getFaciesColor = this.getFaciesColor.bind(this);
   }
 
   getFaciesColor(id){

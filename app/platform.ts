@@ -58,11 +58,6 @@ const PlatformContext = createContext({});
 
 class PlatformProvider extends Component {
   constructor(props){
-    this.path = this.path.bind(this);
-    this.updateState = this.updateState.bind(this);
-    this.computePhotoPath = this.computePhotoPath.bind(this);
-    this.resolveSymbol = this.resolveSymbol.bind(this);
-    this.resolveLithologySymbol = this.resolveLithologySymbol.bind(this);
     let platform = Platform.ELECTRON;
     if (global.BASE_DIR == null) { global.BASE_DIR = join(__dirname, ".."); }
 
@@ -82,6 +77,12 @@ class PlatformProvider extends Component {
       editable,
       baseUrl
     };
+
+    this.path = this.path.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.computePhotoPath = this.computePhotoPath.bind(this);
+    this.resolveSymbol = this.resolveSymbol.bind(this);
+    this.resolveLithologySymbol = this.resolveLithologySymbol.bind(this);
 
     this.storage = new LocalStorage('edit-mode');
     const v = this.storage.get();

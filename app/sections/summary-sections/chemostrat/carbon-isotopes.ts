@@ -73,10 +73,11 @@ ScaleLine.propTypes = {
 
 class IsotopesColumnInner extends Component {
   constructor(...args) {
+    super(...args);
     this.renderAxisLines = this.renderAxisLines.bind(this);
     this.renderData = this.renderData.bind(this);
     this.renderScale = this.renderScale.bind(this);
-    super(...args);
+
   }
 
   static initClass() {
@@ -262,7 +263,7 @@ class MinimalIsotopesColumnInner extends Component {
         bottom: 30
       }
     };
-  
+
     this.propTypes = {
       section: T.string.isRequired,
       isotopes: T.arrayOf(T.object).isRequired

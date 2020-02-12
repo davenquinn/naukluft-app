@@ -3,25 +3,20 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {Component, useContext, useState} from "react";
+import {useContext} from "react";
 import h from "@macrostrat/hyper";
 
 import "../main.styl";
-import {NavLink} from "../../nav";
-import LocalStorage from "../storage";
-import {getSectionData} from "../data-providers";
 import {SectionComponent} from "./column";
 import {PlatformContext} from "../../platform";
 import {BaseSectionPage} from '../components';
-import {SectionNavigationControl} from "../util";
-import {Notification} from "../../notify";
 import {defaultSettings, SettingsPanel} from './settings';
 import {useSettings} from '@macrostrat/column-components';
-import styles from './main.styl';
+import './main.styl';
 
 const SectionMain = function(props){
   // Set up routing to jump to a specific height
-  const {section, height: scrollToHeight, children} = props;
+  const {children} = props;
   const {inEditMode} = useContext(PlatformContext);
   const settings = useSettings();
 

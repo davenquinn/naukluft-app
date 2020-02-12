@@ -168,8 +168,8 @@ class MapLegendList extends Component {
     this.defaultProps = {};
   }
   constructor(props){
-    this.createLegend = this.createLegend.bind(this);
     super(props);
+    this.createLegend = this.createLegend.bind(this);
     this.state =
       {data: []};
 

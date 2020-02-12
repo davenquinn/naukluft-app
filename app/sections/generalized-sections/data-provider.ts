@@ -197,4 +197,8 @@ const GeneralizedDataProvider = (props)=>{
   )
 }
 
-export {GeneralizedDataProvider, ColumnDivisionsContext}
+export {
+  GeneralizedDivisionsProvider,
+  GeneralizedDataProvider,
+  ColumnDivisionsContext
+}

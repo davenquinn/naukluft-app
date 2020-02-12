@@ -8,7 +8,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import mgl from "mapbox-gl/dist/mapbox-gl";
 import h from "react-hyperscript";
-import {LegendPanel} from "./legend/index.coffee";
+import {LegendPanel} from "./legend";
 import {MapNavigationControl} from "./nav";
 import "mapbox-gl/dist/mapbox-gl.css";
 // Maybe this should go in main thread

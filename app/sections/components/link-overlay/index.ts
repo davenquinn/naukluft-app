@@ -41,7 +41,7 @@ import {SectionSurfacesContext} from '../../summary-sections/data-provider';
 const h = hyperStyled(styles);
 
 const sectionSurfaceProps = function(surface){
-  let stroke;
+  let stroke: string;
   const {surface_type, surface_order} = surface;
 
   if (surface_type === 'mfs') {
@@ -64,10 +64,10 @@ const SectionObserverContext = createContext({});
 
 class SectionPositionProvider extends Component {
   constructor(props){
+    super(props);
     this.setPosition = this.setPosition.bind(this);
     this.accumulateChanges = this.accumulateChanges.bind(this);
     this.update = this.update.bind(this);
-    super(props);
     this.container = null;
     this.state = {value: {}};
     this.spec = null;
