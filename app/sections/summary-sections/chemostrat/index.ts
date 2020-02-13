@@ -55,7 +55,7 @@ const BaseChemostratigraphyColumn = (props)=>{
   if (keySection != null) {
     row = sections.find(d => d.id === keySection);
   }
-  const offset = row?.offset ?? 0
+  const offset = row?.offset ?? props.offset ?? 0
   const {location, ...rest} = row ?? {};
 
   const {surfaces} = useContext(SectionSurfacesContext)

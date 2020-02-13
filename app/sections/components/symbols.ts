@@ -4,8 +4,6 @@ import {SymbolColumn} from "@macrostrat/column-components"
 import {useQuery} from "~/db"
 import sql from "../sql/symbols.sql"
 
-const SymbolContext = createContext<Symbol[]>(null)
-
 interface Symbol {
   id: number,
   section_id: string,
@@ -13,10 +11,11 @@ interface Symbol {
   symbol_min_zoom: number
 }
 
+const SymbolContext = createContext<Symbol[]>(null)
+
 const SymbolProvider = (props)=>{
   const {children} = props
   const symbols: Symbol[] = useQuery(sql) ?? []
-  console.log(symbols)
   return h(SymbolContext.Provider, {value: symbols}, children)
 }
 

@@ -36,15 +36,16 @@ const FaciesTractIntervals = function(props){
 };
 
 const SVGSectionInner = function(props){
-  let {id,
-   range,
-   zoom,
-   offsetTop,
-   divisions,
-   children,
-   topSurface,
-   bottomSurface
-   } = props;
+  let {
+    id,
+    range,
+    zoom,
+    offsetTop,
+    divisions,
+    children,
+    topSurface,
+    bottomSurface
+  } = props;
 
   divisions = divisions.filter(d => !d.schematic);
 

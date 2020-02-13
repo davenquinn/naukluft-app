@@ -298,8 +298,8 @@ MinimalIsotopesColumnInner.initClass();
 
 
 const IsotopesColumn = function(props){
-  const {width, domain, ...rest} = props;
-  const isotopes = useIsotopes();
+  const {width, domain, preprocessData, ...rest} = props;
+  let isotopes = useIsotopes();
   return h(CrossAxisLayoutProvider, {width, domain}, (
     h(IsotopesColumnInner, {isotopes, ...rest})
   ));
