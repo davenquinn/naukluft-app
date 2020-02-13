@@ -79,7 +79,6 @@ const SectionPane = function(props) {
       }),
       h.if(showChemostrat)(ChemostratigraphyColumn, {
         sections,
-        surfaces,
         showLines: false,
         options
       }),

@@ -139,7 +139,6 @@ const SectionPane = function(props){
       }),
       h.if(showChemostrat)(ChemostratigraphyColumn, {
         sections,
-        surfaces: useContext(SectionSurfacesContext).surfaces,
         showLines: false,
         keySection: 'Onis'
       }),

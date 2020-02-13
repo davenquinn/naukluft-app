@@ -4,6 +4,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
+import {useContext} from 'react'
 import {
   ColumnProvider,
   useSettings
@@ -16,6 +17,7 @@ import {
 } from './carbon-isotopes';
 import {rangeForSection} from '../../util';
 import {LayoutGroup} from "../layout";
+import {SectionSurfacesContext} from '../data-provider'
 
 const h = hyperStyled(styles);
 
@@ -36,7 +38,6 @@ const ChemostratigraphyGroup = function(props){
 const BaseChemostratigraphyColumn = (props)=>{
   const {
     sections,
-    surfaces,
     colorScheme,
     range,
     showLines,
@@ -55,12 +56,15 @@ const BaseChemostratigraphyColumn = (props)=>{
     row = sections.find(d => d.id === keySection);
   }
   const offset = row?.offset ?? 0
-  const {location, ...rest} = row;
+  const {location, ...rest} = row ?? {};
+
+  const {surfaces} = useContext(SectionSurfacesContext)
 
   return h(ChemostratigraphyGroup, {
     range
   }, [
     h.if(showCarbonIsotopes)(IsotopesColumn, {
+      ...rest,
       zoom: 0.1,
       key: 'carbon-isotopes',
       offset,
@@ -69,9 +73,10 @@ const BaseChemostratigraphyColumn = (props)=>{
       colorScheme,
       corrected: correctIsotopeRatios,
       showLines,
-      ...rest
+      keySection
     }),
     h.if(showOxygenIsotopes)(IsotopesColumn, {
+      ...rest,
       zoom: 0.1,
       system: 'delta18o',
       label: 'δ¹⁸O',
@@ -83,7 +88,7 @@ const BaseChemostratigraphyColumn = (props)=>{
       location: "",
       surfaces,
       showLines,
-      ...rest
+      keySection
     })
   ]);
 }
@@ -91,10 +96,6 @@ const BaseChemostratigraphyColumn = (props)=>{
 const ChemostratigraphyColumn = function(props){
   const {
     sections,
-    surfaces,
-    colorScheme,
-    range,
-    showLines,
     keySection
   } = props;
 
@@ -104,7 +105,6 @@ const ChemostratigraphyColumn = function(props){
     row = sections.find(d => d.id === keySection);
   }
   const offset = row?.offset ?? 0
-  const {location, ...rest} = row;
 
   return h(BaseChemostratigraphyColumn, {
     range: rangeForSection(row),
@@ -126,5 +126,6 @@ export {
   IsotopesColumn,
   MinimalIsotopesColumn,
   ChemostratigraphyColumn,
+  BaseChemostratigraphyColumn,
   ChemostratigraphyGroup
 };

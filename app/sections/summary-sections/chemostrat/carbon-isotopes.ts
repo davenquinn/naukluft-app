@@ -1,30 +1,14 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import {withRouter} from "react-router-dom";
-import {findDOMNode} from "react-dom";
-import * as d3 from "d3";
-import {scaleLinear} from 'd3-scale';
-import {line} from 'd3-shape';
-import "d3-selection-multi";
-import {Component, createElement, createContext, useContext} from "react";
+import {format} from "d3-format";
+import {Component, useContext} from "react";
 import h from "@macrostrat/hyper";
-import Measure from 'react-measure';
-import {SectionAxis} from "@macrostrat/column-components/dist/esm/axis";
 import classNames from "classnames";
 import chroma from "chroma-js";
+import {schemeCategory10} from 'd3-scale-chromatic'
 import {AxisBottom} from '@vx/axis';
 
 import {sectionIsotopeScheme} from '../display-parameters';
 import {useIsotopes} from './data-manager';
 import {sectionSurfaceProps} from '../../components/link-overlay';
-import {query} from "../../db";
-import sql from '../../sql/carbon-isotopes.sql';
-import allCarbonIsotopes from '../../sql/all-carbon-isotopes.sql';
 import {
   IsotopesDataArea, useDataLocator,
   IsotopeDataLine, IsotopeDataPoint
@@ -38,7 +22,7 @@ import {
 } from '@macrostrat/column-components';
 import T from 'prop-types';
 
-const fmt = d3.format('.1f');
+const fmt = format('.1f');
 
 const IsotopeText = function({datum, text, ...rest}){
   const {pointLocator} = useDataLocator();
@@ -56,7 +40,7 @@ const ScaleLine = function(props){
   let {value, className, labelBottom, labelOffset, ...rest} = props;
   if (labelBottom == null) { labelBottom = false; }
   if (labelOffset == null) { labelOffset = 12; }
-  const {xScale, scale, pixelHeight} = useContext(ColumnLayoutContext);
+  const {xScale, pixelHeight} = useContext(ColumnLayoutContext);
   const x = xScale(value);
   const transform = `translate(${x})`;
   className = classNames(className, {zero: value === 0});
@@ -97,6 +81,7 @@ class IsotopesColumnInner extends Component {
       pixelOffset: 0, // This should be changed
       domain: [-15,8],
       colorScheme: sectionIsotopeScheme,
+      keySection: "J",
       padding: {
         left: 10,
         top: 10,
@@ -134,14 +119,16 @@ class IsotopesColumnInner extends Component {
   }
 
   renderAxisLines() {
+    const {keySection} = this.props
     const getHeight = function(d){
-      const {height} = d.section_height.find(v => v.section === 'J');
+      const {height} = d.section_height.find(v => v.section === keySection);
       return height;
     };
 
     let {surfaces} = this.props;
     const {scale} = this.context;
     if (surfaces == null) { return null; }
+    console.log(surfaces)
     surfaces = surfaces.filter(d => d.type === 'sequence-strat');
     return h('g.surfaces', {style: {strokeOpacity: 0.3}}, surfaces.map(d=> {
       let height;
@@ -254,7 +241,7 @@ class MinimalIsotopesColumnInner extends Component {
       label: 'δ¹³C',
       system: 'delta13c',
       offsetTop: null,
-      colorScheme: d3.schemeCategory10,
+      colorScheme: schemeCategory10,
       correctIsotopeRatios: false,
       padding: {
         left: 10,
