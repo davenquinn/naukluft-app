@@ -1,4 +1,4 @@
-import h from 'react-hyperscript'
+import h, {compose, C} from '@macrostrat/hyper'
 import {useQuery} from "~/db"
 import {useContext, createContext} from 'react'
 import {ColumnDivision, ColumnDivisionsContext} from '../column/data-source'
@@ -247,18 +247,13 @@ const GeneralizedSymbolProvider = (props)=>{
   return h(SymbolContext.Provider, {value: newSymbols}, props.children)
 }
 
-
-const GeneralizedDataProvider = (props)=>{
-  return h(EditorProvider, null,
-    h(GeneralizedDivisionsProvider, null,
-      h(GeneralizedSymbolProvider, null,
-        h(GeneralizedEditorProvider, null,
-          h(GeneralizedSurfacesProvider, null, props.children)
-        )
-      )
-    )
-  )
-}
+const GeneralizedDataProvider = compose(
+  EditorProvider,
+  GeneralizedDivisionsProvider,
+  GeneralizedSymbolProvider,
+  GeneralizedEditorProvider,
+  GeneralizedSurfacesProvider
+)
 
 export {
   GeneralizedDivisionsProvider,
