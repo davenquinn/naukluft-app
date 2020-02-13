@@ -8,7 +8,10 @@ interface Symbol {
   id: number,
   section_id: string,
   symbol: string,
-  symbol_min_zoom: number
+  symbol_min_zoom: number,
+  height: number,
+  start_height: number,
+  end_height: number|null
 }
 
 const SymbolContext = createContext<Symbol[]>(null)

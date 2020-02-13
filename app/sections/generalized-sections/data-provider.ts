@@ -4,6 +4,7 @@ import {useContext, createContext} from 'react'
 import {ColumnDivision, ColumnDivisionsContext} from '../column/data-source'
 import {EditorProvider, EditorContext} from '../summary-sections/editor';
 import {SectionSurfacesContext} from '../summary-sections/data-provider'
+import {SymbolContext} from '../components/symbols'
 import {GeneralizedDivision} from './types'
 import breakQuery from './breaks.sql'
 import {group, pairs} from 'd3-array'
@@ -224,12 +225,36 @@ const GeneralizedEditorProvider = (props)=>{
 
 }
 
+const GeneralizedSymbolProvider = (props)=>{
+  const symbols = useContext(SymbolContext)
+  const {divisions} = useContext(ColumnDivisionsContext)
+  const genDivisions = divisions as GeneralizedDivision[]
+
+  let newSymbols: Symbol[] = []
+  for (let s of symbols) {
+    const div = genDivisions.find(d=>{
+      return (d.original_section == s.section_id
+        && d.original_bottom <= s.height
+        && d.original_top >= s.height
+      )
+    })
+    if (div == null) continue
+
+    s.height = div.bottom+(s.height-div.original_bottom)
+    s.section_id = div.section_id
+    newSymbols.push(s)
+  }
+  return h(SymbolContext.Provider, {value: newSymbols}, props.children)
+}
+
 
 const GeneralizedDataProvider = (props)=>{
   return h(EditorProvider, null,
     h(GeneralizedDivisionsProvider, null,
-      h(GeneralizedEditorProvider, null,
-        h(GeneralizedSurfacesProvider, null, props.children)
+      h(GeneralizedSymbolProvider, null,
+        h(GeneralizedEditorProvider, null,
+          h(GeneralizedSurfacesProvider, null, props.children)
+        )
       )
     )
   )
