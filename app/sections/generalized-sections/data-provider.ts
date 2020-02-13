@@ -1,7 +1,8 @@
 import h from 'react-hyperscript'
 import {useQuery} from "~/db"
-import {useContext} from 'react'
+import {useContext, createContext} from 'react'
 import {ColumnDivision, ColumnDivisionsContext} from '../column/data-source'
+import {EditorProvider, EditorContext} from '../summary-sections/editor';
 import {SectionSurfacesContext} from '../summary-sections/data-provider'
 import {GeneralizedDivision} from './types'
 import breakQuery from './breaks.sql'
@@ -115,6 +116,9 @@ function generalize(divs: ColumnDivision[], start_height: number, section_id: st
   })
 }
 
+// A context for to pass along ungrouped divisions
+const BaseDivisionsContext = createContext<ColumnDivision[]>([])
+
 const GeneralizedDivisionsProvider = (props)=>{
   /*
   Provides all surfaces used in Summary Sections diagram
@@ -159,7 +163,9 @@ const GeneralizedDivisionsProvider = (props)=>{
     }
   }
   // We should probably provide a pre-grouped map instead of a filterable list
-  return h(ColumnDivisionsContext.Provider, {value: {divisions}}, props.children)
+  return h(BaseDivisionsContext.Provider, {value: allDivisions}, (
+    h(ColumnDivisionsContext.Provider, {value: {divisions}}, props.children)
+  ))
 }
 
 // Surfaces
@@ -191,10 +197,46 @@ const GeneralizedSurfacesProvider = (props)=>{
            {value: {surfaces: newSurfaces}}, props.children)
 }
 
+const matchDivisions = (a: GeneralizedDivision, b: ColumnDivision): boolean => {
+  return a?.original_section == b?.section_id && a?.original_bottom == b?.bottom
+}
+
+
+const GeneralizedEditorProvider = (props)=>{
+  const {onEditInterval, editingInterval} = useContext(EditorContext)
+  const allDivisions = useContext(BaseDivisionsContext)
+  const {divisions} = useContext(ColumnDivisionsContext)
+
+  // Must be a child of GeneralizedDivisionsProvider
+  const onEditGeneralizedInterval = (interval: GeneralizedDivision)=>{
+    const v = allDivisions.find(d => matchDivisions(interval, d))
+    onEditInterval(v)
+  }
+
+  const generalizedEditInterval = divisions?.find(
+    (d: GeneralizedDivision)=> matchDivisions(d, editingInterval)
+  )
+
+  return h(EditorContext.Provider, {value: {
+    editingInterval: generalizedEditInterval,
+    onEditInterval: onEditGeneralizedInterval
+  }}, props.children)
+
+}
+
+
 const GeneralizedDataProvider = (props)=>{
-  return h(GeneralizedDivisionsProvider, null,
-    h(GeneralizedSurfacesProvider, null, props.children)
+  return h(EditorProvider, null,
+    h(GeneralizedDivisionsProvider, null,
+      h(GeneralizedEditorProvider, null,
+        h(GeneralizedSurfacesProvider, null, props.children)
+      )
+    )
   )
 }
 
-export {GeneralizedDataProvider, ColumnDivisionsContext}
+export {
+  GeneralizedDivisionsProvider,
+  GeneralizedDataProvider,
+  ColumnDivisionsContext
+}

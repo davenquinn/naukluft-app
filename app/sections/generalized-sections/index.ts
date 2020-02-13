@@ -7,11 +7,12 @@ import {
   GeneralizedDataProvider
 } from './data-provider';
 import {useColumnDivisions, ColumnDivision} from '../column/data-source'
-import {GeneralizedSectionSettings, defaultSettings} from "./settings";
-import "../summary-sections/main.styl";
+import {
+  SummarySectionsSettings,
+  defaultSettings
+} from "../summary-sections/settings";
 import {LithostratigraphyColumn} from "../summary-sections/lithostrat-key"
 import {
-  useSettings,
   ColumnProvider,
   ColumnSVG
 } from '@macrostrat/column-components';
@@ -28,10 +29,12 @@ import {
 import {SVGSectionInner} from '../summary-sections/column';
 import {GeneralizedAxis, GeneralizedBreaks} from './axis';
 import {ChemostratigraphyColumn} from "./chemostrat"
+
+import "../summary-sections/main.styl";
 import styles from './main.styl';
 const h = hyperStyled(styles);
 
-const GeneralizedSection = function(props){
+const GeneralizedSection = function(props) {
   const {range, height, divisions, zoom, offsetTop, ...rest} = props;
   const {id} = rest;
   return h('div.section-column', {className: id}, [
@@ -96,7 +99,6 @@ GeneralizedLithostratKey.defaultProps = {
     bottom: 10
   }
 }
-
 
 // Should allow switching between offset types
 const stratOffsets = {
@@ -174,7 +176,7 @@ const SectionPane = function(props){
 
 const GeneralizedSectionsInner = props => h(BaseSectionPage, {
   id: 'generalized-sections',
-  settingsPanel: GeneralizedSectionSettings,
+  settingsPanel: SummarySectionsSettings,
   defaultSettings
 }, [
   h(SectionPane)
