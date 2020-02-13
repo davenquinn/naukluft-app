@@ -6,25 +6,18 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
-import {Component, useContext, createContext} from "react";
-import {useSettings, SettingsProvider} from "@macrostrat/column-components";
-import {getSectionData} from "../data-providers";
+import {Component, useContext} from "react";
+import {
+  useSettings,
+  SettingsProvider
+} from "@macrostrat/column-components";
 import {ChemostratigraphyColumn} from "./chemostrat";
-import {SVGSectionComponent} from "./column";
-import {SectionNavigationControl} from "../util";
 import {SectionDataContext} from '../data-providers';
 import {
   SectionLinkOverlay,
   SectionContainer,
   SectionPositionProvider
 } from "../components";
-import {
-  groupOrder,
-  stackGroups,
-  sectionOffsets,
-  groupOffsets,
-  sectionIsotopeScheme
-} from "./display-parameters";
 import {
   SequenceStratConsumer,
   SequenceStratContext
@@ -55,16 +48,7 @@ const SectionPane = function(props) {
 
   const {surfaces} = useContext(SectionSurfacesContext);
 
-  const {showFloodingSurfaces,
-   showSequenceStratigraphy,
-   showCarbonIsotopes,
-   showOxygenIsotopes,
-   showFacies,
-   showLegend,
-   showLithostratigraphy,
-   isotopesPerSection,
-   activeMode} = useSettings();
-
+  const {showLegend} = useSettings();
   const {showTriangleBars} = useContext(SequenceStratContext);
 
   if (sections == null) { return null; }
@@ -78,8 +62,6 @@ const SectionPane = function(props) {
   if (showTriangleBars) {
     columnWidth += 25;
   }
-
-  const paddingLeft = showTriangleBars ? 90 : 30;
 
   const options = useSettings();
   const showChemostrat = options.correlatedIsotopes;

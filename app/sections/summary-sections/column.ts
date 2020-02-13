@@ -63,17 +63,23 @@ const EditOverlay = function(props){
  const editingInterval = interval?.section_id == id ? interval : null
 
  const onClick = function({height, event, division}){
+   const sectionID = division?.original_section ?? division?.section_id ?? id
+   // If we're working with a generalized division, we need to recalculate height
+   let _height = height
+   if (division?.original_bottom != null) {
+     _height -= division.bottom
+     _height += division.original_bottom
+   }
+
    if (event.shiftKey && onEditInterval != null) {
      onEditInterval(division)
      return
    }
 
-   let path = `/sections/${id}`
-   if (height != null) {
-     path += `/height/${height}`
+   let path = `/sections/${sectionID}`
+   if (_height != null) {
+     path += `/height/${_height}`
    }
-
-   console.log(height, path)
    navigateTo(path)
  }
 
@@ -141,7 +147,8 @@ const SVGSectionInner = function(props){
     innerWidth,
     showWhiteUnderlay,
     offsetTop,
-    absolutePosition
+    absolutePosition,
+    allowNavigation
   } = props
 
   const {inEditMode} = useContext(PlatformContext)

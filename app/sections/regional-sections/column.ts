@@ -5,26 +5,20 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
-import {createRef, useContext, useRef, useLayoutEffect} from "react";
 import T from 'prop-types';
 import {
   ColumnSVG,
   ColumnBox,
-  ColumnProvider,
-  ColumnContext
+  ColumnProvider
 } from '@macrostrat/column-components';
 import {
-  SectionPositionContext,
   ColumnTracker
 } from '../components/link-overlay';
 import {
   LithologyColumn,
-  FaciesColumnInner,
-  CarbonateDivisions,
   ParameterIntervals,
 } from "@macrostrat/column-components/dist/esm/lithology";
 import {useFaciesColors} from './util';
-import {FaciesContext} from '@macrostrat/column-components';
 
 import styles from './main.styl';
 const h = hyperStyled(styles);

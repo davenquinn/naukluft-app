@@ -4,24 +4,18 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {findDOMNode} from "react-dom";
 import {format} from "d3-format";
 import {
-  Component,
-  createElement,
   useState,
   useContext
 } from "react";
 import h from "@macrostrat/hyper";
-import T from "prop-types";
 import useAsyncEffect from 'use-async-effect';
 import logNotesQuery from '../sql/log-notes.sql';
 import updateNoteQuery from '../sql/update-note.sql';
 import setNoteInvisible from '../sql/set-note-invisible.sql';
 import {PlatformContext, Platform} from '~/platform';
-import {useSettings} from '@macrostrat/column-components';
 import {
-  NoteEditor,
   NoteEditorContext,
   NotesColumn
 } from "@macrostrat/column-components/dist/esm/notes";
