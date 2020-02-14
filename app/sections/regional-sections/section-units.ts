@@ -74,6 +74,36 @@ const Topology = function(props){
   });
 };
 
+const extractTopology = async (el, id) => {
+  const svg = await getEditedSequenceOverlay(id);
+  console.log(svg);
+  if (svg == null) { return; }
+
+  const main = svg.select("g#Lines");
+  /* Get path data */
+  const lines = extractLines(main);
+
+  for (let v of ['viewBox', 'width', 'height']) {
+    el.attr(v, svg.attr(v));
+  }
+
+  el.select("g.linework")
+    .node().appendChild(main.node());
+
+  const pts = svg.select("g#Labels").node();
+  if (pts != null) {
+    el.select("g.overlay")
+      .node().appendChild(pts);
+  }
+
+  /* Get facies data */
+  const points = extractTextPositions(svg.select("g#Facies"));
+
+  svg.remove();
+
+  return {lines, points}
+}
+
 class CrossSectionUnits extends Component {
   constructor() {
     super(...arguments);
@@ -84,37 +114,10 @@ class CrossSectionUnits extends Component {
     return this.extractTopology();
   }
 
-  extractTopology = async () => {
+  async extractTopology() {
     const {id} = this.props;
-    console.log(id);
-    const svg = await getEditedSequenceOverlay(id);
-    console.log(svg);
-    if (svg == null) { return; }
-
-    const main = svg.select("g#Lines");
-    /* Get path data */
-    const lines = extractLines(main);
-
     const el = select(findDOMNode(this));
-
-    for (let v of ['viewBox', 'width', 'height']) {
-      el.attr(v, svg.attr(v));
-    }
-
-    el.select("g.linework")
-      .node().appendChild(main.node());
-
-    const pts = svg.select("g#Labels").node();
-    if (pts != null) {
-      el.select("g.overlay")
-        .node().appendChild(pts);
-    }
-
-    /* Get facies data */
-    const points = extractTextPositions(svg.select("g#Facies"));
-
-    svg.remove();
-
+    const {lines, points} = await extractTopology(el, id)
     return this.setState({lines, points});
   };
 

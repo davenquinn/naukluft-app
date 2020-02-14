@@ -23,8 +23,7 @@ import {
   SectionContainer
 } from "../components";
 import {
-  SectionSurfacesProvider,
-  SectionSurfacesContext
+  SectionSurfacesProvider
 } from '../summary-sections/data-provider';
 import {SVGSectionInner} from '../summary-sections/column';
 import {GeneralizedAxis, GeneralizedBreaks} from './axis';

@@ -1,21 +1,26 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import {hyperStyled} from "@macrostrat/hyper";
+import {hyperStyled, compose} from "@macrostrat/hyper";
 import {group} from 'd3-array';
 import {ColumnDivisionsContext} from '../generalized-sections/data-provider';
 import {useContext} from 'react';
 import {useCanvasSize} from "../components/link-overlay";
 import {updateSectionE} from './helpers';
 import {SequenceCorrelations} from './sequence';
-import {RegionalSectionsContainer} from './container';
+import {
+  GeneralizedDivisionsProvider,
+  GeneralizedSurfacesProvider
+} from '../generalized-sections/data-provider';
+import {SettingsProvider} from "../summary-sections/settings";
 
 import "../summary-sections/main.styl";
 import styles from '../generalized-sections/main.styl';
 import styles2 from './main.styl';
 const h = hyperStyled({...styles,...styles2});
+
+const RegionalSectionsContainer = compose(
+  GeneralizedDivisionsProvider,
+  GeneralizedSurfacesProvider,
+  SettingsProvider
+)
 
 const SectionPane = function(props){
   const {divisions} = useContext(ColumnDivisionsContext)
