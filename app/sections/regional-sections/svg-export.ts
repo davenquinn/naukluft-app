@@ -31,7 +31,7 @@ const exportSequence = (id, node) => (function() {
   const {x: rootX, y: rootY} = overlay.getBoundingClientRect();
 
   const sections = node.querySelectorAll(".section");
-  if (!(sections.length > 0)) { return; }
+  if (sections.length <= 0) return
 
   const g = document.createElementNS("http://www.w3.org/2000/svg", 'g');
   g.setAttribute("class", "sections");

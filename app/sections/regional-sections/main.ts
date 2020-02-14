@@ -18,10 +18,10 @@ import styles2 from './main.styl';
 const h = hyperStyled({...styles,...styles2});
 
 const SectionPane = function(props){
-  const {divisions} = useContext(ColumnDivisionsContext);
+  const {divisions} = useContext(ColumnDivisionsContext)
   const sz = useCanvasSize();
-  const surfaceMap = group(divisions, s => s.section);
-  const sections = Array.from(surfaceMap, function([key,divisions]){
+  const divisionMap = group(divisions, s => s.section_id);
+  const sections = Array.from(divisionMap, function([key,divisions]){
     divisions.sort((a, b) => a.bottom-b.bottom);
     return {key,divisions};
 });

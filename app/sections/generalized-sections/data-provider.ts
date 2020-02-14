@@ -258,5 +258,6 @@ const GeneralizedDataProvider = compose(
 export {
   GeneralizedDivisionsProvider,
   GeneralizedDataProvider,
+  GeneralizedSurfacesProvider,
   ColumnDivisionsContext
 }

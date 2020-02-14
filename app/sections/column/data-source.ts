@@ -12,6 +12,7 @@ import {query} from "~/db";
 import q from '../sql/section-lithology.sql';
 
 interface ColumnDivision {
+  section_id: string;
   id: number,
   surface: number,
   section_id: string,

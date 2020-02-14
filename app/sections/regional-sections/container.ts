@@ -1,24 +1,14 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import h from "@macrostrat/hyper";
-import {GeneralizedDivisionsProvider} from '../generalized-sections/data-provider';
-import {defaultSettings} from "../summary-sections/settings";
-import {SettingsProvider} from '@macrostrat/column-components';
-import {SectionSurfacesProvider} from '../summary-sections/data-provider';
+import h, {compose} from "@macrostrat/hyper";
+import {
+  GeneralizedDivisionsProvider,
+  GeneralizedSurfacesProvider
+} from '../generalized-sections/data-provider';
+import {SettingsProvider} from "../summary-sections/settings";
 
-const RegionalSectionsContainer = function(props){
-  const {children} = props;
-  return h(SectionSurfacesProvider, null, (
-    h(GeneralizedDivisionsProvider, null, (
-      h(SettingsProvider, {
-        ...defaultSettings
-      }, children)
-    ))
-  )
-  );
-};
+const RegionalSectionsContainer = compose(
+  GeneralizedDivisionsProvider,
+  GeneralizedSurfacesProvider,
+  SettingsProvider
+)
 
 export {RegionalSectionsContainer};

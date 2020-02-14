@@ -6,7 +6,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
-import {useContext, createRef} from 'react';
+import {useContext} from 'react';
 
 import {
   SectionPositionProvider,

@@ -1,12 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS202: Simplify dynamic range loops
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const getGeneralizedHeight = function(sectionData, opts={}){
   // Manage the top and bottom heights allowed
   // using only the first section
@@ -28,9 +19,10 @@ const getGeneralizedHeight = function(sectionData, opts={}){
   return function(surface){
     // Gets heights of a surface in stacked sections
     const {section, height, inferred} = surface;
+    console.log(sectionData)
     for ({key, divisions} of Array.from(sectionData)) {
       for (let d of Array.from(divisions)) {
-        if (d.original_section.trim() !== section.trim()) { continue; }
+        if (d.original_section != section) { continue; }
         if (d.original_bottom !== height) { continue; }
         // Make sure we only take links between upper and lower surfaces if set
         if ((upperHeight[key] != null) && (upperHeight[key] < d.bottom)) { continue; }

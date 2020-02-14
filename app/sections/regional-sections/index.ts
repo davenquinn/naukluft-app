@@ -8,12 +8,10 @@ import {RegionalSections} from './main';
 import {BaseSectionPage} from '../components';
 
 const settingsPanel = 'div';
-const defaultSettings = {};
 
 const RegionalSectionsPage = props => h(BaseSectionPage, {
   id: 'regional-sections',
-  settingsPanel,
-  defaultSettings
+  settingsPanel
 }, [
   h(RegionalSections)
 ]);

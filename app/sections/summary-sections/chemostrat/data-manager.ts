@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {createContext, useContext, Component} from 'react';
 import h from '@macrostrat/hyper';
 import sql from '../../sql/all-carbon-isotopes.sql';
