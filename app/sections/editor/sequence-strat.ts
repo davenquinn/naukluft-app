@@ -8,12 +8,12 @@
  */
 import {Tabs, Tab, Slider} from "@blueprintjs/core";
 
-import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base";
-import {LabeledControl} from "@macrostrat/column-components/dist/esm/editor/util";
+import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base";
+import {LabeledControl} from "@macrostrat/column-components/dist/cjs/editor/util";
 
 import {
   SurfaceOrderSlider
-} from '@macrostrat/column-components/dist/esm/editor/controls';
+} from '@macrostrat/column-components/dist/cjs/editor/controls';
 
 import {hyperStyled} from "@macrostrat/hyper";
 import styles from "./style.styl";

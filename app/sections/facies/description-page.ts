@@ -9,8 +9,8 @@ import h from "react-hyperscript";
 import T from 'prop-types';
 import {SectionNavigationControl} from "../util";
 import classNames from "classnames";
-import {FaciesDescriptionSmall} from '@macrostrat/column-components/dist/esm/editor/facies/description';
-import {FaciesSwatch} from '@macrostrat/column-components/dist/esm/editor/facies/color-picker';
+import {FaciesDescriptionSmall} from '@macrostrat/column-components/dist/cjs/editor/facies/description';
+import {FaciesSwatch} from '@macrostrat/column-components/dist/cjs/editor/facies/color-picker';
 
 class FaciesDescriptionPage extends Component {
   static initClass() {

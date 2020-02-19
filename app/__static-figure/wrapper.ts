@@ -12,7 +12,7 @@ import {PlatformProvider} from '../platform';
 //import symbols from '../../assets/**/*.svg'
 import {SectionDataProvider} from '../sections/data-providers';
 import './fonts.css';
-import "../bundledDeps/column-components/dist/column-components.css";
+import "@macrostrat/column-components/dist/column-components.css";
 
 const resolveSymbol = function(sym){
   if (sym == null) { return null; }

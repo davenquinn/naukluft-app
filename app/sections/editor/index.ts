@@ -6,28 +6,28 @@ import {DeleteButton} from '@macrostrat/ui-components';
 import {format} from "d3-format";
 
 import {FaciesContext} from "@macrostrat/column-components";
-import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base";
-import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/esm/editor/util";
+import {PickerControl} from "@macrostrat/column-components/dist/cjs/editor/picker-base";
+import {LabeledControl, IntervalEditorTitle} from "@macrostrat/column-components/dist/cjs/editor/util";
 
 import {ColumnDivision, ColumnDivisionsContext} from "../column/data-source";
 import {
   LithologyPicker,
   LithologySymbolPicker,
-} from '@macrostrat/column-components/dist/esm/editor/lithology-picker';
+} from '@macrostrat/column-components/dist/cjs/editor/lithology-picker';
 import {
   SurfaceOrderSlider,
   BoundaryStyleControl,
   RaisedSelect
-} from '@macrostrat/column-components/dist/esm/editor';
+} from '@macrostrat/column-components/dist/cjs/editor';
 import {
   CorrelatedSurfaceControl,
   DivisionNavigationControl,
   Direction
 } from './controls';
-import {FaciesPicker} from '@macrostrat/column-components/dist/esm/editor/facies/picker';
+import {FaciesPicker} from '@macrostrat/column-components/dist/cjs/editor/facies/picker';
 import {SequenceStratControls} from './sequence-strat'
 
-import {grainSizes} from "@macrostrat/column-components/dist/esm/grainsize";
+import {grainSizes} from "@macrostrat/column-components/dist/cjs/grainsize";
 import {dirname} from "path";
 import {hyperStyled} from "@macrostrat/hyper";
 import styles from "./style.styl";

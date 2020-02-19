@@ -13,7 +13,9 @@
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd app && npm install",
-    "dev": "npm run prebuild && concurrently npm:watch:column npm:watch:web"
+    "dev": "npm run prebuild && concurrently npm:watch:column npm:watch:web",
+    "figures": "concurrently npm:figures:ui npm:watch:column",
+    "figures:ui": "figment --spec ./figure-spec.js"
   },
   "electronWebpack": {
     "main": {
