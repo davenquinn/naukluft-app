@@ -19,6 +19,7 @@ import {
 } from '../components/polygon-topology';
 import {filenameForID} from './svg-export';
 import {useFaciesColors} from './util';
+import {FillPatternDefs} from './pattern-fill'
 import S1 from './sequence-data-edited/S1.svg';
 import S2 from './sequence-data-edited/S2.svg';
 import S3 from './sequence-data-edited/S3.svg';
@@ -59,14 +60,42 @@ const getEditedSequenceOverlay = async function(id){
   return select(svg);
 };
 
+const fillPatterns = {
+  'shoreface-alluvial-siliciclastic': 607,
+  'peritidal-siliciclastic': 670,
+  'restricted-subtidal': 627,
+  'p': 627,
+  'marine-siliciclastic': null,
+  'steepened-outer-ramp': 627,
+  'marine-carbonate': 627,
+  'shoal-shoreface': 627
+  // 'lime_mudstone': 627,
+  // 'sandstone': 607,
+  // 'siltstone': 616,
+  // 'dolomitic siltstone': 616,
+  // 'shale': 620,
+  // 'limestone': 627,
+  // 'dolomite': 642,
+  // 'conglomerate': 602,
+  // 'dolomite-mudstone': 642,
+  // 'mudstone': 620,
+  // 'sandy-dolomite': 645,
+  // 'quartzite': 702
+}
+
 const Topology = function(props){
   const colorIndex = useFaciesColors();
+  const {id, ...rest} = props
   return h(PolygonTopology, {
-    ...props,
+    ...rest,
     generateFill(p,i){
-      const {facies_id, geometry} = p;
-      if (!geometry) { return null; }
+      const {geometry, facies_id} = p;
+      if (!geometry) return null
       if (facies_id != null) {
+        const pattern = fillPatterns[facies_id];
+        if (pattern != null) {
+          return `url(#${id}-${pattern})`
+        }
         return colorIndex[facies_id];
       }
       return '#eeeeee';
@@ -125,7 +154,9 @@ class CrossSectionUnits extends Component {
     const {id, ...rest} = this.props;
     const {lines, points} = this.state;
     return h(SVG, {className: 'cross-section', ...rest}, [
+      h(FillPatternDefs, {prefix: id, patterns: Object.values(fillPatterns)}),
       h(Topology, {
+        id,
         lines,
         points
       }),
