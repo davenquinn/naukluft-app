@@ -11,8 +11,8 @@ import h from 'react-hyperscript';
 import {PlatformProvider} from '../platform';
 //import symbols from '../../assets/**/*.svg'
 import {SectionDataProvider} from '../sections/data-providers';
-import './fonts.css';
-import "@macrostrat/column-components/dist/column-components.css";
+import './fonts.css'
+import './main.styl';
 
 const resolveSymbol = function(sym){
   if (sym == null) { return null; }

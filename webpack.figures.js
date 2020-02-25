@@ -11,6 +11,4 @@ cfg.output = {
   sourceMapFilename: '[file].map'
 }
 
-cfg.target = 'electron-renderer'
-
 module.exports = cfg;

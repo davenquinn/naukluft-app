@@ -21,7 +21,7 @@ import {SectionIndex} from "./sections";
 import {CrossSectionsPage} from './cross-sections';
 //MapLegend = require './map-legend/component'
 import CarbonIsotopesPage from "./carbon-isotopes";
-import LateralVariation from "./lateral-variation/component";
+//import LateralVariation from "./lateral-variation/component";
 import {MapView} from "./map-viewer";
 import {HotkeysTarget, Hotkeys, Hotkey} from "@blueprintjs/core";
 import "@blueprintjs/core/lib/css/blueprint.css";
@@ -72,7 +72,7 @@ class App extends React.Component {
           route('/', Home, {exact: true}),
           route('/sections', SectionIndex),
           route('/carbon-isotopes', wrapNavBar(CarbonIsotopesPage)),
-          route('/lateral-variation', wrapNavBar(LateralVariation)),
+          //route('/lateral-variation', wrapNavBar(LateralVariation)),
           route('/map', MapView),
           //route '/map-legend', wrapNavBar(MapLegend)
           route('/cross-sections', CrossSectionsPage)
