@@ -17,7 +17,7 @@ import {
 import {
   LithologyColumn,
   ParameterIntervals,
-} from "@macrostrat/column-components/dist/cjs/lithology";
+} from "@macrostrat/column-components/dist/esm/lithology";
 import {useFaciesColors} from './util';
 
 import styles from './main.styl';

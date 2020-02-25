@@ -43,6 +43,8 @@ const getSectionData = async function(opts={}){
   const fn = sectionFilename('file-info.json')
   const config = await getJSON(fn)
 
+  console.log(sectionsQuery)
+
   const data = await query(sectionsQuery)
   return data.map(function(s){
     s.id = s.section.trim()

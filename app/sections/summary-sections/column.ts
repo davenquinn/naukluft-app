@@ -5,11 +5,11 @@ import {useHistory} from "react-router-dom"
 import {EditorContext} from './editor'
 
 import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '@macrostrat/column-components'
-import {ColumnAxis} from "@macrostrat/column-components/dist/cjs/axis"
+import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis"
 
 import {ManagedSymbolColumn} from "../components"
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/cjs/flooding-surface"
-import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/cjs/lithology"
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface"
+import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/esm/lithology"
 import {SequenceStratContext} from "../sequence-strat-context"
 import {SummaryColumnProvider} from './data-provider'
 import {ColumnContext} from '@macrostrat/column-components'
@@ -17,8 +17,8 @@ import {
   SimplifiedLithologyColumn,
   CoveredOverlay,
   FaciesColumnInner
-} from '@macrostrat/column-components/dist/cjs/lithology'
-import {DivisionEditOverlay} from '@macrostrat/column-components/dist/cjs/edit-overlay'
+} from '@macrostrat/column-components/dist/esm/lithology'
+import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay'
 
 import {ColumnTracker} from '../components/link-overlay'
 import {PlatformContext} from "../../platform"

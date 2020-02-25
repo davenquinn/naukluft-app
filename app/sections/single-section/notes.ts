@@ -18,11 +18,11 @@ import {PlatformContext, Platform} from '~/platform';
 import {
   NoteEditorContext,
   NotesColumn
-} from "@macrostrat/column-components/dist/cjs/notes";
+} from "@macrostrat/column-components/dist/esm/notes";
 
 // import {
 //   PhotoOverlay
-// } from "@macrostrat/column-components/dist/cjs/photos"
+// } from "@macrostrat/column-components/dist/esm/photos"
 //
 import {db, query, storedProcedure} from "~/db";
 

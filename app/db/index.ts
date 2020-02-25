@@ -3,7 +3,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let db, QUERY_DIRECTORY, storedProcedure;
+let QUERY_DIRECTORY;
 import {join, resolve, basename} from "path";
 import Promise from "bluebird";
 import {getUID, getHash} from "./util";
@@ -11,13 +11,13 @@ import {getJSON} from "../util";
 import {useState} from 'react';
 import useAsyncEffect from 'use-async-effect';
 
+const {db, storedProcedure} = require('./backend')
+
 if (global.PLATFORM === global.ELECTRON) {
-  let serializableQueries;
   const {PROJECT_DIR} = process.env;
   if ((PROJECT_DIR == null)) {
     throw "Environment variable PROJECT_DIR must be defined.";
   }
-  ({db, storedProcedure, serializableQueries} = require('./backend'));
   QUERY_DIRECTORY = join(PROJECT_DIR,"versioned","Products","webroot","queries");
 } else {
   QUERY_DIRECTORY = join(BASE_URL,"queries");

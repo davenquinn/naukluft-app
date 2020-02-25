@@ -12,7 +12,7 @@ import update from "immutability-helper";
 import {
   AssetPathProvider,
   AssetPathContext
-} from '@macrostrat/column-components/dist/cjs/context';
+} from '@macrostrat/column-components/dist/esm/context';
 import {
   GeologicPatternProvider
 } from '@macrostrat/column-components';

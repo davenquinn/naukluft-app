@@ -11,4 +11,6 @@ cfg.output = {
   sourceMapFilename: '[file].map'
 }
 
+cfg.context = resolve(__dirname,'app')
+
 module.exports = cfg;
