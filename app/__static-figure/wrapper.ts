@@ -14,10 +14,12 @@ import {SectionDataProvider} from '../sections/data-providers';
 import './fonts.css'
 import './main.styl';
 
+global.PLATFORM = global.ELECTRON
+
 const resolveSymbol = function(sym){
   if (sym == null) { return null; }
   const [v1,v2] = sym.slice(0, -4).split("/");
-  return __dirname+"/"+symbols[v1][v2];
+  return null //__dirname+"/"+symbols[v1][v2];
 };
 
 const StaticFigureWrapper = function(props){

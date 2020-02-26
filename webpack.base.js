@@ -12,11 +12,6 @@ const {
 const mode = 'development';
 
 const plugins = [];
-// const ignores = [/^pg-promise/,/^electron/,/^pg/,/^fs/];
-//
-// for (let i of Array.from(ignores)) {
-//   plugins.push(new IgnorePlugin(i));
-// }
 
 module.exports = {
   devtool: "source-map",

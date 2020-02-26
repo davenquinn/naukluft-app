@@ -17,18 +17,13 @@ interface ColumnDivisionManager {
   updateDivisions: () => void
 }
 
-const ColumnDivisionsContext = createContext<ColumnDivisionManager>();
+const ColumnDivisionsContext = createContext<ColumnDivisionManager>({divisions: []});
 
 class ColumnDivisionsProvider extends Component {
-  static initClass() {
-    /*
-     * Makes sure divisions are defined for sections
-     */
-    this.propTypes = {
-      id: T.string,
-      divisions: T.arrayOf(T.object)
-    };
-  }
+  static propTypes = {
+    id: T.string,
+    divisions: T.arrayOf(T.object)
+  };
   constructor(props){
     super(props);
     let divisions: ColumnDivision[] = this.props.divisions;
@@ -57,7 +52,6 @@ class ColumnDivisionsProvider extends Component {
     return h(ColumnDivisionsContext.Provider, {value}, children);
   }
 }
-ColumnDivisionsProvider.initClass();
 
 const useColumnDivisions = function(id: string){
   const {divisions} = useContext(ColumnDivisionsContext);

@@ -47,7 +47,6 @@ const SectionPane = function(props) {
    } = props;
 
   const {surfaces} = useContext(SectionSurfacesContext);
-
   const {showLegend} = useSettings();
   const {showTriangleBars} = useContext(SequenceStratContext);
 

@@ -35,9 +35,11 @@ const modifyConfig = (cfg)=>{
     "@babel/plugin-proposal-class-properties"
   ]
 
-  console.log(jsRule, JSON.stringify(cfg.module.rules, null, 4));
+  console.log(JSON.stringify(cfg, null, 4));
+  console.log(JSON.stringify(cfg.plugins[2], null, 4));
 
   return cfg
 }
+
 
 module.exports = modifyConfig;

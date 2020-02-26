@@ -1,12 +1,15 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import h from 'react-hyperscript';
+import h, {compose} from '@macrostrat/hyper';
 import {render} from 'react-dom';
 import {SummarySectionsStatic} from '../index';
-import {StaticFigureWrapper} from '~/__static-figure/wrapper';
+
+import {PlatformProvider} from '~/platform';
+import {SectionDataProvider} from '~/sections/data-providers';
+
+const StaticFigureWrapper = compose(
+  PlatformProvider,
+  SectionDataProvider
+)
+
 
 const fn = props => h(StaticFigureWrapper, [
   h(SummarySectionsStatic)
