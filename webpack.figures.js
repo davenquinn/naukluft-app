@@ -13,13 +13,12 @@ const {
 } = require('./loaders');
 
 const mode = 'development';
-
 const plugins = [];
 
 console.log(pkg);
 
 module.exports = {
-  context: path.resolve(__dirname),
+  context: path.resolve(__dirname,'app'),
   devtool: "eval-source-map",
   externals: Object.keys(pkg.dependencies),
   target: 'electron-renderer',

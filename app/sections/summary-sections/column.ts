@@ -95,8 +95,6 @@ const ColumnSummaryAxis = function(props){
  const {height, zoom, scale, pixelsPerMeter} = useContext(ColumnContext)
  const ratio = pixelsPerMeter*zoom
 
- console.log(scale.domain(), scale.range())
-
  // Keep labels from inhabiting the top few pixels (to make space for section labels)
  const topPadding = 30
  const maxVal = scale.domain()[1]-(topPadding/ratio)

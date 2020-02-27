@@ -149,21 +149,19 @@ const SummarySectionsStatic = function(props){
   const sections = useContext(SectionDataContext);
 
   return h(SectionSurfacesProvider, [
-    h(SectionPositionProvider, [
-      h(SettingsProvider, {
-        ...sectionSettings
+    h(SettingsProvider, {
+      ...sectionSettings
 
-      }, [
-        h('div.page.section-page', [
-          h('div.panel-container', [
-            h(SectionPane, {
-              groupMargin: 400,
-              columnMargin: 100,
-              columnWidth: 150,
-              sections,
-              ...props,
-            })
-          ])
+    }, [
+      h('div.page.section-page', [
+        h('div.panel-container', [
+          h(SectionPane, {
+            groupMargin: 400,
+            columnMargin: 100,
+            columnWidth: 150,
+            sections,
+            ...props,
+          })
         ])
       ])
     ])
