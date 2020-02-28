@@ -6,13 +6,9 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
-import {Component, useContext} from "react";
-import {
-  useSettings,
-  SettingsProvider
-} from "@macrostrat/column-components";
+import {useContext} from "react";
+import {useSettings} from "@macrostrat/column-components";
 import {ChemostratigraphyColumn} from "./chemostrat";
-import {SectionDataContext} from '../data-providers';
 import {
   SectionLinkOverlay,
   SectionContainer,
@@ -28,10 +24,7 @@ import {Legend} from "./legend";
 import {BaseSectionPage} from '../components';
 import {EditorProvider} from './editor';
 import {SummarySectionsSettings, defaultSettings} from './settings';
-import {
-  SectionSurfacesContext,
-  SectionSurfacesProvider,
-} from './data-provider';
+import {SectionSurfacesContext} from './data-provider';
 import "../main.styl";
 import styles from "./main.styl";
 import T from 'prop-types';
@@ -105,32 +98,24 @@ SectionPane.propTypes = {
   tightenSpacing: T.bool
 };
 
-class SummarySectionsBase extends Component {
-  static initClass() {
-    this.defaultProps = {
-      groupMargin: 400,
-      columnMargin: 100,
-      columnWidth: 150,
-      showNavigationController: true,
-      settingsPanel: SummarySectionsSettings
-    };
-    this.prototype.pageID = 'summary-sections';
-  }
-  render() {
-    const {settingsPanel} = this.props;
-    return h(BaseSectionPage, {
-      id: this.pageID,
-      settingsPanel,
-      defaultSettings
-    }, [
-      h(SectionPane, {
-        ...this.props,
-        ...this.state
-      })
-    ]);
-  }
+const SummarySectionsBase = (props)=>{
+  const {settingsPanel, ...rest} = props;
+  return h(BaseSectionPage, {
+    id: 'summary-sections',
+    settingsPanel,
+    defaultSettings
+  }, [
+    h(SectionPane, rest)
+  ]);
 }
-SummarySectionsBase.initClass();
+
+SummarySectionsBase.defaultProps = {
+  groupMargin: 400,
+  columnMargin: 100,
+  columnWidth: 150,
+  showNavigationController: true,
+  settingsPanel: SummarySectionsSettings
+};
 
 const SummarySections = props => h(SectionPositionProvider, [
   h(EditorProvider, [
@@ -141,36 +126,8 @@ const SummarySections = props => h(SectionPositionProvider, [
   ])
 ]);
 
-const SummarySectionsStatic = function(props){
-  const sectionSettings = {
-    showFacies: true
-  };
-
-  const sections = useContext(SectionDataContext);
-
-  return h(SectionSurfacesProvider, [
-    h(SettingsProvider, {
-      ...sectionSettings
-
-    }, [
-      h('div.page.section-page', [
-        h('div.panel-container', [
-          h(SectionPane, {
-            groupMargin: 400,
-            columnMargin: 100,
-            columnWidth: 150,
-            sections,
-            ...props,
-          })
-        ])
-      ])
-    ])
-  ]);
-};
-
 export {
   SummarySections,
-  SummarySectionsStatic,
   SummarySectionsBase,
   SectionPane
 };

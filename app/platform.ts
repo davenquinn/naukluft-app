@@ -17,15 +17,15 @@ import {
   GeologicPatternProvider
 } from '@macrostrat/column-components';
 //# Set whether we are on the backend or frontend
+
 global.ELECTRON = 'electron';
 global.WEB = 'web';
-global.PLATFORM = ELECTRON;
-global.SERIALIZED_QUERIES = false;
-global.BASE_DIR = null;
-try {
-  require('electron');
+
+if (process.versions?.electron != null) {
+  global.PLATFORM = ELECTRON;
+  global.SERIALIZED_QUERIES = false;
   global.BASE_DIR = resolve(join(__dirname,'..'));
-} catch (error) {
+} else {
   global.PLATFORM = WEB;
   global.SERIALIZED_QUERIES = true;
   global.BASE_URL = "";

@@ -6,4 +6,5 @@ assets/map-patterns
 dist
 dist-web
 dist-figures
+output
 .cache
