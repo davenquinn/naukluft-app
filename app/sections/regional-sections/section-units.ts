@@ -20,30 +20,43 @@ import {
 import {filenameForID} from './svg-export';
 import {useFaciesColors} from './util';
 import {FillPatternDefs} from './pattern-fill'
-import S1 from './sequence-data-edited/S1.svg';
-import S2 from './sequence-data-edited/S2.svg';
-import S3 from './sequence-data-edited/S3.svg';
-
-const fileNames = {S1,S2,S3};
+// import S1 from './sequence-data-edited/S1.svg';
+// import S2 from './sequence-data-edited/S2.svg';
+// import S3 from './sequence-data-edited/S3.svg';
+//
+// const fileNames = {S1,S2,S3};
 
 const getFile = async function(id){
-  const fn = fileNames[id];
-  // encoded as a data URI (Electron-webpack)
-  if (fn.startsWith("data:image/svg+xml;base64,")) {
-    return atob(fn.split(',')[1]);
-  // Webpack for S1, for some reason
-  } else if (fn.startsWith("imgs")) {
-    const {data} = await get(fn, {responseType: 'text'});
-    return data;
-  }
-
+  // console.log(id)
+  // if (fn.startsWith("data:image/svg+xml;base64,")) {
+  //   return atob(fn.split(',')[1]);
+  // // // Webpack for S1, for some reason
+  // // }
   try {
-    const {readFileSync} = require('fs');
-    const svg = readFileSync(fn, 'utf-8');
+    const {readFileSync} = __non_webpack_require__('fs');
+    const fn = join(__dirname, 'sequence-data-edited', id+".svg")
+    const svg = readFileSync(fn, 'utf-8')
     return Promise.resolve(svg);
   } catch (error) {
     return get(fn, {responseType: 'text'});
   }
+  // const fn = fileNames[id];
+  // // encoded as a data URI (Electron-webpack)
+  // if (fn.startsWith("data:image/svg+xml;base64,")) {
+  //   return atob(fn.split(',')[1]);
+  // // Webpack for S1, for some reason
+  // } else if (fn.startsWith("imgs")) {
+  //   const {data} = await get(fn, {responseType: 'text'});
+  //   return data;
+  // }
+  //
+  // try {
+  //   const {readFileSync} = require('fs');
+  //   const svg = readFileSync(fn, 'utf-8');
+  //   return Promise.resolve(svg);
+  // } catch (error) {
+  //   return get(fn, {responseType: 'text'});
+  // }
 };
 
 const getEditedSequenceOverlay = async function(id){

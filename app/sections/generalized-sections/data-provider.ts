@@ -125,6 +125,10 @@ const GeneralizedDivisionsProvider = (props)=>{
   Provides all surfaces used in Summary Sections diagram
   */
   let allDivisions = useContext(ColumnDivisionsContext).divisions
+  if (allDivisions.length == 0) {
+    console.error("ColumnDivisionsContext must be provided.")
+    return null
+  }
   // sorting of input is not guaranteed
   allDivisions.sort((a,b)=>a.bottom-b.bottom)
 

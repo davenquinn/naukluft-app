@@ -19,7 +19,6 @@ const getGeneralizedHeight = function(sectionData, opts={}){
   return function(surface){
     // Gets heights of a surface in stacked sections
     const {section, height, inferred} = surface;
-    console.log(sectionData)
     for ({key, divisions} of Array.from(sectionData)) {
       for (let d of Array.from(divisions)) {
         if (d.original_section != section) { continue; }

@@ -3,17 +3,19 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import h from '@macrostrat/hyper';
+import h, {compose} from '@macrostrat/hyper';
 import {render} from 'react-dom';
+import {PlatformProvider} from '~/platform';
+import {SectionDataProvider} from '~/sections/data-providers';
 import {RegionalSections} from '../main';
-import {StaticFigureWrapper} from '~/__static-figure/wrapper';
+import {SectionSurfacesProvider} from '~/sections/summary-sections/data-provider';
 
-/*
-Endpoint for figure generation
-*/
-const RegionalSectionsFigure = props => h(StaticFigureWrapper, [
-  h(RegionalSections)
-]);
+const RegionalSectionsFigure = compose(
+  PlatformProvider,
+  SectionDataProvider,
+  SectionSurfacesProvider,
+  RegionalSections
+)
 
 const wrapper = (el, opts, cb) => render(h(RegionalSectionsFigure), el, cb);
 
