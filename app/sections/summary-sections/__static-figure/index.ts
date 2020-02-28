@@ -22,14 +22,14 @@ const StaticSectionSettings = C(SettingsProvider, {
   isotopesPerSection: true
 })
 
-const SummarySectionsStatic = function(props){
+const SummarySectionsStatic = function(){
   const sections = useContext(SectionDataContext);
   return h(SectionPane, {
     groupMargin: 400,
     columnMargin: 100,
     columnWidth: 150,
     sections,
-    ...props,
+    scrollable: false
   })
 };
 
@@ -38,7 +38,7 @@ const Figure = compose(
   SectionDataProvider,
   SectionSurfacesProvider,
   StaticSectionSettings,
-  'div.page.section-page',
+  'div.page.section-page-static',
   'div.panel-container',
   SummarySectionsStatic
 )

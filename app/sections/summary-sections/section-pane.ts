@@ -15,18 +15,28 @@ import {LithostratKey} from "./lithostrat-key";
 import {ArrangedSections} from "./layout";
 import {Legend} from "./legend";
 import {SectionSurfacesContext} from './data-provider';
+import {SectionData} from './layout/defs'
 import "../main.styl";
 import styles from "./main.styl";
-import T from 'prop-types';
 
 const h = hyperStyled(styles);
 
-const SectionPane = function(props) {
+interface SectionPaneProps {
+  scrollable: boolean,
+  groupMargin: number,
+  columnMargin: number,
+  columnWidth: number,
+  sections: SectionData[],
+  tightenSpacing: boolean
+}
+
+const SectionPane = function(props: SectionPaneProps) {
   let {sections,
    groupMargin,
    columnMargin,
    columnWidth,
-   tightenSpacing
+   tightenSpacing,
+   scrollable
    } = props;
 
   const {showTriangleBars} = useContext(SequenceStratContext);
@@ -47,8 +57,9 @@ const SectionPane = function(props) {
 
   const options = useSettings();
   const showChemostrat = options.correlatedIsotopes;
+  const overflow = scrollable ? 'scroll' : 'inherit'
 
-  return h('div#section-pane', {style: {overflow: 'scroll'}}, [
+  return h('div#section-pane', {style: {overflow}}, [
     h(SectionContainer, [
       h(SectionLinkOverlay, {
         connectLines: false,
@@ -79,13 +90,8 @@ const SectionPane = function(props) {
 };
 
 SectionPane.defaultProps = {
-  tightenSpacing: true
-};
-
-SectionPane.propTypes = {
-  sections: T.arrayOf(T.object).isRequired,
-  surfaces: T.arrayOf(T.object).isRequired,
-  tightenSpacing: T.bool
+  tightenSpacing: true,
+  scrollable: true
 };
 
 export {SectionPane};
