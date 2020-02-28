@@ -17,7 +17,6 @@ import {
   extractTextPositions,
   removeLines
 } from '../components/polygon-topology';
-import {filenameForID} from './svg-export';
 import {useFaciesColors} from './util';
 import {FillPatternDefs} from './pattern-fill'
 // import S1 from './sequence-data-edited/S1.svg';
