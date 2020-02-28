@@ -10,14 +10,13 @@ import {useContext} from "react";
 import {useSettings} from "@macrostrat/column-components";
 import {ChemostratigraphyColumn} from "./chemostrat";
 import {SectionLinkOverlay, SectionContainer} from "../components";
-import {SequenceStratContext} from "../sequence-strat-context";
 import {LithostratKey} from "./lithostrat-key";
 import {ArrangedSections} from "./layout";
 import {Legend} from "./legend";
 import {SectionSurfacesContext} from './data-provider';
 import {SectionData} from './layout/defs'
+import styles from './main.styl'
 import "../main.styl";
-import styles from "./main.styl";
 
 const h = hyperStyled(styles);
 
@@ -39,7 +38,6 @@ const SectionPane = function(props: SectionPaneProps) {
    scrollable
    } = props;
 
-  const {showTriangleBars} = useContext(SequenceStratContext);
   const {surfaces} = useContext(SectionSurfacesContext);
   const {showLegend} = useSettings();
 
@@ -47,13 +45,7 @@ const SectionPane = function(props: SectionPaneProps) {
   if (!(sections.length > 0)) { return null; }
 
   const row = sections.find(d => d.id === 'J');
-  let {offset, location, ...rest} = row;
-  location = null;
-
-  // Pre-compute section positions
-  if (showTriangleBars) {
-    columnWidth += 25;
-  }
+  let {offset} = row;
 
   const options = useSettings();
   const showChemostrat = options.correlatedIsotopes;

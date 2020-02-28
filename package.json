@@ -25,6 +25,10 @@
       "webpackConfig": "webpack.electron.js"
     }
   },
+  "moduleRoots": [
+    "app",
+    "hyperclick-resolver.js"
+  ],
   "author": "Daven Quinn",
   "license": "ISC",
   "devDependencies": {

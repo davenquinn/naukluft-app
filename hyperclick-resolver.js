@@ -1,14 +1,14 @@
 "use babel"
 // Path resolver for Atom hyperclick
-import path from "path"
+const path = require("path")
 
-export default function customResolver({ basedir, moduleName }) {
+module.exports = customResolver({ basedir, moduleName }) {
   // You can use whatever strategy you want to convert your modules
   const [prefix, ...rest] = moduleName.split("/")
 
   // Resolve tilde paths
   if (prefix === "~") {
-    return path.join(__dirname, rest.join("/"))
+    return path.join(__dirname, 'app', rest.join("/"))
   }
 
   return moduleName

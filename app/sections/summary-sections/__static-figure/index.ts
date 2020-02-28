@@ -5,7 +5,7 @@ import {useContext} from 'react'
 import {PlatformProvider} from '~/platform';
 import {SectionDataProvider, SectionDataContext} from '~/sections/data-providers';
 import {SectionPane} from '../section-pane'
-import {SettingsProvider} from "@macrostrat/column-components";
+import {SettingsProvider} from "../settings";
 import {SectionSurfacesProvider} from '../data-provider';
 
 import "./main.styl"
@@ -19,7 +19,9 @@ const StaticSectionSettings = C(SettingsProvider, {
   showSequenceStratigraphy: true,
   showCarbonIsotopes: true,
   showOxygenIsotopes: true,
-  isotopesPerSection: true
+  isotopesPerSection: true,
+  correlatedIsotopes: true,
+  interactive: false
 })
 
 const SummarySectionsStatic = function(){

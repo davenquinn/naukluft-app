@@ -2,14 +2,10 @@ import {SectionGroup} from './section-group'
 import {hyperStyled} from "@macrostrat/hyper"
 import styles from "../main.styl"
 import {group} from "d3-array"
-import {useSectionPositions} from '../../components/link-overlay'
 import {SectionData} from './defs'
 // This should be wrapped into a context
 import {
   groupOrder,
-  stackGroups,
-  sectionOffsets,
-  groupOffsets
 } from "../display-parameters"
 
 const h = hyperStyled(styles)
