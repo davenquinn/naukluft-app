@@ -17,6 +17,4 @@ const RegionalSectionsFigure = compose(
   RegionalSections
 )
 
-const wrapper = (el, opts, cb) => render(h(RegionalSectionsFigure), el, cb);
-
-export default wrapper;
+export default (el, opts, cb) => render(h(RegionalSectionsFigure), el, cb);

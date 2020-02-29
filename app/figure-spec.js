@@ -6,13 +6,21 @@ const webpackConfig = require.resolve(`${__dirname}/../webpack.figures.js`)
 viz.task(
   'Summary-Sections.pdf',
   './sections/summary-sections/__static-figure/index.ts',
-  // must be relative to entry file for now
   {webpackConfig})
 
 viz.task(
   'Regional-Sections.pdf',
   './sections/regional-sections/__static-figure/index.ts',
   {webpackConfig})
-  //.task('Section-Details.pdf', './section-details.ts', {webpackConfig})
+
+viz.task(
+  'Section-Details.pdf',
+  './sections/section-details/index.ts',
+  {webpackConfig})
+
+viz.task(
+  'Generalized-Sections.pdf',
+  './sections/generalized-sections/index.ts',
+  {webpackConfig})
 
 module.exports = viz;
