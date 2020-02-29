@@ -4,7 +4,7 @@ import {
   SettingsProvider,
   useSettings
 } from '@macrostrat/column-components';
-import {SectionComponent} from "../single-section/column";
+import {SectionComponent} from "./column";
 import {defaultSettings} from "../single-section/settings";
 import {PlatformProvider} from '~/platform';
 import {SectionDataProvider, useSection} from '~/sections/data-providers';
