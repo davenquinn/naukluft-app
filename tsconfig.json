@@ -15,7 +15,10 @@
     "typeRoots": [
       "app/node_modules/@types",
       "app/types"
-    ]
+    ],
+    "paths": {
+      "~": ["app"]
+    }
   },
   "include": [
     "app"

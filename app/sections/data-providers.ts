@@ -77,10 +77,15 @@ const PhotoLibraryProvider = function({children}) {
 
 const SectionDataContext = createContext([])
 const SectionProvider = ({children})=>{
-  const [sections, setSections] = useState(null)
+  const [sections, setSections] = useState<SectionData[]|null>(null)
   useAsyncEffect(async ()=>setSections(await getSectionData()), [])
   if (sections == null) return null
   return h(SectionDataContext.Provider, {value: sections}, children)
+}
+
+const useSection = (id: string): SectionData|null => {
+  const sections: SectionData[] = useContext(SectionDataContext)
+  return sections.find(d => d.id == id)
 }
 
 const SectionDataProvider = compose(
@@ -97,4 +102,10 @@ const SectionDataProvider = compose(
 
 const SectionConsumer = SectionDataContext.Consumer
 
-export { getSectionData, SectionDataProvider, SectionConsumer, SectionDataContext }
+export {
+  getSectionData,
+  useSection,
+  SectionDataProvider,
+  SectionConsumer,
+  SectionDataContext
+}

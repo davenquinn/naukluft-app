@@ -1,22 +1,3 @@
-export interface SectionImage {
-  filename: string,
-  width: number,
-  height: number
-}
-
-export interface SectionData {
-  end: number,
-  clip_end: number,
-  height: number,
-  start: number,
-  range: [number, number],
-  location: string,
-  imageFiles?: SectionImage[],
-  scaleFactor: number,
-  offset: number,
-  section: string
-}
-
 interface BoxData {
   x: number,
   y: number,
@@ -25,10 +6,10 @@ interface BoxData {
 }
 
 interface PaddingData {
-  paddingLeft: number?,
-  paddingRight: number?,
-  paddingTop: number?,
-  paddingBottom: number?
+  paddingLeft?: number,
+  paddingRight?: number,
+  paddingTop?: number,
+  paddingBottom?: number
 }
 
 // This should be moved to link overlay code
