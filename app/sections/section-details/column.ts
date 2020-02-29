@@ -78,23 +78,19 @@ interface SectionProps {
   innerWidth: number
 }
 
-type SectionInnerProps = SectionProps & {
+type SectionComponentProps = SectionProps & {
   editingInterval?: ColumnDivision,
   editingHeight?: number,
   onEditInterval(a: EditArgs): void
 }
 
-const SectionInner = (props: SectionInnerProps)=>{
+const SectionComponent = (props: SectionComponentProps)=>{
   const {
     lithologyWidth,
     zoom,
     id,
     height,
     padding,
-    editingInterval,
-    editingHeight,
-    scrollToHeight,
-    onEditInterval,
     range
   } = props
 
@@ -151,26 +147,10 @@ const SectionInner = (props: SectionInnerProps)=>{
       }, [
         h('div.section', [
           h('div.section-outer', [
-            h(ColumnScroller, {
-              scrollToHeight,
-              paddingTop: props.padding.top,
-              onScrolled: notifyScroll(id),
-              scrollContainer() {
-                return document.querySelector('.section-pane');
-              }
-            }),
             h(GrainsizeLayoutProvider, {
               width: grainsizeWidth+columnLeftMargin,
               grainsizeScaleStart: grainsizeScaleStart+columnLeftMargin
             }, [
-              h(DivisionEditOverlay, {
-                onClick: onEditInterval,
-                editingInterval,
-                selectedHeight: editingHeight,
-                top: padding.top,
-                left: paddingLeft,
-                allowEditing: inEditMode
-              }),
               h(ColumnSVG, {
                 innerWidth: props.innerWidth + props.logWidth,
                 paddingLeft,
@@ -235,90 +215,6 @@ const SectionInner = (props: SectionInnerProps)=>{
       ])
     ])
   ]);
-}
-
-SectionInner.defaultProps = {
-  zoom: 1
-}
-
-const SectionComponent = (props: SectionProps)=> {
-  const {inEditMode: isEditable} = useContext(PlatformContext)
-  const {updateDivisions} = useContext(ColumnDivisionsContext)
-
-  const {id: section_id} = props
-  const divisions = useColumnDivisions(section_id)
-
-  const [editingInterval, setEditingInterval] = useState<EditingInterval>(nullDivision)
-
-  /* EDITING FUNCTIONS */
-  function editInterval({division, height}: EditArgs){
-    if (!isEditable && division != null) {
-      return sectionNotify(section_id, height);
-    }
-    const {id} = division;
-    setEditingInterval({id, height});
-  }
-
-  async function addInterval(height: number) {
-    const sql = storedProcedure(addIntervalQuery);
-    const {id: newID} = await db.one(sql, {section: section_id, height});
-    const {id: oldID, height: newHeight} = editingInterval;
-    let interval: EditingInterval = nullDivision;
-
-    // If we are editing the old interval, keep editing
-    if (oldID != null) interval = {id: newID, height: newHeight};
-    setEditingInterval(interval);
-  };
-
-  async function removeInterval(id: number) {
-    const sql = storedProcedure(removeIntervalQuery);
-    await db.none(sql, {section: section_id, id});
-    updateDivisions();
-    setEditingInterval(nullDivision);
-  };
-
-  function moveCursor(direction: Direction){
-    let ix = divisions.findIndex(d=>d.id == editingInterval.id)
-    switch(direction) {
-      case Direction.Down: {
-        if (ix > 0) ix -= 1
-        break
-      }
-      case Direction.Up: {
-        if (ix < divisions.length-1) ix += 1
-        break
-      }
-    }
-    const {id: newID} = divisions[ix]
-    setEditingInterval({id: newID, height: null})
-  }
-
-  function closeDialog(){
-    setEditingInterval(nullDivision)
-  }
-
-  const interval = divisions.find(d => d.id === editingInterval.id);
-
-  return h([
-    h(SectionInner, {
-      editingInterval: interval,
-      editingHeight: editingInterval.height,
-      onEditInterval: editInterval,
-      ...props
-    }),
-    h(ModalEditor, {
-      isOpen: (interval != null),
-      interval,
-      height: editingInterval.height,
-      section: section_id,
-      moveCursor,
-      closeDialog() {
-        setEditingInterval(nullDivision)
-      },
-      addInterval,
-      removeInterval
-    })
-  ])
 }
 
 SectionComponent.defaultProps = {
