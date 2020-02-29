@@ -1,11 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS001: Remove Babel/TypeScript constructor workaround
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {format} from "d3-format";
 import {useState, useContext} from "react";
 import h from "@macrostrat/hyper";
@@ -16,26 +8,26 @@ import {
   useColumnDivisions
 } from '../column/data-source'
 import {PlatformContext} from '~/platform'
-import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis";
 import {ColumnImages} from "./images";
 import {Intent} from "@blueprintjs/core";
-import {GrainsizeAxis} from "@macrostrat/column-components/dist/esm/grainsize";
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface";
 import {
+  GrainsizeAxis,
+  FloodingSurface,
+  TriangleBars,
+  Axis,
   ColumnSVG,
+  ColumnAxis,
   ColumnProvider,
   ColumnScroller,
   GrainsizeLayoutProvider,
-  useSettings
-} from '@macrostrat/column-components';
-import {
+  useSettings,
   LithologyColumn,
   GeneralizedSectionColumn,
   CoveredOverlay,
   FaciesColumnInner,
-  LithologyColumnInner
-} from "@macrostrat/column-components/dist/esm/lithology";
-import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay';
+  LithologyColumnInner,
+  DivisionEditOverlay
+} from "@macrostrat/column-components";
 
 import Samples from "./samples";
 import {ManagedSymbolColumn} from "../components";
@@ -73,14 +65,6 @@ type EditingInterval = {
 const nullDivision: EditingInterval = {id: null, height: null};
 
 type EditArgs = {division?: ColumnDivision, height?: number}
-
-
-interface Padding {
-  left: number,
-  right: number,
-  top: number,
-  bottom: number
-}
 
 interface SectionProps {
   id: string,
