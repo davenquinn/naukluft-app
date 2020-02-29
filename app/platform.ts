@@ -163,6 +163,7 @@ class PlatformProvider extends Component {
 
   resolveLithologySymbol(id, opts={}){
     let {svg} = opts;
+    svg = false;
     if (svg == null) { svg = false; }
     if ((id == null)) { return null; }
     if (this.state.platform === Platform.ELECTRON) {

@@ -151,6 +151,7 @@ const ColumnTracker = function(props){
     if (ref.current == null) { return; }
     // Run this code after render
     const rect = ref.current.getBoundingClientRect();
+    console.log(rect)
     return setPosition(id, scale, rect, rest);
   };
 

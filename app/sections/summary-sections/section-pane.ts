@@ -52,6 +52,7 @@ const SectionPane = function(props: SectionPaneProps) {
   const overflow = scrollable ? 'scroll' : 'inherit'
 
   return h('div#section-pane', {style: {overflow}}, [
+    h.if(showLegend)(Legend),
     h(SectionContainer, [
       h(SectionLinkOverlay, {
         connectLines: false,
@@ -68,7 +69,6 @@ const SectionPane = function(props: SectionPaneProps) {
         options
       }),
       h("div#section-container", [
-        h.if(showLegend)(Legend),
         h(ArrangedSections, {
           sections,
           groupMargin,

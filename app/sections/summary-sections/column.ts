@@ -145,8 +145,7 @@ const SVGSectionInner = function(props){
     innerWidth,
     showWhiteUnderlay,
     offsetTop,
-    absolutePosition,
-    allowNavigation
+    absolutePosition
   } = props
 
   const {inEditMode} = useContext(PlatformContext)

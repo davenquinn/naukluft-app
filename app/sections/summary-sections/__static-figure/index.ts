@@ -40,7 +40,7 @@ const Figure = compose(
   SectionDataProvider,
   SectionSurfacesProvider,
   StaticSectionSettings,
-  'div.page.section-page-static',
+  'div.page.section-page-static.section-page.summary-sections',
   'div.panel-container',
   SummarySectionsStatic
 )

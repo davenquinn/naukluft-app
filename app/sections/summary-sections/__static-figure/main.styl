@@ -1,9 +1,10 @@
 @require "~@macrostrat/column-components/dist/column-components.css";
 
-.section-page-static
-  width 25in
-  height 26in
-  overflow hidden
+.section-page-static.section-page.page.summary-sections
+  margin -20px
+  width max-content
+  height max-content
+  overflow show
   position relative
   .panel-container
     overflow inherit
@@ -14,6 +15,11 @@
       margin 0
       padding 0 !important
 
-.section-container
-  height 100%
-  width 100%
+  .location-group
+    margin-bottom 10px
+    &.chemostratigraphy
+      margin 40px -10px 0 -4px
+
+@page {
+  margin: 0cm;
+}

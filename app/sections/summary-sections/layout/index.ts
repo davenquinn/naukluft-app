@@ -55,7 +55,12 @@ function ArrangedSections(props: ArrangedSectionsProps){
       }
     }
 
+    if (location === "Tsams") {
+      marginRight = 0
+    }
+
     let style = {marginRight};
+
 
     if (location === 'Büllsport') {
       style = {position: 'absolute', top: 0, right: 0};

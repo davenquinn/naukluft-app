@@ -1,10 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {Component} from "react";
 import h from "react-hyperscript";
 import classNames from "classnames";
@@ -39,7 +32,10 @@ class FaciesLegend extends Component {
             this.facies("hcs-grainstone", "Cross-stratified grainstone"),
             this.facies("mixed-grainstone", 'Wavy-bedded heterolithic'),
             this.facies("intraclast-breccia", 'Intraclast breccia'),
-            h('p.note', "*: not a stratigraphically continuous facies")
+            // h('p.explanation', [
+            //   h("span.key", "*"),
+            //   h("span.description", "Not stratigraphically continuous")
+            // ])
           ])
         ])
       ]),
@@ -76,14 +72,11 @@ FaciesLegend.initClass();
 
 class Legend extends Component {
   render() {
-    return h('div.legend#summary-sections-legend', {
-      style: {
-        position: 'absolute',
-        left: 500,
-        top: 25
-      }
-    },
-    [
+    return h('div.legend#summary-sections-legend', [
+      h("h1", [
+        h("span", "Zebra Nappe"),
+        " stratigraphic model"
+      ]),
       h(FaciesContext.Consumer, null, props=> {
         return h(FaciesLegend, props);
       })

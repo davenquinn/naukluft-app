@@ -7,8 +7,7 @@ viz.task(
   'Summary-Sections.pdf',
   './sections/summary-sections/__static-figure/index.ts',
   // must be relative to entry file for now
-  {webpackConfig}
-)
+  {webpackConfig})
 
 viz.task(
   'Regional-Sections.pdf',

@@ -132,7 +132,7 @@ BaseSVGSectionComponent.defaultProps = {
 
 class LithostratKey extends Component {
   render() {
-    return h('div.align-with-sections', {style: {marginLeft: 20}}, [
+    return h('div.align-with-sections', [
       h(BaseSVGSectionComponent, this.props)
     ])
   }

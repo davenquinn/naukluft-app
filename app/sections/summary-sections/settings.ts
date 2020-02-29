@@ -3,7 +3,6 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {Button, Slider} from "@blueprintjs/core";
 import h from "react-hyperscript";
 import {
   SettingsProvider as BaseSettingsProvider,
@@ -40,6 +39,7 @@ const defaultSettings = {
   showSequenceStratigraphy: true,
   showTriangleBars: true,
   showCarbonIsotopes: true,
+  showOxygenIsotopes: true,
   correlatedIsotopes: true,
   isotopesPerSection: false,
   correctIsotopeRatios: false,

@@ -1,5 +1,7 @@
 .section-page.summary-sections
   .location-group
+    &#Tsams
+      margin-right 0
     position relative
     h1
       position absolute
@@ -36,7 +38,6 @@
     display flex
     flex-direction row
 
-
   div.edit-overlay
     div.cursor
       position absolute
@@ -44,6 +45,9 @@
       z-index 20
 
   #summary-sections-legend
+    position absolute
+    left 0
+    bottom 0
     h1, h2, h3
       line-height inherit
     .legend-inner
@@ -52,8 +56,7 @@
       &>div
         flex 1
       &>div
-        padding 1em
-    margin 2em 4em
+        margin-right 1em
     margin-top 0
     width 50em
     z-index 12
@@ -98,6 +101,15 @@
           flex-grow 1
           display block
           margin-left 1em
+
+    p.explanation
+      display flex
+      flex-direction row
+      span.key
+        font-size 1.5em
+      span.description
+        flex-grow 1
+        margin-left 1em
 
 .location-group
   position relative
