@@ -10,12 +10,13 @@ import {PlatformProvider} from '~/platform';
 import {SectionDataProvider, useSection} from '~/sections/data-providers';
 import '../single-section/main.styl';
 import "../main.styl";
+import "./main.styl"
 
 const Section = function(props){
   const settings = useSettings();
-  const section = useSection("J")
   return h(SectionComponent, {
-    ...section,
+    sectionID: 'J',
+    range: [330,340],
     offsetTop: 0,
     isEditable: false,
     ...settings,

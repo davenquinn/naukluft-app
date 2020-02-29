@@ -1,30 +1,24 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {useContext} from "react";
-import {ColumnContext} from "@macrostrat/column-components";
-import {PlatformContext, Platform} from '../../platform';
-import {findDOMNode} from "react-dom";
+import {ColumnContext, extractPadding} from "@macrostrat/column-components";
+import {useSection} from "~/sections/data-providers"
+import {PlatformContext, Platform} from '~/platform';
 import {sum, max} from "d3-array";
-import {join} from 'path';
 import h from "react-hyperscript";
 import T from "prop-types";
 
 const ColumnImages = function(props){
-  let getSrc;
-  const {zoom, height, pixelsPerMeter} = useContext(ColumnContext);
-  const {imageFiles, padding, lithologyWidth, extraSpace} = props;
-  const n = imageFiles.length;
+  const {sectionID} = props;
+  const {zoom, height, pixelsPerMeter, range} = useContext(ColumnContext);
+  const {range: sectionRange, imageFiles} = useSection(sectionID);
+  const {paddingTop, paddingLeft} = extractPadding(props)
   const imageHeight = sum(imageFiles, d => d.height);
   const imageWidth = max(imageFiles, d => d.width);
 
   const scaleFactor = imageHeight/height/pixelsPerMeter;
   const zs = zoom/scaleFactor;
   const style = {
-    marginTop: padding.top+extraSpace,
-    marginLeft: padding.left+lithologyWidth,
+    marginTop: paddingTop,
+    marginLeft: paddingLeft,
     height: imageHeight*zs,
     width: imageWidth*zs,
     position: 'relative'
@@ -32,12 +26,13 @@ const ColumnImages = function(props){
 
   const {platform} = useContext(PlatformContext);
 
-  if (platform === Platform.ELECTRON) {
-    getSrc = im => "file://"+im.filename;
-  } else {
-    getSrc = im => im.filename;
+  const getSrc = (im)=>{
+    if (platform === Platform.ELECTRON) {
+      return "file://"+im.filename;
+    } else {
+      return im.filename;
+    }
   }
-
 
   return h("div.images", {style}, imageFiles.map((im, i) => h("img", {
     src: getSrc(im),
@@ -51,13 +46,7 @@ const ColumnImages = function(props){
   })));
 };
 
-ColumnImages.defaultProps = {
-  extraSpace: 0
-};
-
 ColumnImages.propTypes = {
-  imageFiles: T.arrayOf(T.object),
-  extraSpace: T.number,
   lithologyWidth: T.number,
   padding: T.object
 };

@@ -14,7 +14,6 @@ import {
   GrainsizeAxis,
   FloodingSurface,
   TriangleBars,
-  Axis,
   ColumnSVG,
   ColumnAxis,
   ColumnProvider,
@@ -222,14 +221,11 @@ const SectionInner = (props: SectionInnerProps)=>{
               ])
             ]),
             h.if(shouldShowImages)(ColumnImages, {
-              padding: {
-                ...props.padding,
-                left: paddingLeft
-              },
-              lithologyWidth: columnLeftMargin,
-              imageFiles: props.imageFiles,
-              extraSpace: zoom > 0.5 ? 2.5*zoom : 0,
-              skeletal: false
+              paddingTop: props.padding.top,
+              paddingRight: props.padding.right,
+              paddingBottom: props.padding.bottom,
+              paddingLeft: paddingLeft+lithologyWidth,
+              sectionID: id,
             })
           ])
         ])
