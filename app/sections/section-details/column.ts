@@ -1,10 +1,7 @@
 import {useContext} from "react";
 import h from "@macrostrat/hyper";
 
-import {
-  ColumnDivision,
-  useColumnDivisions
-} from '../column/data-source'
+import {useColumnDivisions} from '../column/data-source'
 import {
   GrainsizeAxis,
   FloodingSurface,
@@ -65,10 +62,6 @@ const SectionComponent = (props: SectionProps & Padding)=>{
     sequenceStratOrder
   } = useContext(SequenceStratContext)
 
-  // Set text of header for appropriate zoom level
-  let txt = zoom > 0.5 ? "Section " : "";
-  txt += id;
-
   const height = range[1]-range[0]
   const ticks = height/10;
 
@@ -85,7 +78,10 @@ const SectionComponent = (props: SectionProps & Padding)=>{
 
   return h("div.section-pane.detail-section", [
     h("div.section-container", [
-      h('div.section-header', null, h("h2", txt)),
+      h("h3", [
+        id, " ",
+        h("span.height-range", `${range[0]}–${range[1]} m`)
+      ]),
       h(ColumnProvider, {
         zoom,
         range,
@@ -137,9 +133,8 @@ const SectionComponent = (props: SectionProps & Padding)=>{
               ])
             ]),
             h(ColumnImages, {
-              ...padding,
               paddingLeft: columnLeftMargin,
-              sectionID: id
+              sectionID
             })
           ])
         ])
@@ -161,12 +156,7 @@ SectionComponent.defaultProps = {
   lithologyWidth: 40,
   logWidth: 450,
   containerWidth: 1000,
-  padding: {
-    left: 30,
-    top: 30,
-    right: 30,
-    bottom: 30
-  }
+  padding: 30,
 };
 
 export {SectionComponent};

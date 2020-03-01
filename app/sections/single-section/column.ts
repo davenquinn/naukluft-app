@@ -309,6 +309,7 @@ const SectionComponent = (props: SectionProps)=> {
       height: editingInterval.height,
       section: section_id,
       moveCursor,
+      showDetails: true,
       closeDialog() {
         setEditingInterval(nullDivision)
       },
