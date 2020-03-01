@@ -3,8 +3,8 @@ import {render} from 'react-dom';
 import {useContext} from 'react'
 
 import {PlatformProvider} from '~/platform';
-import {SectionDataProvider, SectionDataContext} from '~/sections/data-providers';
-import {SectionPane} from '../section-pane'
+import {SectionDataProvider} from '~/sections/data-providers';
+import {GeneralizedSections} from '../main'
 import {SettingsProvider} from "../settings";
 import {SectionSurfacesProvider} from '../data-provider';
 
@@ -24,25 +24,13 @@ const StaticSectionSettings = C(SettingsProvider, {
   interactive: false
 })
 
-const SummarySectionsStatic = function(){
-  const sections = useContext(SectionDataContext);
-  return h(SectionPane, {
-    groupMargin: 400,
-    columnMargin: 100,
-    columnWidth: 150,
-    sections,
-    scrollable: false
-  })
-};
-
 const Figure = compose(
   PlatformProvider,
   SectionDataProvider,
   SectionSurfacesProvider,
   StaticSectionSettings,
-  'div.page.section-page-static.section-page.summary-sections',
-  'div.panel-container',
-  SummarySectionsStatic
+  'div.page.generalized-sections',
+  GeneralizedSections
 )
 
 

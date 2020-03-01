@@ -1,4 +1,4 @@
-import {hyperStyled} from "@macrostrat/hyper";
+import {hyperStyled, compose} from "@macrostrat/hyper";
 import {group} from 'd3-array';
 
 import {ColumnDivisionsContext} from './data-provider';
@@ -16,7 +16,11 @@ import {
 import {SVGSectionInner} from '../summary-sections/column';
 import {GeneralizedAxis, GeneralizedBreaks} from './axis';
 import {ChemostratigraphyColumn} from "./chemostrat"
+import {GeneralizedDataProvider} from './data-provider';
+import {SectionPositionProvider} from "../components";
+import {SectionSurfacesProvider} from '../summary-sections/data-provider';
 
+import "../summary-sections/main.styl";
 import styles from './main.styl';
 const h = hyperStyled(styles);
 
@@ -158,4 +162,11 @@ const SectionPane = function(props){
   ])
 };
 
-export {SectionPane}
+const GeneralizedSections = compose(
+  SectionSurfacesProvider,
+  GeneralizedDataProvider,
+  SectionPositionProvider,
+  SectionPane
+)
+
+export {GeneralizedSections};
