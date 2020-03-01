@@ -79,7 +79,6 @@ const FaciesTransitionsControls = (props)=>{
       is: Slider,
       min: 1,
       max: 5,
-      disabled: flooding_surface_order == null,
       stepSize: 1,
       value: Math.abs(flooding_surface_order ?? 5),
       showTrackFill: false,

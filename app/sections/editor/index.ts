@@ -140,7 +140,7 @@ const IntervalControls = (props: IntervalControlsProps)=>{
       itemDescription: `the interval starting at ${fmt(interval.bottom)}`,
       handleDelete: () => {
         if (props.removeInterval == null) return
-        return props.removeInterval(id);
+        return props.removeInterval(interval.id);
       }
     }, "Delete interval")
   ])

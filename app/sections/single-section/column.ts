@@ -264,6 +264,7 @@ const SectionComponent = (props: SectionProps)=> {
 
     // If we are editing the old interval, keep editing
     if (oldID != null) interval = {id: newID, height: newHeight};
+    await updateDivisions()
     setEditingInterval(interval);
   };
 
