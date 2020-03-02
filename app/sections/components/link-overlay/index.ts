@@ -364,12 +364,13 @@ const SectionLinkOverlay = function(props){
     connectLines,
     innerRef,
     className,
+    surfaces,
     ...rest
   } = props;
   const padding = extractPadding(rest);
 
   // Get surfaces from context if unset
-  const surfaces = props.surfaces ?? useSurfaces()
+  if (surfaces == null) surfaces = useSurfaces()
   if (surfaces == null) { return null; }
   if (!surfaces.length) { return null; }
 

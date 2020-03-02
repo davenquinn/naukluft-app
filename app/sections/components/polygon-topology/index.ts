@@ -22,9 +22,9 @@ const proj = geoTransform({
 const pathGenerator = geoPath().projection(proj);
 
 const TopoPolygon = function({feature, fill}){
-  const {geometry} = feature;
+  const {geometry, facies_id} = feature;
   if (!geometry) { return null; }
-  return h('path', {d: pathGenerator(geometry), fill});
+  return h('path', {className: facies_id, d: pathGenerator(geometry), fill});
 };
 
 const TopoPolygons = ({polygons, generateFill}) => h('g.polygons', polygons.map(function(p, i){
