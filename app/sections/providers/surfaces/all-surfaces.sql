@@ -42,7 +42,8 @@ SELECT
   s.note,
   s.sequence_boundary,
   null AS lower_unit,
-  null AS upper_unit
+  null AS upper_unit,
+  coalesce(s.correlative, true) correlative
 FROM sequence_strat ss
 JOIN section.surface s
   ON ss.surface_id = s.id
@@ -61,5 +62,6 @@ SELECT
   null,
   false,
   lower_unit,
-  upper_unit
+  upper_unit,
+  false
 FROM lithostrat

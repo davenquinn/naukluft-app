@@ -9,11 +9,8 @@ import {
   Component,
   createContext,
   useContext,
-  useState,
   useRef,
-  useLayoutEffect,
   useEffect,
-  forwardRef
 } from "react";
 import T from "prop-types";
 import {hyperStyled} from "@macrostrat/hyper";
@@ -22,7 +19,6 @@ import update from 'immutability-helper';
 import {
   expandInnerSize,
   extractPadding,
-  removePadding,
   useSettings,
   ColumnContext,
   SVG
@@ -35,8 +31,6 @@ import {SectionLinkPath} from './path';
 import {prepareLinkData} from './build-links';
 import styles from './main.styl';
 import {useSurfaces} from '~/sections/providers';
-
-
 
 const h = hyperStyled(styles);
 

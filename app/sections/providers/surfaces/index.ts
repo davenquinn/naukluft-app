@@ -3,8 +3,25 @@ import h from 'react-hyperscript'
 import surfacesQuery from './all-surfaces.sql'
 import {useUpdateableQuery} from "~/db"
 
+enum SurfaceType {
+  MaximumFloodingSurface = 'mfs',
+  SequenceBoundary = 'sb'
+}
+
+interface SectionHeight {
+  certainty: number,
+  height: number,
+  inferred: boolean,
+  section: string
+}
+
 declare interface SectionSurface {
-  surface_id: number
+  surface_id: number,
+  surface_order: number,
+  surface_type: SurfaceType|null,
+  note: string,
+  correlative: boolean
+  section_height: SectionHeight[]
 }
 
 interface SectionSurfaceCtx {

@@ -10,6 +10,8 @@ import {Tabs, Tab, Slider} from "@blueprintjs/core";
 
 import {PickerControl} from "@macrostrat/column-components/dist/esm/editor/picker-base";
 import {LabeledControl} from "@macrostrat/column-components/dist/esm/editor/util";
+import {useContext} from 'react'
+import {SectionSurfacesContext} from '~/sections/providers'
 
 import {
   SurfaceOrderSlider
@@ -33,6 +35,7 @@ const Panel = (props)=>h('div.tab-panel', props)
 
 
 const SurfaceTypeControls = (props)=>{
+  const {updateSurfaces} = useContext(SectionSurfacesContext)
   const {interval, updateInterval} = props
   return h(Panel, [
     h(LabeledControl, {
@@ -48,7 +51,10 @@ const SurfaceTypeControls = (props)=>{
       title: 'Surface order',
       is: SurfaceOrderSlider,
       interval,
-      onChange: updateInterval
+      onChange: (val)=>{
+        updateInterval(val)
+        updateSurfaces()
+      }
     })
   ])
 }
