@@ -3,9 +3,7 @@ import h from "@macrostrat/hyper";
 
 import {useColumnDivisions} from '../column/data-source'
 import {
-  GrainsizeAxis,
   FloodingSurface,
-  TriangleBars,
   ColumnSVG,
   ColumnAxis,
   ColumnProvider,
@@ -22,7 +20,7 @@ import {useSection} from '~/sections/data-providers';
 import {ColumnImages} from "../single-section/images";
 import {ManagedNotesColumn} from "../single-section/notes";
 import {ManagedSymbolColumn} from "../components";
-import {SequenceStratContext} from "../sequence-strat-context";
+import {GrainsizeAxis} from './grainsize-axis';
 
 interface SectionProps {
   sectionID: string,
@@ -57,19 +55,13 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   let padding = extractPadding(props)
   padding.paddingLeft += 40
 
-  const showTriangleBars = true
-  const showFloodingSurfaces = false
-  const sequenceStratOrder = [1,2]
-
+  const showFloodingSurfaces = true
 
   const height = range[1]-range[0]
   const ticks = height/5;
 
-  const nOrders = sequenceStratOrder[1]-sequenceStratOrder[0]+1
-
   let lithologyLeftMargin = 0;
   if (showFaciesTracts) lithologyLeftMargin += lithologyWidth;
-  if (showTriangleBars) padding.paddingLeft += 25*nOrders
 
   const columnLeftMargin = lithologyLeftMargin + lithologyWidth;
   const pixelsPerMeter = 15
@@ -77,7 +69,7 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   const grainsizeWidth = (168/20)*pixelsPerMeter*zoom;
   const grainsizeScaleStart = (88/20)*pixelsPerMeter*zoom;
 
-  return h("div.section-pane.detail-section", [
+  return h("div.detail-section", [
     h("div.section-container", [
       // h("h3", [
       //   id, " ",
@@ -98,13 +90,6 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                 innerWidth,
                 ...padding
               }, [
-                h(TriangleBars, {
-                  offsetLeft: -40-20*nOrders,
-                  lineWidth: 20,
-                  minOrder: sequenceStratOrder[0],
-                  maxOrder: sequenceStratOrder[1]
-                }),
-                h(ColumnAxis, {ticks}),
                 h('g', {transform: `translate(${lithologyLeftMargin})`}, [
                   h(LithologyColumn, {width: lithologyWidth}, [
                     h.if(showFacies)(FaciesColumnInner),
@@ -117,8 +102,8 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                     width: grainsizeWidth,
                     grainsizeScaleStart
                   }, [
+                    h(FloodingSurface, {lineWidth: 20, offsetLeft: -60}),
                     h(GrainsizeAxis),
-                    h(FloodingSurface),
                     h(ManagedSymbolColumn, {id, left: 50}),
                     h.if(showNotes)(ManagedNotesColumn, {
                       visible: true,
@@ -127,7 +112,8 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                       transform: `translate(${props.innerWidth})`
                     })
                   ])
-                ])
+                ]),
+                h(ColumnAxis, {ticks}),
               ])
             ]),
             h(ColumnImages, {
