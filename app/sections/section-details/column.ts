@@ -37,6 +37,7 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   const {
     sectionID,
     lithologyWidth,
+    innerWidth,
     range,
     zoom
   } = props
@@ -56,14 +57,13 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   let padding = extractPadding(props)
   padding.paddingLeft += 40
 
-  const {
-    showTriangleBars,
-    showFloodingSurfaces,
-    sequenceStratOrder
-  } = useContext(SequenceStratContext)
+  const showTriangleBars = true
+  const showFloodingSurfaces = false
+  const sequenceStratOrder = [1,2]
+
 
   const height = range[1]-range[0]
-  const ticks = height/10;
+  const ticks = height/5;
 
   const nOrders = sequenceStratOrder[1]-sequenceStratOrder[0]+1
 
@@ -72,18 +72,19 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   if (showTriangleBars) padding.paddingLeft += 25*nOrders
 
   const columnLeftMargin = lithologyLeftMargin + lithologyWidth;
+  const pixelsPerMeter = 15
 
-  const grainsizeWidth = 168*zoom;
-  const grainsizeScaleStart = 88*zoom;
+  const grainsizeWidth = (168/20)*pixelsPerMeter*zoom;
+  const grainsizeScaleStart = (88/20)*pixelsPerMeter*zoom;
 
   return h("div.section-pane.detail-section", [
     h("div.section-container", [
-      h("h3", [
-        id, " ",
-        h("span.height-range", `${range[0]}–${range[1]} m`)
-      ]),
+      // h("h3", [
+      //   id, " ",
+      //   h("span.height-range", `${range[0]}–${range[1]} m`)
+      // ]),
       h(ColumnProvider, {
-        zoom,
+        pixelsPerMeter,
         range,
         divisions
       }, [
@@ -94,12 +95,15 @@ const SectionComponent = (props: SectionProps & Padding)=>{
               grainsizeScaleStart: grainsizeScaleStart+columnLeftMargin
             }, [
               h(ColumnSVG, {
-                innerWidth: props.innerWidth + props.logWidth,
-                top: padding.paddingTop,
-                left: 0,
-                bottom: padding.paddingBottom,
-                right: padding.paddingRight
+                innerWidth,
+                ...padding
               }, [
+                h(TriangleBars, {
+                  offsetLeft: -40-20*nOrders,
+                  lineWidth: 20,
+                  minOrder: sequenceStratOrder[0],
+                  maxOrder: sequenceStratOrder[1]
+                }),
                 h(ColumnAxis, {ticks}),
                 h('g', {transform: `translate(${lithologyLeftMargin})`}, [
                   h(LithologyColumn, {width: lithologyWidth}, [
@@ -114,14 +118,8 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                     grainsizeScaleStart
                   }, [
                     h(GrainsizeAxis),
-                    h.if(showFloodingSurfaces)(FloodingSurface),
-                    h.if(showTriangleBars)(TriangleBars, {
-                      offsetLeft: -40-25*nOrders,
-                      lineWidth: 25,
-                      minOrder: sequenceStratOrder[0],
-                      maxOrder: sequenceStratOrder[1]
-                    }),
-                    h.if(showSymbols)(ManagedSymbolColumn, {id, left: 215}),
+                    h(FloodingSurface),
+                    h(ManagedSymbolColumn, {id, left: 50}),
                     h.if(showNotes)(ManagedNotesColumn, {
                       visible: true,
                       id,
@@ -133,7 +131,8 @@ const SectionComponent = (props: SectionProps & Padding)=>{
               ])
             ]),
             h(ColumnImages, {
-              paddingLeft: columnLeftMargin,
+              ...padding,
+              paddingLeft: padding.paddingLeft+lithologyWidth,
               sectionID
             })
           ])
@@ -150,13 +149,13 @@ SectionComponent.defaultProps = {
   useRelativePositioning: true,
   visible: true,
   trackVisibility: true,
-  innerWidth: 250,
+  innerWidth: 300,
   offsetTop: null,
   scrollToHeight: null,
   lithologyWidth: 40,
   logWidth: 450,
   containerWidth: 1000,
-  padding: 30,
+  padding: 10,
 };
 
 export {SectionComponent};
