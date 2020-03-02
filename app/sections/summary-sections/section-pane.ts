@@ -6,14 +6,13 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
-import {useContext} from "react";
 import {useSettings} from "@macrostrat/column-components";
 import {ChemostratigraphyColumn} from "./chemostrat";
 import {SectionLinkOverlay, SectionContainer} from "../components";
 import {LithostratKey} from "./lithostrat-key";
 import {ArrangedSections} from "./layout";
 import {Legend} from "./legend";
-import {SectionSurfacesContext} from './data-provider';
+import {useSurfaces} from '~/sections/providers';
 import {SectionData} from './layout/defs'
 import styles from './main.styl'
 import "../main.styl";
@@ -38,7 +37,7 @@ const SectionPane = function(props: SectionPaneProps) {
    scrollable
    } = props;
 
-  const {surfaces} = useContext(SectionSurfacesContext);
+  const surfaces = useSurfaces();
   const {showLegend} = useSettings();
 
   if (sections == null) { return null; }

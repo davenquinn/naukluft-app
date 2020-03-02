@@ -1,4 +1,4 @@
-import {createContext} from 'react'
+import {createContext, useContext} from 'react'
 import h from 'react-hyperscript'
 import surfacesQuery from './all-surfaces.sql'
 import {useUpdateableQuery} from "~/db"
@@ -25,4 +25,6 @@ const SectionSurfacesProvider = (props)=>{
   return h(SectionSurfacesContext.Provider, {value: {surfaces, updateSurfaces}}, children)
 }
 
-export {SectionSurfacesContext, SectionSurfacesProvider}
+const useSurfaces = ()=> useContext(SectionSurfacesContext)?.surfaces ?? []
+
+export {SectionSurfacesContext, SectionSurfacesProvider, useSurfaces}

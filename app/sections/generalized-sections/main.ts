@@ -18,7 +18,7 @@ import {GeneralizedAxis, GeneralizedBreaks} from './axis';
 import {ChemostratigraphyColumn} from "./chemostrat"
 import {GeneralizedDataProvider} from './data-provider';
 import {SectionPositionProvider} from "../components";
-import {SectionSurfacesProvider} from '../summary-sections/data-provider';
+import {SectionSurfacesProvider} from '~/sections/providers';
 
 import "../summary-sections/main.styl";
 import styles from './main.styl';

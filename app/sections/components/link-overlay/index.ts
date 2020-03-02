@@ -34,7 +34,7 @@ import {Notification} from "~/notify";
 import {SectionLinkPath} from './path';
 import {prepareLinkData} from './build-links';
 import styles from './main.styl';
-import {SectionSurfacesContext} from '../../summary-sections/data-provider';
+import {useSurfaces} from '~/sections/providers';
 
 
 
@@ -366,7 +366,6 @@ const SectionLinks = function(props){
 
 const SectionLinkOverlay = function(props){
   let {
-    surfaces,
     showSectionTrackers,
     connectLines,
     innerRef,
@@ -376,9 +375,7 @@ const SectionLinkOverlay = function(props){
   const padding = extractPadding(rest);
 
   // Get surfaces from context if unset
-  if (surfaces == null) { ({
-    surfaces
-  } = useContext(SectionSurfacesContext)); }
+  const surfaces = props.surfaces ?? useSurfaces()
   if (surfaces == null) { return null; }
   if (!surfaces.length) { return null; }
 

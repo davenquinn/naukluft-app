@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 import {PlatformProvider} from '~/platform';
 import {SectionDataProvider} from '~/sections/data-providers';
 import {RegionalSections} from '../main';
-import {SectionSurfacesProvider} from '~/sections/summary-sections/data-provider';
+import {SectionSurfacesProvider} from '~/sections/providers';
 
 const RegionalSectionsFigure = compose(
   PlatformProvider,

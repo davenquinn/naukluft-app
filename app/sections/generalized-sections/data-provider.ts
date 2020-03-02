@@ -3,7 +3,7 @@ import {useQuery} from "~/db"
 import {useContext, createContext} from 'react'
 import {ColumnDivision, ColumnDivisionsContext} from '../column/data-source'
 import {EditorProvider, EditorContext} from '../summary-sections/editor';
-import {SectionSurfacesContext} from '../summary-sections/data-provider'
+import {SectionSurfacesContext} from '~/sections/providers'
 import {SectionDataContext} from '../data-providers'
 import {SymbolContext} from '../components/symbols'
 import {GeneralizedDivision} from './types'
@@ -199,7 +199,7 @@ function compactMap<A,B>(arr: A[], mapper: (arg0: A)=>B): B[] {
 
 const GeneralizedSurfacesProvider = (props)=>{
   // Repackage section surfaces with respect to new generalized sections
-  const {surfaces} = useContext(SectionSurfacesContext)
+  const {surfaces, updateSurfaces} = useContext(SectionSurfacesContext)
   const {divisions} = useContext(ColumnDivisionsContext)
 
   const newSurfaces = surfaces.map(surface => {
@@ -211,8 +211,9 @@ const GeneralizedSurfacesProvider = (props)=>{
     return {...surface, section_height}
   })
 
-  return h(SectionSurfacesContext.Provider,
-           {value: {surfaces: newSurfaces}}, props.children)
+  const value = {surfaces: newSurfaces, updateSurfaces}
+
+  return h(SectionSurfacesContext.Provider, {value}, props.children)
 }
 
 const matchDivisions = (a: GeneralizedDivision, b: ColumnDivision): boolean => {

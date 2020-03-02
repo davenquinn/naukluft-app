@@ -17,7 +17,7 @@ import {
 } from './carbon-isotopes';
 import {rangeForSection} from '../../util';
 import {LayoutGroup} from "../layout";
-import {SectionSurfacesContext} from '../data-provider'
+import {useSurfaces} from '~/sections/providers'
 
 const h = hyperStyled(styles);
 
@@ -58,7 +58,7 @@ const BaseChemostratigraphyColumn = (props)=>{
   const offset = row?.offset ?? props.offset ?? 0
   const {location, ...rest} = row ?? {};
 
-  const {surfaces} = useContext(SectionSurfacesContext)
+  const surfaces = useSurfaces()
 
   return h(ChemostratigraphyGroup, {
     range

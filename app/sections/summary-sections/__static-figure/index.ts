@@ -6,7 +6,7 @@ import {PlatformProvider} from '~/platform';
 import {SectionDataProvider, SectionDataContext} from '~/sections/data-providers';
 import {SectionPane} from '../section-pane'
 import {SettingsProvider} from "../settings";
-import {SectionSurfacesProvider} from '../data-provider';
+import {SectionSurfacesProvider} from '~/sections/providers';
 
 import "./main.styl"
 import "./fonts.css"

@@ -6,7 +6,7 @@ import {PlatformProvider} from '~/platform';
 import {SectionDataProvider} from '~/sections/data-providers';
 import {GeneralizedSections} from '../main'
 import {SettingsProvider} from "../settings";
-import {SectionSurfacesProvider} from '../data-provider';
+import {SectionSurfacesProvider} from '~/sections/providers';
 
 import "./main.styl"
 import "./fonts.css"

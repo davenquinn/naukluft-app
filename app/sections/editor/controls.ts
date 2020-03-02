@@ -12,9 +12,7 @@ import {
   RaisedSelect
 } from '@macrostrat/column-components/dist/esm/editor'
 import {ButtonGroup, Button} from "@blueprintjs/core";
-import {
-  SectionSurfacesContext
-} from '../summary-sections/data-provider'
+import {SectionSurfacesContext} from '~/sections/providers'
 import h from "react-hyperscript";
 
 const SurfaceLabel = (props)=>{
@@ -29,7 +27,7 @@ const SurfaceLabel = (props)=>{
 
 const CorrelatedSurfaceControl = (props)=>{
   /** Control for correlated surfaces */
-  const {surfaces} = useContext(SectionSurfacesContext)
+  const {surfaces, updateSurfaces} = useContext(SectionSurfacesContext)
   const {onChange, interval} = props;
 
   const seqSurfaces = surfaces.filter(d=>d.type == 'sequence-strat')
@@ -52,7 +50,8 @@ const CorrelatedSurfaceControl = (props)=>{
       if (surface != null) {
         surface = surface.value;
       }
-      return onChange({surface});
+      onChange({surface});
+      updateSurfaces()
     }
   });
 }

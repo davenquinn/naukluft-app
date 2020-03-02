@@ -12,7 +12,7 @@ import {
   SectionPositionProvider,
   SectionLinkOverlay
 } from "../components/link-overlay";
-import {SectionSurfacesContext} from '../summary-sections/data-provider';
+import {useSurfaces} from '~/sections/providers';
 import {getGeneralizedHeight, exportSVG} from './helpers';
 import {FaciesSection} from './column';
 import {exportSequence} from './svg-export';
@@ -24,7 +24,7 @@ const h = hyperStyled(styles);
 
 const LinkOverlay = function(props){
   const {sections, topSurface, bottomSurface, ...rest} = props;
-  let {surfaces} = useContext(SectionSurfacesContext);
+  let surfaces = useSurfaces();
   const generalize = getGeneralizedHeight(sections, {topSurface, bottomSurface});
 
   surfaces = surfaces.map(function({section_height, ...rest1}){

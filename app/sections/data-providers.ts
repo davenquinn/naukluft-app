@@ -7,7 +7,7 @@ import {FaciesProvider} from "./facies"
 import {LithologyProvider} from './lithology'
 import {PlatformContext} from '../platform'
 import {SequenceStratProvider} from "./sequence-strat-context"
-import {SectionSurfacesProvider} from './summary-sections/data-provider'
+import {SectionSurfacesProvider} from '~/sections/providers'
 import {
   PhotoLibraryProvider as BasePhotoLibraryProvider
 } from '@macrostrat/column-components'

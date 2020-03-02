@@ -3,7 +3,6 @@ import h from 'react-hyperscript'
 import {SectionDataContext} from '../data-providers'
 import {ColumnProvider} from '@macrostrat/column-components'
 import {useColumnDivisions} from '../column/data-source'
-import {SectionSurfacesContext, SectionSurfacesProvider} from '~/sections/providers'
 
 const SummaryColumnProvider = (props)=>{
   /*
@@ -41,8 +40,4 @@ SummaryColumnProvider.defaultProps = {
   filterDivisions: d => !d.schematic
 }
 
-export {
-  SectionSurfacesContext,
-  SectionSurfacesProvider,
-  SummaryColumnProvider
-}
+export {SummaryColumnProvider}
