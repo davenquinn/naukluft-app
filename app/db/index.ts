@@ -53,22 +53,26 @@ const query = async function(id, values, opts={}){
   return res;
 };
 
-const useQuery = function(sql, args=[]){
-  /*
-  A react hook to use the result of a query
-  */
+const useUpdateableQuery = function(sql, args=[]){
+  /** A react hook to use the result of a query */
   const [result, updateResult] = useState(null);
   const runQuery = async function() {
     const res = await query(sql, args);
     return updateResult(res);
   };
   useAsyncEffect(runQuery, args);
-  return result;
+  return [result, runQuery];
 };
+
+const useQuery = function(sql, args=[]){
+  return useUpdateableQuery(sql, args)[0];
+};
+
 
 export {
   query,
   useQuery,
+  useUpdateableQuery,
   storedProcedure,
   db
 };

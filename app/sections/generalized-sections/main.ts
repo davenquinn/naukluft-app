@@ -114,7 +114,7 @@ const SectionPane = function(props){
   const order = ['Onis', 'Ubisis', 'Tsams'];
   sections.sort((a, b) => order.indexOf(a.key)-order.indexOf(b.key));
 
-  const offsets = stratOffsets;
+  const offsets = compactOffsets;
 
   const showChemostrat = true
 

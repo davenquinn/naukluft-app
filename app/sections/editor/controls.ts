@@ -28,6 +28,7 @@ const SurfaceLabel = (props)=>{
 }
 
 const CorrelatedSurfaceControl = (props)=>{
+  /** Control for correlated surfaces */
   const {surfaces} = useContext(SectionSurfacesContext)
   const {onChange, interval} = props;
 

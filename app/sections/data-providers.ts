@@ -75,7 +75,7 @@ const PhotoLibraryProvider = function({children}) {
   return h(BasePhotoLibraryProvider, {photos, computePhotoPath}, children)
 }
 
-const SectionDataContext = createContext([])
+const SectionDataContext = createContext<SectionData[]>([])
 const SectionProvider = ({children})=>{
   const [sections, setSections] = useState<SectionData[]|null>(null)
   useAsyncEffect(async ()=>setSections(await getSectionData()), [])

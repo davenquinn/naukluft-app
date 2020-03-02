@@ -1,22 +1,9 @@
 import {createContext, useContext} from 'react'
 import h from 'react-hyperscript'
-import lithostratSurface from './sql/lithostratigraphy-surface.sql'
-import {useQuery} from "~/db"
 import {SectionDataContext} from '../data-providers'
 import {ColumnProvider} from '@macrostrat/column-components'
 import {useColumnDivisions} from '../column/data-source'
-
-const SectionSurfacesContext = createContext([])
-
-const SectionSurfacesProvider = (props)=>{
-  /*
-  Provides all surfaces used in Summary Sections diagram
-  */
-  const {children} = props
-  const surfaces = useQuery(lithostratSurface) ?? []
-  if (surfaces == null) return null
-  return h(SectionSurfacesContext.Provider, {value: {surfaces}}, children)
-}
+import {SectionSurfacesContext, SectionSurfacesProvider} from '~/sections/providers'
 
 const SummaryColumnProvider = (props)=>{
   /*

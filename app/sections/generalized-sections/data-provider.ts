@@ -4,6 +4,7 @@ import {useContext, createContext} from 'react'
 import {ColumnDivision, ColumnDivisionsContext} from '../column/data-source'
 import {EditorProvider, EditorContext} from '../summary-sections/editor';
 import {SectionSurfacesContext} from '../summary-sections/data-provider'
+import {SectionDataContext} from '../data-providers'
 import {SymbolContext} from '../components/symbols'
 import {GeneralizedDivision} from './types'
 import breakQuery from './breaks.sql'
@@ -124,6 +125,7 @@ const GeneralizedDivisionsProvider = (props)=>{
   /*
   Provides all surfaces used in Summary Sections diagram
   */
+  const sectionData = useContext(SectionDataContext)
   let allDivisions = useContext(ColumnDivisionsContext).divisions
   if (allDivisions.length == 0) {
     console.error("ColumnDivisionsContext must be provided.")
@@ -151,18 +153,29 @@ const GeneralizedDivisionsProvider = (props)=>{
     const sectionRanges = calculateSectionRanges(breaks)
     for (const range of sectionRanges) {
       // Filter within each section range to get only the required divisions
-      let sectionDivisions = allDivisions.filter(d =>{
-        return d.section_id == range.section && !(d.schematic ?? false)
-      })
+      const section = sectionData.find(d => d.section == range.section)!
+
+      let sectionDivisions = allDivisions.filter(d => d.section_id == range.section && !(d.schematic ?? false))
       let bottomIx = 0, topIx = sectionDivisions.length
       if (range.lower_surface != null) {
         bottomIx = sectionDivisions.findIndex(d=>d.surface==range.lower_surface)
       }
       if (range.upper_surface != null) {
         topIx = sectionDivisions.findIndex(d=>d.surface==range.upper_surface)
+
       }
+
+      if (range.section == 'G') {
+        bottomIx = 1 // A hack; we need to find a better way to identify this division
+      }
+
+      //console.log(sectionDivisions.length, bottomIx, topIx)
       sectionDivisions = sectionDivisions.slice(bottomIx,topIx)
-      const height = sectionDivisions[sectionDivisions.length-1].top-sectionDivisions[0].bottom
+      //const innerDivisions = sectionDivisions.filter(d => d.top > section.start && d.bottom < section.end)
+      let topHeight = last(sectionDivisions).top
+      let bottomHeight = sectionDivisions[0].bottom
+
+      const height = topHeight-bottomHeight
       divisions.push(...generalize(sectionDivisions, baseOffset, locality))
       baseOffset += height
     }
