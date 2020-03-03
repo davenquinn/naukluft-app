@@ -59,13 +59,14 @@ const SVGSectionInner = function(props){
   // Expand SVG past bounds of section
 
   const faciesTractIndex = {
+    'exposure': 'rework',
     'peritidal': 'p',
     'marine-siliciclastic': 'fc',
     'shoal-shoreface': 'sh',
     'shoreface-alluvial-siliciclastic': 'cc',
     'marine-carbonate': 'mc',
-    'peritidal-siliciclastic': 'pc',
-    'restricted-subtidal': 'p',
+    'peritidal-siliciclastic': 'cc',
+    'restricted-subtidal': 'sub',
     'steepened-outer-ramp': 'or'
   }
 

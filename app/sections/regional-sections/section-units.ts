@@ -60,7 +60,6 @@ const getFile = async function(id){
 
 const getEditedSequenceOverlay = async function(id){
   let svg = await getFile(id);
-  console.log(svg);
   const fst = removeLines(svg.toString(), 2);
 
   const el = document.createElement("div");
@@ -128,7 +127,6 @@ const extractTopology = async (el, id) => {
   }
 
   el.select("g.linework")
-    .style("mix-blend-mode", 'luminosity')
     .node().appendChild(main.node());
 
   const pts = svg.select("g#Labels").node();

@@ -13,16 +13,13 @@ const exportSVG = function(node, outputFile){
   if (node == null) { return; }
   const svgString = serializer.serializeToString(node);
   const {writeFileSync} = require('fs');
+  console.log("Exporting sequence to ", outputFile)
   return writeFileSync(outputFile, svgString, 'utf-8');
 };
 
-const filenameForID = (id, ext) => path.join(
-  path.resolve("."),
-  "sections",
-  "regional-sections",
-  "sequence-data",
-  require.resolve(`./${id}.${ext}`)
-);
+const filenameForID = (id, ext) => {
+  return path.resolve(process.cwd(), __dirname, 'sequence-data', `${id}.${ext}`)
+};
 
 const exportSequence = (id, node) => (function() {
   if (node == null) { return; }
@@ -43,8 +40,8 @@ const exportSequence = (id, node) => (function() {
     const t = `translate(${(x-rootX)+5}, ${(y-rootY)+5})`;
     s1a.setAttribute('transform', t);
     // Adobe Illustrator does not support SVG clipping paths.
-    const clip = s1a.querySelector("defs");
-    clip.parentNode.removeChild(clip);
+    //const clip = s1a.querySelector("defs");
+    //clip.parentNode.removeChild(clip);
 
     s1a.querySelector('.inner').removeAttribute('clip-path');
 

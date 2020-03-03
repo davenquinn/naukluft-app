@@ -1,6 +1,6 @@
 .section-pane-static
   width 1200px
-  height 1200px // figure out how to automate this
+  height max-content // figure out how to automate this
   .generalized-sections
     flex-grow 1
     display flex
@@ -13,6 +13,7 @@
     &:first-child
       flex-grow 0.2
       margin-left: 10em
+      margin-right 1.2em
     &:last-child
       flex-grow 0
       margin-right: 500px
@@ -39,7 +40,6 @@
     position relative
 
   .section-page.regional-sections
-    opacity: 0.99
     zoom: 1.1
     .section-pane-static
       width 1300px

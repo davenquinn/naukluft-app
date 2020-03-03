@@ -13,7 +13,6 @@ import {
   SectionLinkOverlay
 } from "../components/link-overlay";
 import {useSurfaces} from '~/sections/providers';
-import {getGeneralizedHeight, exportSVG} from './helpers';
 import {FaciesSection} from './column';
 import {exportSequence} from './svg-export';
 import {CrossSectionUnits} from './section-units';
@@ -25,12 +24,6 @@ const h = hyperStyled(styles);
 const LinkOverlay = function(props){
   const {sections, topSurface, bottomSurface, ...rest} = props;
   let surfaces = useSurfaces();
-  const generalize = getGeneralizedHeight(sections, {topSurface, bottomSurface});
-
-  surfaces = surfaces.map(function({section_height, ...rest1}){
-    // Update surfaces to use generalized section heights
-    section_height = section_height.map(generalize).filter(d => d != null);
-    return {section_height, ...rest1};});
 
   return h(SectionLinkOverlay, {
     className: 'sequence-link-overlay',
@@ -41,15 +34,19 @@ const LinkOverlay = function(props){
 };
 
 const CorrelationContainer = function(props){
-  const {id, sections, children, paddingBottom, ...rest} = props;
+  const {
+    id, sections, children, paddingBottom,
+    exportCorrelations, ...rest} = props;
   const domID = `sequence-${id}`;
 
   const ctx = useContext(PlatformContext);
 
   let outerRef = function(node){
-    if (node == null) { return; }
-    const observer = new MutationObserver(exportSequence(id, node));
-    return observer.observe(node, {childList: true});
+    if (node == null || !exportCorrelations) { return; }
+    const exporter = exportSequence(id, node)
+    const observer = new MutationObserver(exporter);
+    observer.observe(node, {childList: true});
+    exporter()
   };
 
   if (ctx.platform !== Platform.ELECTRON) {
@@ -73,8 +70,10 @@ const CorrelationContainer = function(props){
 
 
 const SequenceCorrelations = function(props){
-  const {sections, offsets, id, bottomSurface,
-   topSurface, paddingBottom, ...rest} = props;
+  const {
+    sections, offsets, id, bottomSurface,
+    topSurface, paddingBottom,
+    exportCorrelations, ...rest} = props;
 
   return h(CorrelationContainer, {
     id,
@@ -82,6 +81,8 @@ const SequenceCorrelations = function(props){
     topSurface,
     bottomSurface,
     paddingBottom,
+    // Only set to true when you want to export (hack. could make a button in settings.)
+    exportCorrelations: false,
     width: 1200
   }, sections.map(function({key,divisions}){
     let start = 0;

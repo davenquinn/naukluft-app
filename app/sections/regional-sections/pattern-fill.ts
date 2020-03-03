@@ -27,12 +27,28 @@ const FillPatternDefs = (props)=>{
   return h(PatternPrefixContext.Provider, {value: prefix}, [
     h('defs', [
       h(FaciesPattern, {
+        facies: 'rework',
+        id: '216-DO',
+        //patternTransform: "rotate(90)",
+        backgroundColor: "#fcdede",
+        color: "#e07171",
+        size: 30,
+      }),
+
+      h(FaciesPattern, {
         facies: 'p',
         id: '232-DO',
         //patternTransform: "rotate(90)",
         backgroundColor: "#deeffc",
         color: "#96c5eb",
         size: 30,
+      }),
+      h(FaciesPattern, {
+        facies: 'sub',
+        id: '230-DO',
+        patternTransform: 'rotate(90)',
+        backgroundColor: "#deeffc",
+        color: "#96c5eb",
       }),
       h(FaciesPattern, {
         facies: 'sh',
