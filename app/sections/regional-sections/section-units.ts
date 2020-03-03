@@ -128,6 +128,7 @@ const extractTopology = async (el, id) => {
   }
 
   el.select("g.linework")
+    .style("mix-blend-mode", 'luminosity')
     .node().appendChild(main.node());
 
   const pts = svg.select("g#Labels").node();

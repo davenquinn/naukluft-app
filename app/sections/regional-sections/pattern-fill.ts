@@ -10,33 +10,67 @@ const FaciesPattern = (props)=>{
   return h(GeologicPattern, {
     id, prefix, name: facies,
     width: size, height: size,
+    shapeRendering: "crispEdges",
     ...rest
   })
 }
 FaciesPattern.defaultProps = {size: 100}
 
+const grainstoneColors = {
+  color: "#403ab8",
+  backgroundColor: "#7d83bd"
+}
+
 const FillPatternDefs = (props)=>{
-  const {patterns, prefix} = props
+  const {prefix, invert} = props
 
   return h(PatternPrefixContext.Provider, {value: prefix}, [
     h('defs', [
       h(FaciesPattern, {
         facies: 'p',
-        id: '230-C',
-        patternTransform: "rotate(90)"
+        id: '232-DO',
+        //patternTransform: "rotate(90)",
+        backgroundColor: "#deeffc",
+        color: "#96c5eb",
+        size: 30,
       }),
       h(FaciesPattern, {
         facies: 'sh',
-        id: '114-C'
+        id: '114-DO',
+        ...grainstoneColors
       }),
       h(FaciesPattern, {
         facies: 'or',
-        id: '105-C',
-        size: 60
+        id: '105-DO',
+        size: 60,
+        ...grainstoneColors
       }),
-      h(FaciesPattern, {facies: 'mc', id: '431-C', patternTransform: 'rotate(60)'}),
-      h(FaciesPattern, {facies: 'cc', id: '121-K', size: 50}),
-      h(FaciesPattern, {facies: 'fc', id: '230-K', patternTransform: 'rotate(90)'})
+      h(FaciesPattern, {
+        facies: 'mc', id: '431-DO', patternTransform: 'rotate(60)',
+        backgroundColor: "#dee3fc",
+        color: "#7d7dbd",
+      }),
+      h(FaciesPattern, {
+        facies: 'cc',
+        id: '121-DO',
+        size: 50,
+        color: '#22958a',
+        backgroundColor: '#70c7bf',
+      }),
+      h(FaciesPattern, {
+        facies: 'pc',
+        id: '121-DO',
+        size: 50,
+        color: '#4eb6ac',
+        backgroundColor: '#dcedc9',
+      }),
+      h(FaciesPattern, {
+        facies: 'fc',
+        id: '230-DO',
+        patternTransform: 'rotate(90)',
+        backgroundColor: '#f1f5eb',
+        color: '#dcedc9',
+      })
     ])
   ])
 }

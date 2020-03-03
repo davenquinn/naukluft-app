@@ -12,6 +12,7 @@ import {
   LithologyColumn,
   ParameterIntervals,
 } from "@macrostrat/column-components/dist/esm/lithology";
+import {FillPatternDefs} from './pattern-fill'
 import {useFaciesColors} from './util';
 
 import styles from './main.styl';
@@ -57,6 +58,17 @@ const SVGSectionInner = function(props){
 
   // Expand SVG past bounds of section
 
+  const faciesTractIndex = {
+    'peritidal': 'p',
+    'marine-siliciclastic': 'fc',
+    'shoal-shoreface': 'sh',
+    'shoreface-alluvial-siliciclastic': 'cc',
+    'marine-carbonate': 'mc',
+    'peritidal-siliciclastic': 'pc',
+    'restricted-subtidal': 'p',
+    'steepened-outer-ramp': 'or'
+  }
+
   const domID = `column-${id}`;
 
   return h(ColumnProvider, {
@@ -79,8 +91,21 @@ const SVGSectionInner = function(props){
           width: 30,
           padding: 5
         }, [
+          h(FillPatternDefs, {prefix: domID}),
           h(LithologyColumn, {width: 20}, [
-            h(FaciesTractIntervals)
+            h(ParameterIntervals, {
+              parameter: 'facies_tract',
+              fillForInterval(facies_tract, d){
+                if (facies_tract == null) { return null; }
+                const id = faciesTractIndex[facies_tract]
+                if (id != null) {
+                  return `url(#${domID}-${id})`
+                }
+                return 'black'
+              },
+              ...props
+            })
+            //h(FaciesTractIntervals)
             //h CarbonateDivisions, {minimumHeight: 2}
           ])
         ]),
