@@ -20,7 +20,7 @@ viz.task(
 
 viz.task(
   'Generalized-Sections.pdf',
-  './sections/generalized-sections/index.ts',
+  './sections/generalized-sections/__static-figure/index.ts',
   {webpackConfig})
 
 module.exports = viz;

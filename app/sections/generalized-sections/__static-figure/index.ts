@@ -1,15 +1,14 @@
 import h, {compose, C} from '@macrostrat/hyper';
 import {render} from 'react-dom';
-import {useContext} from 'react'
 
 import {PlatformProvider} from '~/platform';
 import {SectionDataProvider} from '~/sections/data-providers';
 import {GeneralizedSections} from '../main'
-import {SettingsProvider} from "../settings";
+import {SettingsProvider} from "@macrostrat/column-components";
 import {SectionSurfacesProvider} from '~/sections/providers';
 
+import "../../summary-sections/__static-figure/fonts.css"
 import "./main.styl"
-import "./fonts.css"
 
 const StaticSectionSettings = C(SettingsProvider, {
   showFacies: true,
@@ -34,4 +33,4 @@ const Figure = compose(
 )
 
 
-export default (el, opts, cb) => render(h(Figure), el, cb);
+export default (el, opts, cb)=> render(h(Figure), el, cb);
