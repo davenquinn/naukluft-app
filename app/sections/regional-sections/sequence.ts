@@ -63,7 +63,7 @@ const CorrelationContainer = function(props){
     h('div.sequence', {id: domID, ref: outerRef}, [
       h('div.generalized-sections', {style: {paddingBottom}}, children),
       h(CrossSectionUnits, {id}),
-      h(LinkOverlay, {sections, style, paddingBottom, ...rest})
+      //h(LinkOverlay, {sections, style, paddingBottom, ...rest})
     ])
   ]);
 };

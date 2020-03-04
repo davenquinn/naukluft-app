@@ -18,7 +18,7 @@ const StaticSectionSettings = C(SettingsProvider, {
   showSequenceStratigraphy: true,
   showCarbonIsotopes: true,
   showOxygenIsotopes: true,
-  isotopesPerSection: true,
+  isotopesPerSection: false,
   correlatedIsotopes: true,
   interactive: false
 })
@@ -28,7 +28,7 @@ const Figure = compose(
   SectionDataProvider,
   SectionSurfacesProvider,
   StaticSectionSettings,
-  'div.page.generalized-sections',
+  'div.page.generalized-sections-static',
   GeneralizedSections
 )
 

@@ -1,6 +1,6 @@
 @require "~@macrostrat/column-components/dist/column-components.css";
 
-.section-page-static.section-page.page.summary-sections
+.page.generalized-sections-static
   margin -20px
   width max-content
   height max-content
@@ -16,11 +16,16 @@
     #section-page-inner
       margin 0
       padding 0 !important
-
+  .lithostratigraphy-names
+    margin-top 44px
   .location-group
     margin-bottom 10px
     &.chemostratigraphy
-      margin 40px -10px 0 -4px
+      margin 4px -54px -2em -4px
+  #section-pane, .section-pane
+    overflow: inherit
+    height max-content
+    width max-content
 
 @page {
   margin: 0cm;
