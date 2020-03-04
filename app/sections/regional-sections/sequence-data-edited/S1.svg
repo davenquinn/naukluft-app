@@ -161,7 +161,7 @@
 	<polyline fill="none" stroke="#CCCCCC" stroke-width="3" points="6.7,5 155,5 200,5 	"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M200,5c35,0,35,0,70,0h40"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M310,5c175,0,190,0,365,0l538.2,12.1"/>
-	<path fill="none" stroke="#CCCCCC" d="M10.7,286.3L8.2-9.4L1204-1.6V318H169C146.9,309.8,11.1,303.2,10.7,286.3z"/>
+	<path fill="none" d="M10.7,286.3L8.2-9.4L1204-1.6V318H169C146.9,309.8,11.1,303.2,10.7,286.3z"/>
 	<path fill="none" stroke="#CCCCCC" d="M4.2,245h134.2c140.6,0,162.3,5.8,270.2,28.3s233.2,58,240.3,58"/>
 	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M949.8,210.9l-107.4,3l123.9,5.2l-243.4-2"/>
 	<path fill="none" stroke="#CCCCCC" d="M964.2,212.1c-53.8-1.5-214.4-9.1-289.2-9.2c-8.6,0-108-3.2-143.2-8.9l21-0.5l-38-4.7
