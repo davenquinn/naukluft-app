@@ -26,31 +26,35 @@ const Facies = (props)=>{
   ]);
 }
 
+const FaciesLegend = (props)=>{
+  return h('div.facies-description-inner', [
+    h('div.section', [
+      h('h4', 'Siliciclastic'),
+      h(Facies, {id: "coarse-clastics"}, "Coarse sandstone and pebble conglomerate"),
+      h(Facies, {id: "shallow-fine-clastics"}, "Inner shoreface sandstone–siltstone"),
+      h(Facies, {id: "fine-clastics"}, "Outer shoreface sandstone–mudstone")
+    ]),
+    h('div.section', [
+      h('h4', 'Carbonate'),
+      h(Facies, {id: "knobbly-stromatolites"}, "Stromatolite-colonized reworking surface*"),
+      h(Facies, {id: "carbonate-mudstone"}),
+      h(Facies, {id: "intraclast-grainstone"}),
+      h(Facies, {id: "hcs-grainstone"}, "Cross-stratified grainstone"),
+      h(Facies, {id: "mixed-grainstone"}, 'Wavy-bedded heterolithic'),
+      h(Facies, {id: "intraclast-breccia"}, 'Intraclast breccia'),
+      // h('p.explanation', [
+      //   h("span.key", "*"),
+      //   h("span.description", "Not stratigraphically continuous")
+      // ])
+    ])
+  ])
+}
+
 const LegendInner = (props)=>{
   return h('div.legend-inner', [
     h('div.facies-description', [
       h('h2', 'Sedimentary facies'),
-      h('div.facies-description-inner', [
-        h('div.section', [
-          h('h4', 'Siliciclastic'),
-          h(Facies, {id: "coarse-clastics"}, "Coarse sandstone and pebble conglomerate"),
-          h(Facies, {id: "shallow-fine-clastics"}, "Inner shoreface sandstone–siltstone"),
-          h(Facies, {id: "fine-clastics"}, "Outer shoreface sandstone–mudstone")
-        ]),
-        h('div.section', [
-          h('h4', 'Carbonate'),
-          h(Facies, {id: "knobbly-stromatolites"}, "Stromatolite-colonized reworking surface*"),
-          h(Facies, {id: "carbonate-mudstone"}),
-          h(Facies, {id: "intraclast-grainstone"}),
-          h(Facies, {id: "hcs-grainstone"}, "Cross-stratified grainstone"),
-          h(Facies, {id: "mixed-grainstone"}, 'Wavy-bedded heterolithic'),
-          h(Facies, {id: "intraclast-breccia"}, 'Intraclast breccia'),
-          // h('p.explanation', [
-          //   h("span.key", "*"),
-          //   h("span.description", "Not stratigraphically continuous")
-          // ])
-        ])
-      ])
+      h(FaciesLegend)
     ]),
     h('div.symbol-legend', [
       h('h2', 'Symbology'),
@@ -75,4 +79,4 @@ const Legend = ()=> {
   ]);
 }
 
-export {Legend};
+export {Legend, FaciesLegend, SymbolLegend};

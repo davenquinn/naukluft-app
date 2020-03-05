@@ -4,7 +4,6 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import {hyperStyled} from "@macrostrat/hyper";
-import {useContext} from 'react'
 import {
   ColumnProvider,
   useSettings
@@ -80,7 +79,7 @@ const BaseChemostratigraphyColumn = (props)=>{
       zoom: 0.1,
       system: 'delta18o',
       label: 'δ¹⁸O',
-      domain: [-15,4],
+      domain: [-15,2],
       key: 'oxygen-isotopes',
       colorScheme,
       corrected: correctIsotopeRatios,

@@ -10,6 +10,11 @@ import h from "@macrostrat/hyper";
 import {ColumnLayoutContext} from '@macrostrat/column-components';
 import T from 'prop-types';
 
+const inDomain = (scale, num)=>{
+  const domain = scale.domain()
+  return domain[0] < num < domain[1]
+}
+
 const valueAtStdev = function(opts){
   let {system, corrected} = opts;
   if (corrected == null) { corrected = false; }
@@ -31,15 +36,21 @@ const createPointLocator = function(opts){
   const val = valueAtStdev(rest);
   return function(d, s=0){
     const v = val(d, s);
-    return [xScale(v), scale(getHeight(d))];
+    const height = getHeight(d)
+    if (!inDomain(scale, height)) return null
+    return [xScale(v), scale(height)];
   };
 };
 
 const IsotopesDataContext = createContext();
 
-const IsotopesDataArea = function(props){
+interface DataAreaProps {
+  clipY: boolean
+}
+
+const IsotopesDataArea = function(props: DataAreaProps){
   const {xScale, scale} = useContext(ColumnLayoutContext);
-  let {corrected, system, children, getHeight} = props;
+  let {corrected, system, children, getHeight, clipY} = props;
   if (getHeight == null) { getHeight = function(d){
     if ((d.height == null)) {
       console.log(d);
@@ -58,17 +69,21 @@ const IsotopesDataArea = function(props){
       .x(d => xScale(d[column]))
       .y(d => scale(d.height));
 
-  const value = {pointLocator, lineLocator, corrected, system};
+  const value = {pointLocator, lineLocator, corrected, system, clipY};
   return h(IsotopesDataContext.Provider, {value}, (
     h('g.data', null, children)
   ));
 };
 
+IsotopesDataArea.defaultProps = {clipY: false}
+
 const IsotopeDataPoint = function(props){
   const {pointLocator} = useContext(IsotopesDataContext);
   const {datum, strokeWidth, ...rest} = props;
   //[x1,y1] = pointLocator(datum, -2)
-  const [x0,y] = pointLocator(datum, 0);
+  const loc = pointLocator(datum, 0);
+  if (loc == null) return null
+  const [x0,y] = loc;
   const [x1,y1] = pointLocator(datum, 2);
 
   let dx = x1-x0-(strokeWidth/2);

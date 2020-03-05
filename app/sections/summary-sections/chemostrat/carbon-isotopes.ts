@@ -94,7 +94,7 @@ class IsotopesColumnInner extends Component {
     };
   }
   render() {
-    const {padding, label} = this.props;
+    const {padding, label, system} = this.props;
     const {width: innerWidth} = this.context;
     const {left, top, right, bottom} = padding;
 
@@ -110,8 +110,9 @@ class IsotopesColumnInner extends Component {
           paddingRight: padding.right,
           paddingBottom: padding.bottom
         }, [
-          this.renderScale(),
+          //this.renderScale(),
           this.renderAxisLines(),
+          h(MinimalColumnScale, {system}),
           this.renderData()
         ])
       ])
@@ -154,8 +155,14 @@ class IsotopesColumnInner extends Component {
     const {system, corrected, isotopes} = this.props;
     if (isotopes == null) { return null; }
 
-    const allIsotopes = Array.from(isotopes).filter(([k,v]) => !['K','W1','L'].includes(k));
-    return h(IsotopesDataArea, {system, corrected}, allIsotopes.map(([key, values], i)=> {
+    const allIsotopes = Array.from(isotopes).filter(([k,v]) => {
+      return !['K','W1','L'].includes(k)
+    });
+    return h(IsotopesDataArea, {
+      system,
+      corrected,
+      clipY: true
+    }, allIsotopes.map(([key, values], i)=> {
       let stroke;
       const topDatum = values[values.length-1];
       //[x,y] = @locatePoint values[values.length-1]
@@ -203,18 +210,31 @@ const partialScale = (scale, domain) => scale.copy()
   .range(domain.map(scale));
 
 const MinimalColumnScale = function(props){
-  const {system} = props;
-  const {xScale, pixelHeight} = useContext(ColumnLayoutContext);
+  const {system, ...rest} = props;
+  const {xScale, pixelHeight, width} = useContext(ColumnLayoutContext);
   const label = system === 'delta13c' ? 'δ¹³C' : 'δ¹⁸O';
 
+  let {tickValues} = rest
+  if (tickValues == null) {
+    tickValues = xScale.ticks()
+  }
+
   return h('g.scale.isotope-scale-axis', [
-    h(ScaleLine, {value: 0, stroke: '#ddd'}),
-    h(ScaleLine, {value: -8, stroke: '#ddd', strokeDasharray: '2 6'}),
+    h('g.scale-lines', tickValues.map(value => {
+      const strokeDasharray = value == 0 ? null : '2 6'
+      return h(ScaleLine, {value, stroke: '#ddd', strokeDasharray})
+    })),
+    h("rect.underlay", {
+      x: 0,
+      y: pixelHeight,
+      width,
+      height: 30
+    }),
     h(AxisBottom, {
       scale: xScale,
       rangePadding: -4,
       tickLength: 3,
-      tickValues: [-8,0],
+      ...rest,
       top: pixelHeight,
       tickLabelProps(tickValue, i){
         // Compensate for negative sign
@@ -271,7 +291,7 @@ class MinimalIsotopesColumnInner extends Component {
     const stroke = system === 'delta13c' ? 'dodgerblue' : 'red';
 
     return h('g.isotopes-column', {transform}, [
-      h(MinimalColumnScale, {system}),
+      h(MinimalColumnScale, {system, tickValues: [-10, -5, 0]}),
       h(IsotopesDataArea, {
         system,
         correctIsotopeRatios,
@@ -290,7 +310,7 @@ class MinimalIsotopesColumnInner extends Component {
           values: isotopes,
           stroke
         })
-      ])
+      ]),
     ]);
   }
 }
@@ -312,7 +332,7 @@ IsotopesColumn.propTypes = {
 
 IsotopesColumn.defaultProps = {
   domain: [-14, 6],
-  width: 100,
+  width: 120,
   nTicks: 6
 };
 

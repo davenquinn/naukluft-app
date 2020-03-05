@@ -6,6 +6,7 @@ import {SectionDataProvider} from '~/sections/data-providers';
 import {GeneralizedSections} from '../main'
 import {SettingsProvider} from "@macrostrat/column-components";
 import {SectionSurfacesProvider} from '~/sections/providers';
+import {Legend} from './legend'
 
 import "../../summary-sections/__static-figure/fonts.css"
 import "./main.styl"
@@ -23,13 +24,20 @@ const StaticSectionSettings = C(SettingsProvider, {
   interactive: false
 })
 
+const Inner = ()=> {
+  return h('div', [
+    h(GeneralizedSections),
+    h(Legend)
+  ])
+}
+
 const Figure = compose(
   PlatformProvider,
   SectionDataProvider,
   SectionSurfacesProvider,
   StaticSectionSettings,
   'div.page.generalized-sections-static',
-  GeneralizedSections
+  Inner
 )
 
 

@@ -41,8 +41,8 @@ const ColumnMain = function() {
  return h(c, {width}, [
    h.if(showFacies)(FaciesColumnInner),
    h.if(showFaciesTracts)(FaciesTractIntervals),
-   h(CoveredOverlay),
-   h.if(showLithology)(SimplifiedLithologyColumn)
+   h.if(showLithology)(SimplifiedLithologyColumn),
+   h(CoveredOverlay)
  ])
 }
 
