@@ -10,6 +10,7 @@ import {
   GrainsizeLayoutProvider,
   useSettings,
   LithologyColumn,
+  TriangleBars,
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner,
@@ -18,7 +19,6 @@ import {
 } from "@macrostrat/column-components";
 import {useSection} from '~/sections/data-providers';
 import {ColumnImages} from "../single-section/images";
-import {ManagedNotesColumn} from "../single-section/notes";
 import {ManagedSymbolColumn} from "../components";
 import {GrainsizeAxis} from './grainsize-axis';
 
@@ -53,7 +53,7 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   } = section
 
   let padding = extractPadding(props)
-  padding.paddingLeft += 40
+  padding.paddingLeft += 54
 
   const showFloodingSurfaces = true
 
@@ -61,7 +61,6 @@ const SectionComponent = (props: SectionProps & Padding)=>{
   const ticks = height/5;
 
   let lithologyLeftMargin = 0;
-  if (showFaciesTracts) lithologyLeftMargin += lithologyWidth;
 
   const columnLeftMargin = lithologyLeftMargin + lithologyWidth;
   const pixelsPerMeter = 15
@@ -90,6 +89,12 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                 innerWidth,
                 ...padding
               }, [
+                h(TriangleBars, {
+                  offsetLeft: -54,
+                  lineWidth: 20,
+                  minOrder: 2,
+                  maxOrder: 2
+                }),
                 h('g', {transform: `translate(${lithologyLeftMargin})`}, [
                   h(LithologyColumn, {width: lithologyWidth}, [
                     h.if(showFacies)(FaciesColumnInner),
@@ -104,14 +109,16 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                   }, [
                     h(FloodingSurface, {lineWidth: 20, offsetLeft: -60}),
                     h(GrainsizeAxis),
-                    h(ManagedSymbolColumn, {id, left: 50}),
-                    h.if(showNotes)(ManagedNotesColumn, {
-                      visible: true,
-                      id,
-                      width: props.logWidth,
-                      transform: `translate(${props.innerWidth})`
-                    })
+                    h(ManagedSymbolColumn, {id, left: 50})
                   ])
+                ]),
+                h("text.axis-label", {
+                  transform: `translate(-24 ${height*pixelsPerMeter/2}) rotate(-90)`,
+                  textAnchor: 'middle'
+                }, [
+                  h('tspan.title', `Section ${id}`),
+                  " ",
+                  h('tspan.unit', `(m)`),
                 ]),
                 h(ColumnAxis, {ticks}),
               ])
@@ -135,13 +142,14 @@ SectionComponent.defaultProps = {
   useRelativePositioning: true,
   visible: true,
   trackVisibility: true,
-  innerWidth: 300,
+  innerWidth: 260,
   offsetTop: null,
   scrollToHeight: null,
   lithologyWidth: 40,
   logWidth: 450,
   containerWidth: 1000,
   padding: 10,
+  paddingBottom: 20
 };
 
 export {SectionComponent};

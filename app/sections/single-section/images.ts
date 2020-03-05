@@ -40,8 +40,11 @@ const ColumnImages = function(props){
 
   //const pixelOffset = offsetTop
 
+  const top = offsetTop*externalScaleFactor
+  const bottom = top+height*externalScaleFactor
+
   const styleInner = {
-    marginTop: -offsetTop*externalScaleFactor,
+    marginTop: -top,
     height: imageHeight*zs
   }
 
@@ -53,15 +56,20 @@ const ColumnImages = function(props){
     }
   }
 
+  const imHeight = 427*zs
+
   return h("div.image-container", {style}, [
     h("div.images", {style: styleInner}, imageFiles.map((im, i) => {
+      const pos = imHeight*i
+      if (pos < top-imHeight) return null
+      if (pos > bottom) return null
       return h("img", {
         src: getSrc(im),
         width: im.width*zs,
-        height: im.height*zs,
+        height: imHeight,
         style: {
           position: 'absolute',
-          top: (427*i)*zs,
+          top: pos,
           left: 0
         }
       })

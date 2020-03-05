@@ -1,5 +1,8 @@
 @require "~@macrostrat/column-components/dist/column-components.css";
 
+*
+  font-family Montserrat, sans-serif
+
 div.bottom-row
   display flex
   flex-direction row
@@ -16,9 +19,9 @@ div.sequence
   display flex
   flex-direction row
   h2
-    margin-top 0
-    margin-right 0.5em
-  margin-right 0.5em
+    margin-top 0.2em
+    margin-right 0em
+  margin-right -1em
 
 /// Extra styles below this point
 
@@ -48,7 +51,7 @@ div.section-column
     position: absolute
 
 text
-  font-family: 'Helvetica Neue'
+  font-family: 'Montserrat'
   font-size: 10
 
 div.images
@@ -60,3 +63,9 @@ div.images
     transform: rotate(-90deg) translate(8px,-12px)
     font-weight: 400
   //transform: rotate(90deg)
+
+.axis-label
+  font-size 14px
+  font-weight 500
+  .unit
+    font-weight 400

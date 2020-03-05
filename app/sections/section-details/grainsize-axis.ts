@@ -1,8 +1,7 @@
-import {useEffect, useContext, useRef} from "react";
+import {useContext, useRef} from "react";
 import h from "react-hyperscript";
-import {select} from "d3-selection";
-import {axisBottom} from 'd3-axis';
 import {ColumnLayoutContext} from '@macrostrat/column-components/dist/esm/context/layout'
+import {AxisBottom} from '@vx/axis';
 
 const GrainsizeAxis = (props)=>{
   const ref = useRef();
@@ -11,14 +10,19 @@ const GrainsizeAxis = (props)=>{
     throw "GrainsizeFrame must be a child of a GrainsizeScaleProvider";
   }
 
-  const createAxis = ()=>{
-    const ax = axisBottom(gs)
-    select(ref.current).call(ax)
-  }
+  const majorTicks = ['ms', 'f', 'c ', 'p']
 
-  useEffect(createAxis, [ref])
-
-  return h('g.axis.grainsize-axis', {transform: `translate(0 ${pixelHeight})`})
+  return h('g.axis.grainsize-axis', {
+    transform: `translate(0 ${pixelHeight})`
+  }, [
+    h(AxisBottom, {
+      scale: gs,
+      tickLength: 4,
+      tickFormat(t) {
+        return majorTicks.includes(t) ? t : ""
+      }
+    })
+  ])
 }
 
 export {GrainsizeAxis}
