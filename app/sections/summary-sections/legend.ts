@@ -36,7 +36,7 @@ const FaciesLegend = (props)=>{
     ]),
     h('div.section', [
       h('h4', 'Carbonate'),
-      h(Facies, {id: "knobbly-stromatolites"}, "Stromatolite-colonized reworking surface*"),
+      h(Facies, {id: "knobbly-stromatolites"}, "Stromatolite-colonized reworking surface"),
       h(Facies, {id: "carbonate-mudstone"}),
       h(Facies, {id: "intraclast-grainstone"}),
       h(Facies, {id: "hcs-grainstone"}, "Cross-stratified grainstone"),

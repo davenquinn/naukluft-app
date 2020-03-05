@@ -23,7 +23,7 @@ const GeneralizedAxis = function(props){
 
  return h(ColumnAxis, {
    ticks: (height*zoom),
-   tickSize: 2,
+   tickSize: 3,
    showLabel(d){ return false }
  })
 }
@@ -52,7 +52,8 @@ const SectionBreak = (props: SectionBreakProps)=>{
   }, [ref])
 
   const textHeight = rect?.height ?? 0
-  const showPrefix = (textHeight < height-2*textPadding)
+  const textWidth = rect?.width ?? 0
+  const showPrefix = (textHeight < height-2*textPadding && textWidth < 30)
 
 
   return h("div.section-break", {

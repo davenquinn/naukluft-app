@@ -165,7 +165,7 @@ const GeneralizedDivisionsProvider = (props)=>{
 
       }
 
-      if (range.section == 'G') {
+      if (['G','A'].includes(range.section)) {
         bottomIx = 1 // A hack; we need to find a better way to identify this division
       }
 
