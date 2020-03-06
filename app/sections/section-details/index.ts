@@ -32,6 +32,35 @@ const Section = function(props){
 
 const SectionPanel = (props)=>{
   return h("div.section-panel", [
+    h("div.sequence.s3", [
+      h(Section, {
+        id: 'G',
+        sectionID: "J",
+        range: [472,492]
+      }),
+      h(Section, {
+        id: 'H',
+        sectionID: "J",
+        range: [642,662]
+      })
+    ]),
+    h("div.sequence.s2", [
+      h(Section, {
+        id: 'D',
+        sectionID: "F",
+        range: [2,22]
+      }),
+      h(Section, {
+        id: 'E',
+        sectionID: "J",
+        range: [298,318]
+      }),
+      h(Section, {
+        id: 'F',
+        sectionID: "J",
+        range: [322.5,342.5]
+      })
+    ]),
     h("div.sequence.s1", [
       h(Section, {
         id: 'A',
@@ -48,35 +77,6 @@ const SectionPanel = (props)=>{
         sectionID: "J",
         range: [145,160]
       }),
-    ]),
-    h("div.sequence.s2", [
-      h(Section, {
-        id: 'D',
-        sectionID: "F",
-        range: [2,22]
-      }),
-      h(Section, {
-        id: 'E',
-        sectionID: "J",
-        range: [298,318]
-      }),
-      h(Section, {
-        id: 'F',
-        sectionID: "J",
-        range: [322,342]
-      })
-    ]),
-    h("div.sequence.s3", [
-      h(Section, {
-        id: 'G',
-        sectionID: "J",
-        range: [472,492]
-      }),
-      h(Section, {
-        id: 'H',
-        sectionID: "J",
-        range: [642,662]
-      })
     ]),
   ])
 }

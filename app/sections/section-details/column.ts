@@ -97,7 +97,7 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                 }),
                 h('g', {transform: `translate(${lithologyLeftMargin})`}, [
                   h(LithologyColumn, {width: lithologyWidth}, [
-                    h.if(showFacies)(FaciesColumnInner),
+                    h(FaciesColumnInner),
                     h(CoveredOverlay),
                     h(LithologyColumnInner)
                   ])
@@ -107,9 +107,9 @@ const SectionComponent = (props: SectionProps & Padding)=>{
                     width: grainsizeWidth,
                     grainsizeScaleStart
                   }, [
-                    h(FloodingSurface, {lineWidth: 20, offsetLeft: -60}),
+                    h.if(showFloodingSurfaces)(FloodingSurface, {lineWidth: 20, offsetLeft: -60}),
                     h(GrainsizeAxis),
-                    h(ManagedSymbolColumn, {id, left: 50})
+                    h(ManagedSymbolColumn, {id, left: 110})
                   ])
                 ]),
                 h("text.axis-label", {
