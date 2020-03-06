@@ -24,6 +24,7 @@ const RegionalSectionsContainer = compose(
 
 const SectionPane = function(props){
   const {divisions} = useContext(ColumnDivisionsContext)
+  const {children} = props
   const sz = useCanvasSize();
   const divisionMap = group(divisions, s => s.section_id);
   const sections = Array.from(divisionMap, function([key,divisions]){
@@ -69,12 +70,13 @@ const SectionPane = function(props){
       },
       sections,
       topSurface: 1
-    })
+    }),
+    children
   ]);
 };
 
 const RegionalSections = props => h(RegionalSectionsContainer, [
-  h(SectionPane)
+  h(SectionPane, props)
 ]);
 
 export {RegionalSections};

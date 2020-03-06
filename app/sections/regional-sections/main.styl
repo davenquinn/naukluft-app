@@ -10,6 +10,8 @@
   .section-column
     z-index: 10
     flex-grow 1
+    svg
+      margin-left -20px !important
     &:first-child
       flex-grow 0.2
       margin-left: 10em
@@ -20,6 +22,9 @@
 
   .polygons path
     opacity: 0.99
+
+  g.triangle-bars path
+    fill #eee !important
 
 .sequence
   position relative

@@ -3,7 +3,8 @@ import T from 'prop-types';
 import {
   ColumnSVG,
   ColumnBox,
-  ColumnProvider
+  ColumnProvider,
+  TriangleBars
 } from '@macrostrat/column-components';
 import {
   ColumnTracker
@@ -54,7 +55,7 @@ const SVGSectionInner = function(props){
   }
   const height = range[1]-range[0];
 
-  divisions = divisions.filter(d => (range[0] <= d.top) && (d.bottom <= range[1]));
+  //divisions = divisions.filter(d => (range[0] <= d.top) && (d.bottom <= range[1]));
 
   // Expand SVG past bounds of section
 
@@ -80,7 +81,7 @@ const SVGSectionInner = function(props){
   }, [
     h(ColumnBox, {
       offsetTop,
-      width: 40,
+      width: 50,
       absolutePosition: false
     }, [
       h(ColumnTracker, {
@@ -89,8 +90,9 @@ const SVGSectionInner = function(props){
         padding: 5
       }, [
         h(ColumnSVG, {
-          width: 30,
-          padding: 5
+          innerWidth: 20,
+          padding: 5,
+          paddingLeft: 25
         }, [
           h(FillPatternDefs, {prefix: domID}),
           h(LithologyColumn, {width: 20}, [
@@ -105,10 +107,11 @@ const SVGSectionInner = function(props){
                 return 'black'
               },
               ...props
-            })
+            }),
             //h(FaciesTractIntervals)
             //h CarbonateDivisions, {minimumHeight: 2}
-          ])
+          ]),
+          h(TriangleBars, {minOrder: 1, maxOrder: 1, offsetLeft: -18, lineWidth: 15})
         ]),
         children
       ])
