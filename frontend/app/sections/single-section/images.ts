@@ -56,15 +56,17 @@ const ColumnImages = function(props){
     }
   }
 
-  const imHeight = 427*zs
-
+  const imHeight = 427 * zs
+  
   return h("div.image-container", {style}, [
     h("div.images", {style: styleInner}, imageFiles.map((im, i) => {
-      const pos = imHeight*i
+      const pos = imHeight * i
+      const src = getSrc(im)
+      console.log(src)
       if (pos < top-imHeight) return null
       if (pos > bottom) return null
       return h("img", {
-        src: getSrc(im),
+        src,
         width: im.width*zs,
         height: imHeight,
         style: {
