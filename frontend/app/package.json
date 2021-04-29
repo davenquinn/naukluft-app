@@ -77,7 +77,6 @@
     "replace-ext": "^1.0.0",
     "request-promise": "^4.2.2",
     "semantic-ui-react": "^0.70.0",
-    "stratigraphic-column": "file:../../deps/node/stratigraphic-column",
     "stylus": "^0.54.5",
     "ui-box": "^3.0.2",
     "use-async-effect": "^2.2.1",
