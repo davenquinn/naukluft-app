@@ -1,5 +1,5 @@
 import {getJSON} from "../util"
-import {join} from "path"
+import {join, resolve} from "path"
 import useAsyncEffect from 'use-async-effect'
 import {createContext, useContext, useState} from "react"
 import {query, useQuery} from '~/db'
@@ -21,8 +21,7 @@ import "./main.styl"
 
 const sectionFilename = function(fn){
   if (PLATFORM === ELECTRON) {
-    const dataDir = process.env.NAUKLUFT_DATA_DIR
-    return join(dataDir, "Sections", "Digitized Images", "web-images", fn)
+    return resolve(__dirname, "..", "..", "..", "data", "column-images", fn);
   } else {
     return join(BASE_URL, 'section-images', fn)
   }
