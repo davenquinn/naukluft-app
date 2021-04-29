@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+# Ensure that the database container is started
+docker compose up --build -d db
+
+# Dump files to new database from local database
+pg_dump --no-privileges --no-owner -C -h localhost -U Daven Naukluft \
+| psql -h localhost -p 54321 -U postgres Naukluft
