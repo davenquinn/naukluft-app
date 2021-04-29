@@ -1,30 +1,34 @@
 .section-page.summary-sections
   .location-group
-    position relative
-    &#Ubisis
-      h1
-        top 560px
     &#Tsams
-      h1
-        top 370px
+      margin-right 0
+    position relative
     h1
       position absolute
-      top -20px
-      left 0
       font-size 2em
       color #888
+      background-color white
+      padding-left 3px
+      padding-right 8px
 
+  .section-header h2
+    margin-top 0
+    position absolute
+    left: 4px
+    top: 6px
+    text-align right
 
-@media print
-  div.cursor
-    display: none
-  ul.controls, #settings
-    display: none
-  #section-page-inner
-    transform: scale(5)
-    transform-origin: top left
-  #section-pane, #panel-container
-    overflow: auto !important
+  .section-header.subtle h2
+    font-weight: 400
+    font-size 1em
+
+.section-outer
+  position relative
+
+:local(.section-children)
+  position absolute
+  top 0
+  left 0
 
 :global
   div.section-page#generalized-sections svg
@@ -34,7 +38,6 @@
     display flex
     flex-direction row
 
-
   div.edit-overlay
     div.cursor
       position absolute
@@ -42,6 +45,9 @@
       z-index 20
 
   #summary-sections-legend
+    position absolute
+    left 0
+    bottom 0
     h1, h2, h3
       line-height inherit
     .legend-inner
@@ -50,8 +56,7 @@
       &>div
         flex 1
       &>div
-        padding 1em
-    margin 2em 4em
+        margin-right 1em
     margin-top 0
     width 50em
     z-index 12
@@ -97,6 +102,15 @@
           display block
           margin-left 1em
 
+    p.explanation
+      display flex
+      flex-direction row
+      span.key
+        font-size 1.5em
+      span.description
+        flex-grow 1
+        margin-left 1em
+
 .location-group
   position relative
   &.chemostratigraphy
@@ -106,16 +120,5 @@
   margin-top -10px
   .section-header
     height 30px
-
-.section-header h2
-  margin-top 0
-  position absolute
-  left: 4px
-  top: 6px
-  text-align right
-
-.section-header.subtle h2
-  font-weight: 400
-  font-size 1em
 
 @require "./chemostrat/main.styl"

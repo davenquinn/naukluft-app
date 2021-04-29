@@ -1,1 +1,28 @@
-@require "../../bundled-deps/column-components/src/editor/main.styl"
+@require "../../bundledDeps/column-components/src/editor/main.styl"
+
+:local
+  .tab-panel
+    min-height 150px
+  .meta-controls
+    display flex
+    flex-direction row
+    &>*
+      margin-right 10px
+    margin-right -10px
+    margin-bottom 10px
+    :global(.editor-title)
+      flex-grow 1
+
+  .clearable-slider
+    .inner
+      flex-grow 1
+      margin-right 1.5em
+    button
+      height 24px
+    display flex
+    flex-direction row
+
+
+:global
+  .bp3-portal .bp3-overlay
+    pointer-events: none

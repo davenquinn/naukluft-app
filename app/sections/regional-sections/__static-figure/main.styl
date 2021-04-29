@@ -1,0 +1,40 @@
+@require "~@macrostrat/column-components/dist/column-components.css";
+
+*
+  font-family "Montserrat", sans-serif
+
+.legend
+  .sequence-legend
+    width 30em
+    padding 1em
+    position absolute
+    &.s1
+      bottom 0
+      left 0
+    &.s2
+      top 48%
+      left 0
+    &.s3
+      top -1em
+      right 0
+  .header h3
+    font-size 14px
+  .legend-body
+    columns: 2
+  .facies-tract
+    display flex
+    flex-direction row
+    margin-bottom 0.2em
+    font-size 14px
+    svg
+      margin-right 1em
+    p
+      margin-top 0
+      margin-bottom 0.2em
+      &.lith
+        font-weight 400
+        font-style italic
+    break-inside: avoid;
+
+.section-pane-static
+  padding-bottom 2em

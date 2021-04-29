@@ -1,79 +1,45 @@
 const path = require("path");
-const findRoot = require("find-root");
+const merge = require('webpack-merge');
+const {IgnorePlugin} = require('webpack');
+const {
+  coffeeRule,
+  sqlRule,
+  stylusRule,
+  resolve
+} = require('./loaders');
+const {version} = require("electron/package.json");
 
-const rootImportOpts = {
-  root: (sourcePath) => {
-    // General transformation attempted but doesn't seem to work
-    //return findRoot(sourcePath)
-    return path.join(__dirname, "app","bundled-deps", "column-components");
-  },
-  rootPathPrefix: '~/'
-};
+const modifyConfig = (cfg)=>{
 
-const babelLoader = {
-  loader: 'babel-loader',
-  options: {
-    presets: ['@babel/preset-env'],
-    // plugins: [
-    //   ["babel-plugin-root-import", rootImportOpts]
-    // ]
-  }
-};
+  cfg.module.rules = [
+    ...cfg.module.rules,
+    coffeeRule,
+    sqlRule,
+    stylusRule
+  ];
 
-const coffeeLoader = {
-  loader: 'coffee-loader',
-  options: {sourceMap: true}
-};
+  cfg.resolve = merge(cfg.resolve, resolve);
 
-const cssLoader = {
-  loader: 'css-loader',
-  options: {
-    modules: {
-      mode: 'global',
-      localIdentName: '[name]__[local]___[hash:base64:5]'
-    }
-  }
-};
+  // Modify javascript rule for typescript
+  jsRule = cfg.module.rules[0]
+  jsRule.test = /\.(js|jsx|ts|tsx)$/
+  jsRule.use.options.presets = [
+    ["@babel/preset-env", {modules: false, targets: {electron: version}}],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
 
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.coffee$/,
-        use: [babelLoader, coffeeLoader],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.styl$/,
-        use: ["style-loader", cssLoader, "stylus-loader"],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", cssLoader],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.sql$/,
-        use: {
-          loader: path.resolve("./sql-loader.js")
-        },
-        exclude: /node_modules/
-      }
+  jsRule.use.options.plugins = [
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-class-properties"
+  ]
 
-    ]
-  },
-  resolve: {
-    extensions: ['.js', '.coffee'],
-    alias: {
-      app: path.resolve(__dirname, 'app/'),
-      react: path.resolve(__dirname,'./app/node_modules/react'),
-      /*
-      This is a pretty awful hack to resolve tilde paths. It requires
-      that they exist only in the column-components package.
-      */
-      "#": path.resolve(__dirname, 'app', 'bundled-deps', 'column-components', 'src'),
-      "~": path.resolve(__dirname, 'app')
-    }
-  }
+  console.log(JSON.stringify(cfg, null, 4));
+  console.log(JSON.stringify(cfg.plugins[2], null, 4));
+
+  return cfg
 }
+
+
+module.exports = modifyConfig;

@@ -7,10 +7,46 @@
   .section-column
     position: relative
     flex-grow 1
+    margin-right 500px
+    &:last-child
+      margin-right 4em
 
-.section-container
-  margin-right 500px
 
-.Onis
-  .section-container
+  .section-column.Onis
     margin-right 200px
+
+  width=1.5px
+  .generalized-breaks
+    position absolute
+    top 0
+    left -24px
+    // Not sure why we have to do this pixel transform
+    transform translate(0,-0.5px)
+    width 24px
+    //border-top width solid black
+    .section-break
+      // Make sure we have pixel-perfect borders
+      padding-left 6px
+      &:last-child
+        border-top width solid black
+        margin-top 1px
+        &:first-child
+          margin-bottom 1px
+      border-bottom width solid black
+      // Make text vertical
+      writing-mode vertical-lr
+      transform: rotate(180deg)
+      text-align: center
+    .section-break-title
+      font-weight 600
+      padding-bottom 0.5em
+
+:global
+  svg.section
+    g.axis .tick line
+      stroke-width 1.5px
+
+  .generalized-sections .location-group.chemostratigraphy
+    margin-left 0
+    margin-right -3em
+    margin-top 7px

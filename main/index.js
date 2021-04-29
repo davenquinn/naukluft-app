@@ -5,6 +5,8 @@ import * as path from 'path'
 import { format as formatUrl } from 'url'
 import installExtension, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 
+// We aren't trying to be super secure
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -14,7 +16,10 @@ let mainWindow
 async function createMainWindow() {
   await installExtension(REACT_DEVELOPER_TOOLS);
 
-  const window = new BrowserWindow({webPreferences: {webSecurity: false}})
+  const window = new BrowserWindow({webPreferences: {
+    webSecurity: false,
+    nodeIntegration: true
+  }})
 
   if (isDevelopment) {
     window.webContents.openDevTools()
