@@ -4,7 +4,8 @@ import {
   ColumnSVG,
   ColumnBox,
   ColumnProvider,
-  TriangleBars
+  TriangleBars,
+  FaciesIntervals
 } from '@macrostrat/column-components';
 import {
   ColumnTracker
@@ -108,8 +109,8 @@ const SVGSectionInner = function(props){
               },
               ...props
             }),
-            //h(FaciesTractIntervals)
-            //h CarbonateDivisions, {minimumHeight: 2}
+            h(FaciesIntervals)
+            //h(CarbonateDivisions, {minimumHeight: 2})
           ]),
           h(TriangleBars, {minOrder: 1, maxOrder: 1, offsetLeft: -18, lineWidth: 15})
         ]),
