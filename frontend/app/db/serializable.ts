@@ -7,7 +7,7 @@
  */
 import {join, dirname, resolve, basename} from "path";
 import {readFileSync} from 'fs';
-import {db, storedProcedure} from './backend';
+import {db, storedProcedure, pgp} from './backend';
 import {getUID, getHash} from "./util";
 
 var queryLibrary = [];

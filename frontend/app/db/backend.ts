@@ -1,14 +1,7 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import {resolve, join} from "path";
-import PGPromise from 'pg-promise';
+const PGPromise = require('pg-promise');
 import Promise from "bluebird";
-import {readFileSync} from 'fs';
+const {readFileSync} = require('fs');
 
 const opts = {
   promiseLib: Promise,
@@ -33,5 +26,5 @@ const storedProcedure = function(fileName){
 };
 
 export {
-  db, storedProcedure, helpers
+  db, storedProcedure, helpers, pgp
 };

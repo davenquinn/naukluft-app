@@ -1,6 +1,6 @@
 all:
 	npm --prefix frontend install --legacy-peer-deps
-	make database && PROJECT_DIR=/Users/Daven/Projects/Naukluft npm --prefix frontend run start
+	make database && PROJECT_DIR=/Users/Daven/Projects/Naukluft npm --prefix frontend run watch:web
 
 # Create and run the database
 database:

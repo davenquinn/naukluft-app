@@ -11,7 +11,8 @@ import {getJSON} from "../util";
 import {useState} from 'react';
 import useAsyncEffect from 'use-async-effect';
 
-const {db, storedProcedure} = require('./backend')
+console.log(global.PLATFORM)
+
 
 if (global.PLATFORM === global.ELECTRON) {
   const {PROJECT_DIR} = process.env;
@@ -21,6 +22,16 @@ if (global.PLATFORM === global.ELECTRON) {
   QUERY_DIRECTORY = join(PROJECT_DIR,"versioned","Products","webroot","queries");
 } else {
   QUERY_DIRECTORY = join(BASE_URL,"queries");
+}
+
+let db, storedProcedure
+if (global.PLATFORM === global.ELECTRON) {
+  const bak = require('./backend')
+  db = bak.db
+  storedProcedure = bak.storedProcedure
+} else {
+  db = null
+  storedProcedure = null
 }
 
 const __queryList = null;

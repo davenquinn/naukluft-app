@@ -1,5 +1,5 @@
-#!/usr/bin/env node -r esm
-require('typescript-require');
+#!/usr/bin/env node
+require('ts-node').register({ transpileOnly: true });
 const {readFileSync, writeFileSync} = require('fs')
 const {join, resolve, relative} = require('path')
 const {sync: mkdirp} = require('mkdirp')

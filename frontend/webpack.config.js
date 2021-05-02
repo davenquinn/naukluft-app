@@ -85,7 +85,7 @@ module.exports = {
   },
   resolve,
   entry: {
-    'assets/web': "./app/web-index.coffee",
+    'assets/web': "./app/web-index.ts",
   },
   output: {
     path: webRoot,

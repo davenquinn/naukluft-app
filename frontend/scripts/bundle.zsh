@@ -1,7 +1,8 @@
 dist="dist-web"
 
+repo_dir=$(git rev-parse --show-toplevel)
 # Copy web images
-images="$NAUKLUFT_DATA_DIR/Sections/Digitized Images/web-images"
+images="$repo_dir/data/column-images"
 rsync -av --delete "$images/" "$dist/section-images/"
 
 # Copy geologic patterns and symbols
