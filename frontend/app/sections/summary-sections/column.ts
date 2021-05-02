@@ -5,11 +5,11 @@ import {useHistory} from "react-router-dom"
 import {EditorContext} from './editor'
 
 import {GrainsizeLayoutProvider, ColumnSVG, ColumnBox} from '@macrostrat/column-components'
-import {ColumnAxis} from "@macrostrat/column-components/dist/esm/axis"
+import {ColumnAxis} from "@macrostrat/column-components"
 
 import {ManagedSymbolColumn} from "../components"
-import {FloodingSurface, TriangleBars} from "@macrostrat/column-components/dist/esm/flooding-surface"
-import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components/dist/esm/lithology"
+import {FloodingSurface, TriangleBars} from "@macrostrat/column-components"
+import {LithologyColumn, GeneralizedSectionColumn} from "@macrostrat/column-components"
 import {SequenceStratContext} from "../sequence-strat-context"
 import {SummaryColumnProvider} from './data-provider'
 import {ColumnContext} from '@macrostrat/column-components'
@@ -17,8 +17,8 @@ import {
   SimplifiedLithologyColumn,
   CoveredOverlay,
   FaciesColumnInner
-} from '@macrostrat/column-components/dist/esm/lithology'
-import {DivisionEditOverlay} from '@macrostrat/column-components/dist/esm/edit-overlay'
+} from '@macrostrat/column-components'
+import {DivisionEditOverlay} from '@macrostrat/column-components'
 
 import {ColumnTracker} from '../components/link-overlay'
 import {PlatformContext} from "../../platform"
@@ -92,13 +92,13 @@ const EditOverlay = function(props){
 }
 
 const ColumnSummaryAxis = function(props){
- const {height, zoom, scale, pixelsPerMeter} = useContext(ColumnContext)
+ const { height, zoom, scale, pixelsPerMeter } = useContext(ColumnContext)
  const ratio = pixelsPerMeter*zoom
 
  // Keep labels from inhabiting the top few pixels (to make space for section labels)
  const topPadding = 30
  const maxVal = scale.domain()[1]-(topPadding/ratio)
-
+  
  return h(ColumnAxis, {
    ticks: (height*zoom)/5,
    showLabel(d){ return d < maxVal }

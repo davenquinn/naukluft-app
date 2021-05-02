@@ -18,7 +18,7 @@ import {PlatformContext, Platform} from '~/platform';
 import {
   NoteEditorContext,
   NotesColumn
-} from "@macrostrat/column-components/dist/esm/notes";
+} from "@macrostrat/column-components";
 
 // import {
 //   PhotoOverlay
