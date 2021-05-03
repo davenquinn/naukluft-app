@@ -16,7 +16,7 @@ import { NoteEditorContext, NotesColumn } from "@macrostrat/column-components";
 
 // import {
 //   PhotoOverlay
-// } from "@macrostrat/column-components/dist/esm/photos"
+// } from "@macrostrat/column-components/photos"
 //
 import { db, query, storedProcedure } from "~/db";
 

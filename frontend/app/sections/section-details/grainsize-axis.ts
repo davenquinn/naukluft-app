@@ -1,6 +1,6 @@
 import { useContext, useRef } from "react";
 import h from "react-hyperscript";
-import { ColumnLayoutContext } from "@macrostrat/column-components/dist/esm/context/layout";
+import { ColumnLayoutContext } from "@macrostrat/column-components";
 import { AxisBottom } from "@vx/axis";
 
 const GrainsizeAxis = (props) => {

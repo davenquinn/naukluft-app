@@ -6,8 +6,8 @@ import update from "immutability-helper";
 import {
   AssetPathProvider,
   AssetPathContext,
-} from "@macrostrat/column-components/dist/esm/context";
-import { GeologicPatternProvider } from "@macrostrat/column-components";
+  GeologicPatternProvider,
+} from "@macrostrat/column-components";
 //# Set whether we are on the backend or frontend
 
 global.ELECTRON = "electron";

@@ -1,14 +1,5 @@
-/*
- * decaffeinate suggestions:
- * DS001: Remove Babel/TypeScript constructor workaround
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-
 import { useContext } from "react";
-import { RaisedSelect } from "@macrostrat/column-components/dist/esm/editor";
+import { RaisedSelect } from "@macrostrat/column-components";
 import { ButtonGroup, Button } from "@blueprintjs/core";
 import { SectionSurfacesContext } from "~/sections/providers";
 import h from "react-hyperscript";

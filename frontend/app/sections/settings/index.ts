@@ -9,7 +9,7 @@ import h from "@macrostrat/hyper";
 import { CSSTransition } from "react-transition-group";
 import { Switch, RangeSlider, Button } from "@blueprintjs/core";
 import { PlatformContext } from "../../platform";
-import { PickerControl } from "@macrostrat/column-components/dist/esm/editor/picker-base";
+import { PickerControl } from "@macrostrat/column-components";
 import { SequenceStratContext } from "../sequence-strat-context";
 import { AppDrawer } from "~/components";
 import classNames from "classnames";

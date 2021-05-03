@@ -13,11 +13,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently npm:watch:column npm:watch:web",
     "figures": "cd app && figment --spec ./figure-spec.js",
-    "preinstall": "lerna bootstrap --hoist",
-    "postinstall": "npm --prefix app install"
+    "postinstall": "lerna bootstrap --hoist"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "app"
   ],
   "prettier": {},
   "electronWebpack": {
@@ -44,6 +44,8 @@
     "@babel/preset-typescript": "^7.8.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-root-import": "^6.4.1",
+    "browser-sync": "^2.26.14",
+    "browser-sync-webpack-plugin": "^2.3.0",
     "chalk": "^1.1.3",
     "coffee-loader": "^0.8.0",
     "coffeescript": "^2.5.0",

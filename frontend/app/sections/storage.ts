@@ -1,2 +1,2 @@
-import LocalStorage from "@macrostrat/column-components/dist/esm/util/storage";
+import LocalStorage from "@macrostrat/column-components";
 export default LocalStorage;
