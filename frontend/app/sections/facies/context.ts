@@ -4,33 +4,33 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {Component, createContext} from "react";
+import { Component, createContext } from "react";
 import h from "react-hyperscript";
-import {db, storedProcedure, query} from "../../db";
-import {FaciesContext} from '@macrostrat/column-components';
+import { db, storedProcedure, query } from "../../db";
+import { FaciesContext } from "@macrostrat/column-components";
 import setFaciesColorQuery from "./sql/set-facies-color.sql";
 import faciesTractsQuery from "./sql/facies-tracts.sql";
 import faciesQuery from "./sql/facies.sql";
 
 class FaciesProvider extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       facies: [],
       faciesTracts: [],
-      __colorMap: {}
+      __colorMap: {},
     };
     this.getFaciesColor = this.getFaciesColor.bind(this);
   }
 
-  getFaciesColor(id){
-    const {__colorMap} = this.state;
+  getFaciesColor(id) {
+    const { __colorMap } = this.state;
     return __colorMap[id] || null;
   }
 
-  setFaciesColor = async (id,color)=> {
+  setFaciesColor = async (id, color) => {
     const sql = storedProcedure(setFaciesColorQuery);
-    await db.none(sql, {id,color});
+    await db.none(sql, { id, color });
     return this.getFaciesData();
   };
 
@@ -41,12 +41,12 @@ class FaciesProvider extends Component {
       __colorMap[f.id] = f.color;
     }
 
-    return this.setState({facies, __colorMap});
+    return this.setState({ facies, __colorMap });
   };
 
   getFaciesTractData = async () => {
     const faciesTracts = await query(faciesTractsQuery);
-    return this.setState({faciesTracts});
+    return this.setState({ faciesTracts });
   };
 
   componentDidMount() {
@@ -55,18 +55,20 @@ class FaciesProvider extends Component {
   }
 
   render() {
-    const {facies, faciesTracts} = this.state;
-    const {children, ...rest} = this.props;
-    const procedures = (() => { let getFaciesColor, setFaciesColor;
-    return ({getFaciesColor, setFaciesColor} = this); })();
+    const { facies, faciesTracts } = this.state;
+    const { children, ...rest } = this.props;
+    const procedures = (() => {
+      let getFaciesColor, setFaciesColor;
+      return ({ getFaciesColor, setFaciesColor } = this);
+    })();
     const value = {
       facies,
       faciesTracts,
       ...procedures,
-      ...rest
+      ...rest,
     };
-    return h(FaciesContext.Provider, {value}, children);
+    return h(FaciesContext.Provider, { value }, children);
   }
 }
 
-export {FaciesContext, FaciesProvider};
+export { FaciesContext, FaciesProvider };

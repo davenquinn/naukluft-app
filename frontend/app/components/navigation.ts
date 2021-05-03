@@ -5,35 +5,35 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from "@macrostrat/hyper";
-import {useHistory} from "react-router";
-import {NavLink, BackLink} from "../nav";
-import {ButtonGroup, Button} from "@blueprintjs/core";
+import { useHistory } from "react-router";
+import { NavLink, BackLink } from "../nav";
+import { ButtonGroup, Button } from "@blueprintjs/core";
 import T from "prop-types";
-import {LinkButton} from '@macrostrat/ui-components';
+import { LinkButton } from "@macrostrat/ui-components";
 
-const BackButton = function() {
+const BackButton = function () {
   const history = useHistory();
   const onClick = () => history.goBack();
   return h(Button, {
-    icon: 'arrow-left',
+    icon: "arrow-left",
     size: 24,
     large: true,
-    onClick
+    onClick,
   });
 };
 
-const NavigationControl = function(props){
-  const {toggleSettings, children} = props;
-  return h(ButtonGroup, {className: 'controls'}, [
+const NavigationControl = function (props) {
+  const { toggleSettings, children } = props;
+  return h(ButtonGroup, { className: "controls" }, [
     h(BackButton),
-    h(LinkButton, {to: '/', icon: 'home', large: true}),
+    h(LinkButton, { to: "/", icon: "home", large: true }),
     h.if(toggleSettings != null)(Button, {
       onClick: toggleSettings,
-      icon: 'cog',
-      large: true
+      icon: "cog",
+      large: true,
     }),
-    children
+    children,
   ]);
 };
 
-export {BackButton, NavigationControl};
+export { BackButton, NavigationControl };

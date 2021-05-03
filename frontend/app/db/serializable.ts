@@ -5,19 +5,19 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {join, dirname, resolve, basename} from "path";
-import {readFileSync} from 'fs';
-import {db, storedProcedure, pgp} from './backend';
-import {getUID, getHash} from "./util";
+import { join, dirname, resolve, basename } from "path";
+import { readFileSync } from "fs";
+import { db, storedProcedure, pgp } from "./backend";
+import { getUID, getHash } from "./util";
 
 var queryLibrary = [];
 // Serialize queries based on query file and opts
 class SerializableQuery {
-  constructor(fileName, values=null, opts={}){
+  constructor(fileName, values = null, opts = {}) {
     this.fileName = fileName;
     this.values = values;
     const query = storedProcedure(this.fileName);
-    this.id = basename(this.fileName, '.sql');
+    this.id = basename(this.fileName, ".sql");
     this.sql = pgp.as.format(query, this.values);
     this.uid = getUID(this.id, this.values);
     this.hash = getHash(this.id, this.values);
@@ -28,7 +28,9 @@ class SerializableQuery {
     }
     queryLibrary.push(this);
   }
-  getData() { return db.query(this.sql); }
+  getData() {
+    return db.query(this.sql);
+  }
 }
 
 import q1 from "../lateral-variation/sql/boundary-heights.sql";
@@ -61,49 +63,49 @@ new SerializableQuery(allCarbonIsotopes);
 import carbonIsotopes from "../sections/sql/carbon-isotopes.sql";
 new SerializableQuery(carbonIsotopes);
 
-import photoQuery from '../sections/sql/photo.sql';
+import photoQuery from "../sections/sql/photo.sql";
 new SerializableQuery(photoQuery);
 
 // Section lithology
-import lithQuery from '../sections/lithology/lithology.sql';
+import lithQuery from "../sections/lithology/lithology.sql";
 new SerializableQuery(lithQuery);
-import ftQuery from '../sections/facies/sql/facies-tracts.sql';
+import ftQuery from "../sections/facies/sql/facies-tracts.sql";
 new SerializableQuery(ftQuery);
 
 // Generalized sections
-import generalizedSections from '../sections/sql/generalized-section.sql';
+import generalizedSections from "../sections/sql/generalized-section.sql";
 new SerializableQuery(generalizedSections);
 
-import symbols from '../sections/sql/symbols.sql';
+import symbols from "../sections/sql/symbols.sql";
 new SerializableQuery(symbols);
 
-
-
-import sq1 from '../sections/sql/flooding-surface.sql';
+import sq1 from "../sections/sql/flooding-surface.sql";
 //import sq2 from '../sections/sql/section-samples.sql'
-import sq4 from '../sections/sql/section-lithology.sql';
-import sq5 from '../sections/sql/log-notes.sql';
+import sq4 from "../sections/sql/section-lithology.sql";
+import sq5 from "../sections/sql/log-notes.sql";
 
-const allSectionQueries =  [sq1,sq4,sq5];
+const allSectionQueries = [sq1, sq4, sq5];
 
 let alreadyLoaded = false;
-const createSerializedQueries = function(sectionLabels){
+const createSerializedQueries = function (sectionLabels) {
   for (let sql of Array.from(allSectionQueries)) {
     for (let l of Array.from(sectionLabels)) {
-      new SerializableQuery(sql,[l]);
+      new SerializableQuery(sql, [l]);
     }
   }
-  return alreadyLoaded = true;
+  return (alreadyLoaded = true);
 };
 
-const serializableQueries = async function() {
+const serializableQueries = async function () {
   //# Return a list of serializable queries for writing
   // out to files
   const sections = await db.query(storedProcedure(sectionsQuery));
-  if (alreadyLoaded) { return; }
-  const sectionLabels = sections.map(d => d.section);
+  if (alreadyLoaded) {
+    return;
+  }
+  const sectionLabels = sections.map((d) => d.section);
   createSerializedQueries(sectionLabels);
   return queryLibrary;
 };
 
-export {serializableQueries};
+export { serializableQueries };

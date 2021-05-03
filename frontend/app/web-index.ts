@@ -1,3 +1,3 @@
-global.WEB_MODE=true;
+global.WEB_MODE = true;
 
-import "./index.ts"
+import "./index.ts";

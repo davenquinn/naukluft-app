@@ -15,7 +15,7 @@ const tectonicSectionOffsets = {
   G: 0,
   H: 378,
   I: 50,
-  J: -5
+  J: -5,
 };
 
 // A more stratigraphically focused set of section offsets
@@ -32,7 +32,7 @@ const sectionOffsets = {
   I: 30,
   J: -5,
   M: 180,
-  K: 530
+  K: 530,
 };
 
 const sectionIsotopeColors = {
@@ -47,27 +47,21 @@ const sectionIsotopeColors = {
   G: Colors.LIME4,
   H: Colors.FOREST2,
   I: Colors.ROSE4,
-  K: Colors.GRAY3
+  K: Colors.GRAY3,
 };
-
 
 const groupOffsets = {
   Tsams: 200,
   Onis: -20,
-  Ubisis: 310
+  Ubisis: 310,
 };
 
-const groupOrder = [
-  'Onis',
-  'Naukluft',
-  'Ubisis',
-  'Tsams',
-  'Büllsport'
-];
+const groupOrder = ["Onis", "Naukluft", "Ubisis", "Tsams", "Büllsport"];
 
-const stackGroups = ['BD','E','AC','HG','IF'];
+const stackGroups = ["BD", "E", "AC", "HG", "IF"];
 
-const sectionIsotopeScheme = (key, i) => sectionIsotopeColors[key] || Colors.GRAY3;
+const sectionIsotopeScheme = (key, i) =>
+  sectionIsotopeColors[key] || Colors.GRAY3;
 
 export {
   stackGroups,
@@ -75,5 +69,5 @@ export {
   sectionOffsets,
   groupOffsets,
   tectonicSectionOffsets,
-  sectionIsotopeScheme
+  sectionIsotopeScheme,
 };

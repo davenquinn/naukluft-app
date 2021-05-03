@@ -4,40 +4,40 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import h from 'react-hyperscript';
-import {join} from 'path';
-import {select} from 'd3-selection';
-import {Component} from 'react';
-import {findDOMNode} from 'react-dom';
-import {get} from 'axios';
-import {SVG} from "@macrostrat/column-components";
+import h from "react-hyperscript";
+import { join } from "path";
+import { select } from "d3-selection";
+import { Component } from "react";
+import { findDOMNode } from "react-dom";
+import { get } from "axios";
+import { SVG } from "@macrostrat/column-components";
 import {
   PolygonTopology,
   extractLines,
   extractTextPositions,
-  removeLines
-} from '../components/polygon-topology';
-import {useFaciesColors} from './util';
-import {FillPatternDefs} from './pattern-fill'
+  removeLines,
+} from "../components/polygon-topology";
+import { useFaciesColors } from "./util";
+import { FillPatternDefs } from "./pattern-fill";
 // import S1 from './sequence-data-edited/S1.svg';
 // import S2 from './sequence-data-edited/S2.svg';
 // import S3 from './sequence-data-edited/S3.svg';
 //
 // const fileNames = {S1,S2,S3};
 
-const getFile = async function(id){
+const getFile = async function (id) {
   // console.log(id)
   // if (fn.startsWith("data:image/svg+xml;base64,")) {
   //   return atob(fn.split(',')[1]);
   // // // Webpack for S1, for some reason
   // // }
   try {
-    const {readFileSync} = __non_webpack_require__('fs');
-    const fn = join(__dirname, 'sequence-data-edited', id+".svg")
-    const svg = readFileSync(fn, 'utf-8')
+    const { readFileSync } = __non_webpack_require__("fs");
+    const fn = join(__dirname, "sequence-data-edited", id + ".svg");
+    const svg = readFileSync(fn, "utf-8");
     return Promise.resolve(svg);
   } catch (error) {
-    return get(fn, {responseType: 'text'});
+    return get(fn, { responseType: "text" });
   }
   // const fn = fileNames[id];
   // // encoded as a data URI (Electron-webpack)
@@ -58,7 +58,7 @@ const getFile = async function(id){
   // }
 };
 
-const getEditedSequenceOverlay = async function(id){
+const getEditedSequenceOverlay = async function (id) {
   let svg = await getFile(id);
   const fst = removeLines(svg.toString(), 2);
 
@@ -72,17 +72,17 @@ const getEditedSequenceOverlay = async function(id){
 };
 
 const fillPatterns = {
-  'shoreface-alluvial-siliciclastic': 607,
-  'peritidal-siliciclastic': 670,
-  'restricted-subtidal': 627,
-  'p': '232-C',
-  'sh': '134-C',
-  'mc': '431-C',
-  'cc': '121-DO',
-  'marine-siliciclastic': null,
-  'steepened-outer-ramp': 627,
-  'marine-carbonate': 627,
-  'shoal-shoreface': 627
+  "shoreface-alluvial-siliciclastic": 607,
+  "peritidal-siliciclastic": 670,
+  "restricted-subtidal": 627,
+  p: "232-C",
+  sh: "134-C",
+  mc: "431-C",
+  cc: "121-DO",
+  "marine-siliciclastic": null,
+  "steepened-outer-ramp": 627,
+  "marine-carbonate": 627,
+  "shoal-shoreface": 627,
   // 'lime_mudstone': 627,
   // 'sandstone': 607,
   // 'siltstone': 616,
@@ -95,44 +95,44 @@ const fillPatterns = {
   // 'mudstone': 620,
   // 'sandy-dolomite': 645,
   // 'quartzite': 702
-}
+};
 
-const Topology = function(props){
+const Topology = function (props) {
   const colorIndex = useFaciesColors();
-  const {id, ...rest} = props
+  const { id, ...rest } = props;
   return h(PolygonTopology, {
     ...rest,
-    generateFill(p,i){
-      const {geometry, facies_id} = p;
-      if (!geometry) return null
+    generateFill(p, i) {
+      const { geometry, facies_id } = p;
+      if (!geometry) return null;
       if (facies_id != null) {
-        return `url(#${id}-${facies_id})`
+        return `url(#${id}-${facies_id})`;
       }
-      return '#eeeeee';
-    }
+      return "#eeeeee";
+    },
   });
 };
 
 const extractTopology = async (el, id) => {
   const svg = await getEditedSequenceOverlay(id);
   console.log(svg);
-  if (svg == null) { return; }
+  if (svg == null) {
+    return;
+  }
 
   const main = svg.select("g#Lines");
   /* Get path data */
   const lines = extractLines(main);
 
-  for (let v of ['viewBox', 'width', 'height']) {
+  for (let v of ["viewBox", "width", "height"]) {
     el.attr(v, svg.attr(v));
   }
 
-  el.select("g.linework")
-    .node().appendChild(main.node());
+  el.select("g.linework").node().appendChild(main.node());
 
   const pts = svg.select("g#Labels").node();
   if (pts != null) {
-    el.select("g.overlay")
-      .node().appendChild(pts);
+    el.select("g.overlay").node().appendChild(pts);
   }
 
   /* Get facies data */
@@ -140,13 +140,13 @@ const extractTopology = async (el, id) => {
 
   svg.remove();
 
-  return {lines, points}
-}
+  return { lines, points };
+};
 
 class CrossSectionUnits extends Component {
   constructor() {
     super(...arguments);
-    this.state = {lines: null, points: null};
+    this.state = { lines: null, points: null };
   }
 
   componentDidMount() {
@@ -154,26 +154,26 @@ class CrossSectionUnits extends Component {
   }
 
   async extractTopology() {
-    const {id} = this.props;
+    const { id } = this.props;
     const el = select(findDOMNode(this));
-    const {lines, points} = await extractTopology(el, id)
-    return this.setState({lines, points});
-  };
+    const { lines, points } = await extractTopology(el, id);
+    return this.setState({ lines, points });
+  }
 
   render() {
-    const {id, ...rest} = this.props;
-    const {lines, points} = this.state;
-    return h(SVG, {className: 'cross-section', ...rest}, [
-      h(FillPatternDefs, {prefix: id}),
+    const { id, ...rest } = this.props;
+    const { lines, points } = this.state;
+    return h(SVG, { className: "cross-section", ...rest }, [
+      h(FillPatternDefs, { prefix: id }),
       h(Topology, {
         id,
         lines,
-        points
+        points,
       }),
-      h('g.linework'),
-      h('g.overlay')
+      h("g.linework"),
+      h("g.overlay"),
     ]);
   }
 }
 
-export {CrossSectionUnits};
+export { CrossSectionUnits };

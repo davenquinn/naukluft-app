@@ -17,6 +17,7 @@
     "figures": "cd app && figment --spec ./figure-spec.js",
     "bootstrap": "lerna bootstrap"
   },
+  "prettier": {},
   "electronWebpack": {
     "main": {
       "sourceDirectory": "main"

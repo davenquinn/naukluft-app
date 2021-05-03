@@ -1,6 +1,6 @@
-const {IgnorePlugin} = require('webpack');
-const pkg = require('./package.json')
-const path = require('path');
+const { IgnorePlugin } = require("webpack");
+const pkg = require("./package.json");
+const path = require("path");
 
 const {
   resolve,
@@ -9,19 +9,19 @@ const {
   babelLoader,
   coffeeRule,
   jsRule,
-  cssRule
-} = require('./loaders');
+  cssRule,
+} = require("./loaders");
 
-const mode = 'development';
+const mode = "development";
 const plugins = [];
 
 console.log(pkg);
 
 module.exports = {
-  context: path.resolve(__dirname,'app'),
+  context: path.resolve(__dirname, "app"),
   devtool: "eval-source-map",
   externals: Object.keys(pkg.dependencies),
-  target: 'electron-renderer',
+  target: "electron-renderer",
   mode,
   module: {
     rules: [
@@ -29,18 +29,14 @@ module.exports = {
       {
         test: /\.sql$/,
         use: {
-          loader: path.resolve(__dirname, "loaders", "sql-loader.js")
+          loader: path.resolve(__dirname, "loaders", "sql-loader.js"),
         },
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.styl$/,
-        use: [
-          "style-loader",
-          cssModuleLoader,
-          "stylus-loader"
-        ],
-        exclude: /node_modules/
+        use: ["style-loader", cssModuleLoader, "stylus-loader"],
+        exclude: /node_modules/,
       },
       jsRule,
       cssRule,
@@ -48,40 +44,41 @@ module.exports = {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              outputPath: 'fonts/'
-            }
-          }
-        ]
+              outputPath: "fonts/",
+            },
+          },
+        ],
       },
       {
         test: /\.(png|svg)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
               useRelativePath: true,
-              outputPath: 'sections/assets/',
-              name: '[name].[ext]'
-            }
-          }
-        ]
-      }
-    ]
+              outputPath: "sections/assets/",
+              name: "[name].[ext]",
+            },
+          },
+        ],
+      },
+    ],
   },
   node: {
     __dirname: true,
-    __filename: true
+    __filename: true,
   },
   resolve,
   plugins: [],
   entry: {
-    'regional-sections': "./app/sections/regional-sections/__static-figure/index.ts"
+    "regional-sections":
+      "./app/sections/regional-sections/__static-figure/index.ts",
   },
   output: {
     path: path.resolve("./dist-figures"),
     filename: "[name].js",
-    sourceMapFilename: '[file].map'
-  }
+    sourceMapFilename: "[file].map",
+  },
 };

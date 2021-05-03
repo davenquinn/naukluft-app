@@ -1,5 +1,5 @@
-import {Position, Toaster} from "@blueprintjs/core";
+import { Position, Toaster } from "@blueprintjs/core";
 
 const Notification = Toaster.create();
 
-export {Notification};
+export { Notification };

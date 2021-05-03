@@ -1,6 +1,6 @@
 interface Padding {
-  left: number,
-  right: number,
-  top: number,
-  bottom: number
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
 }

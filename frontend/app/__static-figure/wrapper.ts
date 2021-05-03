@@ -7,28 +7,28 @@
 /*
 This will only build with Parcel
 */
-import h from 'react-hyperscript';
-import {PlatformProvider} from '../platform';
+import h from "react-hyperscript";
+import { PlatformProvider } from "../platform";
 //import symbols from '../../assets/**/*.svg'
-import {SectionDataProvider} from '../sections/data-providers';
-import './fonts.css'
-import './main.styl';
+import { SectionDataProvider } from "../sections/data-providers";
+import "./fonts.css";
+import "./main.styl";
 
-global.PLATFORM = global.ELECTRON
+global.PLATFORM = global.ELECTRON;
 
-const resolveSymbol = function(sym){
-  if (sym == null) { return null; }
-  const [v1,v2] = sym.slice(0, -4).split("/");
-  return null //__dirname+"/"+symbols[v1][v2];
+const resolveSymbol = function (sym) {
+  if (sym == null) {
+    return null;
+  }
+  const [v1, v2] = sym.slice(0, -4).split("/");
+  return null; //__dirname+"/"+symbols[v1][v2];
 };
 
-const StaticFigureWrapper = function(props){
-  const {children} = props;
-  return h(PlatformProvider, {resolveSymbol}, [
-    h(SectionDataProvider, [
-      children
-    ])
+const StaticFigureWrapper = function (props) {
+  const { children } = props;
+  return h(PlatformProvider, { resolveSymbol }, [
+    h(SectionDataProvider, [children]),
   ]);
 };
 
-export {StaticFigureWrapper};
+export { StaticFigureWrapper };

@@ -4,27 +4,25 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {Component, createContext, useContext} from "react";
+import { Component, createContext, useContext } from "react";
 import h from "react-hyperscript";
-import {join, resolve} from "path";
+import { join, resolve } from "path";
 import LocalStorage from "./sections/storage";
 import update from "immutability-helper";
 import {
   AssetPathProvider,
-  AssetPathContext
-} from '@macrostrat/column-components/dist/esm/context';
-import {
-  GeologicPatternProvider
-} from '@macrostrat/column-components';
+  AssetPathContext,
+} from "@macrostrat/column-components/dist/esm/context";
+import { GeologicPatternProvider } from "@macrostrat/column-components";
 //# Set whether we are on the backend or frontend
 
-global.ELECTRON = 'electron';
-global.WEB = 'web';
+global.ELECTRON = "electron";
+global.WEB = "web";
 
 if (process.versions?.electron != null) {
   global.PLATFORM = ELECTRON;
   global.SERIALIZED_QUERIES = false;
-  global.BASE_DIR = resolve(join(__dirname,'..'));
+  global.BASE_DIR = resolve(join(__dirname, ".."));
 } else {
   global.PLATFORM = WEB;
   global.SERIALIZED_QUERIES = true;
@@ -35,21 +33,21 @@ console.log(`Running application on ${PLATFORM}`);
 const Platform = Object.freeze({
   ELECTRON: 1,
   WEB: 2,
-  PRINT: 3
+  PRINT: 3,
 });
 
 const DarkModeContext = createContext(false);
 
-const DarkModeProvider = function(props){
+const DarkModeProvider = function (props) {
   let value;
-  const {children} = props;
+  const { children } = props;
   try {
-    const {systemPreferences} = require('electron');
+    const { systemPreferences } = require("electron");
     value = systemPreferences.isDarkMode();
   } catch (error1) {
     value = false;
   }
-  return h(DarkModeContext.Provider, {value}, children);
+  return h(DarkModeContext.Provider, { value }, children);
 };
 
 const useDarkMode = () => useContext(DarkModeContext);
@@ -57,11 +55,13 @@ const useDarkMode = () => useContext(DarkModeContext);
 const PlatformContext = createContext({});
 
 class PlatformProvider extends Component {
-  constructor(props){
+  constructor(props) {
     let platform = Platform.ELECTRON;
-    if (global.BASE_DIR == null) { global.BASE_DIR = join(__dirname, ".."); }
+    if (global.BASE_DIR == null) {
+      global.BASE_DIR = join(__dirname, "..");
+    }
 
-    let baseUrl = 'file://'+resolve(BASE_DIR);
+    let baseUrl = "file://" + resolve(BASE_DIR);
     let editable = true;
     if (global.PLATFORM === WEB) {
       platform = Platform.WEB;
@@ -75,7 +75,7 @@ class PlatformProvider extends Component {
       inEditMode: false,
       platform,
       editable,
-      baseUrl
+      baseUrl,
     };
 
     this.path = this.path.bind(this);
@@ -84,19 +84,26 @@ class PlatformProvider extends Component {
     this.resolveSymbol = this.resolveSymbol.bind(this);
     this.resolveLithologySymbol = this.resolveLithologySymbol.bind(this);
 
-    this.storage = new LocalStorage('edit-mode');
+    this.storage = new LocalStorage("edit-mode");
     const v = this.storage.get();
-    if (v == null) { return; }
-    this.state = update(this.state, {inEditMode: {$set: v}});
+    if (v == null) {
+      return;
+    }
+    this.state = update(this.state, { inEditMode: { $set: v } });
   }
 
   render() {
-    let {computePhotoPath, resolveSymbol, resolveLithologySymbol, updateState} = this;
-    let {serializedQueries, ...restState} = this.state;
+    let {
+      computePhotoPath,
+      resolveSymbol,
+      resolveLithologySymbol,
+      updateState,
+    } = this;
+    let { serializedQueries, ...restState } = this.state;
     if (this.state.platform === Platform.WEB) {
       serializedQueries = true;
     }
-    const {children, ...rest} = this.props;
+    const { children, ...rest } = this.props;
     const value = {
       ...rest,
       ...restState,
@@ -104,88 +111,107 @@ class PlatformProvider extends Component {
       updateState,
       computePhotoPath,
       resolveSymbol,
-      resolveLithologySymbol
+      resolveLithologySymbol,
     };
 
-    ({resolveSymbol} = this.props);
-    if ((resolveSymbol == null)) {
-      ({
-        resolveSymbol
-      } = this);
+    ({ resolveSymbol } = this.props);
+    if (resolveSymbol == null) {
+      ({ resolveSymbol } = this);
     }
 
-    const assetPathFunctions = {resolveSymbol, resolveLithologySymbol};
+    const assetPathFunctions = { resolveSymbol, resolveLithologySymbol };
     return h(DarkModeProvider, [
-      h(GeologicPatternProvider, {
-        resolvePattern: this.resolveLithologySymbol
-      }, [
-        h(AssetPathProvider, {
-          resolveSymbol: this.resolveSymbol
-        }, [
-          h(PlatformContext.Provider, {value}, children)
-        ])
-      ])
+      h(
+        GeologicPatternProvider,
+        {
+          resolvePattern: this.resolveLithologySymbol,
+        },
+        [
+          h(
+            AssetPathProvider,
+            {
+              resolveSymbol: this.resolveSymbol,
+            },
+            [h(PlatformContext.Provider, { value }, children)]
+          ),
+        ]
+      ),
     ]);
   }
 
-  path(...args){
+  path(...args) {
     return join(this.state.baseUrl, ...args);
   }
 
-  updateState(val){
+  updateState(val) {
     return this.setState(val);
   }
 
-  computePhotoPath(photo){
-    if (photo.id == null) { return null; }
+  computePhotoPath(photo) {
+    if (photo.id == null) {
+      return null;
+    }
     if (this.state.platform === Platform.ELECTRON) {
-      return this.path( '..', 'Products', 'webroot', 'Sections', 'photos', `${photo.id}.jpg`);
+      return this.path(
+        "..",
+        "Products",
+        "webroot",
+        "Sections",
+        "photos",
+        `${photo.id}.jpg`
+      );
     } else {
-      return this.path( 'photos', `${photo.id}.jpg`);
+      return this.path("photos", `${photo.id}.jpg`);
     }
     // Original photo
     return photo.path;
   }
 
-  resolveSymbol(sym){
+  resolveSymbol(sym) {
     console.log(sym);
     try {
       if (this.state.platform === Platform.ELECTRON) {
-        const q = resolve(join(BASE_DIR, 'assets', 'column-patterns', sym));
-        return 'file://'+q;
+        const q = resolve(join(BASE_DIR, "assets", "column-patterns", sym));
+        return "file://" + q;
       } else {
-        return join(BASE_URL, 'column-symbols', sym);
+        return join(BASE_URL, "column-symbols", sym);
       }
     } catch (error1) {
-      return '';
+      return "";
     }
   }
 
-  resolveLithologySymbol(id, opts={}){
-    let {svg} = opts;
+  resolveLithologySymbol(id, opts = {}) {
+    let { svg } = opts;
     svg = true;
-    if (svg == null) { svg = false; }
-    if ((id == null)) { return null; }
+    if (svg == null) {
+      svg = false;
+    }
+    if (id == null) {
+      return null;
+    }
     if (this.state.platform === Platform.ELECTRON) {
       let fp = `png/${id}.png`;
-      if (svg) { fp = `svg/${id}.svg`; }
+      if (svg) {
+        fp = `svg/${id}.svg`;
+      }
       const proj = process.env.PROJECT_DIR || "";
       const q = join(proj, "versioned/deps/geologic-patterns/assets", fp);
-      return 'file://'+q;
+      return "file://" + q;
     } else {
-      return this.path('lithology-patterns', `${id}.png`);
+      return this.path("lithology-patterns", `${id}.png`);
     }
   }
 
-  componentDidUpdate(prevProps, prevState){
+  componentDidUpdate(prevProps, prevState) {
     // Shim global state
     if (prevState.serializedQueries !== this.state.serializedQueries) {
       global.SERIALIZED_QUERIES = this.state.serializedQueries;
     }
 
-    const {inEditMode} = this.state;
+    const { inEditMode } = this.state;
     if (prevState.inEditMode !== inEditMode) {
-      return this.storage.set({inEditMode});
+      return this.storage.set({ inEditMode });
     }
   }
 }
@@ -199,5 +225,5 @@ export {
   PlatformConsumer,
   DarkModeContext,
   DarkModeProvider,
-  useDarkMode
+  useDarkMode,
 };

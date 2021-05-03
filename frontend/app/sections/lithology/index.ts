@@ -3,21 +3,21 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {Component} from "react";
+import { Component } from "react";
 import h from "react-hyperscript";
-import {query} from "../../db";
-import {LithologyProvider} from '@macrostrat/column-components';
+import { query } from "../../db";
+import { LithologyProvider } from "@macrostrat/column-components";
 import q from "./lithology.sql";
 
 class OurLithologyProvider extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {lithologies: []};
+    this.state = { lithologies: [] };
   }
 
   getLithologies = async () => {
     const lithologies = await query(q);
-    return this.setState({lithologies});
+    return this.setState({ lithologies });
   };
 
   componentDidMount() {
@@ -25,10 +25,10 @@ class OurLithologyProvider extends Component {
   }
 
   render() {
-    const {lithologies} = this.state;
-    const {children} = this.props;
-    return h(LithologyProvider, {lithologies}, children);
+    const { lithologies } = this.state;
+    const { children } = this.props;
+    return h(LithologyProvider, { lithologies }, children);
   }
 }
 
-export {OurLithologyProvider as LithologyProvider};
+export { OurLithologyProvider as LithologyProvider };
