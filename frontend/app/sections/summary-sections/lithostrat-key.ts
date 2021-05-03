@@ -4,7 +4,7 @@ import { useQuery } from "~/db";
 import { ColumnSVG, ColumnContext } from "@macrostrat/column-components";
 import { SummaryColumnProvider } from "./data-provider";
 import { useSurfaces } from "~/sections/providers";
-import sql from "./sql/lithostratigraphy-names.sql";
+import sql from "~/data-backend/sql/sections/summary/lithostratigraphy-names.sql";
 
 const LSLabel = (props) => {
   const { y, name, width, extend } = props;
