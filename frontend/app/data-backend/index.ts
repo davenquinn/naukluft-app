@@ -1,5 +1,5 @@
 import { join } from "path";
-import { db, storedProcedure } from "~/db";
+import { db, storedProcedure } from "./database";
 import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
 

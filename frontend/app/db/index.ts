@@ -31,7 +31,7 @@ if (global.PLATFORM === global.ELECTRON) {
 
 let db, storedProcedure;
 if (global.PLATFORM === global.ELECTRON) {
-  const bak = require("./backend");
+  const bak = require("../data-backend/database");
   db = bak.db;
   storedProcedure = bak.storedProcedure;
 } else {
@@ -66,7 +66,7 @@ const query = async function (id, values, opts = {}) {
 
     try {
       res = await getJSON(join(QUERY_DIRECTORY, fn));
-    } catch {
+    } catch (err) {
       res = [];
     }
   }
