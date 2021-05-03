@@ -1,10 +1,9 @@
 import h from "@macrostrat/hyper";
 import { Component, useContext } from "react";
-import { useQuery } from "~/db";
+import { useQuery } from "~/data-backend";
 import { ColumnSVG, ColumnContext } from "@macrostrat/column-components";
 import { SummaryColumnProvider } from "./data-provider";
 import { useSurfaces } from "~/sections/providers";
-import sql from "~/data-backend/sql/sections/summary/lithostratigraphy-names.sql";
 
 const LSLabel = (props) => {
   const { y, name, width, extend } = props;
@@ -32,7 +31,7 @@ LSLabel.defaultProps = { width: 20, extend: false };
 
 const LithostratigraphyColumn = (props) => {
   const { keySection } = props;
-  const names = useQuery(sql);
+  const names = useQuery("sections/summary/lithostratigraphy-names");
   let surfaces = useSurfaces();
   const { scale } = useContext(ColumnContext);
 

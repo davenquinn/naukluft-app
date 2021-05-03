@@ -1,4 +1,5 @@
 {
+  "baseUrl": ".",
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es6",
@@ -15,7 +16,7 @@
     "outDir": "app/dist/lib",
     "typeRoots": ["app/node_modules/@types", "app/types"],
     "paths": {
-      "~": ["app"]
+      "~/*": ["./app/*"]
     }
   },
   "include": ["app"]
