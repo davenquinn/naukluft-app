@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+require("ts-node").register({ transpileOnly: true });
+const { readFileSync, writeFileSync } = require("fs");
+const { join, resolve, relative } = require("path");
+const { sync: mkdirp } = require("mkdirp");
+const { sync: rimraf } = require("rimraf");
+require.extensions[".sql"] = function (module, filename) {
+  module.exports = filename;
+};
+
+const { db, storedProcedure } = require("../app/db/backend");
+const { serializableQueries } = require("../app/db/serializable");
+
+const createQueryLibrary = async function () {
+  const library = await serializableQueries();
+  return library.map((d) => {
+    const v1 = Object.fromEntries(Object.entries(d));
+    delete v1.sql;
+    return v1;
+  });
+};
+
+//const queries = require("../build/query-spec.json");
+
+const __base = resolve(__dirname, "..");
+const queryDir = join(__base, "dist-web", "queries");
+rimraf(queryDir);
+mkdirp(queryDir);
+
+const rel = (fn) => relative(__base, fn);
+
+const run = async function () {
+  const queries = await createQueryLibrary();
+  for (const query of queries) {
+    const sql = readFileSync(query.fileName, "utf-8");
+    const data = await db.query(sql, query.values);
+    const outFn = join(queryDir, query.outputFile);
+    console.log(rel(query.fileName) + " -> " + rel(outFn));
+    writeFileSync(outFn, JSON.stringify(data));
+  }
+};
+
+run()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
