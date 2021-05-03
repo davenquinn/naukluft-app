@@ -19,7 +19,7 @@ import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";
 import { nest } from "d3";
 import ErrorBoundary from "react-error-boundary";
-import "@macrostrat/column-components/dist/column-components.css";
+import "@macrostrat/column-components/dist/esm/index.css";
 
 const SectionLink = function ({ base, id }) {
   if (base == null) {
