@@ -6,12 +6,10 @@ import {
   ColumnProvider,
   TriangleBars,
   FaciesIntervals,
-} from "@macrostrat/column-components";
-import { ColumnTracker } from "../components/link-overlay";
-import {
   LithologyColumn,
   ParameterIntervals,
-} from "@macrostrat/column-components/dist/esm/lithology";
+} from "@macrostrat/column-components";
+import { ColumnTracker } from "../components/link-overlay";
 import { FillPatternDefs } from "./pattern-fill";
 import { useFaciesColors } from "./util";
 
