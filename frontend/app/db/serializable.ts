@@ -80,11 +80,13 @@ import symbols from "../sections/sql/symbols.sql";
 new SerializableQuery(symbols);
 
 import sq1 from "../sections/sql/flooding-surface.sql";
-//import sq2 from '../sections/sql/section-samples.sql'
+import sq2 from "../sections/sql/section-samples.sql";
 import sq4 from "../sections/sql/section-lithology.sql";
 import sq5 from "../sections/sql/log-notes.sql";
 
-const allSectionQueries = [sq1, sq4, sq5];
+new SerializableQuery(sq4);
+
+const allSectionQueries = [sq1, sq2, sq4, sq5, symbols];
 
 let alreadyLoaded = false;
 const createSerializedQueries = function (sectionLabels) {

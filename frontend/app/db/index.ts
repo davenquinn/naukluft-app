@@ -64,7 +64,11 @@ const query = async function (id, values, opts = {}) {
       fn = `${v}.json`;
     }
 
-    res = await getJSON(join(QUERY_DIRECTORY, fn));
+    try {
+      res = await getJSON(join(QUERY_DIRECTORY, fn));
+    } catch {
+      res = [];
+    }
   }
   return res;
 };
