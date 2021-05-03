@@ -29,8 +29,7 @@ const LSLabel = (props) => {
 
 LSLabel.defaultProps = { width: 20, extend: false };
 
-const LithostratigraphyColumn = (props) => {
-  const { keySection } = props;
+function LithostratigraphyColumn({ keySection = "J" }) {
   const names = useQuery("sections/summary/lithostratigraphy-names");
   let surfaces = useSurfaces();
   const { scale } = useContext(ColumnContext);
@@ -90,11 +89,7 @@ const LithostratigraphyColumn = (props) => {
       members
     ),
   ]);
-};
-
-LithostratigraphyColumn.defaultProps = {
-  keySection: "J",
-};
+}
 
 const BaseSVGSectionComponent = (props) => {
   let { padding, innerWidth, keySection } = props;
