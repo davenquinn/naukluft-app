@@ -72,7 +72,6 @@ const resolve = {
   extensions: [".js", ".coffee", ".ts"],
   alias: {
     app: path.resolve(__base, "app/"),
-    react: path.resolve(__base, "./app/node_modules/react"),
     /*
     This is a pretty awful hack to resolve tilde paths. It requires
     that they exist only in the column-components package.
