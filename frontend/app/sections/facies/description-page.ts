@@ -1,16 +1,10 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { Component } from "react";
 import h from "react-hyperscript";
-import T from "prop-types";
 import { SectionNavigationControl } from "../util";
-import classNames from "classnames";
-import { FaciesDescriptionSmall } from "@macrostrat/column-components";
-import { FaciesSwatch } from "@macrostrat/column-components";
+import {
+  FaciesDescriptionSmall,
+  FaciesSwatch,
+} from "@macrostrat/column-components";
 
 class FaciesDescriptionPage extends Component {
   static initClass() {

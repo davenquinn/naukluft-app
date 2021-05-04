@@ -30,7 +30,7 @@ export function useUpdateableQuery(
     return updateResult(res);
   };
   useAsyncEffect(queryFunc, [params]);
-  return [result, updateResult];
+  return [result, queryFunc];
 }
 
 export function useQuery(
@@ -43,11 +43,9 @@ export function useQuery(
   return res;
 }
 
-export async function useQueryDispatch(
-  key: string,
-  resultMask: queryResult = queryResult.any
-) {
-  return (params: any) => runQuery(key, params, resultMask);
+export function useQueryRunner(): typeof runQuery {
+  // @ts-ignore
+  return runQuery;
 }
 
 export { queryResult as ResultMask };

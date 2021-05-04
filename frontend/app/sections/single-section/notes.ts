@@ -7,18 +7,14 @@
 import { format } from "d3-format";
 import { useState, useContext } from "react";
 import h from "@macrostrat/hyper";
-import useAsyncEffect from "use-async-effect";
-import logNotesQuery from "../sql/log-notes.sql";
-import updateNoteQuery from "../sql/update-note.sql";
-import setNoteInvisible from "../sql/set-note-invisible.sql";
 import { PlatformContext, Platform } from "~/platform";
 import { NoteEditorContext, NotesColumn } from "@macrostrat/column-components";
+import { ResultMask, useQueryRunner, useUpdateableQuery } from "~/data-backend";
 
 // import {
 //   PhotoOverlay
 // } from "@macrostrat/column-components/photos"
 //
-import { db, query, storedProcedure } from "~/db";
 
 const fmt = format(".1f");
 
@@ -66,40 +62,28 @@ const PhotoNoteComponent = function (props) {
 };
 
 const ManagedNotesColumn = function (props) {
-  const { platform, inEditMode } = useContext(PlatformContext);
-
   const { id, ...rest } = props;
-  let [notes, setNotes] = useState([]);
 
-  // State management
-  const updateNotes = async function () {
-    notes = await query(logNotesQuery, [id]);
-    console.log(notes);
-    return setNotes(notes);
-  };
+  const { platform, inEditMode } = useContext(PlatformContext);
+  const dispatch = useQueryRunner();
 
-  // Get initial notes from query
-  useAsyncEffect(updateNotes, []);
+  const [notes, updateNotes] = useUpdateableQuery("section/notes/log-notes", [
+    id,
+  ]);
 
   const onUpdateNote = async function (newNote, v) {
-    let sql;
-    if (newNote == null) {
+    if (newNote == null || dispatch == null) {
       return;
     }
     const { note: newText, id: noteID } = newNote;
     // We can't edit on the frontend
-    if (platform !== Platform.ELECTRON) {
-      return;
-    }
     if (newText.length === 0) {
-      sql = storedProcedure(setNoteInvisible);
-      await db.none(sql, [noteID]);
+      await dispatch("section/notes/set-invisible", [noteID], ResultMask.none);
     } else {
-      sql = storedProcedure(updateNoteQuery);
-      await db.none(sql, [noteID, newText]);
+      await dispatch("section/notes/update-note", [noteID], ResultMask.none);
     }
     updateNotes();
-    return console.log(`Note ${noteID} edited`);
+    console.log(`Note ${noteID} edited`);
   };
 
   const editable = inEditMode;

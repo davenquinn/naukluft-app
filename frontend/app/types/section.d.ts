@@ -5,6 +5,7 @@ declare interface SectionImage {
 }
 
 declare interface SectionData {
+  id?: string | number;
   end: number;
   clip_end: number;
   height: number;

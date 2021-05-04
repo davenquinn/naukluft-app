@@ -1,9 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { useState, useCallback, useEffect } from "react";
 import h from "@macrostrat/hyper";
 import { FaciesContext } from "@macrostrat/column-components";
@@ -14,7 +8,7 @@ import {
   ResultMask,
 } from "~/data-backend";
 
-function FaciesProvider(props) {
+function FaciesProvider(props: any) {
   const { children, ...rest } = props;
 
   const [colorMap, setColorMap] = useState<{ [k: string]: string }>({});
