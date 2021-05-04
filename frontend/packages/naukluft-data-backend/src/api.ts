@@ -21,10 +21,18 @@ interface Params {
 for (const fn of glob(join(baseDir, "**/*.sql"))) {
   const newFn = fn.replace(baseDir, "").slice(0, -4);
   helpRoutes.push(newFn);
-  app.get(newFn, async (req, res) => {
-    const { __qrm, ...params }: Params = req.query;
-    const queryResult = await runBackendQuery(newFn, params, __qrm);
-    res.json(queryResult);
+  app.get(newFn, async (req, res, next) => {
+    try {
+      let { __qrm, __argsArray, ...params }: Params = req.query;
+      let newParams = params;
+      if (__argsArray != null) {
+        newParams = JSON.parse(__argsArray);
+      }
+      const queryResult = await runBackendQuery(newFn, newParams, __qrm);
+      res.json(queryResult);
+    } catch (err) {
+      next(err);
+    }
   });
 }
 

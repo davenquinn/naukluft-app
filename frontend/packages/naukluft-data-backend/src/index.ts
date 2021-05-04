@@ -2,6 +2,8 @@ import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
 import { currentPlatform, Platform } from "./platform";
 import get from "axios";
+import { array } from "~/node_modules/@types/prop-types";
+import { query } from "~/db";
 
 // Copied from pg-promise
 enum queryResult {
@@ -31,10 +33,16 @@ export const runQuery = async function (
       if (key.endsWith(".sql")) {
         throw "Can't run SQL file on frontend!";
       }
-      const res = await get("http://localhost:5555/" + key, {
-        ...params,
-        __qrm: resultMask,
-      });
+
+      if (Array.isArray(params)) {
+        params = { __argsArray: JSON.stringify(params) };
+      }
+      if (resultMask != queryResult.any) {
+        params["__qrm"] = resultMask;
+      }
+
+      console.log(params);
+      const res = await get("http://localhost:5555/" + key, { params });
       if (res.status == 200) {
         let { data } = res;
         return data;

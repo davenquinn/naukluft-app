@@ -65,9 +65,12 @@ const ManagedNotesColumn = function (props) {
   const { platform, inEditMode } = useContext(PlatformContext);
   const dispatch = useQueryRunner();
 
-  const [notes, updateNotes] = useUpdateableQuery("section/notes/log-notes", [
-    id,
-  ]);
+  const [baseNotes, updateNotes] = useUpdateableQuery(
+    "section/notes/log-notes",
+    [id]
+  );
+
+  const notes = baseNotes ?? [];
 
   const onUpdateNote = async function (newNote, v) {
     if (newNote == null || dispatch == null) {
