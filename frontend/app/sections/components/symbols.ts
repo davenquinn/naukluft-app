@@ -1,7 +1,7 @@
 import h from "@macrostrat/hyper";
 import React, { createContext, useContext } from "react";
 import { SymbolColumn } from "@macrostrat/column-components";
-import { useQuery } from "~/data-backend";
+import { useQuery } from "naukluft-data-backend";
 
 interface Symbol {
   id: number;

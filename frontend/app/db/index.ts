@@ -4,8 +4,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 let QUERY_DIRECTORY;
-import { join, resolve, basename } from "path";
-import Promise from "bluebird";
+import { join, basename } from "path";
 import { getUID, getHash } from "./util";
 import { getJSON } from "../util";
 import { useState } from "react";
@@ -31,7 +30,7 @@ if (global.PLATFORM === global.ELECTRON) {
 
 let db, storedProcedure;
 if (global.PLATFORM === global.ELECTRON) {
-  const bak = require("../data-backend/database");
+  const bak = require("naukluft-data-backend/src/database");
   db = bak.db;
   storedProcedure = bak.storedProcedure;
 } else {
@@ -45,6 +44,7 @@ const query = async function (id, values, opts = {}) {
   Generalized query that picks the best method for
   getting query variables
   */
+  console.warn("The ~/db module is deprecated and should be replaced");
   let res;
   const { baseDir } = opts;
   if (id == null) {

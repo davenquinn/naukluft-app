@@ -1,4 +1,4 @@
-import { join } from "path";
+import { join, resolve } from "path";
 import { db, storedProcedure } from "./database";
 import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
@@ -16,7 +16,7 @@ export const runQuery = async function (
   let fn = key;
   console.log("Running query with key:", key);
   if (!key.endsWith(".sql")) {
-    fn = join(__dirname, "sql", key + ".sql");
+    fn = resolve(join(__dirname, "..", "sql", key + ".sql"));
   }
   return await db.query(storedProcedure(fn), params, resultMask);
 };

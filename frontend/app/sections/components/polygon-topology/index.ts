@@ -14,7 +14,7 @@ import { geoPath, geoTransform } from "d3-geo";
 import sql from "./polygonize.sql";
 import { useState } from "react";
 import { useAsyncEffect } from "use-async-effect";
-import { runQuery } from "~/data-backend";
+import { runQuery } from "naukluft-data-backend";
 
 const proj = geoTransform({
   point(px, py) {

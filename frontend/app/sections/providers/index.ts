@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import h from "@macrostrat/hyper";
-import { useUpdateableQuery } from "~/data-backend";
+import { useUpdateableQuery } from "naukluft-data-backend";
 
 enum SurfaceType {
   MaximumFloodingSurface = "mfs",

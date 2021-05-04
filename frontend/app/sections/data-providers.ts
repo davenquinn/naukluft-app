@@ -13,7 +13,7 @@ import { SymbolProvider } from "./components/symbols";
 import h, { compose } from "@macrostrat/hyper";
 import { IsotopesDataProvider } from "./summary-sections/chemostrat/data-manager";
 import "./main.styl";
-import { runQuery, useQuery } from "~/data-backend";
+import { runQuery, useQuery } from "naukluft-data-backend";
 
 const sectionFilename = function (fn) {
   if (PLATFORM === ELECTRON) {

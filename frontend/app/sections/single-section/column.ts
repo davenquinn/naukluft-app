@@ -27,7 +27,7 @@ import {
   LithologyColumnInner,
   DivisionEditOverlay,
 } from "@macrostrat/column-components";
-import { ResultMask, useQueryRunner } from "~/data-backend";
+import { ResultMask, useQueryRunner } from "naukluft-data-backend";
 
 import Samples from "./samples";
 import { ManagedSymbolColumn } from "../components";

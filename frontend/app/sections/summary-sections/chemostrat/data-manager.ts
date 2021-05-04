@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 import h from "@macrostrat/hyper";
 import { group } from "d3-array";
-import { useQuery } from "~/data-backend";
+import { useQuery } from "naukluft-data-backend";
 
 const IsotopesDataContext = createContext({ isotopes: new Map() });
 

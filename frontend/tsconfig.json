@@ -20,5 +20,5 @@
       "@macrostrat/column-components": ["./packages/column-components/src/*"]
     }
   },
-  "include": ["app"]
+  "include": ["app", "packages/naukluft-data-backend/src"]
 }

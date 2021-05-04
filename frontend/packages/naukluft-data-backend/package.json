@@ -1,0 +1,22 @@
+{
+  "name": "naukluft-data-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.0.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "pg": "^8.6.0",
+    "pg-native": "^3.0.0",
+    "pg-promise": "^10.10.2",
+    "react": "^16.11.0",
+    "use-async-effect": "^2.2.3"
+  }
+}

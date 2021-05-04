@@ -1,5 +1,4 @@
-let helpers;
-import { Component, useContext } from "react";
+import { useContext } from "react";
 import {
   Button,
   Intent,
@@ -32,8 +31,6 @@ import {
   Direction,
 } from "./controls";
 import { SequenceStratControls } from "./sequence-strat";
-
-import { dirname } from "path";
 import { hyperStyled } from "@macrostrat/hyper";
 import styles from "./style.styl";
 const h = hyperStyled(styles);
@@ -104,15 +101,15 @@ const FaciesTractControl = function (props) {
 
 const updateIntervalQuery = async function (id, columns) {
   // Should replace this with a hook of some sort...
-  const { helpers, db } = require("~/data-backend/database");
+  const { helpers, db } = require("naukluft-data-backend/src/database");
 
   const { TableName, update } = helpers;
   const tbl = new TableName("section_lithology", "section");
 
-  let s = helpers.update(columns, null, tbl);
-  s += ` WHERE id=${id}`;
-  console.log(s);
-  return await db.none(s);
+  let sql = helpers.update(columns, null, tbl);
+  sql += ` WHERE id=${id}`;
+  console.log(sql);
+  return await db.none(sql);
 };
 
 interface IntervalControlsProps {

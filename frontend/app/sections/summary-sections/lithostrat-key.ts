@@ -1,6 +1,6 @@
 import h from "@macrostrat/hyper";
 import { Component, useContext } from "react";
-import { useQuery } from "~/data-backend";
+import { useQuery } from "naukluft-data-backend";
 import { ColumnSVG, ColumnContext } from "@macrostrat/column-components";
 import { SummaryColumnProvider } from "./data-provider";
 import { useSurfaces } from "~/sections/providers";

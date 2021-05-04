@@ -12,7 +12,7 @@ import "d3-selection-multi";
 import "d3-jetpack";
 import "d3-scale-chromatic";
 import h from "@macrostrat/hyper";
-import { runQuery } from "~/data-backend";
+import { runQuery } from "naukluft-data-backend";
 
 class CarbonIsotopesPage extends Component {
   static initClass() {

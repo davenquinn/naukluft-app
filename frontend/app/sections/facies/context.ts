@@ -6,7 +6,7 @@ import {
   useQuery,
   useUpdateableQuery,
   ResultMask,
-} from "~/data-backend";
+} from "naukluft-data-backend";
 
 function FaciesProvider(props: any) {
   const { children, ...rest } = props;
