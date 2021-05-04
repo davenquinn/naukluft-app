@@ -13,7 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently npm:watch:column npm:watch:web",
     "figures": "cd app && figment --spec ./figure-spec.js",
-    "postinstall": "lerna bootstrap --hoist"
+    "postinstall": "lerna bootstrap --hoist",
+    "start:api": "ts-node packages/naukluft-data-backend/src/api.ts"
   },
   "workspaces": [
     "packages/*",
@@ -65,6 +66,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@turf/polygonize": "^5.1.5",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^15.0.1",
     "bezier-js": "^2.3.1",
     "bluebird": "^3.4.7",
     "browser-request": "^0.3.3",

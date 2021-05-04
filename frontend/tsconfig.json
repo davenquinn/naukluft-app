@@ -12,9 +12,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "declarationDir": "app/dist/types",
-    "outDir": "app/dist/lib",
-    "typeRoots": ["app/node_modules/@types", "app/types"],
     "paths": {
       "~/*": ["./app/*"],
       "@macrostrat/column-components": ["./packages/column-components/src/*"]
