@@ -10,8 +10,8 @@ const Samples = (props) => {
   const { section_id } = props;
   const { scale, zoom } = useContext(ColumnContext);
   const { isotopes } = useContext(IsotopesDataContext);
-  if (isotopes == null) return null;
-  const samples = isotopes.get(section_id);
+  const samples = isotopes?.get(section_id);
+  if (samples == null) return null;
 
   return h(
     "g.samples",
