@@ -1,8 +1,19 @@
-import { join, resolve } from "path";
-import { db, storedProcedure } from "./database";
 import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
-import { queryResult } from "pg-promise";
+import { currentPlatform, Platform } from "./platform";
+import get from "axios";
+
+// Copied from pg-promise
+enum queryResult {
+  /** Single row is expected, to be resolved as a single row-object. */
+  one = 1,
+  /** One or more rows expected, to be resolved as an array, with at least 1 row-object. */
+  many = 2,
+  /** Expecting no rows, to be resolved with `null`. */
+  none = 4,
+  /** `many|none` - any result is expected, to be resolved with an array of rows-objects. */
+  any = 6,
+}
 
 export const runQuery = async function (
   key: string,
@@ -13,12 +24,19 @@ export const runQuery = async function (
   Generalized query that picks the best method for
   getting query variables
   */
-  let fn = key;
   console.log("Running query with key:", key);
-  if (!key.endsWith(".sql")) {
-    fn = resolve(join(__dirname, "..", "sql", key + ".sql"));
+
+  switch (currentPlatform) {
+    case Platform.WEB:
+      if (key.endsWith(".sql")) {
+        throw "Can't run SQL file on frontend!";
+      }
+      const res = await get("http://localhost:5555" + key, params);
+      return res;
+    default:
+      const { runBackendQuery } = require("./database");
+      return await runBackendQuery(key, params, resultMask);
   }
-  return await db.query(storedProcedure(fn), params, resultMask);
 };
 
 export function useUpdateableQuery(

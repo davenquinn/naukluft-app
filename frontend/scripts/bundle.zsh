@@ -10,5 +10,5 @@ patterns=app/node_modules/geologic-patterns/assets/png
 rsync -av --delete "$patterns/" "$dist/lithology-patterns/"
 rsync -av --delete "assets/column-patterns/" "$dist/column-symbols/"
 
-scripts/serialize-queries
-webpack --watch $@
+# scripts/serialize-queries
+nodemon & webpack --watch
