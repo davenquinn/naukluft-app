@@ -16,7 +16,8 @@
     "outDir": "app/dist/lib",
     "typeRoots": ["app/node_modules/@types", "app/types"],
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@macrostrat/column-components": ["./packages/column-components/src/*"]
     }
   },
   "include": ["app"]

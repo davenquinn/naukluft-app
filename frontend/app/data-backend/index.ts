@@ -26,7 +26,7 @@ export function useUpdateableQuery(
   /** A react hook to use the result of a query */
   const [result, updateResult] = useState<any>(null);
   const queryFunc = async function () {
-    const res = await runQuery(key, params, result);
+    const res = await runQuery(key, params, resultMask);
     return updateResult(res);
   };
   useAsyncEffect(queryFunc, [params]);

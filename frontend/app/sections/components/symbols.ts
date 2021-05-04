@@ -1,8 +1,7 @@
-import h from "react-hyperscript";
-import { createContext, useContext } from "react";
+import h from "@macrostrat/hyper";
+import React, { createContext, useContext } from "react";
 import { SymbolColumn } from "@macrostrat/column-components";
-import { useQuery } from "~/db";
-import sql from "../sql/symbols.sql";
+import { useQuery } from "~/data-backend";
 
 interface Symbol {
   id: number;
@@ -14,11 +13,11 @@ interface Symbol {
   end_height: number | null;
 }
 
-const SymbolContext = createContext<Symbol[]>(null);
+const SymbolContext = createContext<Symbol[]>([]);
 
-const SymbolProvider = (props) => {
+const SymbolProvider = (props: { children: React.ReactNode }) => {
   const { children } = props;
-  const symbols: Symbol[] = useQuery(sql) ?? [];
+  const symbols: Symbol[] = useQuery("sections/symbols") ?? [];
   return h(SymbolContext.Provider, { value: symbols }, children);
 };
 

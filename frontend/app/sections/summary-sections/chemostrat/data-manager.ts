@@ -1,33 +1,26 @@
-import { createContext, useContext, Component } from "react";
+import React, { createContext, useContext } from "react";
 import h from "@macrostrat/hyper";
-import sql from "../../sql/all-carbon-isotopes.sql";
 import { group } from "d3-array";
-import { query } from "../../db";
+import { useQuery } from "~/data-backend";
 
-const IsotopesDataContext = createContext(null);
+const IsotopesDataContext = createContext({ isotopes: {} });
 
-class IsotopesDataProvider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isotopes: null,
-    };
-    this.getData();
+function IsotopesDataProvider(props: React.PropsWithChildren<{}>) {
+  const data = useQuery("sections/all-carbon-isotopes");
+  if (data == null) {
+    return props.children;
   }
 
-  async getData() {
-    const data = await query(sql);
-    const isotopes = group(data, (d) => d.section);
-    isotopes.forEach((values) =>
-      values.sort((a, b) => a.orig_height - b.orig_height)
-    );
-    return this.setState({ isotopes });
-  }
+  const isotopes = group(data, (d) => d.section);
+  isotopes.forEach((values) =>
+    values.sort((a, b) => a.orig_height - b.orig_height)
+  );
 
-  render() {
-    const { children } = this.props;
-    return h(IsotopesDataContext.Provider, { value: this.state }, children);
-  }
+  return h(
+    IsotopesDataContext.Provider,
+    { value: { isotopes } },
+    props.children
+  );
 }
 
 const useIsotopes = () => useContext(IsotopesDataContext).isotopes;
