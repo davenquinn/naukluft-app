@@ -7,6 +7,7 @@
 import { Component, createContext } from "react";
 import "./main.styl";
 import styles from "./section-index.styl";
+import "@macrostrat/column-components/dist/esm/index.css";
 import h from "react-hyperscript";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { NavLink } from "../nav";
@@ -19,7 +20,6 @@ import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";
 import { nest } from "d3";
 import ErrorBoundary from "react-error-boundary";
-import "@macrostrat/column-components/dist/esm/index.css";
 
 const SectionLink = function ({ base, id }) {
   if (base == null) {
