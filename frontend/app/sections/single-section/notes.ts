@@ -1,5 +1,5 @@
 import { format } from "d3-format";
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback, useMemo } from "react";
 import h from "@macrostrat/hyper";
 import { PlatformContext, Platform } from "~/platform";
 import { NoteEditorContext, NotesColumn } from "@macrostrat/column-components";
@@ -61,31 +61,38 @@ const PhotoNoteComponent = function (props) {
 
 const ManagedNotesColumn = function (props) {
   const { id, ...rest } = props;
-
   const { platform, inEditMode } = useContext(PlatformContext);
   const dispatch = useQueryRunner();
+  const params = useMemo(() => [id], [id]);
 
   const [baseNotes, updateNotes] = useUpdateableQuery(
     "section/notes/log-notes",
-    [id]
+    params
   );
 
   const notes = baseNotes ?? [];
 
-  const onUpdateNote = async function (newNote, v) {
-    if (newNote == null || dispatch == null) {
-      return;
-    }
-    const { note: newText, id: noteID } = newNote;
-    // We can't edit on the frontend
-    if (newText.length === 0) {
-      await dispatch("section/notes/set-invisible", [noteID], ResultMask.none);
-    } else {
-      await dispatch("section/notes/update-note", [noteID], ResultMask.none);
-    }
-    updateNotes();
-    console.log(`Note ${noteID} edited`);
-  };
+  const onUpdateNote = useCallback(
+    async function (newNote, v) {
+      if (newNote == null || dispatch == null) {
+        return;
+      }
+      const { note: newText, id: noteID } = newNote;
+      // We can't edit on the frontend
+      if (newText.length === 0) {
+        await dispatch(
+          "section/notes/set-invisible",
+          [noteID],
+          ResultMask.none
+        );
+      } else {
+        await dispatch("section/notes/update-note", [noteID], ResultMask.none);
+      }
+      updateNotes();
+      console.log(`Note ${noteID} edited`);
+    },
+    [dispatch]
+  );
 
   const editable = inEditMode;
   //if platform != Platform.ELECTRON
