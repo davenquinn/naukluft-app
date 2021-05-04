@@ -14,6 +14,7 @@
     "dev": "concurrently npm:watch:column npm:watch:web",
     "figures": "cd app && figment --spec ./figure-spec.js",
     "postinstall": "lerna bootstrap --hoist",
+    "watch:api": "nodemon",
     "start:api": "ts-node packages/naukluft-data-backend/src/api.ts"
   },
   "workspaces": [

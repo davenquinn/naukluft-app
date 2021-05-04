@@ -1,0 +1,5 @@
+{
+  "watch": ["packages/naukluft-data-backend"],
+  "ext": "ts,sql",
+  "exec": "ts-node packages/naukluft-data-backend/src/api.ts"
+}
