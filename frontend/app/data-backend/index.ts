@@ -13,8 +13,11 @@ export const runQuery = async function (
   Generalized query that picks the best method for
   getting query variables
   */
-  const fn = join(__dirname, "sql", key + ".sql");
-  console.log("Running query fn");
+  let fn = key;
+  console.log("Running query with key:", key);
+  if (!key.endsWith(".sql")) {
+    fn = join(__dirname, "sql", key + ".sql");
+  }
   return await db.query(storedProcedure(fn), params, resultMask);
 };
 

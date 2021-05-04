@@ -11,10 +11,10 @@ Basically, this is a poor man's Adobe Illustrator Live Paint.
 
 import h from "@macrostrat/hyper";
 import { geoPath, geoTransform } from "d3-geo";
-import { db, storedProcedure } from "../../db";
 import sql from "./polygonize.sql";
 import { useState } from "react";
 import { useAsyncEffect } from "use-async-effect";
+import { runQuery } from "~/data-backend";
 
 const proj = geoTransform({
   point(px, py) {
@@ -49,15 +49,13 @@ const PolygonTopology = function (props) {
     if (lines == null || points == null) {
       return;
     }
-    const q = storedProcedure(sql);
-    const res = await db.query(q, {
+    const res = await runQuery(sql, {
       geometry: {
         coordinates: lines,
         type: "MultiLineString",
       },
       points,
     });
-    console.log(res);
     return setPolygons(res);
   };
 

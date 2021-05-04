@@ -3,7 +3,7 @@ import h from "@macrostrat/hyper";
 import { group } from "d3-array";
 import { useQuery } from "~/data-backend";
 
-const IsotopesDataContext = createContext({ isotopes: {} });
+const IsotopesDataContext = createContext({ isotopes: new Map() });
 
 function IsotopesDataProvider(props: React.PropsWithChildren<{}>) {
   const data = useQuery("sections/all-carbon-isotopes");
