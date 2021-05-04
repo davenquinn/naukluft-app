@@ -14,7 +14,15 @@ function FaciesProvider(props: any) {
   const [colorMap, setColorMap] = useState<{ [k: string]: string }>({});
   const [facies, updateFacies] = useUpdateableQuery("facies/facies");
   const faciesTracts: any[] = useQuery("facies/facies-tracts");
+
+  const getFaciesColor = useCallback((id) => colorMap[id] || null, [colorMap]);
+  const setFaciesColor = useCallback(async (id, color) => {
+    await runQuery("facies/set-color", { id, color }, ResultMask.none);
+    updateFacies();
+  }, []);
+
   useEffect(() => {
+    if (facies == null) return;
     let __colorMap = {};
     for (let f of Array.from(facies)) {
       // @ts-ignore
@@ -22,12 +30,6 @@ function FaciesProvider(props: any) {
     }
     setColorMap(__colorMap);
   }, [facies]);
-
-  const getFaciesColor = useCallback((id) => colorMap[id] || null, [colorMap]);
-  const setFaciesColor = useCallback(async (id, color) => {
-    await runQuery("facies/set-color", { id, color }, ResultMask.none);
-    updateFacies();
-  }, []);
 
   const value = {
     facies,
