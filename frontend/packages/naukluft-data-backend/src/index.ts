@@ -31,8 +31,16 @@ export const runQuery = async function (
       if (key.endsWith(".sql")) {
         throw "Can't run SQL file on frontend!";
       }
-      const res = await get("http://localhost:5555" + key, params);
-      return res;
+      const res = await get("http://localhost:5555/" + key, {
+        ...params,
+        __qrm: resultMask,
+      });
+      if (res.status == 200) {
+        let { data } = res;
+        return data;
+      } else {
+        throw `Invalid response for key: ${key}`;
+      }
     default:
       const { runBackendQuery } = require("./database");
       return await runBackendQuery(key, params, resultMask);

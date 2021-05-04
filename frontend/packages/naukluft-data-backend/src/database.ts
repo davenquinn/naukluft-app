@@ -36,4 +36,5 @@ async function runBackendQuery(
   return await db.query(storedProcedure(fn), params, resultMask);
 }
 
+export { queryResult as ResultMask };
 export { db, storedProcedure, helpers, pgp, runBackendQuery };

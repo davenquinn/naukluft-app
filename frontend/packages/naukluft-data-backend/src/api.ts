@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import { sync as glob } from "glob";
 import { join, resolve } from "path";
-import { runQuery } from "./index";
+import { ResultMask, runBackendQuery } from "./database";
 
 const app = express().disable("x-powered-by");
 if (process.env.NODE_ENV !== "production") {
@@ -13,12 +13,17 @@ const baseDir = resolve(__dirname, "..", "sql");
 
 const helpRoutes: string[] = [];
 
+interface Params {
+  [key: string]: any;
+  __qrm?: ResultMask;
+}
+
 for (const fn of glob(join(baseDir, "**/*.sql"))) {
   const newFn = fn.replace(baseDir, "").slice(0, -4);
   helpRoutes.push(newFn);
   app.get(newFn, async (req, res) => {
-    const params = req.query;
-    const queryResult = await runQuery(newFn, params);
+    const { __qrm, ...params }: Params = req.query;
+    const queryResult = await runBackendQuery(newFn, params, __qrm);
     res.json(queryResult);
   });
 }
