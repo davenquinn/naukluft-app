@@ -53,6 +53,7 @@ const SectionObserverContext = createContext({});
 class SectionPositionProvider extends Component {
   constructor(props) {
     super(props);
+    this.mounted = false;
     this.setPosition = this.setPosition.bind(this);
     this.accumulateChanges = this.accumulateChanges.bind(this);
     this.update = this.update.bind(this);

@@ -67,6 +67,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@turf/polygonize": "^5.1.5",
+    "@types/cors": "^2.8.10",
     "@types/morgan": "^1.9.2",
     "@types/node": "^15.0.1",
     "bezier-js": "^2.3.1",

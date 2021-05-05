@@ -1,54 +1,58 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import { createContext, Component } from "react";
-import h from "react-hyperscript";
-import update from "immutability-helper";
-import LocalStorage from "./storage";
+import React, { createContext, useMemo, useEffect } from "react";
+import h from "@macrostrat/hyper";
+import { useStoredState } from "@macrostrat/ui-components";
 
-const SequenceStratContext = createContext({});
+const noop = () => {};
+interface SequenceStratState {
+  showTriangleBars: boolean;
+  showFloodingSurfaces: boolean;
+  sequenceStratOrder: [number, number];
+}
+interface SequenceStratActions {
+  updateState(val: SequenceStratState): void;
+  toggleBooleanState(key: string): () => void;
+}
 
-class SequenceStratProvider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showTriangleBars: true,
-      showFloodingSurfaces: false,
-      sequenceStratOrder: [0, 1],
-    };
+type SequenceStratCtx = SequenceStratState & SequenceStratActions;
 
-    this.storage = new LocalStorage("sequence-strat");
-    const v = this.storage.get();
-    if (v == null) {
-      return;
-    }
-    this.state = update(this.state, { $merge: v });
-  }
+const defaultState: SequenceStratState = {
+  showTriangleBars: true,
+  showFloodingSurfaces: false,
+  sequenceStratOrder: [0, 1],
+};
 
-  render() {
-    const actions = {
-      updateState: (val) => this.setState(val),
-      toggleBooleanState: (key) => {
-        return () => {
-          const obj = {};
-          obj[key] = !this.state[key];
-          return this.setState(obj);
-        };
+const SequenceStratContext = createContext<SequenceStratCtx>({
+  ...defaultState,
+  updateState(val) {},
+  toggleBooleanState(key) {
+    return noop;
+  },
+});
+
+function SequenceStratProvider({ children }: { children: React.ReactNode }) {
+  const [state, setState] = useStoredState("sequence-strat", defaultState);
+
+  // Merge initial state to handle edge cases
+  // We should maybe integrate this error checking into the useStoredState hook
+  useEffect(() => {
+    const stateObj = state ?? {};
+    setState({ ...defaultState, ...stateObj });
+  }, []);
+
+  const value = useMemo((): SequenceStratCtx => {
+    return {
+      ...state,
+      updateState: (val) => setState(val),
+      toggleBooleanState: (
+        key: "showTriangleBars" | "showFloodingSurfaces"
+      ) => () => {
+        let newState = { ...state };
+        newState[key] = !state[key];
+        setState(newState);
       },
     };
-    const value = { ...this.state, actions };
-    return h(SequenceStratContext.Provider, { value }, this.props.children);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState === this.state) {
-      return;
-    }
-    return this.storage.set(this.state);
-  }
+  }, [state]);
+  return h(SequenceStratContext.Provider, { value }, children);
 }
 
 const SequenceStratConsumer = SequenceStratContext.Consumer;

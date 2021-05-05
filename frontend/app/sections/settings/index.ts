@@ -4,16 +4,17 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import { Component, useContext } from "react";
+import { useContext } from "react";
 import h from "@macrostrat/hyper";
-import { CSSTransition } from "react-transition-group";
-import { Switch, RangeSlider, Button } from "@blueprintjs/core";
+import { Switch, RangeSlider } from "@blueprintjs/core";
 import { PlatformContext } from "../../platform";
-import { PickerControl } from "@macrostrat/column-components";
+import {
+  PickerControl,
+  useSettings,
+  updateSettings,
+} from "@macrostrat/column-components";
 import { SequenceStratContext } from "../sequence-strat-context";
 import { AppDrawer } from "~/components";
-import classNames from "classnames";
-import { useSettings, updateSettings } from "@macrostrat/column-components";
 import T from "prop-types";
 import "./main.styl";
 
@@ -53,7 +54,7 @@ SettingsPicker.propTypes = {
 };
 
 const EditModeControl = function (props) {
-  const { WEB, inEditMode, updateState } = useContext(PlatformContext);
+  const { inEditMode, updateState } = useContext(PlatformContext);
   return h(Switch, {
     checked: inEditMode,
     label: "Allow editing",

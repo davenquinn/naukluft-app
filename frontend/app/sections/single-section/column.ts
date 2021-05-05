@@ -117,6 +117,8 @@ const SectionInner = (props: SectionInnerProps) => {
 
   const { inEditMode } = useContext(PlatformContext);
 
+  console.log(padding);
+
   // Set text of header for appropriate zoom level
   let txt = zoom > 0.5 ? "Section " : "";
   txt += id;

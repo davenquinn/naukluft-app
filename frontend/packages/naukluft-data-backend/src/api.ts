@@ -3,11 +3,14 @@ import morgan from "morgan";
 import { sync as glob } from "glob";
 import { join, resolve } from "path";
 import { ResultMask, runBackendQuery } from "./database";
+import cors from "cors";
 
 const app = express().disable("x-powered-by");
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
+
+app.use(cors());
 
 const baseDir = resolve(__dirname, "..", "sql");
 
