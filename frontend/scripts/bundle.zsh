@@ -3,7 +3,9 @@ dist="dist-web"
 repo_dir=$(git rev-parse --show-toplevel)
 # Copy web images
 images="$repo_dir/data/column-images"
-rsync -av --delete "$images/" "$dist/section-images/"
+image_dist="$dist/section-images"
+rm -f "$image_dist"
+ln -s "$images" "$image_dist"
 
 # Copy geologic patterns and symbols
 patterns=app/node_modules/geologic-patterns/assets/png
