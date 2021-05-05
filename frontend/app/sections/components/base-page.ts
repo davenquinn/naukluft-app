@@ -7,11 +7,13 @@ import { useState } from "react";
 import h from "@macrostrat/hyper";
 import T from "prop-types";
 import { SectionNavigationControl } from "../util";
-import { Drawer } from "@blueprintjs/core";
+//import { ErrorBoundary } from "@macrostrat/ui-components";
 import { SettingsProvider } from "@macrostrat/column-components";
 import classNames from "classnames";
 
-const BaseSectionPage = function (props) {
+const ErrorBoundary = ({ children }) => children;
+
+const BaseSectionPage = function(props) {
   let {
     children,
     id,
@@ -28,34 +30,38 @@ const BaseSectionPage = function (props) {
   console.log(children);
 
   return h(
-    SettingsProvider,
-    {
-      storageID: id,
-      ...defaultSettings,
-    },
-    [
-      h("div.page.section-page", { className }, [
-        h("div.left-panel", [
-          h("div.panel-container", [
-            h(SectionNavigationControl, { toggleSettings }),
-            children,
+    ErrorBoundary,
+    null,
+    h(
+      SettingsProvider,
+      {
+        storageID: id,
+        ...defaultSettings
+      },
+      [
+        h("div.page.section-page", { className }, [
+          h("div.left-panel", [
+            h("div.panel-container", [
+              h(SectionNavigationControl, { toggleSettings }),
+              children
+            ])
           ]),
-        ]),
-        h(settingsPanel, {
-          isOpen: showSettings,
-          onClose() {
-            return setShowSettings(false);
-          },
-        }),
-      ]),
-    ]
+          h(settingsPanel, {
+            isOpen: showSettings,
+            onClose() {
+              return setShowSettings(false);
+            }
+          })
+        ])
+      ]
+    )
   );
 };
 
 BaseSectionPage.propTypes = {
   className: T.string,
   id: T.string.isRequired,
-  settingsPanel: T.elementType.isRequired,
+  settingsPanel: T.elementType.isRequired
 };
 
 export { BaseSectionPage };

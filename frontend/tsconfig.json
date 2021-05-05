@@ -1,6 +1,6 @@
 {
-  "baseUrl": ".",
   "compilerOptions": {
+    "baseUrl": ".",
     "moduleResolution": "node",
     "target": "es6",
     "module": "commonjs",
@@ -14,8 +14,10 @@
     "esModuleInterop": true,
     "paths": {
       "~/*": ["./app/*"],
-      "@macrostrat/column-components": ["./packages/column-components/src/*"]
+      "@macrostrat/column-components": ["packages/column-components/src/"],
+      "@macrostrat/ui-components": ["packages/ui-components/src/"],
+      "naukluft-data-backend": ["packages/naukluft-data-backend/src"]
     }
   },
-  "include": ["app", "packages/naukluft-data-backend/src"]
+  "include": ["app"]
 }
