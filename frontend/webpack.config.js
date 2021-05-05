@@ -29,7 +29,7 @@ const define = new DefinePlugin({
 const uglify = new UglifyJsPlugin();
 
 const plugins = [browserSync, define];
-const ignores = [/^pg-promise/, /^electron/, /^pg/, /^fs/];
+const ignores = [/^electron/, /^pg/, /^fs/];
 
 for (let i of Array.from(ignores)) {
   plugins.push(new IgnorePlugin(i));

@@ -6,12 +6,12 @@ import h from "react-hyperscript";
 
 const fmt = format("+.1f");
 
-const Samples = (props) => {
+const Samples = (props: { section_id: string }) => {
   const { section_id } = props;
   const { scale, zoom } = useContext(ColumnContext);
   const { isotopes } = useContext(IsotopesDataContext);
-  if (isotopes == null) return null;
-  const samples = isotopes.get(section_id);
+  const samples = isotopes?.get(section_id);
+  if (samples == null) return null;
 
   return h(
     "g.samples",

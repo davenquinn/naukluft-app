@@ -1,34 +1,11 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import { Component } from "react";
-import h from "react-hyperscript";
-import { query } from "~/db";
+import h from "@macrostrat/hyper";
+import { useQuery } from "naukluft-data-backend";
 import { LithologyProvider } from "@macrostrat/column-components";
-import q from "~/data-backend/sql/sections/lithology.sql";
 
-class OurLithologyProvider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { lithologies: [] };
-  }
+function OurLithologyProvider(props) {
+  const lithologies = useQuery("sections/lithology") ?? [];
 
-  getLithologies = async () => {
-    const lithologies = await query(q);
-    return this.setState({ lithologies });
-  };
-
-  componentDidMount() {
-    return this.getLithologies();
-  }
-
-  render() {
-    const { lithologies } = this.state;
-    const { children } = this.props;
-    return h(LithologyProvider, { lithologies }, children);
-  }
+  return h(LithologyProvider, { lithologies }, props.children);
 }
 
 export { OurLithologyProvider as LithologyProvider };

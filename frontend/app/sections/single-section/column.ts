@@ -27,6 +27,7 @@ import {
   LithologyColumnInner,
   DivisionEditOverlay,
 } from "@macrostrat/column-components";
+import { ResultMask, useQueryRunner } from "naukluft-data-backend";
 
 import Samples from "./samples";
 import { ManagedSymbolColumn } from "../components";
@@ -37,10 +38,6 @@ import { SequenceStratContext } from "../sequence-strat-context";
 
 import { ManagedNotesColumn } from "./notes";
 import { FaciesTractIntervals } from "../column/facies-tracts";
-
-import { db, storedProcedure } from "~/sections/db";
-import addIntervalQuery from "../sql/add-interval.sql";
-import removeIntervalQuery from "../sql/remove-interval.sql";
 
 const fmt = format(".1f");
 
@@ -119,6 +116,8 @@ const SectionInner = (props: SectionInnerProps) => {
   } = useContext(SequenceStratContext);
 
   const { inEditMode } = useContext(PlatformContext);
+
+  console.log(padding);
 
   // Set text of header for appropriate zoom level
   let txt = zoom > 0.5 ? "Section " : "";
@@ -275,6 +274,7 @@ SectionInner.defaultProps = {
 const SectionComponent = (props: SectionProps) => {
   const { inEditMode: isEditable } = useContext(PlatformContext);
   const { updateDivisions } = useContext(ColumnDivisionsContext);
+  const dispatch = useQueryRunner();
 
   const { id: section_id } = props;
   const divisions = useColumnDivisions(section_id);
@@ -293,8 +293,11 @@ const SectionComponent = (props: SectionProps) => {
   }
 
   async function addInterval(height: number) {
-    const sql = storedProcedure(addIntervalQuery);
-    const { id: newID } = await db.one(sql, { section: section_id, height });
+    const { id: newID } = await dispatch(
+      "section/add-interval",
+      { section: section_id, height },
+      ResultMask.one
+    );
     const { id: oldID, height: newHeight } = editingInterval;
     let interval: EditingInterval = nullDivision;
 
@@ -305,9 +308,12 @@ const SectionComponent = (props: SectionProps) => {
   }
 
   async function removeInterval(id: number) {
-    const sql = storedProcedure(removeIntervalQuery);
-    await db.none(sql, { section: section_id, id });
-    updateDivisions();
+    await dispatch(
+      "section/remove-interval",
+      { section: section_id, id },
+      ResultMask.none
+    );
+    await updateDivisions();
     setEditingInterval(nullDivision);
   }
 

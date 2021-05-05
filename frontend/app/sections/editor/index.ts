@@ -1,5 +1,4 @@
-let helpers;
-import { Component, useContext } from "react";
+import { useContext } from "react";
 import {
   Button,
   Intent,
@@ -12,46 +11,29 @@ import { AppDrawer } from "~/components";
 import { DeleteButton } from "@macrostrat/ui-components";
 import { format } from "d3-format";
 
-import { FaciesContext } from "@macrostrat/column-components";
-import { PickerControl } from "@macrostrat/column-components";
-import {
-  LabeledControl,
-  IntervalEditorTitle,
-} from "@macrostrat/column-components";
-
 import { ColumnDivision, ColumnDivisionsContext } from "../column/data-source";
 import {
+  FaciesContext,
+  PickerControl,
+  LabeledControl,
+  IntervalEditorTitle,
   LithologyPicker,
   LithologySymbolPicker,
-} from "@macrostrat/column-components";
-import {
   SurfaceOrderSlider,
   BoundaryStyleControl,
   RaisedSelect,
+  FaciesPicker,
+  grainSizes,
 } from "@macrostrat/column-components";
 import {
   CorrelatedSurfaceControl,
   DivisionNavigationControl,
   Direction,
 } from "./controls";
-import { FaciesPicker } from "@macrostrat/column-components";
 import { SequenceStratControls } from "./sequence-strat";
-
-import { grainSizes } from "@macrostrat/column-components";
-import { dirname } from "path";
 import { hyperStyled } from "@macrostrat/hyper";
 import styles from "./style.styl";
 const h = hyperStyled(styles);
-
-import { db, storedProcedure, query } from "~/sections/db";
-
-const baseDir = dirname(require.resolve(".."));
-const sql = (id) => storedProcedure(id, { baseDir });
-try {
-  ({ helpers } = require("~/db/backend"));
-} catch (error) {
-  ({});
-}
 
 const floodingSurfaceOrders = [-1, -2, -3, -4, -5, null, 5, 4, 3, 2, 1];
 
@@ -118,13 +100,16 @@ const FaciesTractControl = function (props) {
 };
 
 const updateIntervalQuery = async function (id, columns) {
+  // Should replace this with a hook of some sort...
+  const { helpers, db } = require("naukluft-data-backend/src/database");
+
   const { TableName, update } = helpers;
   const tbl = new TableName("section_lithology", "section");
 
-  let s = helpers.update(columns, null, tbl);
-  s += ` WHERE id=${id}`;
-  console.log(s);
-  return await db.none(s);
+  let sql = helpers.update(columns, null, tbl);
+  sql += ` WHERE id=${id}`;
+  console.log(sql);
+  return await db.none(sql);
 };
 
 interface IntervalControlsProps {

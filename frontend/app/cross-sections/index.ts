@@ -11,7 +11,6 @@ import { SVG, expandInnerSize } from "@macrostrat/column-components";
 import { useQuery } from "~/db";
 import { useDarkMode } from "~/platform";
 import { NavigationControl } from "~/components";
-import { scaleLinear } from "d3-scale";
 import { line } from "d3-shape";
 
 import { hyperStyled } from "@macrostrat/hyper";

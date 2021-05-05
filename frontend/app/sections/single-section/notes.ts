@@ -1,24 +1,18 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { format } from "d3-format";
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback, useMemo } from "react";
 import h from "@macrostrat/hyper";
-import useAsyncEffect from "use-async-effect";
-import logNotesQuery from "../sql/log-notes.sql";
-import updateNoteQuery from "../sql/update-note.sql";
-import setNoteInvisible from "../sql/set-note-invisible.sql";
 import { PlatformContext, Platform } from "~/platform";
 import { NoteEditorContext, NotesColumn } from "@macrostrat/column-components";
+import {
+  ResultMask,
+  useQueryRunner,
+  useUpdateableQuery,
+} from "naukluft-data-backend";
 
 // import {
 //   PhotoOverlay
 // } from "@macrostrat/column-components/photos"
 //
-import { db, query, storedProcedure } from "~/db";
 
 const fmt = format(".1f");
 
@@ -66,41 +60,39 @@ const PhotoNoteComponent = function (props) {
 };
 
 const ManagedNotesColumn = function (props) {
-  const { platform, inEditMode } = useContext(PlatformContext);
-
   const { id, ...rest } = props;
-  let [notes, setNotes] = useState([]);
+  const { platform, inEditMode } = useContext(PlatformContext);
+  const dispatch = useQueryRunner();
+  const params = useMemo(() => [id], [id]);
 
-  // State management
-  const updateNotes = async function () {
-    notes = await query(logNotesQuery, [id]);
-    console.log(notes);
-    return setNotes(notes);
-  };
+  const [baseNotes, updateNotes] = useUpdateableQuery(
+    "section/notes/log-notes",
+    params
+  );
 
-  // Get initial notes from query
-  useAsyncEffect(updateNotes, []);
+  const notes = baseNotes ?? [];
 
-  const onUpdateNote = async function (newNote, v) {
-    let sql;
-    if (newNote == null) {
-      return;
-    }
-    const { note: newText, id: noteID } = newNote;
-    // We can't edit on the frontend
-    if (platform !== Platform.ELECTRON) {
-      return;
-    }
-    if (newText.length === 0) {
-      sql = storedProcedure(setNoteInvisible);
-      await db.none(sql, [noteID]);
-    } else {
-      sql = storedProcedure(updateNoteQuery);
-      await db.none(sql, [noteID, newText]);
-    }
-    updateNotes();
-    return console.log(`Note ${noteID} edited`);
-  };
+  const onUpdateNote = useCallback(
+    async function (newNote, v) {
+      if (newNote == null || dispatch == null) {
+        return;
+      }
+      const { note: newText, id: noteID } = newNote;
+      // We can't edit on the frontend
+      if (newText.length === 0) {
+        await dispatch(
+          "section/notes/set-invisible",
+          [noteID],
+          ResultMask.none
+        );
+      } else {
+        await dispatch("section/notes/update-note", [noteID], ResultMask.none);
+      }
+      updateNotes();
+      console.log(`Note ${noteID} edited`);
+    },
+    [dispatch]
+  );
 
   const editable = inEditMode;
   //if platform != Platform.ELECTRON

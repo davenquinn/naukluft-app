@@ -5,15 +5,16 @@
   "main": "index.js",
   "scripts": {
     "watch:main": "electron-webpack dev",
-    "watch:column": "npm --prefix packages/column-components run dev",
     "watch:web": "scripts/bundle.zsh",
     "compile:web": "webpack -c webpack.config.js",
-    "start": "concurrently npm:watch:main npm:watch:column",
+    "start": "npm run watch:main",
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently npm:watch:column npm:watch:web",
+    "dev": "npm:watch:web",
     "figures": "cd app && figment --spec ./figure-spec.js",
-    "postinstall": "lerna bootstrap --hoist"
+    "postinstall": "lerna bootstrap --hoist",
+    "watch:api": "nodemon",
+    "start:api": "ts-node packages/naukluft-data-backend/src/api.ts"
   },
   "workspaces": [
     "packages/*",
@@ -65,6 +66,9 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@turf/polygonize": "^5.1.5",
+    "@types/cors": "^2.8.10",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^15.0.1",
     "bezier-js": "^2.3.1",
     "bluebird": "^3.4.7",
     "browser-request": "^0.3.3",

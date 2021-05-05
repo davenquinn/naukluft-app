@@ -11,9 +11,8 @@ import * as d3 from "d3";
 import "d3-selection-multi";
 import "d3-jetpack";
 import "d3-scale-chromatic";
-import h from "react-hyperscript";
-
-import { query } from "../sections/db";
+import h from "@macrostrat/hyper";
+import { runQuery } from "naukluft-data-backend";
 
 class CarbonIsotopesPage extends Component {
   static initClass() {
@@ -48,7 +47,7 @@ class CarbonIsotopesPage extends Component {
   }
 
   componentDidMount() {
-    query("carbon-isotopes").then((rows) => {
+    runQuery("sections/carbon-isotopes").then((rows) => {
       console.log(rows);
       return this.setState({ data: rows });
     });

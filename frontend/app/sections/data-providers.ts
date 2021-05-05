@@ -1,8 +1,7 @@
 import { getJSON } from "../util";
 import { join, resolve } from "path";
 import useAsyncEffect from "use-async-effect";
-import { createContext, useContext, useState } from "react";
-import { query, useQuery } from "~/db";
+import React, { createContext, useContext, useState } from "react";
 import { FaciesProvider } from "./facies";
 import { LithologyProvider } from "./lithology";
 import { PlatformContext } from "../platform";
@@ -13,9 +12,8 @@ import { ColumnDivisionsProvider } from "./column/data-source";
 import { SymbolProvider } from "./components/symbols";
 import h, { compose } from "@macrostrat/hyper";
 import { IsotopesDataProvider } from "./summary-sections/chemostrat/data-manager";
-import photoQuery from "./sql/photo.sql";
-import sectionsQuery from "./sql/sections.sql";
 import "./main.styl";
+import { runQuery, useQuery } from "naukluft-data-backend";
 
 const sectionFilename = function (fn) {
   if (PLATFORM === ELECTRON) {
@@ -42,9 +40,7 @@ const getSectionData = async function (opts = {}) {
   const fn = sectionFilename("file-info.json");
   const config = await getJSON(fn);
 
-  console.log(sectionsQuery);
-
-  const data = await query(sectionsQuery);
+  const data = await runQuery("sections/sections");
   return data.map(function (s) {
     s.id = s.section.trim();
     const files = config[s.id] ?? [];
@@ -71,21 +67,27 @@ const getSectionData = async function (opts = {}) {
 
 const PhotoLibraryProvider = function ({ children }) {
   const { computePhotoPath } = useContext(PlatformContext);
-  const photos = useQuery(photoQuery);
+  const photos = useQuery("sections/photo");
   return h(BasePhotoLibraryProvider, { photos, computePhotoPath }, children);
 };
 
 const SectionDataContext = createContext<SectionData[]>([]);
-const SectionProvider = ({ children }) => {
+
+function useSectionData() {
   const [sections, setSections] = useState<SectionData[] | null>(null);
   useAsyncEffect(async () => setSections(await getSectionData()), []);
+  return sections;
+}
+
+const SectionProvider = ({ children }: React.PropsWithChildren<{}>) => {
+  const sections = useSectionData();
   if (sections == null) return null;
   return h(SectionDataContext.Provider, { value: sections }, children);
 };
 
 const useSection = (id: string): SectionData | null => {
   const sections: SectionData[] = useContext(SectionDataContext);
-  return sections.find((d) => d.id == id);
+  return sections.find((d) => d.id == id) ?? null;
 };
 
 const SectionDataProvider = compose(
