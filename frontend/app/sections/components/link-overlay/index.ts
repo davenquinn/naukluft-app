@@ -113,8 +113,11 @@ class SectionPositionProvider extends Component {
     if (this.spec == null) {
       return;
     }
+    // This only works because we have a sningle component
+    if (!this.mounted) {
+      return;
+    }
     const value = update(this.state.value, this.spec);
-    console.log(this.spec);
     this.spec = null;
     return this.setState({ value });
   }
@@ -136,6 +139,14 @@ class SectionPositionProvider extends Component {
         ]),
       ]
     );
+  }
+
+  componentDidMount() {
+    this.mounted = true;
+  }
+  componentWillUnmount() {
+    // This is a horrible hack but it seems to work...
+    this.mounted = false;
   }
 }
 
