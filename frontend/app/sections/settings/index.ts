@@ -82,7 +82,7 @@ const SerializedQueriesControl = function (props) {
 
 const SequenceStratControlPanel = function (props) {
   const value = useContext(SequenceStratContext);
-  const { actions } = value;
+  const { actions, ...rest } = value;
   return h("div", props, [
     h("h3", "Sequence stratigraphy"),
     h(Switch, {
@@ -100,8 +100,8 @@ const SequenceStratControlPanel = function (props) {
       max: 5,
       stepSize: 1,
       value: value.sequenceStratOrder,
-      onChange(v) {
-        return actions.updateState({ sequenceStratOrder: v });
+      onChange(v: [number, number]) {
+        return actions.updateState({ ...rest, sequenceStratOrder: v });
       },
     }),
   ]);

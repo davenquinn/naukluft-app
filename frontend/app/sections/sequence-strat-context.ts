@@ -13,7 +13,9 @@ interface SequenceStratActions {
   toggleBooleanState(key: string): () => void;
 }
 
-type SequenceStratCtx = SequenceStratState & SequenceStratActions;
+type SequenceStratCtx = SequenceStratState & {
+  actions: SequenceStratActions;
+};
 
 const defaultState: SequenceStratState = {
   showTriangleBars: true,
@@ -23,9 +25,11 @@ const defaultState: SequenceStratState = {
 
 const SequenceStratContext = createContext<SequenceStratCtx>({
   ...defaultState,
-  updateState(val) {},
-  toggleBooleanState(key) {
-    return noop;
+  actions: {
+    updateState(val) {},
+    toggleBooleanState(key) {
+      return noop;
+    },
   },
 });
 
@@ -35,20 +39,33 @@ function SequenceStratProvider({ children }: { children: React.ReactNode }) {
   // Merge initial state to handle edge cases
   // We should maybe integrate this error checking into the useStoredState hook
   useEffect(() => {
-    const stateObj = state ?? {};
-    setState({ ...defaultState, ...stateObj });
+    let stateObj: SequenceStratState = state ?? {};
+
+    // TODO: this is a hack to get display variables back the way we want them...
+    // we should make this function much more robust and integrate wth other things...
+    if (
+      !Array.isArray(stateObj.sequenceStratOrder) ||
+      stateObj.sequenceStratOrder.length == 2
+    ) {
+      delete stateObj.sequenceStratOrder;
+    }
+    stateObj = { ...defaultState, ...stateObj };
+
+    setState(stateObj);
   }, []);
 
   const value = useMemo((): SequenceStratCtx => {
     return {
       ...state,
-      updateState: (val) => setState(val),
-      toggleBooleanState: (
-        key: "showTriangleBars" | "showFloodingSurfaces"
-      ) => () => {
-        let newState = { ...state };
-        newState[key] = !state[key];
-        setState(newState);
+      actions: {
+        updateState: (val) => setState(val),
+        toggleBooleanState: (
+          key: "showTriangleBars" | "showFloodingSurfaces"
+        ) => () => {
+          let newState = { ...state };
+          newState[key] = !state[key];
+          setState(newState);
+        },
       },
     };
   }, [state]);

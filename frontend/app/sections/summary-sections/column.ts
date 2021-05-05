@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import T from "prop-types";
-import { useSettings } from "@macrostrat/column-components";
+import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { EditorContext } from "./editor";
 
@@ -8,25 +7,22 @@ import {
   GrainsizeLayoutProvider,
   ColumnSVG,
   ColumnBox,
-} from "@macrostrat/column-components";
-import { ColumnAxis } from "@macrostrat/column-components";
-
-import { ManagedSymbolColumn } from "../components";
-import { FloodingSurface, TriangleBars } from "@macrostrat/column-components";
-import {
+  FloodingSurface,
+  TriangleBars,
   LithologyColumn,
   GeneralizedSectionColumn,
-} from "@macrostrat/column-components";
-import { SequenceStratContext } from "../sequence-strat-context";
-import { SummaryColumnProvider } from "./data-provider";
-import { ColumnContext } from "@macrostrat/column-components";
-import {
   SimplifiedLithologyColumn,
   CoveredOverlay,
   FaciesColumnInner,
+  ColumnContext,
+  ColumnAxis,
+  DivisionEditOverlay,
+  useSettings,
 } from "@macrostrat/column-components";
-import { DivisionEditOverlay } from "@macrostrat/column-components";
 
+import { ManagedSymbolColumn } from "../components";
+import { SequenceStratContext } from "../sequence-strat-context";
+import { SummaryColumnProvider } from "./data-provider";
 import { ColumnTracker } from "../components/link-overlay";
 import { PlatformContext } from "../../platform";
 import { MinimalIsotopesColumn } from "./chemostrat";
@@ -226,6 +222,8 @@ const SVGSectionInner = function (props) {
       underlayPaddingLeft -= 35 + triangleBarTranslate;
     }
   }
+
+  console.log(sequenceStratOrder, overallWidth);
 
   const floodingSurfaceStart = 42;
 
