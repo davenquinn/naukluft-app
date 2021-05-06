@@ -4,7 +4,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import { Component, createContext } from "react";
+import { Component } from "react";
 import "./main.styl";
 import styles from "./section-index.styl";
 // We should really resolve this from the /src directory...

@@ -10,7 +10,7 @@
     "start": "npm run watch:main",
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm:watch:web",
+    "dev": "npm run watch:web",
     "figures": "cd app && figment --spec ./figure-spec.js",
     "postinstall": "lerna bootstrap --hoist",
     "watch:api": "nodemon",

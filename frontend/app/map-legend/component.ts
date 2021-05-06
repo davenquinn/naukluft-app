@@ -14,9 +14,6 @@ import createLegend from ".";
 import "./main.styl";
 
 class MapLegend extends Component {
-  static initClass() {
-    this.defaultProps = {};
-  }
   constructor(props) {
     super(props);
     this.state = { data: [] };
@@ -30,6 +27,5 @@ class MapLegend extends Component {
     return createLegend(el);
   }
 }
-MapLegend.initClass();
 
 export default MapLegend;

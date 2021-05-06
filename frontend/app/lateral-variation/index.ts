@@ -1,28 +1,24 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import * as d3 from "d3";
 import "d3-selection-multi";
-import Promise from "bluebird";
-import chroma from "chroma-js";
 import { flatten, zip } from "underscore";
 import "./main.styl";
 import "../main.styl";
-import { query as baseQuery } from "../db";
 import labels from "./labels.json";
+import { useRef, useEffect } from "react";
+import { useQuery } from "naukluft-data-backend";
+import h from "@macrostrat/hyper";
 
-const query = (id) => baseQuery(id, null, { baseDir: __dirname });
-
-const createVisualization = function (el, units, sections, surfaces) {
+const createVisualization = function(
+  el: HTMLElement,
+  units: any[],
+  sections: any[],
+  surfaces: any[]
+) {
   const wrap = d3.select(el);
 
   const size = {
     width: 1200,
-    height: 1000,
+    height: 1000
   };
 
   const svg = wrap.append("svg").attrs(size);
@@ -31,7 +27,7 @@ const createVisualization = function (el, units, sections, surfaces) {
 
   const locations = d3
     .nest()
-    .key((d) => d.location)
+    .key(d => d.location)
     .entries(sections);
 
   const marginX = 20;
@@ -56,7 +52,10 @@ const createVisualization = function (el, units, sections, surfaces) {
     i += Math.floor(padding / (locations.length - 1));
   }
 
-  const x = d3.scaleOrdinal().domain(domain).range(range);
+  const x = d3
+    .scaleOrdinal()
+    .domain(domain)
+    .range(range);
 
   const y = d3
     .scaleLinear()
@@ -65,16 +64,16 @@ const createVisualization = function (el, units, sections, surfaces) {
 
   const areaPath = d3
     .area()
-    .x((d) => d[0])
-    .y0((d) => y(d[1]))
-    .y1((d) => y(d[2]));
+    .x(d => d[0])
+    .y0(d => y(d[1]))
+    .y1(d => y(d[2]));
 
   const linePath = d3
     .line()
-    .x((d) => d[0])
-    .y((d) => y(d[1]));
+    .x(d => d[0])
+    .y(d => y(d[1]));
 
-  const applyEdges = function (v) {
+  const applyEdges = function(v) {
     i = v[0].slice();
     const j = v[v.length - 1].slice();
     i[0] -= marginX;
@@ -83,37 +82,44 @@ const createVisualization = function (el, units, sections, surfaces) {
     return v.push(j);
   };
 
-  const double = function (a, b) {
+  const double = function(a, b) {
     if (b == null) {
       b = a;
     }
     return flatten(zip(a, b));
   };
 
-  const createX = function (d) {
+  const createX = function(d) {
     const xv = d.section.map(x);
     return double(
       xv,
-      xv.map((d) => d + 20)
+      xv.map(d => d + 20)
     );
   };
 
-  const areaGenerator = function (d) {
+  const areaGenerator = function(d) {
     const v = zip(createX(d), double(d.start), double(d.end));
     applyEdges(v);
     return areaPath(v);
   };
 
-  const lineGenerator = function (d) {
+  const lineGenerator = function(d) {
     const v = zip(createX(d), double(d.height));
     applyEdges(v);
     return linePath(v);
   };
 
   const sv = [0, 700];
-  const ys = d3.scaleLinear().domain(sv).range(sv.map(y));
+  const ys = d3
+    .scaleLinear()
+    .domain(sv)
+    .range(sv.map(y));
 
-  const yAxis = d3.axisLeft().scale(ys).ticks(10).tickSize(10);
+  const yAxis = d3
+    .axisLeft()
+    .scale(ys)
+    .ticks(10)
+    .tickSize(10);
 
   const mid = svg.append("g");
   const v = svg.append("g");
@@ -121,7 +127,7 @@ const createVisualization = function (el, units, sections, surfaces) {
 
   const ax = svg.append("g").attrs({
     class: "axis",
-    transform: `translate(${scaleSize - 20} 0)`,
+    transform: `translate(${scaleSize - 20} 0)`
   });
 
   ax.append("g").call(yAxis);
@@ -130,7 +136,7 @@ const createVisualization = function (el, units, sections, surfaces) {
     .text("Stratigraphic Height (m)")
     .attrs({
       class: "label",
-      transform: `translate(-50,${y(350)}) rotate(-90)`,
+      transform: `translate(-50,${y(350)}) rotate(-90)`
     });
 
   let sel = mid.selectAll("g").data(units);
@@ -142,7 +148,7 @@ const createVisualization = function (el, units, sections, surfaces) {
       return d.color;
     },
     "fill-opacity": 0.7,
-    stroke: "transparent",
+    stroke: "transparent"
   });
 
   g.append("path").attrs({
@@ -151,7 +157,7 @@ const createVisualization = function (el, units, sections, surfaces) {
       return `url(#${d.dominant_lithology})`;
     },
     "fill-opacity": 0.7,
-    stroke: "transparent",
+    stroke: "transparent"
   });
 
   sel = v.selectAll("path").data(surfaces);
@@ -165,13 +171,13 @@ const createVisualization = function (el, units, sections, surfaces) {
       stroke: "black",
       "stroke-width"(d) {
         return d.weight;
-      },
+      }
     });
 
   // Lay out sections
   sel = bkg.selectAll("g.section").data(sections);
 
-  const xloc = (d) => x(d.section.trim());
+  const xloc = d => x(d.section.trim());
 
   g = sel
     .enter()
@@ -180,7 +186,7 @@ const createVisualization = function (el, units, sections, surfaces) {
       class: "section",
       transform(d) {
         return `translate(${xloc(d)} ${y(d.end)})`;
-      },
+      }
     });
 
   g.append("rect").attrs({
@@ -190,15 +196,17 @@ const createVisualization = function (el, units, sections, surfaces) {
     width: 20,
     height(d) {
       return y(d.start) - y(d.end);
-    },
+    }
   });
 
   g = bkg.append("g").attrs({
     class: "sections",
-    transform: `translate(0 ${size.height - 60})`,
+    transform: `translate(0 ${size.height - 60})`
   });
 
-  g.append("text").attrs({ class: "label smaller" }).text("Section");
+  g.append("text")
+    .attrs({ class: "label smaller" })
+    .text("Section");
 
   const names = g.selectAll("text.name").data(sections);
 
@@ -207,16 +215,19 @@ const createVisualization = function (el, units, sections, surfaces) {
     .append("text")
     .attrs({
       class: "name",
-      x: xloc,
+      x: xloc
     })
-    .text((d) => d.section.trim());
+    .text(d => d.section.trim());
 
   const locales = svg.append("g").attrs({
     class: "locality",
-    transform: `translate(0 ${size.height - 10})`,
+    transform: `translate(0 ${size.height - 10})`
   });
 
-  locales.append("text").attrs({ class: "label smaller" }).text("Locality");
+  locales
+    .append("text")
+    .attrs({ class: "label smaller" })
+    .text("Locality");
 
   sel = locales.selectAll("text.loc").data(labels.locality);
 
@@ -227,24 +238,24 @@ const createVisualization = function (el, units, sections, surfaces) {
       class: "loc",
       transform(d) {
         return `translate(${d.x} 0)`;
-      },
+      }
     });
 
-  g.append("tspan").text((d) => d.t1);
+  g.append("tspan").text(d => d.t1);
 
   g.append("tspan")
-    .text((d) => ` (${d.t2})`)
+    .text(d => ` (${d.t2})`)
     .attrs({ class: "label" });
 
   const fm = svg.append("g").attrs({
     class: "formations",
-    transform: "rotate(90) translate(0 -1110)",
+    transform: "rotate(90) translate(0 -1110)"
   });
 
   fm.append("text")
     .attrs({
       class: "label smaller",
-      transform: `translate(${y(350)} -50)`,
+      transform: `translate(${y(350)} -50)`
     })
     .text("Formation");
 
@@ -253,20 +264,23 @@ const createVisualization = function (el, units, sections, surfaces) {
   sel
     .enter()
     .append("text")
-    .text((d) => d.name)
+    .text(d => d.name)
     .attrs({
       class: "fm",
       transform(d) {
         return `translate(${y(d.h)} 0)`;
-      },
+      }
     });
 
-  const xv = d3.scaleLinear().domain([0, 1]).range([0, size.width]);
+  const xv = d3
+    .scaleLinear()
+    .domain([0, 1])
+    .range([0, size.width]);
 
   const clipPath = d3
     .area()
-    .x((d) => xv(d[0]))
-    .y0((d) => y(d[1]))
+    .x(d => xv(d[0]))
+    .y0(d => y(d[1]))
     .y1(-5)
     .curve(d3.curveCardinal);
 
@@ -279,27 +293,39 @@ const createVisualization = function (el, units, sections, surfaces) {
     [0.7, 400],
     [0.8, 650],
     [0.9, 690],
-    [1, 650],
+    [1, 650]
   ];
 
-  return bkg.append("path").datum(data1).attrs({
-    "comp-op": "multiply",
-    class: "clip",
-    d: clipPath,
-  });
+  return bkg
+    .append("path")
+    .datum(data1)
+    .attrs({
+      "comp-op": "multiply",
+      class: "clip",
+      d: clipPath
+    });
 };
 
-export default (function (el, cb) {
-  if (cb == null) {
-    cb = function () {};
-  }
-  return Promise.all([
-    query("unit-heights"),
-    query("sections"),
-    query("boundary-heights"),
-  ])
-    .spread((heights, sections, surfaces) =>
-      createVisualization(el, heights, sections, surfaces)
-    )
-    .then(() => cb());
-});
+function LateralVariation(props) {
+  const ref = useRef<HTMLElement>();
+  const heights = useQuery("lateral-variation/unit-heights");
+  const sections = useQuery("lateral-variation/sections");
+  const surfaces = useQuery("lateral-variation/boundary-heights");
+  const deps: [HTMLElement | undefined, any[], any[], any[]] = [
+    ref.current,
+    heights,
+    sections,
+    surfaces
+  ];
+
+  useEffect(() => {
+    for (const item of deps) {
+      if (item == null) return;
+    }
+    createVisualization(...deps);
+  }, deps);
+
+  return h("div#lateral-variation", { ref });
+}
+
+export default LateralVariation;

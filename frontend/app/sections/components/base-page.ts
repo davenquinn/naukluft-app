@@ -1,19 +1,19 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import { useState } from "react";
+import React, { useState } from "react";
 import h from "@macrostrat/hyper";
 import T from "prop-types";
 import { SectionNavigationControl } from "../util";
-//import { ErrorBoundary } from "@macrostrat/ui-components";
+import { ErrorBoundary } from "@macrostrat/ui-components";
 import { SettingsProvider } from "@macrostrat/column-components";
 import classNames from "classnames";
 
-const ErrorBoundary = ({ children }) => children;
+type BaseSectionProps<T> = React.PropsWithChildren<{
+  className: string;
+  settingsPanel: React.ComponentType<any>;
+  defaultSettings: T;
+  id: string;
+}>;
 
-const BaseSectionPage = function(props) {
+const BaseSectionPage = function<T>(props: BaseSectionProps<T>) {
   let {
     children,
     id,
@@ -30,31 +30,27 @@ const BaseSectionPage = function(props) {
   console.log(children);
 
   return h(
-    ErrorBoundary,
-    null,
-    h(
-      SettingsProvider,
-      {
-        storageID: id,
-        ...defaultSettings
-      },
-      [
-        h("div.page.section-page", { className }, [
-          h("div.left-panel", [
-            h("div.panel-container", [
-              h(SectionNavigationControl, { toggleSettings }),
-              children
-            ])
-          ]),
-          h(settingsPanel, {
-            isOpen: showSettings,
-            onClose() {
-              return setShowSettings(false);
-            }
-          })
-        ])
-      ]
-    )
+    SettingsProvider,
+    {
+      storageID: id,
+      ...defaultSettings
+    },
+    [
+      h("div.page.section-page", { className }, [
+        h("div.left-panel", [
+          h("div.panel-container", [
+            h(SectionNavigationControl, { toggleSettings }),
+            h(ErrorBoundary, null, children)
+          ])
+        ]),
+        h(settingsPanel, {
+          isOpen: showSettings,
+          onClose() {
+            return setShowSettings(false);
+          }
+        })
+      ])
+    ]
   );
 };
 
