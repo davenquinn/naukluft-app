@@ -2,8 +2,9 @@ import express from "express";
 import morgan from "morgan";
 import { sync as glob } from "glob";
 import { join, resolve } from "path";
-import { ResultMask, runBackendQuery } from "./database";
+import { ResultMask, runBackendQuery, db } from "./database";
 import cors from "cors";
+import vectorTileServer from "@macrostrat/vector-tile-server";
 
 const app = express().disable("x-powered-by");
 if (process.env.NODE_ENV !== "production") {
@@ -43,9 +44,15 @@ app.get("/", (req, res) => {
   res.json({
     v: 1,
     description: "The data service for Naukluft Nappe Complex mapping",
-    routes: helpRoutes,
+    routes: helpRoutes
   });
 });
+
+// We should maybe move this to another file
+(async function() {
+  app.use("/map-data", await vectorTileServer(db, "map-data"));
+  helpRoutes.push("/map-data");
+})();
 
 const port = 5555;
 app.listen(port, () => console.log(`Naukluft API started on port ${port}`));

@@ -7,3 +7,6 @@
 [submodule "frontend/packages/ui-components"]
 	path = frontend/packages/ui-components
 	url = git://github.com/UW-Macrostrat/ui-components.git
+[submodule "frontend/packages/vector-tile-server"]
+	path = frontend/packages/vector-tile-server
+	url = git://github.com/UW-Macrostrat/vector-tile-server.git
