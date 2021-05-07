@@ -1,4 +1,10 @@
-import "babel-polyfill";
+import mapboxgl, { Map } from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { get } from "axios";
+import { useEffect, useRef, useState } from "react";
+import h from "@macrostrat/hyper";
+import { ButtonGroup, Button } from "@blueprintjs/core";
+
 import {
   createGeologyStyle,
   createBasicStyle,
@@ -6,12 +12,7 @@ import {
   getMapboxStyle
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
-import { get } from "axios";
-import mapboxgl, { Map } from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useRef, useState } from "react";
-import h from "@macrostrat/hyper";
-import { ButtonGroup, Button } from "@blueprintjs/core";
+
 import { lineSymbols } from "./map-style/symbol-layers";
 
 mapboxgl.accessToken = process.env.MAPBOX_TOKEN;

@@ -1,19 +1,12 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import "./main.styl";
-import React from "react";
-import ReactDOM from "react-dom";
-import mgl from "mapbox-gl/dist/mapbox-gl";
+import { useState } from "react";
 import h from "react-hyperscript";
 import { LegendPanel } from "./legend";
 import { MapNavigationControl } from "./nav";
-import "mapbox-gl/dist/mapbox-gl.css";
 // Maybe this should go in main thread
-import path from "path";
+import MapPanel from "@naukluft/map-panel";
 
+/*
 class MapPanel extends React.Component {
   render() {
     return h("div", { id: "map-container" });
@@ -42,38 +35,35 @@ class MapPanel extends React.Component {
           satellite: {
             type: "raster",
             tiles: ["http://localhost:3006/tiles/satellite/{z}/{x}/{y}.png"],
-            tileSize: 256,
+            tileSize: 256
           },
           geology: {
             type: "raster",
             tiles: [`${tileUrl}/{z}/{x}/{y}.png`],
-            tileSize: 256,
-          },
+            tileSize: 256
+          }
         },
-        layers: [{ id: "geology", type: "raster", source: "geology" }],
-      },
+        layers: [{ id: "geology", type: "raster", source: "geology" }]
+      }
     }));
   }
 }
+*/
 
-class MapView extends React.Component {
-  constructor() {
-    this.toggleLegend = this.toggleLegend.bind(this);
-    super();
-    this.state = { legendIsActive: true };
-  }
-  toggleLegend() {
-    return this.setState({ legendIsActive: !this.state.legendIsActive });
-  }
-  render() {
-    return h("div#map-root", {}, [
-      h("div#map-panel-container", {}, [
-        h(MapNavigationControl, { toggleLegend: this.toggleLegend }),
-        h(MapPanel),
-      ]),
-      h(LegendPanel, { isActive: this.state.legendIsActive }),
-    ]);
-  }
+function MapView() {
+  const [isActive, setActive] = useState(true);
+
+  return h("div#map-root", {}, [
+    h("div#map-panel-container", {}, [
+      h(MapNavigationControl, {
+        toggleLegend() {
+          setActive(!isActive);
+        }
+      }),
+      h(MapPanel)
+    ]),
+    h(LegendPanel, { isActive })
+  ]);
 }
 
 export { MapView };

@@ -2,10 +2,15 @@
   "name": "@naukluft/map-panel",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "mapbox-gl": "^2.2.0",
+    "react": "*"
+  }
 }
