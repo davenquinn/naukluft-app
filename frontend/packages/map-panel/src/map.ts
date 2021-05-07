@@ -15,7 +15,7 @@ import { createUnitFill } from "./map-style/pattern-fill";
 
 import { lineSymbols } from "./map-style/symbol-layers";
 
-mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
+mapboxgl.accessToken = process.env.MAPBOX_API_TOKEN;
 
 const vizBaseURL = "//visualization-assets.s3.amazonaws.com";
 const patternBaseURL = vizBaseURL + "/geologic-patterns/png";
@@ -64,8 +64,8 @@ async function setupStyleImages(map, polygonTypes) {
 }
 
 async function createMapStyle(map, url, enableGeology = true) {
-  const { data: polygonTypes } = await get(
-    "http://localhost:3006/polygon/types"
+  const polygonTypes = await get(
+    "http://localhost:5555/map-data/polygon-types"
   );
   const baseURL = url.replace(
     "mapbox://styles",

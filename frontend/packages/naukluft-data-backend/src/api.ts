@@ -15,7 +15,7 @@ app.use(cors());
 
 const baseDir = resolve(__dirname, "..", "sql");
 
-const helpRoutes: string[] = [];
+let helpRoutes: string[] = [];
 
 interface Params {
   [key: string]: any;
@@ -40,19 +40,20 @@ for (const fn of glob(join(baseDir, "**/*.sql"))) {
   });
 }
 
+// We should maybe move this to another file
+(async function() {
+  app.use("/map-data/map-tiles", await vectorTileServer(db, "map-data"));
+  helpRoutes.push("/map-data/map-tiles");
+})();
+
 app.get("/", (req, res) => {
+  helpRoutes.sort();
   res.json({
     v: 1,
     description: "The data service for Naukluft Nappe Complex mapping",
     routes: helpRoutes
   });
 });
-
-// We should maybe move this to another file
-(async function() {
-  app.use("/map-data", await vectorTileServer(db, "map-data"));
-  helpRoutes.push("/map-data");
-})();
 
 const port = 5555;
 app.listen(port, () => console.log(`Naukluft API started on port ${port}`));

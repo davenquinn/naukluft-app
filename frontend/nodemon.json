@@ -1,5 +1,5 @@
 {
-  "watch": ["packages/naukluft-data-backend"],
+  "watch": ["packages/naukluft-data-backend", "packages/vector-tile-server"],
   "ext": "ts,sql",
   "exec": "ts-node packages/naukluft-data-backend/src/api.ts"
 }

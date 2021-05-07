@@ -1,7 +1,7 @@
 import "./main.styl";
 import { useState } from "react";
-import h from "react-hyperscript";
-import { LegendPanel } from "./legend";
+import h from "@macrostrat/hyper";
+// import { LegendPanel } from "./legend";
 import { MapNavigationControl } from "./nav";
 // Maybe this should go in main thread
 import MapPanel from "@naukluft/map-panel";
@@ -61,8 +61,8 @@ function MapView() {
         }
       }),
       h(MapPanel)
-    ]),
-    h(LegendPanel, { isActive })
+    ])
+    //h(LegendPanel, { isActive })
   ]);
 }
 

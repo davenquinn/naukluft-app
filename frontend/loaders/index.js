@@ -77,6 +77,7 @@ const resolve = {
     that they exist only in the column-components package.
     */
     "~": path.resolve(__base, "app"),
+    react: path.resolve(__base, "node_modules", "react"),
     "@macrostrat/ui-components": path.resolve(
       __base,
       "packages",

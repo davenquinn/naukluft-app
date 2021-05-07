@@ -11,7 +11,7 @@ import "@babel/polyfill"; // this seems suspect
 import { PlatformProvider } from "./platform";
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import h from "@macrostrat/hyper";
 import { FocusStyleManager, Icon } from "@blueprintjs/core";
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -98,7 +98,7 @@ class App extends React.Component {
 // This doesn't work for unknown reasons
 HotkeysTarget(App);
 
-const Router = () => h(HashRouter, [h(App)]);
+const Router = () => h(BrowserRouter, [h(App)]);
 
 const navLink = function() {
   return h(NavLink, ...arguments);

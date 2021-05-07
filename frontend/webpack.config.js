@@ -1,16 +1,22 @@
 const path = require("path");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-const { IgnorePlugin, DefinePlugin } = require("webpack");
+const { IgnorePlugin, DefinePlugin, EnvironmentPlugin } = require("webpack");
+const historyApiFallback = require("connect-history-api-fallback");
+
 const {
   resolve,
-  coffeeLoader,
   cssModuleLoader,
   coffeeRule,
   jsRule,
-  cssRule,
+  cssRule
 } = require("./loaders");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const RevisionInfoWebpack = require("@macrostrat/revision-info-webpack");
+const DotenvPlugin = require("dotenv-webpack");
+
+const pkg = require("./package.json");
+const GITHUB_LINK = "https://github.com/davenquinn/naukluft-app";
 
 const mode = "development";
 
@@ -20,10 +26,11 @@ const browserSync = new BrowserSyncPlugin({
   port: 3000,
   host: "localhost",
   server: { baseDir: [webRoot] },
+  middleware: [historyApiFallback()]
 });
 
 const define = new DefinePlugin({
-  "process.env.NODE_ENV": JSON.stringify(mode),
+  "process.env.NODE_ENV": JSON.stringify(mode)
 });
 
 const uglify = new UglifyJsPlugin();
@@ -44,12 +51,12 @@ module.exports = {
       {
         test: /\.sql$/,
         use: ["filename-loader"],
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       {
         test: /\.styl$/,
         use: ["style-loader", cssModuleLoader, "stylus-loader"],
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       jsRule,
       cssRule,
@@ -59,10 +66,10 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              outputPath: "fonts/",
-            },
-          },
-        ],
+              outputPath: "fonts/"
+            }
+          }
+        ]
       },
       {
         test: /\.(png|svg)$/,
@@ -72,21 +79,26 @@ module.exports = {
             options: {
               useRelativePath: true,
               outputPath: "sections/assets/",
-              name: "[name].[ext]",
-            },
-          },
-        ],
-      },
-    ],
+              name: "[name].[ext]"
+            }
+          }
+        ]
+      }
+    ]
   },
   resolve,
   entry: {
-    "assets/web": "./app/web-index.ts",
+    "assets/web": "./app/web-index.ts"
   },
   output: {
     path: webRoot,
     filename: "[name].js",
-    sourceMapFilename: "[file].map",
+    sourceMapFilename: "[file].map"
   },
-  plugins: [...plugins, new HTMLWebpackPlugin({ title: "Zebra Nappe" })],
+  plugins: [
+    ...plugins,
+    new DotenvPlugin({ path: "../.env" }),
+    new HTMLWebpackPlugin({ title: "Naukluft Nappe Complex" }),
+    new EnvironmentPlugin({ ...RevisionInfoWebpack(pkg, GITHUB_LINK) })
+  ]
 };
