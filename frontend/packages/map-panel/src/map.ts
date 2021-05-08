@@ -1,17 +1,20 @@
 import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { get } from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import h from "@macrostrat/hyper";
+import { debounce } from "underscore";
 import { ButtonGroup, Button } from "@blueprintjs/core";
-
+import mbxUtils from "mapbox-gl-utils";
 import {
   createGeologyStyle,
   createBasicStyle,
   geologyLayerIDs,
-  getMapboxStyle
+  getMapboxStyle,
+  createGeologySource
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
+import io from "socket.io-client";
 
 import { lineSymbols } from "./map-style/symbol-layers";
 
@@ -107,6 +110,8 @@ async function initializeMap(el: HTMLElement) {
     map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
   });
 
+  mbxUtils.init(map, mapboxgl);
+
   return map;
 }
 
@@ -123,35 +128,28 @@ const baseLayers = [
   }
 ];
 
-function BaseLayerSwitcher({ layers, activeLayer, onSetLayer }) {
-  return h(
-    ButtonGroup,
-    { vertical: true },
-    baseLayers.map(d => {
-      return h(
-        Button,
-        {
-          active: d == activeLayer,
-          //disabled: d == activeLayer,
-          onClick() {
-            if (d == activeLayer) return;
-            onSetLayer(d);
-          }
-        },
-        d.name
-      );
-    })
-  );
+const noop = () => {};
+
+let ix = 0;
+function reloadGeologySource(map, sourceID) {
+  ix += 1;
+  const newID = `geology-${ix}`;
+  map.addSource(newID, createGeologySource("http://localhost:3006"));
+  map.U.setLayerSource(geologyLayerIDs(), newID);
+  map.removeSource(sourceID);
+  return newID;
 }
 
-export function MapComponent() {
+export function MapComponent({ useReloader = false }) {
   const ref = useRef<HTMLElement>();
 
   const [enableGeology, setEnableGeology] = useState(true);
   const [activeLayer, setActiveLayer] = useState(baseLayers[0]);
-
+  const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
+  const socket = useRef(useReloader ? io("http://localhost:3006") : null);
 
+  // Initialize map
   useEffect(() => {
     if (ref.current == null) return;
     initializeMap(ref.current).then(mapObj => {
@@ -159,6 +157,25 @@ export function MapComponent() {
     });
     return () => mapRef.current.remove();
   }, [ref]);
+
+  const sourceReloader = useCallback(() => {
+    if (mapRef.current == null) return noop;
+    return debounce(
+      () => reloadGeologySource(mapRef.current, geologySourceID),
+      500
+    );
+  }, [mapRef, geologySourceID]);
+
+  // Start up reloader if appropriate
+  useEffect(() => {
+    socket?.current?.on("topology", message => {
+      console.log(message);
+      sourceReloader();
+    });
+    return () => {
+      socket?.current?.off("topology");
+    };
+  }, [socket]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -179,26 +196,5 @@ export function MapComponent() {
     createMapStyle(map, activeLayer.url).then(style => map.setStyle(style));
   }, [mapRef, activeLayer]);
 
-  return h("div.map-area", [
-    h("div.map", { ref }),
-    h("div.map-controls", null, [
-      h(
-        Button,
-        {
-          active: enableGeology,
-          onClick() {
-            setEnableGeology(!enableGeology);
-          }
-        },
-        "Geology"
-      ),
-      h(BaseLayerSwitcher, {
-        layers: baseLayers,
-        activeLayer: activeLayer,
-        onSetLayer(layer) {
-          setActiveLayer(layer);
-        }
-      })
-    ])
-  ]);
+  return h("div.map-area", [h("div.map", { ref })]);
 }

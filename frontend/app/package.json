@@ -18,7 +18,7 @@
     "@blueprintjs/core": "^3.22.3",
     "@blueprintjs/select": "^3.11.2",
     "@macrostrat/column-components": "*",
-    "@macrostrat/hyper": "^1.2.2",
+    "@macrostrat/hyper": "^1.2.13",
     "@macrostrat/ui-components": "^0.5.1",
     "naukluft-data-backend": "*",
     "@types/d3-array": "^2.0.0",

@@ -1,10 +1,16 @@
 import { hyperStyled } from "@macrostrat/hyper";
 import classNames from "classnames";
-import { Drawer } from "@blueprintjs/core";
+import { Drawer, DrawerProps } from "@blueprintjs/core";
 import styles from "./main.styl";
+import React from "react";
 const h = hyperStyled(styles);
 
-const AppDrawer = (props) => {
+type AppDrawerProps = {
+  className?: string;
+  children?: React.ReactNode;
+} & DrawerProps;
+
+const AppDrawer = (props: AppDrawerProps) => {
   const { className, children, ...rest } = props;
   return h(
     "div.app-drawer-outer",
@@ -16,7 +22,7 @@ const AppDrawer = (props) => {
         hasBackdrop: false,
         enforceFocus: false,
         canOutsideClickClose: false,
-        ...rest,
+        ...rest
       },
       h("div.content", null, children)
     )

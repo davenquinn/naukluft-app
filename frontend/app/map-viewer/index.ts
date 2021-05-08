@@ -2,65 +2,82 @@ import "./main.styl";
 import { useState } from "react";
 import h from "@macrostrat/hyper";
 // import { LegendPanel } from "./legend";
-import { MapNavigationControl } from "./nav";
 // Maybe this should go in main thread
-import MapPanel from "@naukluft/map-panel";
+import loadable from "@loadable/component";
+import { AppDrawer, NavigationControl } from "~/components";
+import { Spinner, Button, ButtonGroup } from "@blueprintjs/core";
 
-/*
-class MapPanel extends React.Component {
-  render() {
-    return h("div", { id: "map-container" });
-  }
+const MapPanel = loadable(() => import("@naukluft/map-panel"), {
+  fallback: h(Spinner)
+});
 
-  componentDidMount() {
-    let map, tileUrl;
-    const el = ReactDOM.findDOMNode(this);
-
-    if (PLATFORM === ELECTRON) {
-      tileUrl = "http://localhost:3006/live-tiles/geology";
-    } else {
-      tileUrl = BASE_URL + "tiles";
-    }
-
-    return (map = new mgl.Map({
-      container: el,
-      attributionControl: false,
-      center: [16.1987, -24.2254],
-      zoom: 11,
-      trackResize: true,
-      style: {
-        //"mapbox://styles/mapbox/satellite-v9"
-        version: 8,
-        sources: {
-          satellite: {
-            type: "raster",
-            tiles: ["http://localhost:3006/tiles/satellite/{z}/{x}/{y}.png"],
-            tileSize: 256
-          },
-          geology: {
-            type: "raster",
-            tiles: [`${tileUrl}/{z}/{x}/{y}.png`],
-            tileSize: 256
+function BaseLayerSwitcher({ layers, activeLayer, onSetLayer }) {
+  return h(
+    ButtonGroup,
+    { vertical: true },
+    layers.map(d => {
+      return h(
+        Button,
+        {
+          active: d == activeLayer,
+          //disabled: d == activeLayer,
+          onClick() {
+            if (d == activeLayer) return;
+            onSetLayer(d);
           }
         },
-        layers: [{ id: "geology", type: "raster", source: "geology" }]
-      }
-    }));
-  }
+        d.name
+      );
+    })
+  );
 }
-*/
 
 function MapView() {
-  const [isActive, setActive] = useState(true);
+  const [isActive, setActive] = useState(false);
 
   return h("div#map-root", {}, [
     h("div#map-panel-container", {}, [
-      h(MapNavigationControl, {
-        toggleLegend() {
+      h(NavigationControl, {
+        toggleSettings() {
           setActive(!isActive);
         }
       }),
-      h(MapPanel)
+      h(MapPanel),
+
+      h(
+        AppDrawer,
+        {
+          isOpen: isActive,
+          title: "Settings",
+          onClose() {
+            setActive(false);
+          }
+        },
+        [
+          h("h3", "Geology layers")
+          /*
+          h("h3", "Basemap"),
+          h("div.map-controls", null, [
+            h(
+              Button,
+              {
+                active: enableGeology,
+                onClick() {
+                  setEnableGeology(!enableGeology);
+                }
+              },
+              "Geology"
+            ),
+            h(BaseLayerSwitcher, {
+              layers: baseLayers,
+              activeLayer: activeLayer,
+              onSetLayer(layer) {
+                setActiveLayer(layer);
+              }
+            })
+            */
+        ]
+      )
     ])
     //h(LegendPanel, { isActive })
   ]);
