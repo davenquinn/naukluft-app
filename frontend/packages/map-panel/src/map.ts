@@ -47,7 +47,7 @@ async function setupLineSymbols(map) {
 
 async function setupStyleImages(map, polygonTypes) {
   return Promise.all(
-    Array.from(polygonTypes).map(async function(type: any) {
+    polygonTypes.map(async function(type: any) {
       const { symbol, id } = type;
       const uid = id + "_fill";
       if (map.hasImage(uid)) return;
@@ -64,7 +64,7 @@ async function setupStyleImages(map, polygonTypes) {
 }
 
 async function createMapStyle(map, url, enableGeology = true) {
-  const polygonTypes = await get(
+  const { data: polygonTypes } = await get(
     "http://localhost:5555/map-data/polygon-types"
   );
   const baseURL = url.replace(
@@ -89,7 +89,8 @@ async function initializeMap(el: HTMLElement) {
     style: baseLayers[0].url,
     hash: true,
     center: [16.1987, -24.2254],
-    zoom: 10
+    zoom: 10,
+    antialias: true
   });
 
   //map.setStyle("mapbox://styles/jczaplewski/cklb8aopu2cnv18mpxwfn7c9n");

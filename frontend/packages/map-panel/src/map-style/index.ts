@@ -161,12 +161,13 @@ function geologyLayerIDs() {
 
 const createGeologyStyle = function(
   baseStyle,
-  polygonTypes,
+  polygonTypes: any[],
   hostName = "http://localhost:5555"
 ) {
+  console.log(polygonTypes);
   const colors = {};
   const patterns = {};
-  for (let d of Array.from(polygonTypes)) {
+  for (let d of polygonTypes) {
     colors[d.id] = d.color;
     patterns[d.id] = d.symbol ?? null;
   }
