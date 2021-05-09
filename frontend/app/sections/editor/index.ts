@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import React, { useContext, createContext, useCallback } from "react";
 import {
   Button,
   Intent,
   ButtonGroup,
   Switch,
   Tab,
-  Slider,
+  Slider
 } from "@blueprintjs/core";
 import { AppDrawer } from "~/components";
 import { DeleteButton } from "@macrostrat/ui-components";
@@ -23,13 +23,14 @@ import {
   BoundaryStyleControl,
   RaisedSelect,
   FaciesPicker,
-  grainSizes,
+  grainSizes
 } from "@macrostrat/column-components";
 import {
   CorrelatedSurfaceControl,
   DivisionNavigationControl,
-  Direction,
+  Direction
 } from "./controls";
+import { updateSectionInterval } from "naukluft-data-backend";
 import { SequenceStratControls } from "./sequence-strat";
 import { hyperStyled } from "@macrostrat/hyper";
 import styles from "./style.styl";
@@ -39,27 +40,62 @@ const floodingSurfaceOrders = [-1, -2, -3, -4, -5, null, 5, 4, 3, 2, 1];
 
 const surfaceTypes = [
   { value: "mfs", label: "Maximum flooding surface" },
-  { value: "sb", label: "Sequence boundary" },
+  { value: "sb", label: "Sequence boundary" }
 ];
 
-const LithologyControls = function (props) {
-  const { interval, update } = props;
+type IntervalUpdateSpec = Partial<ColumnDivision>;
+interface IntervalEditorCtx {
+  interval: ColumnDivision | null;
+  updateInterval(data: IntervalUpdateSpec): void;
+}
+
+const IntervalEditorContext = createContext<IntervalEditorCtx>({
+  interval: null,
+  updateInterval() {}
+});
+
+function IntervalEditorProvider({
+  children,
+  interval
+}: React.PropsWithChildren<{ interval: ColumnDivision }>) {
+  const { updateDivisions } = useContext(ColumnDivisionsContext);
+
+  const updateInterval = useCallback(
+    async (data: IntervalUpdateSpec) => {
+      console.log(data);
+      await updateSectionInterval(interval.id, data);
+      // Update all divisions after editing
+      updateDivisions();
+    },
+    [interval]
+  );
+  const value = {
+    interval,
+    updateInterval
+  };
+  return h(IntervalEditorContext.Provider, { value }, children);
+}
+
+const useIntervalEditor = () => useContext(IntervalEditorContext);
+
+const LithologyControls = function(props) {
+  const { interval, updateInterval } = useIntervalEditor();
   return h([
     h(LabeledControl, {
       title: "Lithology",
       is: LithologyPicker,
       interval,
-      onChange: (lithology) => update({ lithology }),
+      onChange: lithology => updateInterval({ lithology })
     }),
     h(LithologySymbolPicker, {
       interval,
-      onChange: (d) => update({ fillPattern: d }),
-    }),
+      onChange: d => updateInterval({ fillPattern: d })
+    })
   ]);
 };
 
 const _fmt = format(".2f");
-const fmt = function (d) {
+const fmt = function(d) {
   let val = _fmt(d);
   for (let i = 0; i < 1; i++) {
     const lastIx = val.length - 1;
@@ -71,22 +107,22 @@ const fmt = function (d) {
   return val;
 };
 
-const FaciesTractControl = function (props) {
+const FaciesTractControl = function(props) {
   const { faciesTracts } = useContext(FaciesContext);
   if (faciesTracts == null) {
     return null;
   }
   let { interval, onUpdate } = props;
   if (onUpdate == null) {
-    onUpdate = function () {};
+    onUpdate = function() {};
   }
 
-  const options = faciesTracts.map((d) => ({
+  const options = faciesTracts.map(d => ({
     value: d.id,
-    label: d.name,
+    label: d.name
   }));
 
-  const currentVal = options.find((d) => d.value === interval.facies_tract);
+  const currentVal = options.find(d => d.value === interval.facies_tract);
 
   return h(RaisedSelect, {
     id: "facies-tract-select",
@@ -95,21 +131,8 @@ const FaciesTractControl = function (props) {
     value: currentVal,
     onChange(res) {
       return onUpdate(res);
-    },
+    }
   });
-};
-
-const updateIntervalQuery = async function (id, columns) {
-  // Should replace this with a hook of some sort...
-  const { helpers, db } = require("naukluft-data-backend/src/database");
-
-  const { TableName, update } = helpers;
-  const tbl = new TableName("section_lithology", "section");
-
-  let sql = helpers.update(columns, null, tbl);
-  sql += ` WHERE id=${id}`;
-  console.log(sql);
-  return await db.none(sql);
 };
 
 interface IntervalControlsProps {
@@ -135,7 +158,7 @@ const IntervalControls = (props: IntervalControlsProps) => {
         onClick: () => {
           if (props.addInterval == null) return;
           return props.addInterval(height);
-        },
+        }
       },
       buttonText
     ),
@@ -146,37 +169,37 @@ const IntervalControls = (props: IntervalControlsProps) => {
         handleDelete: () => {
           if (props.removeInterval == null) return;
           return props.removeInterval(interval.id);
-        },
+        }
       },
       "Delete interval"
-    ),
+    )
   ]);
 };
 
-const MetaControls = (props) => {
+const MetaControls = props => {
   const { moveCursor, interval, section, children } = props;
 
   return h("div.meta-controls", [
     h(DivisionNavigationControl, {
       moveCursor,
-      editingInterval: interval.id,
+      editingInterval: interval.id
     }),
     h(IntervalEditorTitle, {
       title: `Section ${section}`,
-      interval,
+      interval
     }),
-    children,
+    children
   ]);
 };
 
-const ClearableSlider = (props) => {
+const ClearableSlider = props => {
   return h("div.clearable-slider", [
     h("div.inner", [
       h(Slider, {
         ...props,
         value: props.value ?? 10,
-        showTrackFill: false,
-      }),
+        showTrackFill: false
+      })
     ]),
     h("div", [
       h(Button, {
@@ -185,22 +208,22 @@ const ClearableSlider = (props) => {
         intent: Intent.DANGER,
         icon: "cross",
         disabled: props.value == null,
-        onClick: (evt) => {
+        onClick: evt => {
           props.onChange(null);
-        },
-      }),
-    ]),
+        }
+      })
+    ])
   ]);
 };
 
-const CorrelationControls = (props) => {
+const CorrelationControls = props => {
   const { interval, updateInterval } = props;
   return h([
     h(LabeledControl, {
       title: "Correlated surface",
       is: CorrelatedSurfaceControl,
       interval,
-      onChange: updateInterval,
+      onChange: updateInterval
     }),
     h(LabeledControl, {
       is: ClearableSlider,
@@ -208,8 +231,8 @@ const CorrelationControls = (props) => {
       value: interval.surface_certainty,
       onChange(c) {
         updateInterval({ surface_certainty: c });
-      },
-    }),
+      }
+    })
   ]);
 };
 
@@ -221,71 +244,71 @@ interface EditorProps {
   height: number;
 }
 
-const DetailControls = (props) => {
+const DetailControls = props => {
   const { interval, updateInterval } = props;
   return h("div.detail-controls", [
     h(LithologyControls, {
       interval,
-      update: updateInterval,
+      update: updateInterval
     }),
     h(LabeledControl, {
       title: "Grainsize",
       is: PickerControl,
       vertical: false,
       isNullable: true,
-      states: grainSizes.map((d) => ({
+      states: grainSizes.map(d => ({
         label: d,
-        value: d,
+        value: d
       })),
       activeState: interval.grainsize,
-      onUpdate: (grainsize) => {
+      onUpdate: grainsize => {
         return updateInterval({ grainsize });
-      },
+      }
     }),
     h(Switch, {
       label: "Covered",
       checked: interval.covered,
-      onChange: (d) => {
+      onChange: d => {
         return updateInterval({ covered: !interval.covered });
-      },
+      }
     }),
     h(LabeledControl, {
       title: "Surface expression",
       is: BoundaryStyleControl,
       interval,
-      onUpdate: (d) => updateInterval({ definite_boundary: d }),
-    }),
+      onUpdate: d => updateInterval({ definite_boundary: d })
+    })
   ]);
 };
 
-const SummaryControls = (props) => {
+const SummaryControls = props => {
   const { interval, updateInterval } = props;
   return h("div.summary-controls", [
     h(LabeledControl, {
       title: "Facies",
       is: FaciesPicker,
       interval,
-      onChange: (facies) => updateInterval({ facies }),
+      onChange: facies => updateInterval({ facies })
     }),
     h(LabeledControl, {
       title: "Facies tract",
       is: FaciesTractControl,
       interval,
-      onUpdate: (option) => {
+      onUpdate: option => {
         const facies_tract = option.value;
         return updateInterval({ facies_tract });
-      },
+      }
     }),
     h(SequenceStratControls, { updateInterval, interval }, [
       h(
         Tab,
         {
           id: "correlation",
-          panel: h(CorrelationControls, { interval, updateInterval }),
+          panel: h(CorrelationControls, { interval, updateInterval })
         },
         "Correlations"
-      ),
-    ]),
+      )
+    ])
   ]);
 };
 
@@ -296,39 +319,44 @@ const EditorInner = (props: EditorProps) => {
     moveCursor,
     addInterval,
     removeInterval,
-    showDetails,
+    showDetails
   } = props;
   const { id, facies } = interval;
 
-  const updateInterval = async (columns) => {
-    await updateIntervalQuery(props.interval.id, columns);
+  const updateInterval = async columns => {
+    console.log(columns);
+    await updateSectionInterval(props.interval.id, columns);
     return props.onUpdate();
   };
 
   if (interval == null) return null;
 
-  return h("div.editor-inner", [
-    h(
-      MetaControls,
-      {
-        section: interval.section_id,
-        interval,
-        moveCursor,
-      },
-      [
-        h.if(showDetails)(IntervalControls, {
+  return h(
+    IntervalEditorProvider,
+    { interval },
+    h("div.editor-inner", [
+      h(
+        MetaControls,
+        {
+          section: interval.section_id,
           interval,
-          height,
-          addInterval,
-          removeInterval,
-          vertical: true,
-          small: true,
-        }),
-      ]
-    ),
-    h.if(showDetails)(DetailControls, { interval, updateInterval }),
-    h(SummaryControls, { interval, updateInterval }),
-  ]);
+          moveCursor
+        },
+        [
+          h.if(showDetails)(IntervalControls, {
+            interval,
+            height,
+            addInterval,
+            removeInterval,
+            vertical: true,
+            small: true
+          })
+        ]
+      ),
+      h.if(showDetails)(DetailControls, { interval, updateInterval }),
+      h(SummaryControls, { interval, updateInterval })
+    ])
+  );
 };
 
 interface ModalEditorProps extends EditorProps {
@@ -347,7 +375,7 @@ const ModalEditor = (props: ModalEditorProps) => {
       className: "bp3-minimal editor-drawer",
       title: "Edit interval",
       isOpen,
-      onClose: closeDialog,
+      onClose: closeDialog
     },
     [
       h(EditorInner, {
@@ -355,15 +383,15 @@ const ModalEditor = (props: ModalEditorProps) => {
         ...rest,
         onUpdate() {
           updateDivisions();
-        },
-      }),
+        }
+      })
     ]
   );
 };
 
 ModalEditor.defaultProps = {
   onUpdate() {},
-  showDetails: false,
+  showDetails: false
 };
 
 export { Direction, ModalEditor };

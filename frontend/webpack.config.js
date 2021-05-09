@@ -1,7 +1,7 @@
 const path = require("path");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-const { IgnorePlugin, DefinePlugin, EnvironmentPlugin } = require("webpack");
-const historyApiFallback = require("connect-history-api-fallback");
+const { IgnorePlugin, EnvironmentPlugin } = require("webpack");
+const historyFallback = require("connect-history-api-fallback");
 
 const {
   resolve,
@@ -25,17 +25,15 @@ const webRoot = path.resolve(__dirname, "dist-web");
 const browserSync = new BrowserSyncPlugin({
   port: 3000,
   host: "localhost",
-  server: { baseDir: [webRoot] },
-  middleware: [historyApiFallback()]
-});
-
-const define = new DefinePlugin({
-  "process.env.NODE_ENV": JSON.stringify(mode)
+  server: {
+    baseDir: webRoot,
+    middleware: [historyFallback()]
+  }
 });
 
 const uglify = new UglifyJsPlugin();
 
-const plugins = [browserSync, define];
+const plugins = [browserSync];
 const ignores = [/^electron/, /^pg/, /^fs/];
 
 for (let i of Array.from(ignores)) {
@@ -93,12 +91,20 @@ module.exports = {
   output: {
     path: webRoot,
     filename: "[name].js",
-    sourceMapFilename: "[file].map"
+    sourceMapFilename: "[file].map",
+    publicPath: "/"
   },
   plugins: [
     ...plugins,
     new DotenvPlugin({ path: "../.env" }),
-    new HTMLWebpackPlugin({ title: "Naukluft Nappe Complex" }),
-    new EnvironmentPlugin({ ...RevisionInfoWebpack(pkg, GITHUB_LINK) })
+    new HTMLWebpackPlugin({
+      title: "Naukluft Nappe Complex",
+      base: "/",
+      publicPath: "/"
+    }),
+    new EnvironmentPlugin({
+      ...RevisionInfoWebpack(pkg, GITHUB_LINK),
+      NODE_ENV: JSON.stringify(mode)
+    })
   ]
 };

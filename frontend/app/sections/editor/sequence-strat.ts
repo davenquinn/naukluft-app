@@ -1,11 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS001: Remove Babel/TypeScript constructor workaround
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { Tabs, Tab, Slider } from "@blueprintjs/core";
 
 import { PickerControl } from "@macrostrat/column-components";
@@ -21,17 +13,17 @@ const h = hyperStyled(styles);
 
 const surfaceTypes = [
   { value: "mfs", label: "Maximum flooding surface" },
-  { value: "sb", label: "Sequence boundary" },
+  { value: "sb", label: "Sequence boundary" }
 ];
 
 const faciesTransitions = [
   { value: 1, label: "Flooding (transgression)" },
-  { value: -1, label: "Shallowing (regression)" },
+  { value: -1, label: "Shallowing (regression)" }
 ];
 
-const Panel = (props) => h("div.tab-panel", props);
+const Panel = props => h("div.tab-panel", props);
 
-const SurfaceTypeControls = (props) => {
+const SurfaceTypeControls = props => {
   const { updateSurfaces } = useContext(SectionSurfacesContext);
   const { interval, updateInterval } = props;
   return h(Panel, [
@@ -42,21 +34,21 @@ const SurfaceTypeControls = (props) => {
       isNullable: true,
       states: surfaceTypes,
       activeState: interval.surface_type,
-      onUpdate: (surface_type) => updateInterval({ surface_type }),
+      onUpdate: surface_type => updateInterval({ surface_type })
     }),
     h(LabeledControl, {
       title: "Surface order",
       is: SurfaceOrderSlider,
       interval,
-      onChange: (val) => {
+      onChange: val => {
         updateInterval(val);
         updateSurfaces();
-      },
-    }),
+      }
+    })
   ]);
 };
 
-const FaciesTransitionsControls = (props) => {
+const FaciesTransitionsControls = props => {
   const { interval, updateInterval } = props;
 
   const { flooding_surface_order } = interval;
@@ -71,11 +63,11 @@ const FaciesTransitionsControls = (props) => {
       isNullable: true,
       states: faciesTransitions,
       activeState: ix,
-      onUpdate: (ix) => {
+      onUpdate: ix => {
         if (ix == null) updateInterval({ flooding_surface_order: null });
         const newOrder = ix * Math.abs(flooding_surface_order);
         return updateInterval({ flooding_surface_order: newOrder });
-      },
+      }
     }),
     h(LabeledControl, {
       title: "Importance",
@@ -85,19 +77,19 @@ const FaciesTransitionsControls = (props) => {
       stepSize: 1,
       value: Math.abs(flooding_surface_order ?? 5),
       showTrackFill: false,
-      onChange: (num) => updateInterval({ flooding_surface_order: ix * num }),
-    }),
+      onChange: num => updateInterval({ flooding_surface_order: ix * num })
+    })
   ]);
 };
 
-const SequenceStratControls = (props) => {
+const SequenceStratControls = props => {
   const { interval, updateInterval, children } = props;
   return h(Tabs, { id: "sequence-strat-controls", large: false }, [
     h(
       Tab,
       {
         id: "new",
-        panel: h(SurfaceTypeControls, { interval, updateInterval }),
+        panel: h(SurfaceTypeControls, { interval, updateInterval })
       },
       "Sequence stratigraphy"
     ),
@@ -105,11 +97,11 @@ const SequenceStratControls = (props) => {
       Tab,
       {
         id: "old",
-        panel: h(FaciesTransitionsControls, { interval, updateInterval }),
+        panel: h(FaciesTransitionsControls, { interval, updateInterval })
       },
       "Facies trends"
     ),
-    children,
+    children
   ]);
 };
 
