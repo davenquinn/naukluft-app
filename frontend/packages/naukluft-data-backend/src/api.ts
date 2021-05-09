@@ -21,7 +21,7 @@ type APIHandler = (params: Params) => Promise<any>;
 function apiRoute(handler: APIHandler) {
   return async (req: any, res: any, next: any) => {
     try {
-      const queryResult = await handler(req.query);
+      const queryResult = await handler(req);
       res.json(queryResult);
     } catch (err) {
       next(err);
@@ -35,8 +35,8 @@ function buildQueryFileRoutes(app: any) {
     const newFn = fn.replace(baseDir, "").slice(0, -4);
     helpRoutes.push(newFn);
 
-    const handler = async (params: Params) => {
-      let { __qrm, __argsArray, ...rest }: ExtParams = params;
+    const handler = async (req: any) => {
+      let { __qrm, __argsArray, ...rest }: ExtParams = req.query;
       let newParams = rest;
       if (__argsArray != null) {
         newParams = JSON.parse(__argsArray);
@@ -51,12 +51,12 @@ function buildQueryFileRoutes(app: any) {
 
 function addSectionUpdateRoute(app: any) {
   const routeName = "/section/update-interval";
-  const updateHandler = async (params: Params) => {
-    const { intervalID, ...rest } = params;
-    return updateSectionInterval(intervalID, rest);
+  const updateHandler = async (req: any) => {
+    const { intervalID } = req.query;
+    return updateSectionInterval(intervalID, req.body);
   };
-  app.get(routeName, apiRoute(updateHandler));
-  return routeName;
+  app.post(routeName, apiRoute(updateHandler));
+  return routeName + " [POST]";
 }
 
 async function addTileServer(app: any) {
@@ -72,6 +72,7 @@ async function createServer() {
     app.use(morgan("dev"));
   }
   app.use(cors());
+  app.use(express.json());
   let helpRoutes = buildQueryFileRoutes(app);
   helpRoutes.push(addSectionUpdateRoute(app));
   helpRoutes.push(await addTileServer(app));

@@ -10,6 +10,12 @@ interface ColumnDivision {
   top: number;
   lithology?: string;
   fillPattern?: string;
+  facies_tract?: any;
+  facies?: any;
+  definite_boundary?: boolean;
+  covered: boolean;
+  grainsize: string;
+  surface_certainty?: number;
 }
 
 interface ColumnDivisionManager {

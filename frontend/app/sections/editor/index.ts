@@ -45,7 +45,7 @@ const surfaceTypes = [
 
 type IntervalUpdateSpec = Partial<ColumnDivision>;
 interface IntervalEditorCtx {
-  interval: ColumnDivision | null;
+  interval: ColumnDivision;
   updateInterval(data: IntervalUpdateSpec): void;
 }
 
@@ -216,8 +216,8 @@ const ClearableSlider = props => {
   ]);
 };
 
-const CorrelationControls = props => {
-  const { interval, updateInterval } = props;
+const CorrelationControls = () => {
+  const { interval, updateInterval } = useIntervalEditor();
   return h([
     h(LabeledControl, {
       title: "Correlated surface",
@@ -244,8 +244,8 @@ interface EditorProps {
   height: number;
 }
 
-const DetailControls = props => {
-  const { interval, updateInterval } = props;
+const DetailControls = () => {
+  const { interval, updateInterval } = useIntervalEditor();
   return h("div.detail-controls", [
     h(LithologyControls, {
       interval,
@@ -261,8 +261,8 @@ const DetailControls = props => {
         value: d
       })),
       activeState: interval.grainsize,
-      onUpdate: grainsize => {
-        return updateInterval({ grainsize });
+      onUpdate(grainsize: string) {
+        updateInterval({ grainsize });
       }
     }),
     h(Switch, {
@@ -281,14 +281,16 @@ const DetailControls = props => {
   ]);
 };
 
-const SummaryControls = props => {
-  const { interval, updateInterval } = props;
+const SummaryControls = () => {
+  const { interval, updateInterval } = useIntervalEditor();
   return h("div.summary-controls", [
     h(LabeledControl, {
       title: "Facies",
       is: FaciesPicker,
       interval,
-      onChange: facies => updateInterval({ facies })
+      onChange(facies: number) {
+        updateInterval({ facies });
+      }
     }),
     h(LabeledControl, {
       title: "Facies tract",
@@ -321,14 +323,6 @@ const EditorInner = (props: EditorProps) => {
     removeInterval,
     showDetails
   } = props;
-  const { id, facies } = interval;
-
-  const updateInterval = async columns => {
-    console.log(columns);
-    await updateSectionInterval(props.interval.id, columns);
-    return props.onUpdate();
-  };
-
   if (interval == null) return null;
 
   return h(
@@ -353,8 +347,8 @@ const EditorInner = (props: EditorProps) => {
           })
         ]
       ),
-      h.if(showDetails)(DetailControls, { interval, updateInterval }),
-      h(SummaryControls, { interval, updateInterval })
+      h.if(showDetails)(DetailControls),
+      h(SummaryControls)
     ])
   );
 };
