@@ -1,16 +1,17 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const requireFoolWebpack = require("require-fool-webpack");
 // Because webpack is super annoying
 import "@babel/polyfill"; // this seems suspect
 
+import { Platform, currentPlatform } from "naukluft-data-backend";
 import { PlatformProvider } from "./platform";
 import React from "react";
-import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import {
+  BrowserRouter,
+  HashRouter,
+  Route,
+  Link,
+  Switch
+} from "react-router-dom";
 import h from "@macrostrat/hyper";
 import { FocusStyleManager, Icon } from "@blueprintjs/core";
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -35,6 +36,9 @@ const wrapNavBar = function(component) {
       h(ErrorBoundary, null, h(component))
     ]);
 };
+
+const Router =
+  Platform.ELECTRON == currentPlatform ? HashRouter : BrowserRouter;
 
 const Home = () =>
   h("div#homepage", [
@@ -104,6 +108,6 @@ class App extends React.Component {
 // This doesn't work for unknown reasons
 //HotkeysTarget(App);
 
-const Router = () => h(BrowserRouter, [h(App)]);
+const RouterApp = () => h(Router, [h(App)]);
 
-export default Router;
+export default RouterApp;

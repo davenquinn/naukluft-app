@@ -7,7 +7,7 @@ import { updateSectionE } from "./helpers";
 import { SequenceCorrelations } from "./sequence";
 import {
   GeneralizedDivisionsProvider,
-  GeneralizedSurfacesProvider,
+  GeneralizedSurfacesProvider
 } from "../generalized-sections/data-provider";
 import { SettingsProvider } from "../summary-sections/settings";
 
@@ -22,12 +22,12 @@ const RegionalSectionsContainer = compose(
   SettingsProvider
 );
 
-const SectionPane = function (props) {
+const SectionPane = function(props) {
   const { divisions } = useContext(ColumnDivisionsContext);
   const { children } = props;
   const sz = useCanvasSize();
-  const divisionMap = group(divisions, (s) => s.section_id);
-  const sections = Array.from(divisionMap, function ([key, divisions]) {
+  const divisionMap = group(divisions, s => s.section_id);
+  const sections = Array.from(divisionMap, function([key, divisions]) {
     divisions.sort((a, b) => a.bottom - b.bottom);
     return { key, divisions };
   });
@@ -43,39 +43,40 @@ const SectionPane = function (props) {
       offsets: {
         Onis: 0,
         Ubisis: 265,
-        Tsams: 160,
+        Tsams: 160
       },
       sections,
-      bottomSurface: 15,
+      bottomSurface: 15
     }),
     h(SequenceCorrelations, {
       id: "S2",
       offsets: {
         Onis: 0,
         Ubisis: 0,
-        Tsams: 0,
+        Tsams: 0
       },
       sections,
       topSurface: 15,
       bottomSurface: 1,
       // Or 20 if we want the correlating sequence boundary
-      paddingBottom: 35,
+      paddingBottom: 35
     }),
     h(SequenceCorrelations, {
       id: "S1",
       offsets: {
         Onis: 0,
         Ubisis: 0,
-        Tsams: 0,
+        Tsams: 0
       },
       sections,
-      topSurface: 1,
+      topSurface: 1
     }),
-    children,
+    children
   ]);
 };
 
-const RegionalSections = (props) =>
-  h(RegionalSectionsContainer, [h(SectionPane, props)]);
+const RegionalSections = props => {
+  return h(RegionalSectionsContainer, null, h(SectionPane, props));
+};
 
 export { RegionalSections };

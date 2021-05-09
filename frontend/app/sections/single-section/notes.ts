@@ -86,7 +86,11 @@ const ManagedNotesColumn = function(props) {
           ResultMask.none
         );
       } else {
-        await dispatch("section/notes/update-note", [noteID], ResultMask.none);
+        await dispatch(
+          "section/notes/update-note",
+          { note_id: noteID, note_text: newText },
+          ResultMask.none
+        );
       }
       updateNotes();
       console.log(`Note ${noteID} edited`);

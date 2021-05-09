@@ -1,3 +1,3 @@
 UPDATE section.section_note
-SET edited_note = $2::text
-WHERE id = $1::integer
+SET edited_note = ${note_text}::text
+WHERE id = ${note_id}::integer
