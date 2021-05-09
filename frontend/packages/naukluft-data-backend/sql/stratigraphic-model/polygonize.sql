@@ -1,7 +1,7 @@
 WITH a AS (
 SELECT
   (ST_Dump(ST_Node(
-    ST_GeomFromGeoJSON(${geometry:json})
+    ST_GeomFromGeoJSON(${geometry:json}::json)
   ))).geom
 ),
 d AS (

@@ -11,7 +11,6 @@ Basically, this is a poor man's Adobe Illustrator Live Paint.
 
 import h from "@macrostrat/hyper";
 import { geoPath, geoTransform } from "d3-geo";
-import sql from "./polygonize.sql";
 import { useState } from "react";
 import { useAsyncEffect } from "use-async-effect";
 import { runQuery } from "naukluft-data-backend";
@@ -19,11 +18,11 @@ import { runQuery } from "naukluft-data-backend";
 const proj = geoTransform({
   point(px, py) {
     return this.stream.point(px, py);
-  },
+  }
 });
 const pathGenerator = geoPath().projection(proj);
 
-const TopoPolygon = function ({ feature, fill }) {
+const TopoPolygon = function({ feature, fill }) {
   const { geometry, facies_id } = feature;
   if (!geometry) {
     return null;
@@ -34,27 +33,28 @@ const TopoPolygon = function ({ feature, fill }) {
 const TopoPolygons = ({ polygons, generateFill }) =>
   h(
     "g.polygons",
-    polygons.map(function (p, i) {
+    polygons.map(function(p, i) {
       const fill = generateFill(p, i);
       return h(TopoPolygon, { feature: p, fill });
     })
   );
 
-const PolygonTopology = function (props) {
+const PolygonTopology = function(props) {
   const { lines, points, generateFill, children, ...rest } = props;
 
   const [polygons, setPolygons] = useState(null);
 
-  const getPolygons = async function () {
+  const getPolygons = async function() {
     if (lines == null || points == null) {
       return;
     }
-    const res = await runQuery(sql, {
+    console.log(lines, points);
+    const res = await runQuery("stratigraphic-model/polygonize", {
       geometry: {
         coordinates: lines,
-        type: "MultiLineString",
+        type: "MultiLineString"
       },
-      points,
+      points
     });
     return setPolygons(res);
   };
@@ -66,7 +66,7 @@ const PolygonTopology = function (props) {
   }
   return h("g.polygon-container", [
     h(TopoPolygons, { polygons, generateFill }),
-    children,
+    children
   ]);
 };
 
