@@ -6,7 +6,7 @@ import { NoteEditorContext, NotesColumn } from "@macrostrat/column-components";
 import {
   ResultMask,
   useQueryRunner,
-  useUpdateableQuery,
+  useUpdateableQuery
 } from "naukluft-data-backend";
 
 // import {
@@ -16,7 +16,7 @@ import {
 
 const fmt = format(".1f");
 
-const PhotoLinks = function ({ photos }) {
+const PhotoLinks = function({ photos }) {
   if (photos == null) {
     return null;
   }
@@ -29,7 +29,7 @@ const PhotoLinks = function ({ photos }) {
   }
 
   return h([
-    h("a.photos-link", { onClick: toggleOverlay }, tx),
+    h("a.photos-link", { onClick: toggleOverlay }, tx)
     // h PhotoOverlay, {
     //   isOpen: overlayShown
     //   onClose: toggleOverlay
@@ -38,7 +38,7 @@ const PhotoLinks = function ({ photos }) {
   ]);
 };
 
-const PhotoNoteComponent = function (props) {
+const PhotoNoteComponent = function(props) {
   const { note } = props;
   const { note: text, photos } = note;
 
@@ -49,17 +49,17 @@ const PhotoNoteComponent = function (props) {
   const onClick = () => setEditingNote(note);
 
   return h(
-    "p.mc-note-label",
+    "p.col-note-label",
     {
       style: { visibility },
       xmlns: "http://www.w3.org/1999/xhtml",
-      onClick,
+      onClick
     },
     [h("span.text", text), " ", h(PhotoLinks, { photos })]
   );
 };
 
-const ManagedNotesColumn = function (props) {
+const ManagedNotesColumn = function(props) {
   const { id, ...rest } = props;
   const { platform, inEditMode } = useContext(PlatformContext);
   const dispatch = useQueryRunner();
@@ -73,7 +73,7 @@ const ManagedNotesColumn = function (props) {
   const notes = baseNotes ?? [];
 
   const onUpdateNote = useCallback(
-    async function (newNote, v) {
+    async function(newNote, v) {
       if (newNote == null || dispatch == null) {
         return;
       }
@@ -104,7 +104,7 @@ const ManagedNotesColumn = function (props) {
     ...rest,
     noteComponent: PhotoNoteComponent,
     onUpdateNote,
-    editable,
+    editable
   });
 };
 
