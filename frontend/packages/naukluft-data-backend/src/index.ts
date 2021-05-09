@@ -14,10 +14,10 @@ enum queryResult {
   /** Expecting no rows, to be resolved with `null`. */
   none = 4,
   /** `many|none` - any result is expected, to be resolved with an array of rows-objects. */
-  any = 6,
+  any = 6
 }
 
-export const runQuery = async function (
+export const runQuery = async function(
   key: string,
   params: any = null,
   resultMask: queryResult = queryResult.any
@@ -62,7 +62,7 @@ export function useUpdateableQuery(
 ) {
   /** A react hook to use the result of a query */
   const [result, updateResult] = useState<any>(null);
-  const queryFunc = async function () {
+  const queryFunc = async function() {
     const res = await runQuery(key, params, resultMask);
     return updateResult(res);
   };
@@ -86,3 +86,5 @@ export function useQueryRunner(): typeof runQuery {
 }
 
 export { queryResult as ResultMask };
+export * from "./platform";
+export * from "./updates";

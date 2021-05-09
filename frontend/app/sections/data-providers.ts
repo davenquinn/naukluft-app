@@ -13,10 +13,15 @@ import { SymbolProvider } from "./components/symbols";
 import h, { compose } from "@macrostrat/hyper";
 import { IsotopesDataProvider } from "./summary-sections/chemostrat/data-manager";
 import "./main.styl";
-import { runQuery, useQuery } from "naukluft-data-backend";
+import {
+  runQuery,
+  useQuery,
+  currentPlatform,
+  Platform
+} from "naukluft-data-backend";
 
-const sectionFilename = function (fn) {
-  if (PLATFORM === ELECTRON) {
+const sectionFilename = function(fn) {
+  if (currentPlatform == Platform.ELECTRON) {
     return resolve(__dirname, "..", "..", "..", "data", "column-images", fn);
   } else {
     return join(BASE_URL, "section-images", fn);
@@ -33,15 +38,15 @@ function __range__(left, right, inclusive) {
   return range;
 }
 
-const getSectionData = async function (opts = {}) {
+const getSectionData = async function(opts = {}) {
   if (opts.verbose == null) {
     opts.verbose = false;
   }
   const fn = sectionFilename("file-info.json");
-  const config = await getJSON(fn);
+  const config = (await getJSON(fn)) ?? {};
 
   const data = await runQuery("sections/sections");
-  return data.map(function (s) {
+  return data.map(function(s) {
     s.id = s.section.trim();
     const files = config[s.id] ?? [];
     s.range = [s.start, s.end];
@@ -55,7 +60,7 @@ const getSectionData = async function (opts = {}) {
 
     const sz = 427;
     s.scaleFactor = scaleFactor;
-    s.imageFiles = __range__(1, files.n, true).map(function (i) {
+    s.imageFiles = __range__(1, files.n, true).map(function(i) {
       const filename = sectionFilename(`section_${s.id}_${i}.png`);
       const remaining = files.height - (i - 1) * sz;
       const height = remaining > sz ? sz : remaining;
@@ -65,7 +70,7 @@ const getSectionData = async function (opts = {}) {
   });
 };
 
-const PhotoLibraryProvider = function ({ children }) {
+const PhotoLibraryProvider = function({ children }) {
   const { computePhotoPath } = useContext(PlatformContext);
   const photos = useQuery("sections/photo");
   return h(BasePhotoLibraryProvider, { photos, computePhotoPath }, children);
@@ -87,7 +92,7 @@ const SectionProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
 const useSection = (id: string): SectionData | null => {
   const sections: SectionData[] = useContext(SectionDataContext);
-  return sections.find((d) => d.id == id) ?? null;
+  return sections.find(d => d.id == id) ?? null;
 };
 
 const SectionDataProvider = compose(
@@ -109,5 +114,5 @@ export {
   useSection,
   SectionDataProvider,
   SectionConsumer,
-  SectionDataContext,
+  SectionDataContext
 };

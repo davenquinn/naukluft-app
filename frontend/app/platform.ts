@@ -6,7 +6,7 @@ import update from "immutability-helper";
 import {
   AssetPathProvider,
   AssetPathContext,
-  GeologicPatternProvider,
+  GeologicPatternProvider
 } from "@macrostrat/column-components";
 //# Set whether we are on the backend or frontend
 
@@ -20,19 +20,19 @@ if (process.versions?.electron != null) {
 } else {
   global.PLATFORM = WEB;
   global.SERIALIZED_QUERIES = true;
-  global.BASE_URL = "";
+  global.BASE_URL = "/";
 }
 console.log(`Running application on ${PLATFORM}`);
 
 const Platform = Object.freeze({
   ELECTRON: 1,
   WEB: 2,
-  PRINT: 3,
+  PRINT: 3
 });
 
 const DarkModeContext = createContext(false);
 
-const DarkModeProvider = function (props) {
+const DarkModeProvider = function(props) {
   let value;
   const { children } = props;
   try {
@@ -69,7 +69,7 @@ class PlatformProvider extends Component {
       inEditMode: false,
       platform,
       editable,
-      baseUrl,
+      baseUrl
     };
 
     this.path = this.path.bind(this);
@@ -91,7 +91,7 @@ class PlatformProvider extends Component {
       computePhotoPath,
       resolveSymbol,
       resolveLithologySymbol,
-      updateState,
+      updateState
     } = this;
     let { serializedQueries, ...restState } = this.state;
     if (this.state.platform === Platform.WEB) {
@@ -105,7 +105,7 @@ class PlatformProvider extends Component {
       updateState,
       computePhotoPath,
       resolveSymbol,
-      resolveLithologySymbol,
+      resolveLithologySymbol
     };
 
     ({ resolveSymbol } = this.props);
@@ -118,18 +118,18 @@ class PlatformProvider extends Component {
       h(
         GeologicPatternProvider,
         {
-          resolvePattern: this.resolveLithologySymbol,
+          resolvePattern: this.resolveLithologySymbol
         },
         [
           h(
             AssetPathProvider,
             {
-              resolveSymbol: this.resolveSymbol,
+              resolveSymbol: this.resolveSymbol
             },
             [h(PlatformContext.Provider, { value }, children)]
-          ),
+          )
         ]
-      ),
+      )
     ]);
   }
 
@@ -219,5 +219,5 @@ export {
   PlatformConsumer,
   DarkModeContext,
   DarkModeProvider,
-  useDarkMode,
+  useDarkMode
 };
