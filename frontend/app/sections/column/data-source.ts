@@ -11,7 +11,7 @@ interface ColumnDivision {
   lithology?: string;
   fillPattern?: string;
   facies_tract?: any;
-  facies?: any;
+  facies?: number;
   definite_boundary?: boolean;
   covered: boolean;
   grainsize: string;
