@@ -4,17 +4,17 @@ const { readFileSync } = require("fs");
 import { queryResult } from "pg-promise";
 
 const opts = {
-  noWarnings: true,
+  noWarnings: true
 };
 
 // Create database connection
 const pgp = PGPromise(opts);
-const db = pgp("postgresql:///Naukluft");
+const db = pgp("postgresql:///Naukluft", { log: true });
 const { helpers } = pgp;
 
 const queryFiles: { [k: string]: string } = {};
 
-const storedProcedure = function (fileName: string) {
+const storedProcedure = function(fileName: string) {
   // Don't hit the filesystem repeatedly
   // in a session
   const fn = resolve(fileName);

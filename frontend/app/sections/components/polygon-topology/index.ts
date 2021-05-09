@@ -51,10 +51,10 @@ const PolygonTopology = function(props) {
     console.log(lines, points);
     const res = await runQuery("stratigraphic-model/polygonize", {
       geometry: {
-        coordinates: lines,
+        coordinates: lines.filter(d => d != null),
         type: "MultiLineString"
       },
-      points
+      points: points.filter(d => d != null)
     });
     return setPolygons(res);
   };

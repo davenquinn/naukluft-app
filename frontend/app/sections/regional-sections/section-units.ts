@@ -15,7 +15,7 @@ import {
   PolygonTopology,
   extractLines,
   extractTextPositions,
-  removeLines,
+  removeLines
 } from "../components/polygon-topology";
 import { useFaciesColors } from "./util";
 import { FillPatternDefs } from "./pattern-fill";
@@ -25,7 +25,7 @@ import { FillPatternDefs } from "./pattern-fill";
 //
 // const fileNames = {S1,S2,S3};
 
-const getFile = async function (id) {
+const getFile = async function(id) {
   // console.log(id)
   // if (fn.startsWith("data:image/svg+xml;base64,")) {
   //   return atob(fn.split(',')[1]);
@@ -58,14 +58,22 @@ const getFile = async function (id) {
   // }
 };
 
-const getEditedSequenceOverlay = async function (id) {
-  let svg = await getFile(id);
-  const fst = removeLines(svg.toString(), 2);
+const getEditedSequenceOverlay = async function(id) {
+  console.log("Getting ", id);
+  const svgFile = await getFile(id);
+  let sst = svgFile.toString();
+  // Strip illustrator frontmatter that is sometimes added
+  if (sst.startsWith("<?xml")) {
+    sst = removeLines(sst, 1);
+  }
+  if (sst.startsWith("<!--")) {
+    sst = removeLines(sst, 1);
+  }
 
   const el = document.createElement("div");
-  el.innerHTML = fst;
+  el.innerHTML = sst;
 
-  svg = el.querySelector("svg");
+  const svg = el.querySelector("svg");
   const lyr2 = el.querySelector("#Layer_2");
 
   return select(svg);
@@ -82,7 +90,7 @@ const fillPatterns = {
   "marine-siliciclastic": null,
   "steepened-outer-ramp": 627,
   "marine-carbonate": 627,
-  "shoal-shoreface": 627,
+  "shoal-shoreface": 627
   // 'lime_mudstone': 627,
   // 'sandstone': 607,
   // 'siltstone': 616,
@@ -97,7 +105,7 @@ const fillPatterns = {
   // 'quartzite': 702
 };
 
-const Topology = function (props) {
+const Topology = function(props) {
   const colorIndex = useFaciesColors();
   const { id, ...rest } = props;
   return h(PolygonTopology, {
@@ -109,15 +117,15 @@ const Topology = function (props) {
         return `url(#${id}-${facies_id})`;
       }
       return "#eeeeee";
-    },
+    }
   });
 };
 
 const extractTopology = async (el, id) => {
   const svg = await getEditedSequenceOverlay(id);
   console.log(svg);
-  if (svg == null) {
-    return;
+  if (svg == null || el == null) {
+    return null;
   }
 
   const main = svg.select("g#Lines");
@@ -125,14 +133,19 @@ const extractTopology = async (el, id) => {
   const lines = extractLines(main);
 
   for (let v of ["viewBox", "width", "height"]) {
+    console.log(svg);
     el.attr(v, svg.attr(v));
   }
 
-  el.select("g.linework").node().appendChild(main.node());
+  el.select("g.linework")
+    .node()
+    .appendChild(main.node());
 
   const pts = svg.select("g#Labels").node();
   if (pts != null) {
-    el.select("g.overlay").node().appendChild(pts);
+    el.select("g.overlay")
+      .node()
+      .appendChild(pts);
   }
 
   /* Get facies data */
@@ -168,10 +181,10 @@ class CrossSectionUnits extends Component {
       h(Topology, {
         id,
         lines,
-        points,
+        points
       }),
       h("g.linework"),
-      h("g.overlay"),
+      h("g.overlay")
     ]);
   }
 }
