@@ -1,181 +1,165 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="1235.218" height="371.198" viewBox="0 0 1235.218 371.198">
-  <g id="Layer_1-2" data-name="Layer 1">
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="1235.2" height="343.8" viewBox="0 0 1235.2 343.8">
+  <g id="Layer_1-2" data-name="Layer 1-2">
     <g>
       <g>
-        <rect x="158.6" y="199.9" width="20" height="70.7" style="fill: #deeffc"/>
-        <rect x="158.6" y="189.9" width="20" height="10" style="fill: #4db6ac"/>
-        <rect x="158.6" y="172.9" width="20" height="17" style="fill: #dcedc8"/>
-        <rect x="158.6" y="171.2" width="20" height="1.7" style="fill: #4db6ac"/>
-        <rect x="158.6" y="164.3" width="20" height="6.9" style="fill: #dcedc8"/>
-        <rect x="158.6" y="162.9" width="20" height="1.4" style="fill: #4db6ac"/>
-        <rect x="158.6" y="160.9" width="20" height="2" style="fill: #64b0ad"/>
-        <rect x="158.6" y="160.4" width="20" height="0.5" style="fill: #4db6ac"/>
-        <rect x="158.6" y="159.9" width="20" height="0.5" style="fill: #dcedc8"/>
-        <rect x="158.6" y="147.9" width="20" height="12" style="fill: #4db6ac"/>
-        <rect x="158.6" y="142.9" width="20" height="5" style="fill: #64b0ad"/>
-        <rect x="158.6" y="137.4" width="20" height="5.5" style="fill: #4db6ac"/>
-        <rect x="158.6" y="135.7" width="20" height="1.7" style="fill: #64b0ad"/>
-        <rect x="158.6" y="127.9" width="20" height="7.8" style="fill: #4db6ac"/>
-        <rect x="158.6" y="107.9" width="20" height="20" style="fill: #bbdefb"/>
-        <rect x="158.6" y="85.9" width="20" height="22" style="fill: #4db6ac"/>
-        <rect x="158.6" y="54.9" width="20" height="31" style="fill: #bbdefb"/>
-        <rect x="158.6" y="52.9" width="20" height="2" style="fill: #4db6ac"/>
-        <rect x="158.6" y="49.3" width="20" height="3.6" style="fill: #bbdefb"/>
-        <rect x="158.6" y="42.4" width="20" height="6.9" style="fill: #7986cb"/>
-        <rect x="158.6" y="33.9" width="20" height="8.5" style="fill: #c22762"/>
-        <rect x="158.6" y="33.4" width="20" height="0.5" style="fill: #dcedc8"/>
+        <rect x="158.6" y="172.5" width="20" height="70.7" fill="#deeffc"/>
+        <rect x="158.6" y="162.5" width="20" height="10" fill="#4db6ac"/>
+        <rect x="158.6" y="145.5" width="20" height="17" fill="#dcedc8"/>
+        <rect x="158.6" y="143.8" width="20" height="1.7" fill="#4db6ac"/>
+        <rect x="158.6" y="136.9" width="20" height="6.9" fill="#dcedc8"/>
+        <rect x="158.6" y="135.5" width="20" height="1.4" fill="#4db6ac"/>
+        <rect x="158.6" y="133.5" width="20" height="2" fill="#64b0ad"/>
+        <rect x="158.6" y="133" width="20" height="0.5" fill="#4db6ac"/>
+        <rect x="158.6" y="132.5" width="20" height="0.5" fill="#dcedc8"/>
+        <rect x="158.6" y="120.5" width="20" height="12" fill="#4db6ac"/>
+        <rect x="158.6" y="115.5" width="20" height="5" fill="#64b0ad"/>
+        <rect x="158.6" y="110" width="20" height="5.5" fill="#4db6ac"/>
+        <rect x="158.6" y="108.3" width="20" height="1.7" fill="#64b0ad"/>
+        <rect x="158.6" y="100.5" width="20" height="7.8" fill="#4db6ac"/>
+        <rect x="158.6" y="80.5" width="20" height="20" fill="#bbdefb"/>
+        <rect x="158.6" y="58.5" width="20" height="22" fill="#4db6ac"/>
+        <rect x="158.6" y="27.5" width="20" height="31" fill="#bbdefb"/>
+        <rect x="158.6" y="25.5" width="20" height="2" fill="#4db6ac"/>
+        <rect x="158.6" y="21.9" width="20" height="3.6" fill="#bbdefb"/>
+        <rect x="158.6" y="15" width="20" height="6.9" fill="#7986cb"/>
+        <rect x="158.6" y="6.5" width="20" height="8.5" fill="#c22762"/>
+        <rect x="158.6" y="6" width="20" height="0.5" fill="#dcedc8"/>
       </g>
       <g>
-        <rect x="271.938" y="218.6" width="20" height="39.7" style="fill: #deeffc"/>
-        <rect x="271.938" y="200.3" width="20" height="18.3" style="fill: #4db6ac"/>
-        <rect x="271.938" y="182.3" width="20" height="18" style="fill: #dcedc8"/>
-        <rect x="271.938" y="163.8" width="20" height="18.5" style="fill: #64b0ad"/>
-        <rect x="271.938" y="157.8" width="20" height="6" style="fill: #dcedc8"/>
-        <rect x="271.938" y="156.3" width="20" height="1.5" style="fill: #4db6ac"/>
-        <rect x="271.938" y="154.8" width="20" height="1.5" style="fill: #dcedc8"/>
-        <rect x="271.938" y="151.7" width="20" height="3.1" style="fill: #4db6ac"/>
-        <rect x="271.938" y="144.7" width="20" height="7.1" style="fill: #dcedc8"/>
-        <rect x="271.938" y="136.3" width="20" height="8.3" style="fill: #4db6ac"/>
-        <rect x="271.938" y="115.3" width="20" height="21" style="fill: #bbdefb"/>
-        <rect x="271.938" y="87.8" width="20" height="27.5" style="fill: #64b0ad"/>
-        <rect x="271.938" y="81.8" width="20" height="6" style="fill: #dcedc8"/>
-        <rect x="271.938" y="50.3" width="20" height="31.5" style="fill: #bbdefb"/>
-        <rect x="271.938" y="33.9" width="20" height="16.5" style="fill: #c22762"/>
-        <rect x="271.938" y="26.9" width="20" height="7" style="fill: #dcedc8"/>
+        <rect x="271.9" y="191.2" width="20" height="39.7" fill="#deeffc"/>
+        <rect x="271.9" y="172.9" width="20" height="18.3" fill="#4db6ac"/>
+        <rect x="271.9" y="154.9" width="20" height="18" fill="#dcedc8"/>
+        <rect x="271.9" y="136.4" width="20" height="18.5" fill="#64b0ad"/>
+        <rect x="271.9" y="130.4" width="20" height="6" fill="#dcedc8"/>
+        <rect x="271.9" y="128.9" width="20" height="1.5" fill="#4db6ac"/>
+        <rect x="271.9" y="127.4" width="20" height="1.5" fill="#dcedc8"/>
+        <rect x="271.9" y="124.3" width="20" height="3.1" fill="#4db6ac"/>
+        <rect x="271.9" y="117.3" width="20" height="7.1" fill="#dcedc8"/>
+        <rect x="271.9" y="108.9" width="20" height="8.3" fill="#4db6ac"/>
+        <rect x="271.9" y="87.9" width="20" height="21" fill="#bbdefb"/>
+        <rect x="271.9" y="60.4" width="20" height="27.5" fill="#64b0ad"/>
+        <rect x="271.9" y="54.4" width="20" height="6" fill="#dcedc8"/>
+        <rect x="271.9" y="22.9" width="20" height="31.5" fill="#bbdefb"/>
+        <rect x="271.9" y="6.5" width="20" height="16.5" fill="#c22762"/>
       </g>
       <g>
-        <rect x="678.6" y="320.4" width="20" height="19.5" style="fill: #bbdefb"/>
-        <rect x="678.6" y="312.5" width="20" height="7.9" style="fill: #4db6ac"/>
-        <rect x="678.6" y="288.9" width="20" height="23.6" style="fill: #bbdefb"/>
-        <rect x="678.6" y="271.9" width="20" height="17" style="fill: #4db6ac"/>
-        <rect x="678.6" y="252.9" width="20" height="19" style="fill: #bbdefb"/>
-        <rect x="678.6" y="241.9" width="20" height="11" style="fill: #4db6ac"/>
-        <rect x="678.6" y="229.9" width="20" height="12" style="fill: #bbdefb"/>
-        <rect x="678.6" y="220.9" width="20" height="9" style="fill: #dcedc8"/>
-        <rect x="678.6" y="214.9" width="20" height="6" style="fill: #bbdefb"/>
-        <rect x="678.6" y="184.9" width="20" height="30" style="fill: #dcedc8"/>
-        <rect x="678.6" y="175.9" width="20" height="9" style="fill: #4db6ac"/>
-        <rect x="678.6" y="156.7" width="20" height="19.2" style="fill: #64b0ad"/>
-        <rect x="678.6" y="146.4" width="20" height="10.3" style="fill: #4db6ac"/>
-        <rect x="678.6" y="125.9" width="20" height="20.5" style="fill: #dcedc8"/>
-        <rect x="678.6" y="118.9" width="20" height="7" style="fill: #bbdefb"/>
-        <rect x="678.6" y="117.9" width="20" height="1" style="fill: #dcedc8"/>
-        <rect x="678.6" y="102.9" width="20" height="15" style="fill: #4db6ac"/>
-        <rect x="678.6" y="100.4" width="20" height="2.5" style="fill: #dcedc8"/>
-        <rect x="678.6" y="66.9" width="20" height="33.5" style="fill: #bbdefb"/>
-        <rect x="678.6" y="62.5" width="20" height="4.4" style="fill: #deeffc"/>
-        <rect x="678.6" y="53.2" width="20" height="9.3" style="fill: #7986cb"/>
-        <rect x="678.6" y="49.8" width="20" height="3.4" style="fill: #deeffc"/>
-        <rect x="678.6" y="47.6" width="20" height="2.2" style="fill: #7986cb"/>
-        <rect x="678.6" y="46" width="20" height="1.6" style="fill: #deeffc"/>
-        <rect x="678.6" y="33.9" width="20" height="12.1" style="fill: #7986cb"/>
-        <rect x="678.6" width="20" height="33.9" style="fill: #dcedc8"/>
+        <rect x="678.6" y="293" width="20" height="19.5" fill="#bbdefb"/>
+        <rect x="678.6" y="285.1" width="20" height="7.9" fill="#4db6ac"/>
+        <rect x="678.6" y="261.5" width="20" height="23.6" fill="#bbdefb"/>
+        <rect x="678.6" y="244.5" width="20" height="17" fill="#4db6ac"/>
+        <rect x="678.6" y="225.5" width="20" height="19" fill="#bbdefb"/>
+        <rect x="678.6" y="214.5" width="20" height="11" fill="#4db6ac"/>
+        <rect x="678.6" y="202.5" width="20" height="12" fill="#bbdefb"/>
+        <rect x="678.6" y="193.5" width="20" height="9" fill="#dcedc8"/>
+        <rect x="678.6" y="187.5" width="20" height="6" fill="#bbdefb"/>
+        <rect x="678.6" y="157.5" width="20" height="30" fill="#dcedc8"/>
+        <rect x="678.6" y="148.5" width="20" height="9" fill="#4db6ac"/>
+        <rect x="678.6" y="129.3" width="20" height="19.2" fill="#64b0ad"/>
+        <rect x="678.6" y="119" width="20" height="10.3" fill="#4db6ac"/>
+        <rect x="678.6" y="98.5" width="20" height="20.5" fill="#dcedc8"/>
+        <rect x="678.6" y="91.5" width="20" height="7" fill="#bbdefb"/>
+        <rect x="678.6" y="90.5" width="20" height="1" fill="#dcedc8"/>
+        <rect x="678.6" y="75.5" width="20" height="15" fill="#4db6ac"/>
+        <rect x="678.6" y="73" width="20" height="2.5" fill="#dcedc8"/>
+        <rect x="678.6" y="39.5" width="20" height="33.5" fill="#bbdefb"/>
+        <rect x="678.6" y="35.1" width="20" height="4.4" fill="#deeffc"/>
+        <rect x="678.6" y="25.8" width="20" height="9.3" fill="#7986cb"/>
+        <rect x="678.6" y="22.4" width="20" height="3.4" fill="#deeffc"/>
+        <rect x="678.6" y="20.2" width="20" height="2.2" fill="#7986cb"/>
+        <rect x="678.6" y="18.6" width="20" height="1.6" fill="#deeffc"/>
+        <rect x="678.6" y="6.5" width="20" height="12.1" fill="#7986cb"/>
       </g>
     </g>
   </g>
-  <g id="Lines">
-    <path d="M251.5,15.4c11.1-1.1,117.2-.9,117.2-.9" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.5px"/>
-    <path d="M4.2,120.8l167.3,3c27.9.4,68.1,10.8,113.3,12.4,0,0,200.2,6.8,375.2,6.8l578.1,21" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M502,249.9c73.2,23.6,135.9,39.2,189.5,43.1,109.4,12.4,530.5,50.3,530.5,50.3" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M691.5,227.552C644.9,227,329.938,199.59,284.838,190.49c-29.8-6-50.838-13.99-113.338-17.59H4.1" transform="translate(-2.9 27.4)" style="fill: none;stroke: #b90000"/>
-    <path d="M1003.2,255.6l-15.5,5.2" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 1.5px"/>
-    <path d="M559.9,185H419.1l67.2,5.5-95.4-3c1.3.1,27.4,4.1,27.4,4.1,57.3,9.3,165.1,22.5,241.8,23.4h40l178.4,6.7L1220,233" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 1.5px"/>
-    <path d="M445.6,99c56.8-.6,74.2-.5,249.2-.5,0,0,157.2-1,231.8.9L909,97l96.1-1" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M4.2,18.4s44.5-1.9,57.2,1.4c22.3,5.7,55.8,7,80.3,7.7,14.5.4,58.3-.5,58.3-.5,35,0,44.3-11.6,51.5-11.6,14,0,16.1,7.7,33.3,7.7,11.1,0,21.5-5.2,29.1-5.2,8.2,0,13.1,5.1,26.5,5.1,9.1,0,20.7-8.5,28.3-8.5,147.9-.3,124.8-3.2,291.3-3.2L1213.2,23" transform="translate(-2.9 27.4)" style="fill: none;stroke: #b90000;stroke-width: 2px"/>
-    <path d="M4.2,78s126.6.7,168.8,2.5c24.1,1,69.9,6.6,96,7.4,12.8.4,32.2-1,42.6-.8C482.5,89,503.8,89.4,660,90c0,0,187.3.3,290.9,5,36.3,1.6,200.4,4.4,218.4,4.4" transform="translate(-2.9 27.4)" style="fill: none;stroke: #b90000"/>
-    <path d="M57.8,61,155,58.4l32.3-.3L234,55.7l76-1.3c175,0,175.8,1.5,350.8,1.5L1007.5,57l-28.2-2.2L1083,51.6,663.5,46.3l326.8-1.2" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M364.6,111.5l77.7-2.8-90.5-4,206.6-2.1L445.6,99" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <polyline points="3.8 32.4 152.1 32.4 197.1 32.4" style="fill: none;stroke: #ccc;stroke-width: 3px"/>
-    <path d="M200,5H310" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 3px"/>
-    <path d="M310,5H675l538.2,12.1" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 3px"/>
-    <path d="M10.7,286.3,8.2-9.4,1204-1.6V318H169C146.9,309.8,11.1,303.2,10.7,286.3Z" transform="translate(-2.9 27.4)" style="fill: none"/>
-    <path d="M4.2,245H138.4c140.6,0,162.3,5.8,270.2,28.3s233.2,58,240.3,58" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M949.8,210.9l-107.4,3,123.9,5.2-243.4-2" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M803.9,250.7l9.3-1.3,197.9,2-41-5.4,119.8-3.4-275.1-6.4,32.8-2.5L711,232.1l33-3.2s-58.9-.3-99.1-1.9" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M1238.1,265.6,859.8,251.7s-88.1-1.8-193.4-7.5c-16.9-1.4-93-9.2-93-9.2h60.4c-42.8-4.2-124.2-1.6-179.1-13.9,95.8,11.1,154.2,4.4,220.3,5,135.6,1,459.5,11.6,459.5,11.6" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M1213.2,124.5c-.6-.1-479.4-3.4-521.7-4.5-37-1-124.4-3.8-162.1-5.8-37.4-2-244.5-5.3-244.5-5.3-31.3-1.4-85.7-7.9-114.3-9.6C129,96.8,4.2,95.6,4.2,95.6" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M859.8,303" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 1.5px"/>
-    <path d="M4.2,152.5H73l-32-2.7,89.6-1.4L68.8,146s45.5-.3,82.1-.3c34.9,0,83.1,8.3,83.1,8.3,3.7.2-38.7-8.6-62.5-9.8-45-2.2-148.9-1.3-148.9-1.3h0" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M1208.3,76S708.6,75,675,75c-54.8,0-297.5-1.5-365-1.5H270L234,73c15.1-1,36-1.4,36-1.4l52.9.4c75.1-2.5,318.8.5,369.1.5,36.7,0,172.8-4.6,172.8-4.6l-25.9-1.7" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M714.1,159.7l19.6-1.6s180.6,6.3,171,5.5c-10-.8-59.3-5.2-126.8-6.9l242.8,6.4-126.9-7.5,291.5,9.3-7.6-4.7" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <polyline points="478.1 99.4 614.9 94.6 498.2 91.5 650.4 85.3" style="fill: none;stroke: #ccc"/>
-    <path d="M6.2,7.5s56.5.2,76,.8c18.2.6,47.1,6.4,77,6.4,47.3,0,51.1-2.7,125.8-2.7,53.4,0,200.4-.7,258.1-.9l-64.8,3.2" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.5px"/>
-    <path d="M106.7,9.7,13,11.3l108.4,4.4L95.6,17.1s35.1,3.7,51.7,4.3c13.6.5,50.2-.5,70.8-1.1l-11.9-3.1L269,11.4" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <polyline points="353.8 39.8 456.2 36.7 422 35.5 502.5 31.1" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <polyline points="971.8 72.6 1191.1 72.2 1015.6 65.9 1212.7 66.9" style="fill: none;stroke: #ccc"/>
-    <polyline points="590.3 38.5 621.9 43.1 745.8 45.3 600.8 47.2 545.1 48.3 817.3 50.6 713.9 52.9 571.6 56.3 610 58.7 512 60.7 948.2 65.2 1015.6 65.9" style="fill: none;stroke: #ccc"/>
-    <path d="M404.7,94.8" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M568.3,220.1C578.7,219.9,600,209,600,209" transform="translate(-2.9 27.4)" style="fill: none"/>
-    <polyline points="1210.3 108.4 1096.6 107.4 1017.9 108 1190.1 114.1 912.5 110.2 1062.2 118.5 830.8 114.9 1161.5 127.5" style="fill: none;stroke: #ccc"/>
-    <path d="M21.7,143,97,138.7H15.4s34.4-2.2,45.8-2.5c24-.7,95.9-.3,95.9-.3,72.4,0,85.9,16.9,130.2,19,3.2.2,301.1,1.7,387.7,3.3s546.6,19.5,546.6,19.5" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M230.7,145.5" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M112.2,152.5" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.5px"/>
-    <path d="M19.9,164" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.5px"/>
-    <path d="M2.9,15.7s40.4,0,53.9.7c9.4.5,32.4,3.4,32.4,3.4L78.4,21.5l67.8,4s44.1-.4,58.8-.4c31.1,0,34.1-11.3,51.8-11.3,22.6,0,133.9-2.1,133.9-2.1" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.5px"/>
-    <path d="M215.7,18.6" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M314,14.7" transform="translate(-2.9 27.4)" style="fill: none;stroke: #fcc;stroke-width: 1.5px"/>
-    <path d="M4.2,60.4H421.6s223.4-2.7,292-2,191.6,4.7,191.6,4.7l-66.3,3.1" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M654.5,243.2" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 1.5px"/>
-    <polyline points="376.9 296.1 499.6 312.5 444.1 296.1 607.9 320.4 494.8 290.1 657.2 315.5" style="fill: none;stroke: #ccc"/>
-    <polyline points="1122.2 265.3 1081.6 260.4 1178 258.8" style="fill: none;stroke: #ccc"/>
-    <polyline points="863.2 257.8 830.8 252.9 933.4 250.7" style="fill: none;stroke: #ccc"/>
-    <path d="M502,249.9" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M1041.5,333l77-8.5L946.4,309.2c-91.2-6.7-218.7-21.6-252.9-23.6-51.8-3-130.1-18.4-191.5-35.7" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M846.4,259.2S730,259,719,260c-4.7.4,75.9,5.8,88,6.6L661.7,261c98.1,9.8,520.2,27.4,520.2,27.4l-185.6-1.5,103.9,11.3-223.5-10,102.2,12.2L784.4,288.2l35,6.5-72-1.7" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M891.1,165.3" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M856,138.9l-164.5-4.4c-27.6,0-104.8-5.1-406.7-12.6-22.8-.6-50.7-4.3-59.8-7.6,0,0,40.6,3.1,59.8,3.1,17.5,0,399.7,12.2,406.7,12.3,41.2.6,124.8,1.4,124.8,1.4l152,1.9-83.2-6.4c141.8-1.6,291,1.4,291,1.4l-33.1-4.5" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M124.3,124.3,100,120.8h71.6c22.2,0,84.3,9.6,115.6,9.6,31.2,0,372.6,6.7,406.6,7.9,27.6,1,171.8,3,171.8,3l-11.8-2.5" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <line x1="797.2" y1="203" x2="794.2" y2="203" style="fill: none;stroke: #ccc"/>
-    <line x1="846.9" y1="337.2" x2="962.6" y2="337.2" style="fill: none;stroke: #ccc;stroke-width: 1.5px"/>
-    <path d="M1146.9,262l22.4,3.6-85.4-2.9L753.8,253c-55.7-.6-121.3-2.5-147.7-6.1,64.7,10.8,238.5,13,238.5,13l352.1,12.5-81.4,3.8" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc;stroke-width: 0.75px"/>
-    <path d="M964.2,212.1c-53.8-1.5-214.4-9.1-289.2-9.2-8.6,0-108-3.2-143.2-8.9l21-.5-38-4.7s111.9,4.1,160.1,5.2,231.2,9,231.2,9l-70.4-6.3,145-2.7s-214.2-6-305.8-6-275.7-9.8-306.3-10.3c-20.1-.3-67.6-3.6-82.7-4.7,0,0-118.3-5.9-129.5-7.5L310,171s181.2,5.7,271.1,9.1c88.5,3.3,170.2,2,170.2,2L205.2,163.2l-4.7-.3c-8.8-.4-13.4-1-29.1-1-38.1,0-167.3-.8-167.3-.8" transform="translate(-2.9 27.4)" style="fill: none;stroke: #ccc"/>
-    <path d="M691.5,227.552c30.731.862,521.7,13.725,521.7,13.725" transform="translate(-2.9 27.4)" style="fill: none;stroke: #b90000"/>
-  </g>
   <g id="Facies">
-    <text transform="translate(330.494 217.89)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(291.938 312.49)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">none</text>
-    <text transform="translate(1102.306 234.554)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(748.417 310.045)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(637.1 240.48)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(418.766 270.59)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">p</text>
-    <text transform="translate(603.2 217.89)" style="isolation: isolate;font-size: 4px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(766.045 209.48)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(767.654 141.4)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(638.802 80.009)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(182.768 137.39)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(321.782 171.4)" style="isolation: isolate;font-size: 8px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(646 95.35)" style="isolation: isolate;font-size: 9px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(459.587 93.35)" style="isolation: isolate;font-size: 8px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(195.1 52.09)" style="isolation: isolate;font-size: 5px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(885.887 54.999)" style="isolation: isolate;font-size: 7px;font-family: ArialMT, Arial">sh</text>
-    <text transform="translate(781.524 39.825)" style="isolation: isolate;font-size: 5px;font-family: ArialMT, Arial">sh</text>
-    <text transform="translate(187.018 46)" style="isolation: isolate;font-size: 4px;font-family: ArialMT, Arial">sh</text>
-    <text transform="translate(912.532 37.144)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">none</text>
-    <text transform="translate(1150.975 199.762)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(710.697 112.002)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(187.301 168.783)" style="isolation: isolate;font-size: 5.282599925994873px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(574.66 274.335)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(597.1 247.4)" style="isolation: isolate;font-size: 8px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(665.226 315.55)" style="isolation: isolate;font-size: 3px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(933.42 277.269)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(1181.127 167.6)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(289.683 123.408)" style="isolation: isolate;font-size: 9px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(1178.032 126.751)" style="isolation: isolate;font-size: 6px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(1184.77 113.137)" style="isolation: isolate;font-size: 6px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(195.1 187.6)" style="isolation: isolate;font-size: 5.282599925994873px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(43.009 162.1)" style="isolation: isolate;font-size: 5.282599925994873px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(65.885 47.932)" style="isolation: isolate;font-size: 4px;font-family: ArialMT, Arial">cc</text>
-    <text transform="translate(271.938 47.2)" style="isolation: isolate;font-size: 6px;font-family: ArialMT, Arial">rework</text>
-    <text transform="translate(300.195 38.35)" style="isolation: isolate;font-size: 6px;font-family: ArialMT, Arial">rework</text>
-    <text transform="translate(1011.309 99.4)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(1013.092 287.282)" style="isolation: isolate;font-size: 3px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(896.887 293)" style="isolation: isolate;font-size: 3px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(723.923 337.24)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(940.904 257.765)" style="isolation: isolate;font-size: 7px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(935.735 341.963)" style="isolation: isolate;font-size: 3px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(1128.697 337.24)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(1128.697 277.269)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">fc</text>
-    <text transform="translate(648.413 265.256)" style="isolation: isolate;font-size: 12px;font-family: ArialMT, Arial">sub</text>
-    <text transform="translate(658.889 306.087)" style="isolation: isolate;font-size: 10px;font-family: ArialMT, Arial">sub</text>
+    <text transform="translate(330.494 189.073)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(291.938 285.09)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">none</text>
+    <text transform="translate(1102.306 207.154)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(748.417 282.645)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(637.1 213.08)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(418.766 243.19)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(603.2 190.49)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(766.045 182.08)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(767.654 114)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(638.802 52.609)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(182.768 109.99)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(321.782 144)" font-size="8" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(318.174 72)" font-size="8" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(195.1 22.848)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(885.887 27.599)" font-size="7" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(781.524 13.701)" font-size="5" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(187.018 18.6)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(912.532 9.744)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">none</text>
+    <text transform="translate(1150.975 172.362)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(710.697 84.602)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(187.301 141.383)" font-size="5.283" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(574.66 246.935)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(597.1 220)" font-size="8" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(665.226 289.709)" font-size="7" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(1181.127 140.2)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(289.683 96.008)" font-size="9" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(1178.032 99.351)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(1184.77 85.737)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(195.1 160.2)" font-size="5.283" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(43.009 134.7)" font-size="5.283" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(65.885 20.532)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(271.938 19.8)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">rework</text>
+    <text transform="translate(300.195 10.95)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">rework</text>
+    <text transform="translate(1011.309 72)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(723.923 309.84)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(940.904 230.365)" font-size="7" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(1128.697 309.84)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(1151.082 231.628)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(648.413 237.856)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(658.889 278.687)" font-size="10" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(998.529 300.477)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(951.902 265.627)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(674.345 170.748)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(681.586 164.059)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+    <text transform="translate(626.398 71.433)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sub</text>
+  </g>
+  <g id="Lines">
+    <path d="M242.95,15.4c11.1-1.1,117.2-.9,117.2-.9" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <path d="M352.95,235c51.176,14.69,282,54.1,335.65,58,109.4,12.4,215.03,19.889,215.03,19.889" fill="none" stroke="#ccc"/>
+    <path d="M1020.535,236.83s-291.7-8.69-337.585-10.93c-42.6-.507-358.1-35.1-406.7-42.4-29.9-4.5-50.8-6.9-113.3-10.5H-4.45" fill="none" stroke="#b90000"/>
+    <path d="M-4.45,161.1s129.2.8,167.3.8c15.7,0,20.3.6,29.1,1l4.7.3,243.5,12.43H401.9c-29.812-1.054-146.347-5.836-223.878-8.431-47.9-1.6-75.141-.506-75.141-.506,80.371,1.777,145.942,5.207,145.942,5.207l33.081,2.06L410.55,185l-42.415.552,14.215,3.224c1.3.1,51.1,6.671,51.1,6.671,22.891,2.553,31.725,3.543,66.463,7.162,49.23,5.13,104.519,9.987,151.637,12.391h40l178.4,6.7,204.5,3.653" fill="none" stroke="#ccc"/>
+    <path d="M437.05,99c56.8-.6,74.2-.5,249.2-.5,0,0,157.2-1,231.8.9L900.45,97l96.1-1" fill="none" stroke="#ccc"/>
+    <path d="M-4.35,18.4s44.5-1.9,57.2,1.4c22.3,5.7,55.8,7,80.3,7.7,14.5.4,58.3-.5,58.3-.5,35,0,44.3-11.6,51.5-11.6,14,0,16.1,7.7,33.3,7.7,11.1,0,21.5-5.2,29.1-5.2,8.2,0,13.1,5.1,26.5,5.1,9.1,0,20.7-8.5,28.3-8.5,147.9-.3,156.3,0,322.8,0l521.7,8.5" fill="none" stroke="#b90000" stroke-width="2"/>
+    <path d="M-4.35,78s126.6.7,168.8,2.5c24.1,1,69.9,6.6,96,7.4,12.8.4,32.2-1,42.6-.8,170.9,1.9,192.2,2.3,348.4,2.9,0,0,187.3.3,290.9,5,36.3,1.6,200.4,4.4,218.4,4.4" fill="none" stroke="#b90000"/>
+    <path d="M356.05,111.5l77.7-2.8-90.5-4,206.6-2.1L437.05,99" fill="none" stroke="#ccc"/>
+    <polyline points="-1.85 5 146.45 5 191.45 5" fill="none" stroke="#ccc" stroke-width="3"/>
+    <path d="M191.45,5h110" fill="none" stroke="#ccc" stroke-width="3"/>
+    <path d="M301.45,5h365l538.2,12.1" fill="none" stroke="#ccc" stroke-width="3"/>
+    <path d="M2.15,286.3-.35-9.4l1195.8,7.8V318h-1035C138.35,309.8,2.55,303.2,2.15,286.3Z" fill="none"/>
+    <path d="M-4.35,245h134.2c140.6,0,162.3,5.8,270.2,28.3s233.2,58,240.3,58l111.033,20.316" fill="none" stroke="#ccc"/>
+    <path d="M941.25,210.9l-107.4,3,123.9,5.2-243.4-2" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M1056.019,123.5c-.6-.1-330.769-2.4-373.069-3.5-37-1-124.4-3.8-162.1-5.8-37.4-2-244.5-5.3-244.5-5.3-31.3-1.4-85.7-7.9-114.3-9.6-41.6-2.5-166.4-3.7-166.4-3.7" fill="none" stroke="#ccc"/>
+    <path d="M-4.35,152.5h58.7l-21.9-2.7,86.648-1.354L108.374,145.5s-2.622.355,33.976.767C209,147.018,272.183,154.9,281.9,154.9c9.283,0,34.734,1.912,34.734,1.912l-6.2-2.812,56.082.9c3.7.2-179.768-9.5-203.568-10.7-45-2.2-132.339-3.036-132.339-3.036" fill="none" stroke="#ccc"/>
+    <path d="M-4.35,120.8l167.3,3c27.9.4,68.1,10.8,113.3,12.4,0,0,200.2,6.8,375.2,6.8l443.45,11.3-69.8,3.2-111.778-1.344,38.578,5.1L802.774,156.7s23.276,3.933,33.276,4.733c9.6.8-110.9-3.333-110.9-3.333h0" fill="none" stroke="#ccc"/>
+    <path d="M-2.35,7.5s56.5.2,76,.8c18.2.6,47.1,6.4,77,6.4,47.3,0,51.1-2.7,125.8-2.7,53.4,0,200.4-.7,258.1-.9l-19.638,4.636" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <path d="M98.15,9.7,4.45,11.3l108.4,4.4-25.8,1.4s35.1,3.7,51.7,4.3c13.6.5,50.2-.5,70.8-1.1l-11.9-3.1,43.9-5.5" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <polyline points="348.15 12.4 450.55 9.3 416.35 8.1 496.85 3.7" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M632.411,12.55l-16.161,4,123.9,1.35L735.4,19.4l-140.247.4,17.45,1.86,199.05,1.682L708.25,25.5,535,26.966l26.85,3.217L506.35,33.3l436.2,4.5,67.4.7,59.817.3L971.531,42.33l10.219,3.762-326.8.208,58.6,1.591,467.679,5.72-55.659,3.531,22.316,3.286S683.384,59.709,578.2,58.767c-28.447-.255-93.8-2.355-93.8-2.355L280.472,54.759,238.037,54.4l8.413,4.1-67.7-.4-32.3.3L49.25,61" fill="none" stroke="#ccc"/>
+    <polyline points="1204.65 81 1090.95 80 1012.25 80.6 1184.45 86.7 906.85 82.8 1056.55 91.1 825.15 87.5 1155.85 100.1" fill="none" stroke="#ccc"/>
+    <path d="M30.611,141.164,94.8,138.449l-11.58-2.463c24-.7,65.33-.086,65.33-.086,38.8.3,59.618,2.664,79.412,5.264l24.252,2.077c16.386.692,77.5,5.279,106.068,6.084,13.553.381-41.321-6.507-29.617-6.063,19.485.738,166.375,3.082,259.373,7.26,34,1.528,65.4,6.251,78.412,6.544,52.494,1.184,58.7,1.034,58.7,1.034" fill="none" stroke="#ccc"/>
+    <path d="M-5.65,15.7s40.4,0,53.9.7c9.4.5,32.4,3.4,32.4,3.4L73.15,21s48.4,3.6,64.5,4.1c14.7.4,44.1-.8,58.8-.8,12.5,0,20.5-1.7,26.7-3.7,1.9-.6-8.2-1.6-6.5-1.9,8.8-1.4,17.9-5.1,26.3-5.1,22.6,0,139.2-2.042,139.2-2.042" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <path d="M-4.35,60.4H309.635c10.766,0,125.06.7,150.924,1.39,35.682.952,142.765.821,142.765.821l294.606,2.14-87.077,2.955,9.818,3.869L692,73,251.121,71.521l-34.7.5c2.11.1,15.617,1.414,35.121,1.641,64.6.751,195.008.835,195.008.835,12.125.819,165.242.642,220.042.642,33.6,0,533.158.858,533.158.858" fill="none" stroke="#ccc"/>
+    <polyline points="424.958 280.686 597.42 306.051 519.101 284.424 707.508 315.055 580.433 285.999 651.55 288.667" fill="none" stroke="#ccc"/>
+    <polyline points="796.9 231.628 866.531 229.264 746.075 224.578 659.696 220 927.75 222.733" fill="none" stroke="#ccc"/>
+    <path d="M903.63,312.889l115.62,3.511-81.4-7.2c-91.2-6.7-218.7-21.6-252.9-23.6-51.8-3-260.1-36.275-332-50.175" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M847.45,138.9l-164.5-4.4-170.458-6.051-65.942-1.984,43.817-2.315S675.95,129.6,682.95,129.7c41.2.6,124.8,1.4,124.8,1.4l141.03-.05-23.721-4.217,160-2.683-29.044-.65" fill="none" stroke="#ccc"/>
+    <path d="M115.75,124.3l-24.3-3.5h71.6c22.2,0,84.3,9.6,115.6,9.6,31.2,0,372.656,6.7,406.6,7.9,27.6,1,150.8,2.7,150.8,2.7l9.2-2.2" fill="none" stroke="#ccc"/>
+    <line x1="791.55" y1="175.6" x2="788.55" y2="175.6" fill="none" stroke="#ccc"/>
+    <path d="M955.65,212.1c-53.8-1.5-214.4-9.1-289.2-9.2-8.6,0-78.368-3.625-172.815-11.418l50.615.884L424.958,182.08S618.139,194.429,666.35,194c56.239-.5,118.638,1.782,118.638,1.782l-4.6-2.555,81.634.353S757.95,188,666.35,188s-187.544-12.37-226.2-12.37" fill="none" stroke="#ccc"/>
+    <path d="M651.55,223.936l-67.7-.636s48.3,5.1,85.1,8.1,269.578,12.246,269.578,12.246l-110,.854L863.25,250s-137-7.476-180.3-7.676c-43.3-.1-269-29.124-269-29.124l92.4,15.6L376.75,212l63.4,13.3-103.4-14.5s245.8,44.7,346.2,50.6,296.8,17.2,296.8,17.2l-55.844,3.2L996.55,285l-40.9,2.479h0l-64.078.093,68,4.655-104.856-1.161,60.929,5.109-17.25,1.928,112.917,6.822H882.55" fill="none" stroke="#ccc" stroke-width="1.5"/>
+    <polyline points="883.83 309.972 952.009 320.707 802.774 312.607 838.55 328.2 912.532 336.597 828.689 351.616" fill="none" stroke="#ccc" stroke-width="1.5"/>
+    <path d="M996.55,285l90.05,3.847-71.7-8.53,30.45-2.417-185.917-9.2,10.017-3.1s-105.248-3.091-140.3-5.009c-25.021-1.371-100-7.591-100-7.591l120.2,4.275s-96.641-6.884-121.06-9.094l8.789-1.114L726.55,253l-18.5-3.1,35.1.1-85.494-5,7.85-1.1L877.392,253l29.8,1.649-13.278-5.23,110.763-2.484-23.77-1.359-42.379-1.93" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <polyline points="553.38 268.7 641.483 274.406 540.993 258.219 623.523 261.757 547.42 249.031 590.47 251.538" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <polyline points="955.65 292.173 1126.334 301.248 1040.707 301.898 1065.792 308.018 990.426 303.74" fill="none" stroke="#ccc" stroke-width="1.5"/>
+    <polyline points="416.362 72.709 468.796 68.2 442.579 65.35 484.482 61" fill="none" stroke="#ccc"/>
+    <polygon points="591.238 168.785 740.072 173.474 759.009 171.195 742.777 170.853 566.233 165.397 591.238 168.785" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <polygon points="679.053 164.488 827.887 169.177 846.824 166.898 830.592 166.556 654.048 161.1 679.053 164.488" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <polyline points="559.106 190.534 584.562 188.414 578.2 187.5 597.42 185.478" fill="none" stroke="#ccc"/>
+    <polyline points="1047.497 39.306 1126.793 37.517 1089.543 31.546 1193.674 27.676 1156.649 20.985" fill="none" stroke="#ccc"/>
   </g>
 </svg>
