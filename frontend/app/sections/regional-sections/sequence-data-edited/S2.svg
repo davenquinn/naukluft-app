@@ -1,123 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="1200px" height="303px" viewBox="0 0 1200 303" enable-background="new 0 0 1200 303" xml:space="preserve">
-<g id="Layer_1_1_">
-	<g>
-		<g transform="translate(165, 5)">
-			<g>
-				<g>
-					<rect y="151" fill="#C22762" width="20" height="8.5"/>
-					<rect y="111.7" fill="#DCEDC8" width="20" height="39.3"/>
-					<rect y="102" fill="#BBDEFB" width="20" height="9.7"/>
-					<rect y="99" fill="#7986CB" width="20" height="3"/>
-					<rect y="95.8" fill="#BBDEFB" width="20" height="3.2"/>
-					<rect y="95.2" fill="#7986CB" width="20" height="0.6"/>
-					<rect y="94" fill="#DEEFFC" width="20" height="1.2"/>
-					<rect y="91" fill="#C22762" width="20" height="3"/>
-					<rect y="79" fill="#DEEFFC" width="20" height="12"/>
-					<rect y="77" fill="#C22762" width="20" height="2"/>
-					<rect y="75" fill="#BBDEFB" width="20" height="2"/>
-					<rect y="73" fill="#C22762" width="20" height="2"/>
-					<rect y="63" fill="#BBDEFB" width="20" height="10"/>
-					<rect y="61.5" fill="#C22762" width="20" height="1.5"/>
-					<rect y="10" fill="#DCEDC8" width="20" height="51.5"/>
-					<rect y="9" fill="#BBDEFB" width="20" height="1"/>
-					<rect y="5.3" fill="#7986CB" width="20" height="3.7"/>
-					<rect y="0" fill="#DCEDC8" width="20" height="5.3"/>
-					<rect y="-4.5" fill="#7986CB" width="20" height="4.5"/>
-				</g>
-			</g>
-		</g>
-		<g transform="translate(275, 5)">
-			<g>
-				<g>
-					<rect y="176" fill="#DEEFFC" width="20" height="6.5"/>
-					<rect y="126" fill="#DCEDC8" width="20" height="50"/>
-					<rect y="109" fill="#BBDEFB" width="20" height="17"/>
-					<rect y="101" fill="#4DB6AC" width="20" height="8"/>
-					<rect y="100.2" fill="#BBDEFB" width="20" height="0.8"/>
-					<rect y="95" fill="#4DB6AC" width="20" height="5.2"/>
-					<rect y="62" fill="#7986CB" width="20" height="33"/>
-					<rect y="18" fill="#DCEDC8" width="20" height="44"/>
-					<rect y="10" fill="#7986CB" width="20" height="8"/>
-					<rect y="0" fill="#DCEDC8" width="20" height="10"/>
-					<rect y="-8" fill="#7986CB" width="20" height="8"/>
-				</g>
-			</g>
-		</g>
-		<g transform="translate(665, 5)">
-			<g>
-				<g>
-					<rect y="258" width="20" height="2.4"/>
-					<rect y="213.5" fill="#DCEDC8" width="20" height="44.5"/>
-					<rect y="211" fill="#7986CB" width="20" height="2.5"/>
-					<rect y="177" fill="#DCEDC8" width="20" height="34"/>
-					<rect y="160" fill="#7986CB" width="20" height="17"/>
-					<rect y="88" fill="#DCEDC8" width="20" height="72"/>
-					<rect y="61.4" fill="#7986CB" width="20" height="26.6"/>
-					<rect y="59.5" fill="#DEEFFC" width="20" height="1.9"/>
-					<rect y="16" fill="#DCEDC8" width="20" height="43.5"/>
-					<rect y="11" fill="#7986CB" width="20" height="5"/>
-					<rect y="0" fill="#DCEDC8" width="20" height="11"/>
-					<rect y="-8.6" fill="#4A148C" width="20" height="8.6"/>
-				</g>
-			</g>
-		</g>
-	</g>
-</g>
-<g id="Lines">
-	<g>
-		<path fill="none" stroke="#CCCCCC" d="M0,115h173.5c35,0,75.6,9,111.5,11.4C398.3,134,522.5,199,675,216
-			c23.5,2.6,101.3,19.1,101.3,19.1"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M0,83.5h200c35,0,35,1.5,70,1.5h40l0,0c176.4,1.5,175.1,0.9,350,6
-			c76.8,2.3,307,18,307,18"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="2" d="M0,107h175c35,0,71.4,4.4,106,7h29l0,0c176.8,10.6,267.4,58.8,365,68
-			c20.9,2,215.5,25.5,215.5,25.5"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M0,5h160h40c35,0,35,0,70,0h40l0,0c175,0,175,0,350,0h540"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M0,14.5L160,15h15c35,0,75,7,110,7l25,1l0,0c175,0,175-2,350-2h40"/>
-		<polyline fill="none" stroke="#CCCCCC" points="1005.9,196.2 850.9,196.2 916.9,202 784.9,200 865,211.8 		"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M0,93.5h200c35,0,52.6-1.2,85-1.5c122.4-1,318.4,65.2,390,73.5
-			c44.8,5.2,252.3,25.7,252.3,25.7l78.6,7"/>
-		<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="920.4,15 698,20 689,23 		"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M0,10.3h160h15c35,0,74,4.6,109,4.6l26,0.1l0,0c175,0,175,1,350,1h260.4"
-			/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M0,66.5l160,0h40c35,0,35,0.5,70,0.5h40l0,0c175,0,373.9-2.1,429.3,2.2
-			C917.5,83.1,1188,88.5,1188,88.5"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M0,146.4c0,0,135.5,3.1,175,9.6c58.7,9.8,77.4,18.9,110,25
-			c122.3,22.9,218.5,58.4,390,82.2c135.4,18.8,527.5,45.1,527.5,45.1"/>
-	</g>
-	<polyline fill="none" stroke="#CCCCCC" points="369.9,100 403.4,100 382.5,94 426.5,95.5 397.6,91 475.4,85.9 	"/>
-	<polyline fill="none" stroke="#CCCCCC" points="233.7,93.3 204.1,90 227.1,90 208.4,87.3 225,86.5 200,83.5 	"/>
-	<path fill="none" stroke="#CCCCCC" d="M0,96.5h161c58.7,0,91.4,1.3,124,3.5c77.2,5.2,74,6.5,74,6.5c-17-1.1-29.1,0.1-29.1,0.1
-		l24.9,3.4h-32.6l17.3,2.8l-18.9,2.8"/>
-	<path fill="none" stroke="#CCCCCC" d="M0,99h161.2H175c77.8,0,80,11,110,15"/>
-	<path fill="none" stroke="#CCCCCC" d="M305.2,129.5l32.4,1.5l-23.6-4.7l62.1,5.2l-49.1-8.7c0,0,10.6-0.3,97.2,10.7
-		c-18.8-4.5-80.6-13.5-80.6-13.5s69.1,3,139.3,17.1"/>
-	<path fill="none" stroke="#CCCCCC" d="M160,115"/>
-	<path fill="none" stroke="#CCCCCC" d="M771,233.7c0,0-59.7-11.3-96-15.1c-152.5-15.9-289.4-79-390-87.5
-		c-36.9-3.1-51.3-13.9-125-13.8L0,117.6"/>
-	<polyline fill="none" stroke="#CCCCCC" points="452.7,171.3 470.1,172 490,174.2 	"/>
-	<polyline fill="none" stroke="#CCCCCC" points="908.3,116.9 834.5,105.3 1034.3,103.5 962.2,97.7 1150.5,100.7 1073,92.4 
-		1188,85.9 	"/>
-	<line fill="none" stroke="#CCCCCC" stroke-width="3" x1="3.3" y1="-0.2" x2="3.3" y2="162.3"/>
-	<line fill="none" stroke="#CCCCCC" stroke-width="3" x1="1198.4" y1="-0.1" x2="1198.4" y2="320.9"/>
-</g>
-<g id="Facies">
-	<text transform="matrix(1 0 0 1 463.8912 80.4528)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 520.8488 114.0001)" font-family="'ArialMT'" font-size="12px">fc</text>
-	<text transform="matrix(1 0 0 1 520.8489 164.9996)" font-family="'ArialMT'" font-size="12px">fc</text>
-	<text transform="matrix(1 0 0 1 627.2168 240.75)" font-family="'ArialMT'" font-size="12px">fc</text>
-	<text transform="matrix(1 0 0 1 190.8765 90.9077)" font-family="'ArialMT'" font-size="12px">p</text>
-	<text transform="matrix(1 0 0 1 356.8018 96.084)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 429.4588 124.5003)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 302.5968 109.9999)" font-family="'ArialMT'" font-size="12px">cc</text>
-	<text transform="matrix(1 0 0 1 326.2144 221.1296)" font-family="'ArialMT'" font-size="12px">none</text>
-	<text transform="matrix(1 0 0 1 405.4708 13.1502)" font-family="'ArialMT'" font-size="12px">fc</text>
-	<text transform="matrix(1 0 0 1 364.1347 21.9998)" font-family="'ArialMT'" font-size="8px">sh</text>
-	<text transform="matrix(1 0 0 1 522.4595 188.8598)" font-family="'ArialMT'" font-size="4px">sh</text>
-	<text transform="matrix(1 0 0 1 305.2092 122.5002)" font-family="'ArialMT'" font-size="12px">p</text>
-	<text transform="matrix(1 0 0 1 299.6295 131.5148)" font-family="'ArialMT'" font-size="5px">p</text>
-	<text transform="matrix(1 0 0 1 452.1722 55.2185)" font-family="'ArialMT'" font-size="12px">fc</text>
-</g>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="1200" height="303" viewBox="0 0 1200 303">
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <g>
+        <rect x="165" y="156" width="20" height="8.5" fill="#c22762"/>
+        <rect x="165" y="116.7" width="20" height="39.3" fill="#dcedc8"/>
+        <rect x="165" y="107" width="20" height="9.7" fill="#bbdefb"/>
+        <rect x="165" y="104" width="20" height="3" fill="#7986cb"/>
+        <rect x="165" y="100.8" width="20" height="3.2" fill="#bbdefb"/>
+        <rect x="165" y="100.2" width="20" height="0.6" fill="#7986cb"/>
+        <rect x="165" y="99" width="20" height="1.2" fill="#deeffc"/>
+        <rect x="165" y="96" width="20" height="3" fill="#c22762"/>
+        <rect x="165" y="84" width="20" height="12" fill="#deeffc"/>
+        <rect x="165" y="82" width="20" height="2" fill="#c22762"/>
+        <rect x="165" y="80" width="20" height="2" fill="#bbdefb"/>
+        <rect x="165" y="78" width="20" height="2" fill="#c22762"/>
+        <rect x="165" y="68" width="20" height="10" fill="#bbdefb"/>
+        <rect x="165" y="66.5" width="20" height="1.5" fill="#c22762"/>
+        <rect x="165" y="15" width="20" height="51.5" fill="#dcedc8"/>
+        <rect x="165" y="14" width="20" height="1" fill="#bbdefb"/>
+        <rect x="165" y="10.3" width="20" height="3.7" fill="#7986cb"/>
+        <rect x="165" y="5" width="20" height="5.3" fill="#dcedc8"/>
+        <rect x="165" y="0.5" width="20" height="4.5" fill="#7986cb"/>
+      </g>
+      <g>
+        <rect x="275" y="181" width="20" height="6.5" fill="#deeffc"/>
+        <rect x="275" y="131" width="20" height="50" fill="#dcedc8"/>
+        <rect x="275" y="114" width="20" height="17" fill="#bbdefb"/>
+        <rect x="275" y="106" width="20" height="8" fill="#4db6ac"/>
+        <rect x="275" y="105.2" width="20" height="0.8" fill="#bbdefb"/>
+        <rect x="275" y="100" width="20" height="5.2" fill="#4db6ac"/>
+        <rect x="275" y="67" width="20" height="33" fill="#7986cb"/>
+        <rect x="275" y="23" width="20" height="44" fill="#dcedc8"/>
+        <rect x="275" y="15" width="20" height="8" fill="#7986cb"/>
+        <rect x="275" y="5" width="20" height="10" fill="#dcedc8"/>
+        <rect x="275" y="-3" width="20" height="8" fill="#7986cb"/>
+      </g>
+      <g>
+        <rect x="665" y="263" width="20" height="2.4"/>
+        <rect x="665" y="218.5" width="20" height="44.5" fill="#dcedc8"/>
+        <rect x="665" y="216" width="20" height="2.5" fill="#7986cb"/>
+        <rect x="665" y="182" width="20" height="34" fill="#dcedc8"/>
+        <rect x="665" y="165" width="20" height="17" fill="#7986cb"/>
+        <rect x="665" y="93" width="20" height="72" fill="#dcedc8"/>
+        <rect x="665" y="66.4" width="20" height="26.6" fill="#7986cb"/>
+        <rect x="665" y="64.5" width="20" height="1.9" fill="#deeffc"/>
+        <rect x="665" y="21" width="20" height="43.5" fill="#dcedc8"/>
+        <rect x="665" y="16" width="20" height="5" fill="#7986cb"/>
+        <rect x="665" y="5" width="20" height="11" fill="#dcedc8"/>
+        <rect x="665" y="-3.6" width="20" height="8.6" fill="#4a148c"/>
+      </g>
+    </g>
+  </g>
+  <g id="Lines">
+    <polyline points="33.055 93.5 92.215 89.759 69.295 86.033 158.658 82.47" fill="none" stroke="#ccc"/>
+    <path d="M129.708,104.611c27.524-.28,85.981-1.192,112.6.059S380.233,115.735,408.166,119s28.737,4.189,28.737,4.189l-26.692,2.124" fill="none" stroke="#ccc"/>
+    <polyline points="827.15 102.299 812.506 94.89 940.774 99.027 900.327 92.723 1100.458 101.4 1073 92.4 1207.956 94.075" fill="none" stroke="#ccc"/>
+    <g>
+      <polyline points="1056.798 201.484 961.39 202.57 978.607 208.82 854.674 197.918 886.425 208.894" fill="none" stroke="#ccc"/>
+      <path d="M0,5H1200" fill="none" stroke="#b90000" stroke-width="3"/>
+      <path d="M0,14.5,160,15h15c35,0,75,7,110,7l25,1h0c175,0,175-2,350-2h40" fill="none" stroke="#b90000" stroke-width="1.5"/>
+      <path d="M0,93.5H200c35,0,52.6.217,85-.083,122.4-1,318.4,63.783,390,72.083,44.8,5.2,252.3,25.7,252.3,25.7l127.674,11.37" fill="none" stroke="#111" stroke-width="1.5"/>
+      <polyline points="920.4 15 691.253 20.152 689 23" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M0,10.3H175c35,0,74,4.6,109,4.6l26,.1h0c175,0,175,1,350,1H920.4" fill="none" stroke="#ccc" stroke-width="2"/>
+      <path d="M0,66.5H200c35,0,35,.5,70,.5h40c175,0,373.9-2.1,429.3,2.2,178.2,13.9,471.612,21.708,471.612,21.708" fill="none" stroke="#111" stroke-width="1.5"/>
+      <path d="M0,146.4s135.5,3.1,175,9.6c58.7,9.8,77.4,18.9,110,25,122.3,22.9,218.5,58.4,390,82.2,135.4,18.8,527.5,45.1,527.5,45.1" fill="none" stroke="#111" stroke-width="2"/>
+      <path d="M0,79s98.411-1.254,131.113,1c6.733.464,20.038,2.993,26.768,3.5,10.5.791,42.119,0,42.119,0,8.5,0,16.453-2.584,21.826-2.45C238.582,81.468,243.5,85,270,85h40c176.4,1.5,175.1.9,350,6,76.8,2.3,168.818,10.281,168.818,10.281" fill="none" stroke="#b90000" stroke-width="1.5"/>
+      <path d="M0,104H132.877c19.761,0,31.589,2.3,42.123,3,15.175,1.013,30.957.4,37.535.7,12.53.584,28.639-2.165,45.149-.162,10.056,1.22,15.91,5.9,23.316,6.459h29c176.8,10.6,267.4,58.8,365,68,20.9,2,214.158,26.82,214.158,26.82" fill="none" stroke="#b90000" stroke-width="1.5"/>
+    </g>
+    <path d="M0,99H175c77.8,0,141.611,9.256,189.135,13.307l-6.961-3.246-3.469-1.028,41.5,3.817A880.228,880.228,0,0,0,285,100c-32.643-1.289-65.3-3.5-124-3.5l-86.8.407L88.521,99.6" fill="none" stroke="#ccc"/>
+    <path d="M314.148,130.161l54.5,4.024-11.472-5.323,45.558,6L382.808,126.3s77.067,10.148,147.267,24.248" fill="none" stroke="#ccc"/>
+    <path d="M0,115H173.5c35,0,75.6,9,111.5,11.4C398.3,134,522.5,199,675,216c23.5,2.6,94.09,16.014,94.09,16.014S711.3,222.4,675,218.6c-152.5-15.9-289.4-79-390-87.5-36.9-3.1-51.3-13.9-125-13.8L0,117.6" fill="none" stroke="#ccc"/>
+    <polyline points="452.7 171.3 470.1 172 490 174.2" fill="none" stroke="#ccc"/>
+    <line x1="3.3" y1="-0.2" x2="3.3" y2="162.3" fill="none" stroke="#ccc" stroke-width="3"/>
+    <line x1="1198.4" y1="-0.1" x2="1198.4" y2="320.9" fill="none" stroke="#ccc" stroke-width="3"/>
+    <line x1="220.301" y1="105.2" x2="248.52" y2="100.8" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <line x1="217.95" y1="97.816" x2="252.965" y2="93.05" fill="none" stroke="#ccc"/>
+    <path d="M218.375,82.283l-23.79-.658s-32.155.724-39.227,0a107.231,107.231,0,0,1-13.812-2.342S163.481,80.2,175,80s41.243-2.028,47.431-2,29.392,2,29.392,2l5.636-1s-28.84-2.629-35.47-2.629S189.669,78.193,175,78s-65.252-1.483-77.738-1.483L115.358,80" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  </g>
+  <g id="Facies">
+    <text transform="translate(463.891 80.453)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(520.849 114)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(520.849 165)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(627.217 240.75)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(467.551 131)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(313.908 106.15)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(326.214 221.13)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">none</text>
+    <text transform="translate(405.471 13.15)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(364.135 22)" font-size="8" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(522.459 188.86)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(305.209 122.5)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(299.629 131.515)" font-size="5" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(452.172 55.219)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(280.299 112.241)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
+    <text transform="translate(142.8 102.299)" font-size="4.986" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(59.905 97.5)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(134.073 79.327)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">rework</text>
+    <text transform="translate(35.437 87.985)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+  </g>
 </svg>

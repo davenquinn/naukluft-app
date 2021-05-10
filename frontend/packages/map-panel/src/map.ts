@@ -84,12 +84,12 @@ async function createMapStyle(map, url, enableGeology = true) {
   return createGeologyStyle(baseStyle, polygonTypes);
 }
 
-async function initializeMap(el: HTMLElement) {
+async function initializeMap(el: HTMLElement, baseLayer: string) {
   //const style = createStyle(polygonTypes);
 
   const map = new mapboxgl.Map({
     container: el,
-    style: baseLayers[0].url,
+    style: baseLayer,
     hash: true,
     center: [16.1987, -24.2254],
     zoom: 10,
@@ -98,7 +98,7 @@ async function initializeMap(el: HTMLElement) {
 
   //map.setStyle("mapbox://styles/jczaplewski/cklb8aopu2cnv18mpxwfn7c9n");
   map.on("load", async function() {
-    const style = await createMapStyle(map, baseLayers[0].url, true);
+    const style = await createMapStyle(map, baseLayer, true);
     map.setStyle(style);
     if (map.getSource("mapbox-dem") == null) return;
     map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
@@ -115,7 +115,7 @@ async function initializeMap(el: HTMLElement) {
   return map;
 }
 
-const baseLayers = [
+export const defaultBaseLayers = [
   {
     id: "satellite",
     name: "Satellite",
@@ -131,7 +131,7 @@ const baseLayers = [
 const noop = () => {};
 
 let ix = 0;
-function reloadGeologySource(map, sourceID) {
+function reloadGeologySource(map: Map, sourceID: string) {
   ix += 1;
   const newID = `geology-${ix}`;
   map.addSource(newID, createGeologySource("http://localhost:3006"));
@@ -140,11 +140,13 @@ function reloadGeologySource(map, sourceID) {
   return newID;
 }
 
-export function MapComponent({ useReloader = false }) {
+export function MapComponent({
+  useReloader = false,
+  enableGeology = true,
+  baseLayer = defaultBaseLayers[0].url
+}) {
   const ref = useRef<HTMLElement>();
 
-  const [enableGeology, setEnableGeology] = useState(true);
-  const [activeLayer, setActiveLayer] = useState(baseLayers[0]);
   const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
   const socket = useRef(useReloader ? io("http://localhost:3006") : null);
@@ -152,7 +154,7 @@ export function MapComponent({ useReloader = false }) {
   // Initialize map
   useEffect(() => {
     if (ref.current == null) return;
-    initializeMap(ref.current).then(mapObj => {
+    initializeMap(ref.current, baseLayer).then(mapObj => {
       mapRef.current = mapObj;
     });
     return () => mapRef.current.remove();
@@ -160,10 +162,10 @@ export function MapComponent({ useReloader = false }) {
 
   const sourceReloader = useCallback(() => {
     if (mapRef.current == null) return noop;
-    return debounce(
-      () => reloadGeologySource(mapRef.current, geologySourceID),
-      500
-    );
+    return debounce(() => {
+      const newID = reloadGeologySource(mapRef.current, geologySourceID);
+      setGeologySourceID(newID);
+    }, 500);
   }, [mapRef, geologySourceID]);
 
   // Start up reloader if appropriate
@@ -193,8 +195,8 @@ export function MapComponent({ useReloader = false }) {
   useEffect(() => {
     const map = mapRef.current;
     if (map == null) return;
-    createMapStyle(map, activeLayer.url).then(style => map.setStyle(style));
-  }, [mapRef, activeLayer]);
+    createMapStyle(map, baseLayer).then(style => map.setStyle(style));
+  }, [mapRef, baseLayer]);
 
   return h("div.map-area", [h("div.map", { ref })]);
 }

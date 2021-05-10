@@ -1,125 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="1200px" height="279px" viewBox="0 0 1200 279" enable-background="new 0 0 1200 279" xml:space="preserve">
-<g id="Layer_1_1_">
-	<g>
-		<g transform="translate(165, 5)">
-			<g>
-				<g>
-					<rect y="267" fill="#DCEDC8" width="20" height="3.7"/>
-					<rect y="262.5" fill="#7986CB" width="20" height="4.5"/>
-					<rect y="259.2" fill="#BBDEFB" width="20" height="3.3"/>
-					<rect y="252.4" fill="#7986CB" width="20" height="6.9"/>
-					<rect y="238.5" fill="#DEEFFC" width="20" height="13.9"/>
-					<rect y="113" fill="#7986CB" width="20" height="125.5"/>
-					<rect y="107" fill="#DEEFFC" width="20" height="6"/>
-					<rect y="96" fill="#673AB7" width="20" height="11"/>
-					<rect y="73" fill="#7986CB" width="20" height="23"/>
-					<rect y="57" fill="#673AB7" width="20" height="16"/>
-					<rect y="-21" fill="#7986CB" width="20" height="78"/>
-				</g>
-			</g>
-		</g>
-		<g transform="translate(275, 270)">
-			<g>
-				<g>
-					<rect y="3" fill="#DCEDC8" width="20" height="10"/>
-					<rect y="-5" fill="#7986CB" width="20" height="8"/>
-				</g>
-			</g>
-		</g>
-		<g transform="translate(665, 165)">
-			<g>
-				<g>
-					<rect y="109" width="20" height="7.8"/>
-					<rect y="76" fill="#4A148C" width="20" height="33"/>
-					<rect y="50" fill="#673AB7" width="20" height="26"/>
-					<rect y="-5" fill="#7986CB" width="20" height="55"/>
-				</g>
-			</g>
-		</g>
-	</g>
-</g>
-<g id="Lines">
-	<g>
-		<path fill="none" stroke="#FFCCCC" d="M2.6,122.8L161,122h39c118.8,2.6,274.7,16.1,336.4,28.5c105,21.1,110.1,33.1,138.6,43.7
-			c69.2,25.8,194.8,37,194.8,37"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M2.6,112H161h39c119.1,0,208,13,302.3,18c49.5,5.8,150.5,23.2,172.7,25
-			c56.6,4.6,197.3,20.3,290.7,31c81.4,9.3,118.2,43.5,166.7,45.2c73.2,2.5,149.1,4,149.1,4"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M2.6,272H161h39c35,0,35,1,70,1h40l0,0c175,0,175,1,350,1l155.6,1.9h375.5
-			"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="1.5" d="M2.6,202H161h39c346.4,0.8,412.8,8,474,39
-			c43.8,22.2,125.6,27.4,125.6,27.4c50.1,2.7,397.2,2,397.2,2"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M949.5,234.2c-51.9,2-191.1-2.7-180.2-0.3
-			c21.9,2.1,105.2,15.2,180.2,23.6c-56.3,0.6-211.7-15.7-246.9-19.6c71.3,14,187.7,25,187.7,25c13.3,0.6-107.3-1.1-162.2-11.5
-			C694.9,245.2,671,241,671,241"/>
-		<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="423.9,205.6 392.9,192 423.9,193.1 409.6,185.6 431.8,183.6 
-			421,177.7 446.3,172.7 		"/>
-		<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="782.8,283.5 738,272 768,272 748.4,268.4 799.6,265.4 		"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M604.8,347.9"/>
-		<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M47.7,343.6c0,0-45.2-34.9-43.7-37.2s-6.2,10.9,0-30.1v-288"/>
-	</g>
-	<polyline fill="none" stroke="#CCCCCC" stroke-width="1.5" points="536.4,278 581.9,269 542.7,267.5 602.9,257.5 573.6,250.4 
-		619.1,250.4 583.4,241 625,238.9 602,231.7 644.5,234.2 617.1,224.9 646.5,228 	"/>
-	<path fill="none" stroke="#FFCCCC" stroke-width="3" d="M1208.1,241l-161-5.8H954c0,0-2.2,0.3-4.5,0C821.8,229,745.7,224.9,675,215
-		c-24.4-3.4-62.5-19.6-99.6-23.8C444.7,176.3,536.4,171,200,166h-39H2.6"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M869.8,327.9"/>
-	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="571.8,196.8 617.7,189.2 592,178.9 623.6,176.6 597.1,158 	"/>
-	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="919.9,231.2 982.3,224.9 938.9,212.8 998.3,209.7 961,198.5 
-		1024.6,191.5 	"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M488.8,138.6l-14.6-6.3l40.7-2.3"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M2.6,118h153.5c111,0,260.8,12.2,347.5,21
-		c148.7,15.2,200.2,65.2,305.8,78.2c105.9,13,229.9,14,229.9,14l22.6-3.2l-13.2-5.7l51.5,1.9"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M1186.8,116.2l13.2,30.1c0,0-3.4-2.8-8.9,35.9l-12.9,114.7"/>
-	<path fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" d="M343,205.6"/>
-	<path fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" d="M361.8,78"/>
-	<path fill="none" stroke="#FFCCCC" stroke-width="1.5" d="M777.9,267.3"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M711.7,209.7c0,0,49.1-1.7,70,0"/>
-	<g>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M843.7,231.2c0,0,21.8-3.2,46.6-8.9"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M940.8,160c44.9,7.8,122.7,25.4,165.6,29.6
-			c42.9,4.2,101.7,8.7,101.7,8.7"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M1233.6,211.4c-67.1-10.8-94.1,0-264.6-40.8
-			c-34.5-8.3-86.6-12-115.9-16.7c-78.5-12.5-179.7-14.8-281.4-38.9c-65.8-15.6-152.3-32-245.5-32.2C281.1,82.7,145.5,78,145.5,78
-			l-79.2-8"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M2.6,101h153.5l277.2,8.5L371,96c0,0,109.6,4.5,208.8,20.2"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="3" d="M2.6,0l131.3,0c233.6,0,328.8,34.3,483.8,82c142,43.7,226,55.5,422.8,74
-			c118.6,11.1,193.2,18.6,193.2,18.6"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M542,98.9c62,9.1,104.5,17.3,104.5,17.3s-28.8-10.3-46.5-16
-			c0,0,17.7,2.1,68,11.8c-15.2-5.9-33.2-12.7-33.2-12.7L741.7,110"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M66.3,70c0,0,83.5-8.2,111.5-8c44.7,0.4,172.5,11.8,172.5,11.8
-			L266.7,60c0,0,163,7.1,229.5,24.2c12.1,3.1,65.6,19.2,79.3,22.3c121,27.8,166,27.8,233,36.8c23.2,3.1,132.3,16.7,132.3,16.7"/>
-		<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M414.9,123.7c39.3-3.7,65.6-1.1,95.4,1.1s148.8,23.3,170.1,26.3
-			c21.4,2.9,153.5,13.5,172.7,15c19.5,1.5,79.6,9,124.2,13.4c32.6,3.2,101.2,24.8,101.2,24.8l-76-28.3"/>
-		<polyline fill="none" stroke="#CCCCCC" points="1143.4,194.6 1063.2,175.8 1174.7,185.5 1165.5,180 1203.1,183.1 		"/>
-	</g>
-	<polyline fill="none" stroke="#CCCCCC" stroke-width="0.75" points="977.4,279 998.3,272 981.7,265.4 	"/>
-	<path fill="none" stroke="#CCCCCC" stroke-width="0.75" d="M696.9,139.5c0,0,40.9-4,57.5-4"/>
-</g>
-<g id="Facies">
-	<text transform="matrix(1 0 0 1 1132.4147 222.3122)" font-family="'ArialMT'" font-size="4px">fc</text>
-	<text transform="matrix(1 0 0 1 356.0112 242.0664)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 303.7705 185.9922)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 332.5269 151.0049)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 583.8345 160.0771)" font-family="'ArialMT'" font-size="8.3156px">sh</text>
-	<text transform="matrix(1 0 0 1 688.1689 212.831)" font-family="'ArialMT'" font-size="12px">or</text>
-	<text transform="matrix(1 0 0 1 641.1769 257.4997)" font-family="'ArialMT'" font-size="12px">or</text>
-	<text transform="matrix(1 0 0 1 1010.2922 216.6485)" font-family="'ArialMT'" font-size="12px">or</text>
-	<text transform="matrix(1 0 0 1 617.6584 216.6483)" font-family="'ArialMT'" font-size="12px">mc</text>
-	<text transform="matrix(1 0 0 1 329.3364 122.8372)" font-family="'ArialMT'" font-size="8px">p</text>
-	<text transform="matrix(1 0 0 1 468.3758 51.7184)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 322.8349 94.9446)" font-family="'ArialMT'" font-size="12px">sh</text>
-	<text transform="matrix(1 0 0 1 1014.2664 169.0002)" font-family="'ArialMT'" font-size="12px">mc</text>
-	<text transform="matrix(1 0 0 1 796.3143 220.6209)" font-family="'ArialMT'" font-size="6.5507px">or</text>
-	<text transform="matrix(1 0 0 1 768.8004 191.7003)" font-family="'ArialMT'" font-size="8.3156px">sh</text>
-	<text transform="matrix(1 0 0 1 1070.9067 232.1996)" font-family="'ArialMT'" font-size="8px">mc</text>
-	<text transform="matrix(1 0 0 1 907.0063 273.9499)" font-family="'ArialMT'" font-size="4px">mc</text>
-	<text transform="matrix(1 0 0 1 1048.8057 273.9423)" font-family="'ArialMT'" font-size="4px">fc</text>
-	<text transform="matrix(1 0 0 1 1149.3463 202.0685)" font-family="'ArialMT'" font-size="3px">fc</text>
-	<text transform="matrix(1 0 0 1 597.6777 133.57)" font-family="'ArialMT'" font-size="12px">mc</text>
-	<text transform="matrix(1 0 0 1 456.8001 88.1974)" font-family="'ArialMT'" font-size="12px">mc</text>
-	<text transform="matrix(1 0 0 1 982.2613 249.0608)" font-family="'ArialMT'" font-size="4px">fc</text>
-	<text transform="matrix(1 0 0 1 1178.2 191.7613)" font-family="'ArialMT'" font-size="4px">fc</text>
-</g>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="1200" height="279" viewBox="0 0 1200 279">
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <g>
+        <rect x="165" y="272" width="20" height="3.7" fill="#dcedc8"/>
+        <rect x="165" y="267.5" width="20" height="4.5" fill="#7986cb"/>
+        <rect x="165" y="264.2" width="20" height="3.3" fill="#bbdefb"/>
+        <rect x="165" y="257.4" width="20" height="6.9" fill="#7986cb"/>
+        <rect x="165" y="243.5" width="20" height="13.9" fill="#deeffc"/>
+        <rect x="165" y="118" width="20" height="125.5" fill="#7986cb"/>
+        <rect x="165" y="112" width="20" height="6" fill="#deeffc"/>
+        <rect x="165" y="101" width="20" height="11" fill="#673ab7"/>
+        <rect x="165" y="78" width="20" height="23" fill="#7986cb"/>
+        <rect x="165" y="62" width="20" height="16" fill="#673ab7"/>
+        <rect x="165" y="-16" width="20" height="78" fill="#7986cb"/>
+      </g>
+      <g>
+        <rect x="275" y="273" width="20" height="10" fill="#dcedc8"/>
+        <rect x="275" y="265" width="20" height="8" fill="#7986cb"/>
+      </g>
+      <g>
+        <rect x="665" y="274" width="20" height="7.8"/>
+        <rect x="665" y="241" width="20" height="33" fill="#4a148c"/>
+        <rect x="665" y="215" width="20" height="26" fill="#673ab7"/>
+        <rect x="665" y="160" width="20" height="55" fill="#7986cb"/>
+      </g>
+    </g>
+  </g>
+  <g id="Lines">
+    <polyline points="819.347 219.019 891.637 217.263 863.881 210.288 940.8 208.767 910.206 202 975.395 200.417 952.313 194.157 1013.529 194.157" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M477.211,177.539s34.891.725,46.032,1.33c22.632,1.229,60.03,7.42,60.03,7.42L568.963,176.1l51.534,7.55-13.306-8.413,51.552,9.295" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <polyline points="310 273 409.413 265 387.163 257.908 499.343 250.988 489.505 245.792 538.279 242.198 521.121 236.257 595.417 233.475 571.178 227.346 618.15 223.256" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <path d="M488.8,138.6l-14.6-6.3,40.7-2.3" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M2.6,118H156.1c111,0,260.8,12.2,347.5,21,148.7,15.2,200.2,65.2,305.8,78.2,105.9,13,218,12.834,218,12.834l-9.747-3.96,47.73,1.433-7.93-4.884,42.75,1.577" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M1198.006,146.3l.567,145.206" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M716.631,208.236l48.542.383" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <g>
+      <path d="M843.7,231.2l40.362-7.709" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M940.8,160c44.9,7.8,122.7,25.4,165.6,29.6s101.7,8.7,101.7,8.7" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M2.6,101H156.1l214.848,6.974-17-7.1s103.644,2.784,175.418,16.033L483.5,102.392s105.066,16.551,128.725,20.3" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M512.657,89.946c69.892,13.6,119.1,21.86,119.1,21.86s-27.311-8.969-45.011-14.669l81.393,14.013L634.8,99.3l76.992,7.706" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M1233.6,211.4c-67.1-10.8-94.1,0-264.6-40.8-34.5-8.3-86.6-12-115.9-16.7-78.5-12.5-179.7-14.8-281.4-38.9C505.9,99.4,419.4,83,326.2,82.8,281.1,82.7,145.5,78,145.5,78L7.394,79.628l64.283-5.2L47.7,70l95.823-2.426-6.872-4.835S163.8,61.9,177.8,62c44.7.4,156.879,7.612,156.879,7.612l-21.7-5.819S429.7,67.1,496.2,84.2c12.1,3.1,65.6,19.2,79.3,22.3,121,27.8,166,27.8,233,36.8,23.2,3.1,132.3,16.7,132.3,16.7" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M441.3,126.537,414.107,118c28.682,1.873,66.393,4.6,96.193,6.8s148.8,23.3,170.1,26.3c21.4,2.9,136.291,11.311,172.742,15,67.837,6.865,107.833,13.051,107.833,13.051l-7.811-5.55c87.872,20.557,142.4,27.683,157.56,29.9l-18.4-8.345" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <polyline points="1102.88 190.103 1079.996 181.338 1141.804 188.377 1132.45 181.824 1174.7 185.5 1165.5 180 1203.1 183.1" fill="none" stroke="#ccc"/>
+      <path d="M2.6,3.27l131.967-.393C368.167,2.877,462.7,34.3,617.7,82c142,43.7,226,55.5,422.8,74,118.6,11.1,193.2,18.6,193.2,18.6" fill="none" stroke="#111" stroke-width="2"/>
+    </g>
+    <polyline points="977.4 279 998.3 272 981.7 265.4" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <path d="M711.792,138.464s20.51-2.582,37.11-2.582" fill="none" stroke="#ccc" stroke-width="0.75"/>
+    <g>
+      <path d="M2.6,122.8,161,122h39c118.8,2.6,274.7,16.1,336.4,28.5,105,21.1,110.1,33.1,138.6,43.7,69.2,25.8,194.8,37,194.8,37" fill="none" stroke="#111"/>
+      <path d="M2.6,112H200c119.1,0,208,13,302.3,18,49.5,5.8,150.5,23.2,172.7,25,56.6,4.6,197.3,20.3,290.7,31,81.4,9.3,118.2,43.5,166.7,45.2,73.2,2.5,149.1,4,149.1,4" fill="none" stroke="#111" stroke-width="1.5"/>
+      <path d="M2.6,272H200c35,0,35,1,70,1h40c175,0,175,1,350,1l155.6,1.9h392.5" fill="none" stroke="#b90000" stroke-width="2"/>
+      <path d="M2.6,202H200c346.4.8,400.105,15.149,474,39,56.347,17.884,125.6,27.4,125.6,27.4,50.1,2.7,405.932,2.044,405.932,2.044" fill="none" stroke="#ccc" stroke-width="1.5"/>
+      <path d="M980.77,234.183,1018.9,242.2,918,241.845l31.5,8.6-131.408-1.389,19.7,5.572s-61.694-2.41-96.894-6.31l29.632,9.077s-41.957-6.36-55.278-8.339C681.848,244.1,671,241,671,241" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <polyline points="423.9 205.6 392.9 192 423.9 193.1 409.6 185.6 431.8 183.6 421 177.7 446.3 172.7" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <polyline points="782.8 283.5 738 272 768 272 748.4 268.4 799.6 265.4" fill="none" stroke="#ccc" stroke-width="0.75"/>
+      <path d="M47.7,343.6S2.5,308.7,4,306.4s-6.2,10.9,0-30.1v-288" fill="none" stroke="#fcc" stroke-width="1.5"/>
+    </g>
+    <path d="M1208.1,241l-161-5.8H954a19.269,19.269,0,0,1-4.5,0C821.8,229,745.7,224.9,675,215c-24.4-3.4-62.5-19.6-99.6-23.8C444.7,176.3,536.4,171,200,166H2.6" fill="none" stroke="#b90000" stroke-width="1.5"/>
+  </g>
+  <g id="Facies">
+    <text transform="translate(1132.415 222.312)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(356.011 242.066)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(303.771 185.992)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(332.527 151.005)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(583.834 160.077)" font-size="8.316" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(688.169 212.831)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">or</text>
+    <text transform="translate(641.177 257.5)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">or</text>
+    <text transform="translate(1010.292 216.648)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">or</text>
+    <text transform="translate(617.658 216.648)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">mc</text>
+    <text transform="translate(329.336 122.837)" font-size="8" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(468.376 51.718)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(322.835 94.945)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(1014.266 169)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">mc</text>
+    <text transform="translate(796.314 220.621)" font-size="6.551" font-family="ArialMT, Arial" style="isolation: isolate">or</text>
+    <text transform="translate(768.8 191.7)" font-size="8.316" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(1070.907 232.2)" font-size="8" font-family="ArialMT, Arial" style="isolation: isolate">mc</text>
+    <text transform="translate(907.006 273.95)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">mc</text>
+    <text transform="translate(1048.806 273.942)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(1149.346 202.068)" font-size="3" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(597.678 133.57)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">mc</text>
+    <text transform="translate(456.8 88.197)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">mc</text>
+    <text transform="translate(982.261 249.061)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+    <text transform="translate(1178.2 191.761)" font-size="4" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
+  </g>
 </svg>

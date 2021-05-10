@@ -35,6 +35,8 @@ function BaseLayerSwitcher({ layers, activeLayer, onSetLayer }) {
 function MapView() {
   const [isActive, setActive] = useState(false);
 
+  const [enableGeology, setEnableGeology] = useState(true);
+
   return h("div#map-root", {}, [
     h("div#map-panel-container", {}, [
       h(NavigationControl, {
@@ -42,7 +44,7 @@ function MapView() {
           setActive(!isActive);
         }
       }),
-      h(MapPanel),
+      h(MapPanel, { enableGeology, useReloader: true }),
 
       h(
         AppDrawer,
@@ -54,28 +56,24 @@ function MapView() {
           }
         },
         [
-          h("h3", "Geology layers")
-          /*
-          h("h3", "Basemap"),
-          h("div.map-controls", null, [
-            h(
-              Button,
-              {
-                active: enableGeology,
-                onClick() {
-                  setEnableGeology(!enableGeology);
-                }
-              },
-              "Geology"
-            ),
-            h(BaseLayerSwitcher, {
-              layers: baseLayers,
-              activeLayer: activeLayer,
-              onSetLayer(layer) {
-                setActiveLayer(layer);
+          h("h3", "Geology layers"),
+          h(
+            Button,
+            {
+              active: enableGeology,
+              onClick() {
+                setEnableGeology(!enableGeology);
               }
-            })
-            */
+            },
+            "Geology"
+          )
+          // h(BaseLayerSwitcher, {
+          //   layers: baseLayers,
+          //   activeLayer: activeLayer,
+          //   onSetLayer(layer) {
+          //     setActiveLayer(layer);
+          //   }
+          // })
         ]
       )
     ])
