@@ -1,5 +1,5 @@
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="1200" height="303" viewBox="0 0 1200 303">
-  <g id="Layer_1-2" data-name="Layer 1">
+  <g id="Layer_1-2" data-name="Layer 1-2">
     <g>
       <g>
         <rect x="165" y="156" width="20" height="8.5" fill="#c22762"/>
@@ -52,6 +52,9 @@
     </g>
   </g>
   <g id="Lines">
+    <path d="M359.153,97.816,339.858,99s63.487,8.115,98.974,15.954c25.727,5.683,184.023,43.2,205.1,48.2S772.558,182,772.558,182l-13.577-4.551,88.612,8.932-22.868-6.431" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <path d="M314.148,130.161l54.5,4.024-11.472-5.323,45.558,6L382.808,126.3s77.067,10.148,147.267,24.248" fill="none" stroke="#ccc"/>
+    <path d="M89.841,65.815,72.22,69.37h555c34.716,0,64.084,0,91.4,1.469s122.759,7.813,122.759,7.813l-49.339-6.843" fill="none" stroke="#ccc" stroke-width="0.5"/>
     <polyline points="33.055 93.5 92.215 89.759 69.295 86.033 158.658 82.47" fill="none" stroke="#ccc"/>
     <path d="M129.708,104.611c27.524-.28,85.981-1.192,112.6.059S380.233,115.735,408.166,119s28.737,4.189,28.737,4.189l-26.692,2.124" fill="none" stroke="#ccc"/>
     <polyline points="827.15 102.299 812.506 94.89 940.774 99.027 900.327 92.723 1100.458 101.4 1073 92.4 1207.956 94.075" fill="none" stroke="#ccc"/>
@@ -67,22 +70,21 @@
       <path d="M0,79s98.411-1.254,131.113,1c6.733.464,20.038,2.993,26.768,3.5,10.5.791,42.119,0,42.119,0,8.5,0,16.453-2.584,21.826-2.45C238.582,81.468,243.5,85,270,85h40c176.4,1.5,175.1.9,350,6,76.8,2.3,168.818,10.281,168.818,10.281" fill="none" stroke="#b90000" stroke-width="1.5"/>
       <path d="M0,104H132.877c19.761,0,31.589,2.3,42.123,3,15.175,1.013,30.957.4,37.535.7,12.53.584,28.639-2.165,45.149-.162,10.056,1.22,15.91,5.9,23.316,6.459h29c176.8,10.6,267.4,58.8,365,68,20.9,2,214.158,26.82,214.158,26.82" fill="none" stroke="#b90000" stroke-width="1.5"/>
     </g>
-    <path d="M0,99H175c77.8,0,141.611,9.256,189.135,13.307l-6.961-3.246-3.469-1.028,41.5,3.817A880.228,880.228,0,0,0,285,100c-32.643-1.289-65.3-3.5-124-3.5l-86.8.407L88.521,99.6" fill="none" stroke="#ccc"/>
-    <path d="M314.148,130.161l54.5,4.024-11.472-5.323,45.558,6L382.808,126.3s77.067,10.148,147.267,24.248" fill="none" stroke="#ccc"/>
+    <path d="M0,99H175c77.8,0,141.611,9.256,189.135,13.307l-6.961-3.246-3.469-1.028,41.5,3.817A880.311,880.311,0,0,0,285,100c-32.643-1.289-65.3-3.5-124-3.5l-86.8.407L88.521,99.6" fill="none" stroke="#ccc"/>
     <path d="M0,115H173.5c35,0,75.6,9,111.5,11.4C398.3,134,522.5,199,675,216c23.5,2.6,94.09,16.014,94.09,16.014S711.3,222.4,675,218.6c-152.5-15.9-289.4-79-390-87.5-36.9-3.1-51.3-13.9-125-13.8L0,117.6" fill="none" stroke="#ccc"/>
     <polyline points="452.7 171.3 470.1 172 490 174.2" fill="none" stroke="#ccc"/>
     <line x1="3.3" y1="-0.2" x2="3.3" y2="162.3" fill="none" stroke="#ccc" stroke-width="3"/>
     <line x1="1198.4" y1="-0.1" x2="1198.4" y2="320.9" fill="none" stroke="#ccc" stroke-width="3"/>
     <line x1="220.301" y1="105.2" x2="248.52" y2="100.8" fill="none" stroke="#ccc" stroke-width="0.5"/>
     <line x1="217.95" y1="97.816" x2="252.965" y2="93.05" fill="none" stroke="#ccc"/>
-    <path d="M218.375,82.283l-23.79-.658s-32.155.724-39.227,0a107.231,107.231,0,0,1-13.812-2.342S163.481,80.2,175,80s41.243-2.028,47.431-2,29.392,2,29.392,2l5.636-1s-28.84-2.629-35.47-2.629S189.669,78.193,175,78s-65.252-1.483-77.738-1.483L115.358,80" fill="none" stroke="#ccc" stroke-width="0.5"/>
+    <path d="M218.375,82.283l-23.79-.658s-32.155.724-39.227,0a107.256,107.256,0,0,1-13.812-2.342S163.481,80.2,175,80s41.243-2.028,47.431-2,29.392,2,29.392,2l5.636-1s-28.84-2.629-35.47-2.629S189.669,78.193,175,78s-65.252-1.483-77.738-1.483L115.358,80" fill="none" stroke="#ccc" stroke-width="0.5"/>
   </g>
   <g id="Facies">
     <text transform="translate(463.891 80.453)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
     <text transform="translate(520.849 114)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
     <text transform="translate(520.849 165)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
     <text transform="translate(627.217 240.75)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
-    <text transform="translate(467.551 131)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
+    <text transform="translate(467.551 133.693)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">sh</text>
     <text transform="translate(313.908 106.15)" font-size="6" font-family="ArialMT, Arial" style="isolation: isolate">cc</text>
     <text transform="translate(326.214 221.13)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">none</text>
     <text transform="translate(405.471 13.15)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">fc</text>
@@ -96,5 +98,7 @@
     <text transform="translate(59.905 97.5)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
     <text transform="translate(134.073 79.327)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">rework</text>
     <text transform="translate(35.437 87.985)" font-size="12" font-family="ArialMT, Arial" style="isolation: isolate">p</text>
+    <text transform="translate(129.708 68.709)" font-size="2" font-family="ArialMT, Arial" style="isolation: isolate">rework</text>
+    <text transform="translate(390.229 105.725)" font-size="1" font-family="ArialMT, Arial" style="isolation: isolate">rework</text>
   </g>
 </svg>

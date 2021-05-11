@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+# Ensure that the database container is started
+#docker-compose up --build -d db
+#sleep 2
+
+# Open up a ssh tunnel
+# Wait for 5 seconds for a port to be opened, otherwise just carry on...
+ssh -o ExitOnForwardFailure=yes -f -N -L 54455:localhost:54455 birdnest sleep 10
+sleep 2
+# Dump files to new database from local database
+pg_dump --no-privileges --no-owner -C -h localhost -U Daven Naukluft \
+| psql -h localhost -p 54455 -U postgres Naukluft

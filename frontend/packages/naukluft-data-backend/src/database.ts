@@ -7,7 +7,7 @@ const opts = {
   noWarnings: true
 };
 
-const pg_conn = process.env.NAUKLUFT_DB;
+const pg_conn = process.env.NAUKLUFT_DB ?? "postgresql:///Naukluft";
 
 // Create database connection
 const pgp = PGPromise(opts);
