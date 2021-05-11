@@ -66,6 +66,7 @@ class App extends React.Component {
     this.state = { showNavBar: true };
   }
   render() {
+    console.log("Rendering main app");
     return h(PlatformProvider, [
       h("div#root", [
         h(Switch, [
@@ -108,6 +109,7 @@ class App extends React.Component {
 // This doesn't work for unknown reasons
 //HotkeysTarget(App);
 
-const RouterApp = () => h(Router, [h(App)]);
+const basename = process.env.PUBLIC_PATH ?? "";
+const RouterApp = () => h(Router, { basename }, [h(App)]);
 
 export default RouterApp;

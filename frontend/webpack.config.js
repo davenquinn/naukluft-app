@@ -10,7 +10,6 @@ const {
   jsRule,
   cssRule
 } = require("./loaders");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const RevisionInfoWebpack = require("@macrostrat/revision-info-webpack");
 const DotenvPlugin = require("dotenv-webpack");
@@ -18,22 +17,24 @@ const DotenvPlugin = require("dotenv-webpack");
 const pkg = require("./package.json");
 const GITHUB_LINK = "https://github.com/davenquinn/naukluft-app";
 
-const mode = "development";
+const mode = process.env.NODE_ENV || "development";
+const publicPath = process.env.PUBLIC_PATH || "";
 
 const webRoot = path.resolve(__dirname, "dist-web");
 
-const browserSync = new BrowserSyncPlugin({
-  port: 3000,
-  host: "localhost",
-  server: {
-    baseDir: webRoot,
-    middleware: [historyFallback()]
-  }
-});
+let plugins = [];
 
-const uglify = new UglifyJsPlugin();
-
-const plugins = [browserSync];
+if (mode == "development") {
+  const browserSync = new BrowserSyncPlugin({
+    port: 3000,
+    host: "localhost",
+    server: {
+      baseDir: webRoot,
+      middleware: [historyFallback()]
+    }
+  });
+  plugins.push(browserSync);
+}
 const ignores = [/^electron/, /^pg/, /^fs/];
 
 for (let i of Array.from(ignores)) {
@@ -92,18 +93,19 @@ module.exports = {
     path: webRoot,
     filename: "[name].js",
     sourceMapFilename: "[file].map",
-    publicPath: "/"
+    publicPath
   },
   plugins: [
     ...plugins,
     new DotenvPlugin({ path: "../.env" }),
     new HTMLWebpackPlugin({
-      title: "Naukluft Nappe Complex",
-      base: "/",
-      publicPath: "/"
+      title: "Zebra Nappe mapping and stratigraphy",
+      base: publicPath,
+      publicPath
     }),
     new EnvironmentPlugin({
       ...RevisionInfoWebpack(pkg, GITHUB_LINK),
+      PUBLIC_PATH: publicPath,
       NODE_ENV: JSON.stringify(mode)
     })
   ]

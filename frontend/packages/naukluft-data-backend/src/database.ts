@@ -7,9 +7,11 @@ const opts = {
   noWarnings: true
 };
 
+const pg_conn = process.env.NAUKLUFT_DB;
+
 // Create database connection
 const pgp = PGPromise(opts);
-const db = pgp("postgresql:///Naukluft", { log: true });
+const db = pgp(pg_conn, { log: true });
 const { helpers } = pgp;
 
 const queryFiles: { [k: string]: string } = {};

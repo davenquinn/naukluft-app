@@ -4,7 +4,7 @@ all:
 
 # Create and run the database
 database:
-	docker compose up --build -d
+	docker-compose up --build -d
 
 # Load data from local database that still is main
 # into the Docker-managed version
