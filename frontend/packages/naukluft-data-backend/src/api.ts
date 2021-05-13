@@ -77,7 +77,7 @@ async function createServer() {
   helpRoutes.push(addSectionUpdateRoute(app));
   helpRoutes.push(await addTileServer(app));
   // create help route
-  app.get("/", (req, res) => {
+  app.get("/", (req: any, res: any) => {
     helpRoutes.sort();
     res.json({
       v: 1,

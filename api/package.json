@@ -11,9 +11,10 @@
   "author": "Daven Quinn",
   "license": "ISC",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node --transpile-only index.ts"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@types/node": "^15.0.3",
     "lerna": "^4.0.0",
     "naukluft-data-backend": "*",
     "ts-node": "^9.1.1",

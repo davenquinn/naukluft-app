@@ -17,7 +17,7 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
   api:
-    build: frontend
+    build: .
     ports:
       - "${NAUKLUFT_API_PORT:-5555}:5555"
     expose:
