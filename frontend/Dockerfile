@@ -6,7 +6,6 @@ WORKDIR /app/
 COPY ./packages/naukluft-data-backend/package.json packages/naukluft-data-backend/
 COPY ./packages/vector-tile-server/package.json packages/vector-tile-server/
 COPY ./package.json ./tsconfig.json ./lerna.json ./.npmrc ./
-RUN lerna bootstrap --scope naukluft-data-backend --include-dependencies
 RUN npm install
 
 COPY ./packages/naukluft-data-backend/ packages/naukluft-data-backend/
