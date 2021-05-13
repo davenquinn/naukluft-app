@@ -4,35 +4,19 @@
   "private": true,
   "description": "API for Naukluft Nappe Complex mapping",
   "main": "index.js",
-  "scripts": {
-    "watch:main": "electron-webpack dev",
-    "watch:web": "scripts/bundle.zsh",
-    "compile:web": "webpack -c webpack.config.js",
-    "start": "npm run watch:main",
-    "compile:main": "electron-webpack",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run watch:web",
-    "figures": "cd app && figment --spec ./figure-spec.js",
-    "postinstall": "lerna bootstrap --hoist",
-    "watch:api": "nodemon",
-    "start:api": "ts-node packages/naukluft-data-backend/src/api.ts",
-    "deploy:steno": "scripts/deploy-frontend.zsh"
-  },
   "workspaces": [
-    "../packages/*"
+    "../frontend/packages/*"
   ],
   "prettier": {},
   "author": "Daven Quinn",
   "license": "ISC",
   "scripts": {
-    "start": ""
+    "start": "ts-node index.ts"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
+    "naukluft-data-backend": "*",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
-  },
-  "dependencies": {
-    "naukluft-data-backend": "*"
   }
 }
