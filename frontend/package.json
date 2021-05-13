@@ -12,7 +12,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run watch:web",
     "figures": "cd app && figment --spec ./figure-spec.js",
-    "postinstall": "lerna bootstrap --hoist",
     "watch:api": "nodemon",
     "start:api": "ts-node packages/naukluft-data-backend/src/api.ts",
     "deploy:steno": "scripts/deploy-frontend.zsh"
