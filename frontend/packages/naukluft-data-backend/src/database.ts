@@ -35,7 +35,11 @@ async function runBackendQuery(
   if (!key.endsWith(".sql")) {
     fn = resolve(join(__dirname, "..", "sql", key + ".sql"));
   }
-  return await db.query(storedProcedure(fn), params, resultMask);
+  try {
+    return await db.query(storedProcedure(fn), params, resultMask);
+  } catch (err) {
+    throw new Error(`Query ${fn} failed to run`);
+  }
 }
 
 export { queryResult as ResultMask };
