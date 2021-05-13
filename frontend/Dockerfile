@@ -1,5 +1,5 @@
 FROM node:14
-RUN npm install -g npm@7
+RUN npm install -g npm@7 lerna
 
 # Prepare for installation
 WORKDIR /app/
@@ -7,7 +7,8 @@ COPY ./packages/naukluft-data-backend/package.json packages/naukluft-data-backen
 COPY ./packages/vector-tile-server/package.json packages/vector-tile-server/
 COPY ./package.json ./tsconfig.json ./lerna.json ./.npmrc ./
 
-RUN npm install
+RUN lerna bootstrap --include-dependents --include-dependencies --scope=naukluft-data-backend --hoist
+RUN lerna bootstrap --include-dependents --include-dependencies --scope=@macrostrat/vector-tile-server --hoist
 
 COPY ./packages/naukluft-data-backend/ packages/naukluft-data-backend/
 COPY ./packages/vector-tile-server/ packages/vector-tile-server/

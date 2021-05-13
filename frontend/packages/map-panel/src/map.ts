@@ -4,7 +4,6 @@ import { get } from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import h from "@macrostrat/hyper";
 import { debounce } from "underscore";
-import { ButtonGroup, Button } from "@blueprintjs/core";
 import mbxUtils from "mapbox-gl-utils";
 import {
   createGeologyStyle,
@@ -15,6 +14,7 @@ import {
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
 import io from "socket.io-client";
+import { apiBaseURL } from "naukluft-data-backend";
 
 import { lineSymbols } from "./map-style/symbol-layers";
 
@@ -68,7 +68,7 @@ async function setupStyleImages(map, polygonTypes) {
 
 async function createMapStyle(map, url, enableGeology = true) {
   const { data: polygonTypes } = await get(
-    "http://localhost:5555/map-data/polygon-types"
+    `${apiBaseURL}/map-data/polygon-types`
   );
   const baseURL = url.replace(
     "mapbox://styles",
@@ -134,7 +134,7 @@ let ix = 0;
 function reloadGeologySource(map: Map, sourceID: string) {
   ix += 1;
   const newID = `geology-${ix}`;
-  map.addSource(newID, createGeologySource("http://localhost:3006"));
+  map.addSource(newID, createGeologySource(apiBaseURL));
   map.U.setLayerSource(geologyLayerIDs(), newID);
   map.removeSource(sourceID);
   return newID;
@@ -149,7 +149,7 @@ export function MapComponent({
 
   const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
-  const socket = useRef(useReloader ? io("http://localhost:3006") : null);
+  const socket = useRef(useReloader ? io(apiBaseURL) : null);
 
   // Initialize map
   useEffect(() => {
