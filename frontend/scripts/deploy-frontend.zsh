@@ -17,4 +17,5 @@ export PUBLIC_PATH="/naukluft/"
 export NAUKLUFT_API_BASE_URL="https://birdnest.geology.wisc.edu/naukluft-api"
 webpack
 
-rsync -azv --delete "$dist/" steno:/data/projects/macrostrat/naukluft/
+# Rsync, following symlinks
+rsync -azvLK --delete "$dist/" steno:/data/projects/macrostrat/naukluft/

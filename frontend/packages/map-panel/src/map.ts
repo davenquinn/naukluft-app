@@ -145,7 +145,7 @@ function reloadGeologySource(map: Map, sourceID: string) {
 }
 
 export function MapComponent({
-  useReloader = false,
+  reloaderURL = null,
   enableGeology = true,
   baseLayer = defaultBaseLayers[0].url
 }) {
@@ -154,8 +154,10 @@ export function MapComponent({
   const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
 
+  const useReloader = reloaderURL != null;
+
   // reloading for in-development map
-  const socket = useRef(useReloader ? io(apiBaseURL) : null);
+  const socket = useRef(useReloader ? io(reloaderURL) : null);
 
   // Initialize map
   useEffect(() => {

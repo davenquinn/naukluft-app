@@ -18,7 +18,7 @@ const pkg = require("./package.json");
 const GITHUB_LINK = "https://github.com/davenquinn/naukluft-app";
 
 const mode = process.env.NODE_ENV || "development";
-const publicPath = process.env.PUBLIC_PATH || "";
+const publicPath = process.env.PUBLIC_PATH || "/";
 
 const webRoot = path.resolve(__dirname, "dist-web");
 
@@ -28,9 +28,10 @@ if (mode == "development") {
   const browserSync = new BrowserSyncPlugin({
     port: 3000,
     host: "localhost",
+    // use single-page routing
+    single: true,
     server: {
-      baseDir: webRoot,
-      middleware: [historyFallback()]
+      baseDir: webRoot
     }
   });
   plugins.push(browserSync);
@@ -106,8 +107,12 @@ module.exports = {
     new EnvironmentPlugin({
       ...RevisionInfoWebpack(pkg, GITHUB_LINK),
       PUBLIC_PATH: publicPath,
-      NODE_ENV: JSON.stringify(mode)
+      NODE_ENV: JSON.stringify(mode),
+      NAUKLUFT_ALLOW_EDITING: true
     }),
-    new EnvironmentPlugin(["NAUKLUFT_API_BASE_URL"])
+    new EnvironmentPlugin([
+      "NAUKLUFT_API_BASE_URL",
+      "NAUKLUFT_MAP_RELOADER_URL"
+    ])
   ]
 };

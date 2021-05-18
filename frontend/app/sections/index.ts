@@ -27,7 +27,9 @@ const SectionLink = function({ base, id }) {
 
 class SectionIndexPage extends Component {
   render() {
-    const { pathname } = this.props.location;
+    let { pathname } = this.props.location;
+
+    pathname = pathname.replace(/\/$/, "");
 
     const nestedSections = nest()
       .key(d => d.location)
