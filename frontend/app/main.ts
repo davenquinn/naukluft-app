@@ -43,17 +43,17 @@ const Router =
 const Home = () =>
   h("div#homepage", [
     h("div#homepage-inner", [
-      h("h1", "Naukluft Nappe Complex"),
+      h("h1", "Southern Naukluft Mountains mapping and stratigraphy"),
       h(
         "p",
         "Data products of research in the Southern Naukluft mountains, for presentation on the web alongside journal publication"
       ),
       h("ul", { className: "navigation" }, [
-        h(NavLink, { to: "/sections" }, "Sections"),
-        h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
-        h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
-        h(NavLink, { to: "/lateral-variation" }, "Lateral Variation"),
-        h(NavLink, { to: "/map" }, "Map")
+        h(NavLink, { to: "/sections" }, "Stratigraphic sections and model"),
+        h(NavLink, { to: "/map" }, "Preliminary geologic map")
+        //h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
+        //h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
+        //h(NavLink, { to: "/lateral-variation" }, "Lateral Variation")
         //h(NavLink, { to: "/map-legend" }, "Map legend")
       ])
     ])
@@ -70,7 +70,6 @@ class App extends React.Component {
     return h(PlatformProvider, [
       h("div#root", [
         h(Switch, [
-          h(Route, { path: "/", component: Home, exact: true }),
           h(Route, { path: "/sections", component: SectionIndex }),
           h(Route, {
             path: "/carbon-isotopes",
@@ -82,7 +81,8 @@ class App extends React.Component {
           }),
           h(Route, { path: "/map", component: MapView }),
           //route '/map-legend', wrapNavBar(MapLegend)
-          h(Route, { path: "/cross-sections", component: CrossSectionsPage })
+          h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
+          h(Route, { path: "/", component: Home })
         ])
       ])
     ]);

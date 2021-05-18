@@ -13,7 +13,8 @@ rsync -av "$patterns/" "$dist/lithology-patterns/"
 rsync -av "assets/column-patterns/" "$dist/column-symbols/"
 
 export NODE_ENV=production
-export PUBLIC_PATH="https://dev.macrostrat.org/naukluft"
+export PUBLIC_PATH="/naukluft"
+export NAUKLUFT_API_BASE_URL="https://birdnest.geology.wisc.edu/naukluft-api"
 webpack
 
 rsync -azv --delete "$dist/" steno:/data/projects/macrostrat/naukluft/

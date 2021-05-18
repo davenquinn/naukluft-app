@@ -107,6 +107,7 @@ module.exports = {
       ...RevisionInfoWebpack(pkg, GITHUB_LINK),
       PUBLIC_PATH: publicPath,
       NODE_ENV: JSON.stringify(mode)
-    })
+    }),
+    new EnvironmentPlugin(["NAUKLUFT_API_BASE_URL"])
   ]
 };

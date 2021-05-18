@@ -20,7 +20,7 @@ if (process.versions?.electron != null) {
 } else {
   global.PLATFORM = WEB;
   global.SERIALIZED_QUERIES = true;
-  global.BASE_URL = "/";
+  global.BASE_URL = process.env.PUBLIC_PATH ?? "/";
 }
 console.log(`Running application on ${PLATFORM}`);
 
@@ -47,6 +47,10 @@ const DarkModeProvider = function(props) {
 const useDarkMode = () => useContext(DarkModeContext);
 
 const PlatformContext = createContext({});
+
+const baseURL = process.env.PUBLIC_PATH ?? "/";
+
+console.log("Base url:", baseURL);
 
 class PlatformProvider extends Component {
   constructor(props) {
@@ -134,7 +138,7 @@ class PlatformProvider extends Component {
   }
 
   path(...args) {
-    return join(this.state.baseUrl, ...args);
+    return join(baseURL, ...args);
   }
 
   updateState(val) {
@@ -162,13 +166,12 @@ class PlatformProvider extends Component {
   }
 
   resolveSymbol(sym) {
-    console.log(sym);
     try {
       if (this.state.platform === Platform.ELECTRON) {
         const q = resolve(join(BASE_DIR, "assets", "column-patterns", sym));
         return "file://" + q;
       } else {
-        return join(BASE_URL, "column-symbols", sym);
+        return join(baseURL, "column-symbols", sym);
       }
     } catch (error1) {
       return "";
