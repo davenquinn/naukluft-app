@@ -13,4 +13,4 @@ rsync -av --delete "$patterns/" "$dist/lithology-patterns/"
 rsync -av --delete "assets/column-patterns/" "$dist/column-symbols/"
 
 # scripts/serialize-queries
-nodemon & webpack --watch
+(cd ../api && nodemon) & webpack --watch

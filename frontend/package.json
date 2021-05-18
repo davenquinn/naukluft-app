@@ -11,6 +11,7 @@
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run watch:web",
+    "dev:staging": "NAUKLUFT_API_BASE_URL='https://birdnest.geology.wisc.edu/naukluft-api' webpack --watch",
     "figures": "cd app && figment --spec ./figure-spec.js",
     "watch:api": "nodemon",
     "start:api": "cd ../api && npm run start",

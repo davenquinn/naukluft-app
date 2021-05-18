@@ -1,10 +1,10 @@
 import axios from "axios";
 import { createLineSymbolLayers } from "./symbol-layers";
 
-const createGeologySource = host => ({
+const createGeologySource = baseURL => ({
   type: "vector",
 
-  tiles: [`${host}/map-data/map-tiles/{z}/{x}/{y}.pbf`],
+  tiles: [`${baseURL}/{z}/{x}/{y}.pbf`],
 
   maxzoom: 15,
   minzoom: 5

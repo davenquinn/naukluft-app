@@ -81,7 +81,11 @@ async function createMapStyle(map, url, enableGeology = true) {
   if (!enableGeology) return baseStyle;
   await setupLineSymbols(map);
   await setupStyleImages(map, polygonTypes);
-  return createGeologyStyle(baseStyle, polygonTypes);
+  return createGeologyStyle(
+    baseStyle,
+    polygonTypes,
+    apiBaseURL + "/map-data/map-tiles"
+  );
 }
 
 async function initializeMap(el: HTMLElement, baseLayer: string) {
@@ -134,7 +138,7 @@ let ix = 0;
 function reloadGeologySource(map: Map, sourceID: string) {
   ix += 1;
   const newID = `geology-${ix}`;
-  map.addSource(newID, createGeologySource(apiBaseURL));
+  map.addSource(newID, createGeologySource(apiBaseURL + "/map-data/map-tiles"));
   map.U.setLayerSource(geologyLayerIDs(), newID);
   map.removeSource(sourceID);
   return newID;
@@ -149,6 +153,8 @@ export function MapComponent({
 
   const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
+
+  // reloading for in-development map
   const socket = useRef(useReloader ? io(apiBaseURL) : null);
 
   // Initialize map
