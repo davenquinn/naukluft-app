@@ -13,7 +13,7 @@ import {
   createGeologySource
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import { apiBaseURL } from "naukluft-data-backend";
 
 import { lineSymbols } from "./map-style/symbol-layers";
@@ -144,6 +144,10 @@ function reloadGeologySource(map: Map, sourceID: string) {
   return newID;
 }
 
+interface MapComponentProps {
+  reloaderURL: string | null;
+}
+
 export function MapComponent({
   reloaderURL = null,
   enableGeology = true,
@@ -154,10 +158,8 @@ export function MapComponent({
   const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
 
-  const useReloader = reloaderURL != null;
-
   // reloading for in-development map
-  const socket = useRef(useReloader ? io(reloaderURL) : null);
+  const socket = useRef<Socket | null>();
 
   // Initialize map
   useEffect(() => {
@@ -178,6 +180,11 @@ export function MapComponent({
 
   // Start up reloader if appropriate
   useEffect(() => {
+    if (socket.current == null && reloaderURL != null) {
+      socket.current = io(reloaderURL!, { transports: ["websocket"] });
+      console.log("Setting up reloader");
+    }
+
     socket?.current?.on("topology", message => {
       console.log(message);
       sourceReloader();
@@ -185,7 +192,7 @@ export function MapComponent({
     return () => {
       socket?.current?.off("topology");
     };
-  }, [socket]);
+  }, [reloaderURL]);
 
   useEffect(() => {
     const map = mapRef.current;

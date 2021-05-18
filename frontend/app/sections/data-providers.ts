@@ -30,9 +30,6 @@ const sectionFilename = function(fn) {
 };
 
 const getSectionData = async function(opts = {}) {
-  if (opts.verbose == null) {
-    opts.verbose = false;
-  }
   const fn = sectionFilename("file-info.json");
   const config = (await getJSON(fn)) ?? {};
 
@@ -50,8 +47,8 @@ const getSectionData = async function(opts = {}) {
       const sz = 427;
       s.scaleFactor = scaleFactor;
       s.imageFiles = range(files.n).map(i => {
-        const filename = sectionFilename(`section_${s.id}_${i}.png`);
-        const remaining = files.height - (i - 1) * sz;
+        const filename = sectionFilename(`section_${s.id}_${i + 1}.png`);
+        const remaining = files.height - i * sz;
         const height = remaining > sz ? sz : remaining;
         return { width: sz, height, filename };
       });
