@@ -1,1 +1,11 @@
-{"workspaces": ["frontend/packages/*"], "private": true}
+{
+  "workspaces": [
+    "frontend/packages/*"
+  ],
+  "private": true,
+  "prettier": {},
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "postinstall": "lerna bootstrap --hoist"
+  }
+}
