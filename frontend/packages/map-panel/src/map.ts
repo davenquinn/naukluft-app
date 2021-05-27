@@ -4,7 +4,6 @@ import { get } from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import h from "@macrostrat/hyper";
 import { debounce } from "underscore";
-import { ButtonGroup, Button } from "@blueprintjs/core";
 import mbxUtils from "mapbox-gl-utils";
 import {
   createGeologyStyle,
@@ -14,7 +13,8 @@ import {
   createGeologySource
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
+import { apiBaseURL } from "naukluft-data-backend";
 
 import { lineSymbols } from "./map-style/symbol-layers";
 
@@ -68,7 +68,7 @@ async function setupStyleImages(map, polygonTypes) {
 
 async function createMapStyle(map, url, enableGeology = true) {
   const { data: polygonTypes } = await get(
-    "http://localhost:5555/map-data/polygon-types"
+    `${apiBaseURL}/map-data/polygon-types`
   );
   const baseURL = url.replace(
     "mapbox://styles",
@@ -81,7 +81,11 @@ async function createMapStyle(map, url, enableGeology = true) {
   if (!enableGeology) return baseStyle;
   await setupLineSymbols(map);
   await setupStyleImages(map, polygonTypes);
-  return createGeologyStyle(baseStyle, polygonTypes);
+  return createGeologyStyle(
+    baseStyle,
+    polygonTypes,
+    apiBaseURL + "/map-data/map-tiles"
+  );
 }
 
 async function initializeMap(el: HTMLElement, baseLayer: string) {
@@ -134,14 +138,18 @@ let ix = 0;
 function reloadGeologySource(map: Map, sourceID: string) {
   ix += 1;
   const newID = `geology-${ix}`;
-  map.addSource(newID, createGeologySource("http://localhost:3006"));
+  map.addSource(newID, createGeologySource(apiBaseURL + "/map-data/map-tiles"));
   map.U.setLayerSource(geologyLayerIDs(), newID);
   map.removeSource(sourceID);
   return newID;
 }
 
+interface MapComponentProps {
+  reloaderURL: string | null;
+}
+
 export function MapComponent({
-  useReloader = false,
+  reloaderURL = null,
   enableGeology = true,
   baseLayer = defaultBaseLayers[0].url
 }) {
@@ -149,7 +157,9 @@ export function MapComponent({
 
   const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
-  const socket = useRef(useReloader ? io("http://localhost:3006") : null);
+
+  // reloading for in-development map
+  const socket = useRef<Socket | null>();
 
   // Initialize map
   useEffect(() => {
@@ -170,6 +180,11 @@ export function MapComponent({
 
   // Start up reloader if appropriate
   useEffect(() => {
+    if (socket.current == null && reloaderURL != null) {
+      socket.current = io(reloaderURL!, { transports: ["websocket"] });
+      console.log("Setting up reloader");
+    }
+
     socket?.current?.on("topology", message => {
       console.log(message);
       sourceReloader();
@@ -177,7 +192,7 @@ export function MapComponent({
     return () => {
       socket?.current?.off("topology");
     };
-  }, [socket]);
+  }, [reloaderURL]);
 
   useEffect(() => {
     const map = mapRef.current;

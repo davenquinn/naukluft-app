@@ -44,7 +44,10 @@ function MapView() {
           setActive(!isActive);
         }
       }),
-      h(MapPanel, { enableGeology, useReloader: true }),
+      h(MapPanel, {
+        enableGeology,
+        reloaderURL: process.env.NAUKLUFT_MAP_RELOADER_URL
+      }),
 
       h(
         AppDrawer,

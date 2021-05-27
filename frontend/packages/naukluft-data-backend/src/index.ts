@@ -17,6 +17,8 @@ enum queryResult {
   any = 6
 }
 
+const apiBaseURL = process.env.NAUKLUFT_API_BASE_URL ?? "http://localhost:5555";
+
 export const runQuery = async function(
   key: string,
   params: any = null,
@@ -42,7 +44,7 @@ export const runQuery = async function(
       }
 
       console.log(params);
-      const res = await get("http://localhost:5555/" + key, { params });
+      const res = await get(apiBaseURL + "/" + key, { params });
       if (res.status == 200) {
         let { data } = res;
         return data;
@@ -86,5 +88,6 @@ export function useQueryRunner(): typeof runQuery {
 }
 
 export { queryResult as ResultMask };
+export { apiBaseURL };
 export * from "./platform";
 export * from "./updates";

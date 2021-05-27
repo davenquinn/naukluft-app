@@ -77,7 +77,7 @@ async function createServer() {
   helpRoutes.push(addSectionUpdateRoute(app));
   helpRoutes.push(await addTileServer(app));
   // create help route
-  app.get("/", (req, res) => {
+  app.get("/", (req: any, res: any) => {
     helpRoutes.sort();
     res.json({
       v: 1,
@@ -89,8 +89,4 @@ async function createServer() {
   return app;
 }
 
-// We should maybe move this to another file
-const port = 5555;
-createServer().then(app => {
-  app.listen(port, () => console.log(`Naukluft API started on port ${port}`));
-});
+export { createServer };

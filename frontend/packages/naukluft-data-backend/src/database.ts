@@ -7,9 +7,11 @@ const opts = {
   noWarnings: true
 };
 
+const pg_conn = process.env.NAUKLUFT_DB ?? "postgresql:///Naukluft";
+
 // Create database connection
 const pgp = PGPromise(opts);
-const db = pgp("postgresql:///Naukluft", { log: true });
+const db = pgp(pg_conn, { log: true });
 const { helpers } = pgp;
 
 const queryFiles: { [k: string]: string } = {};
@@ -33,7 +35,11 @@ async function runBackendQuery(
   if (!key.endsWith(".sql")) {
     fn = resolve(join(__dirname, "..", "sql", key + ".sql"));
   }
-  return await db.query(storedProcedure(fn), params, resultMask);
+  try {
+    return await db.query(storedProcedure(fn), params, resultMask);
+  } catch (err) {
+    throw new Error(`Query ${fn} failed to run`);
+  }
 }
 
 export { queryResult as ResultMask };

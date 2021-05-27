@@ -1,19 +1,24 @@
-@require "~@macrostrat/column-components/dist/column-components.css";
+@require "~@macrostrat/column-components/main.styl";
 
 *
   font-family "Montserrat", sans-serif
 
 .legend
   .sequence-legend
-    width 30em
+    width 25em
     padding 1em
     position absolute
     &.s1
       bottom 0
       left 0
+      .facies-tract:last-child
+        transform translateY(20px)
     &.s2
       top 48%
       left 0
+      width 20em
+      .legend-body
+        columns 1
     &.s3
       top -1em
       right 0
@@ -26,13 +31,15 @@
     flex-direction row
     margin-bottom 0.2em
     font-size 14px
+    align-items: center
     svg
       margin-right 1em
+      flex-shrink 0
     p
       margin-top 0
       margin-bottom 0.2em
       &.lith
-        font-weight 400
+        font-weight 500
         font-style italic
     break-inside: avoid;
 

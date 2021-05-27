@@ -1,0 +1,8 @@
+{
+  "watch": [
+    "../frontend/packages/naukluft-data-backend",
+    "../frontend/packages/vector-tile-server"
+  ],
+  "ext": "ts,sql",
+  "exec": "ts-node index.ts"
+}

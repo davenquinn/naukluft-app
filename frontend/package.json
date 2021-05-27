@@ -11,10 +11,11 @@
     "compile:main": "electron-webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run watch:web",
+    "dev:staging": "NAUKLUFT_API_BASE_URL='https://birdnest.geology.wisc.edu/naukluft-api' webpack --watch",
     "figures": "cd app && figment --spec ./figure-spec.js",
-    "postinstall": "lerna bootstrap --hoist",
     "watch:api": "nodemon",
-    "start:api": "ts-node packages/naukluft-data-backend/src/api.ts"
+    "start:api": "cd ../api && npm run start",
+    "deploy:steno": "scripts/deploy-frontend.zsh"
   },
   "workspaces": [
     "packages/*",
@@ -83,6 +84,7 @@
     "electron-localshortcut": "^1.0.0",
     "electron-react-devtools": "^0.5.3",
     "electron-webpack": "^2.8.2",
+    "figment-ui": "^0.2.0",
     "file-loader": "^1.1.11",
     "find-root": "^1.1.0",
     "hyperstyles": "^3.3.1",

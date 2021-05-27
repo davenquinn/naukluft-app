@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 
 const PatternPrefixContext = createContext<string>("pattern");
 
-const FaciesPattern = (props) => {
+const FaciesPattern = props => {
   const prefix = useContext(PatternPrefixContext);
   const { facies, id, size, ...rest } = props;
   return h(GeologicPattern, {
@@ -14,85 +14,92 @@ const FaciesPattern = (props) => {
     width: size,
     height: size,
     shapeRendering: "crispEdges",
-    ...rest,
+    ...rest
   });
 };
 FaciesPattern.defaultProps = { size: 100 };
 
 const grainstoneColors = {
   color: "#403ab8",
-  backgroundColor: "#7d83bd",
+  backgroundColor: "#7d83bd"
 };
 
-const FillPatternDefs = (props) => {
+const FillPatternDefs = props => {
   const { prefix, invert } = props;
 
   return h(PatternPrefixContext.Provider, { value: prefix }, [
     h("defs", [
       h(FaciesPattern, {
         facies: "rework",
-        id: "216-DO",
+        //id: "216-DO",
         //patternTransform: "rotate(90)",
-        backgroundColor: "#fcdede",
-        color: "#e07171",
-        size: 30,
+        //backgroundColor: "#e2671e"//"#fcdede",
+        color: "#ff7701", //"#e07171",
+        size: 30
       }),
 
       h(FaciesPattern, {
         facies: "p",
-        id: "232-DO",
+        //id: "406-DO",
         //patternTransform: "rotate(90)",
-        backgroundColor: "#deeffc",
-        color: "#96c5eb",
-        size: 30,
+        //backgroundColor: "#deeffc",
+        color: "#b3d2fe", //"#96c5eb",
+        size: 80
       }),
       h(FaciesPattern, {
         facies: "sub",
         id: "230-DO",
         patternTransform: "rotate(90)",
-        backgroundColor: "#deeffc",
-        color: "#96c5eb",
+        backgroundColor: "#b3d2fe",
+        color: "#7799B3"
       }),
       h(FaciesPattern, {
         facies: "sh",
-        id: "114-DO",
-        ...grainstoneColors,
+        //id: "114-DO",
+        //size: 120,
+        //...grainstoneColors
+        color: grainstoneColors.backgroundColor
       }),
       h(FaciesPattern, {
         facies: "or",
         id: "105-DO",
-        size: 60,
+        size: 80,
         ...grainstoneColors,
+        color: "#3a34b9"
+        //backgroundColor: "#71749b"
+        //color: grainstoneColors.backgroundColor
       }),
       h(FaciesPattern, {
         facies: "mc",
         id: "431-DO",
         patternTransform: "rotate(60)",
-        backgroundColor: "#dee3fc",
-        color: "#7d7dbd",
+        //...grainstoneColors,
+        backgroundColor: "#71749b", //"#6e7396",
+        color: "#3a34b9"
+        //color: "#686B8E" // "#6a6d8f" //"#7d7dbd"
       }),
       h(FaciesPattern, {
         facies: "cc",
         id: "121-DO",
         size: 50,
         color: "#22958a",
-        backgroundColor: "#70c7bf",
+        backgroundColor: "#70c7bf"
       }),
       h(FaciesPattern, {
         facies: "pc",
         id: "121-DO",
         size: 50,
         color: "#4eb6ac",
-        backgroundColor: "#dcedc9",
+        backgroundColor: "#dcedc9"
       }),
       h(FaciesPattern, {
         facies: "fc",
         id: "230-DO",
         patternTransform: "rotate(90)",
         backgroundColor: "#f1f5eb",
-        color: "#dcedc9",
-      }),
-    ]),
+        color: "#dcedc9"
+      })
+    ])
   ]);
 };
 
