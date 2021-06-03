@@ -2,7 +2,7 @@ const path = require("path");
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const { IgnorePlugin, EnvironmentPlugin } = require("webpack");
 const historyFallback = require("connect-history-api-fallback");
-
+const merge = require("webpack-merge");
 const {
   resolve,
   cssModuleLoader,
@@ -13,6 +13,7 @@ const {
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const RevisionInfoWebpack = require("@macrostrat/revision-info-webpack");
 const DotenvPlugin = require("dotenv-webpack");
+const CesiumWebpackConfig = require("./packages/cesium-viewer/webpack4-plugins");
 
 const pkg = require("./package.json");
 const GITHUB_LINK = "https://github.com/davenquinn/naukluft-app";
@@ -42,7 +43,7 @@ for (let i of Array.from(ignores)) {
   plugins.push(new IgnorePlugin(i));
 }
 
-module.exports = {
+const baseConfig = {
   devtool: "source-map",
   mode,
   module: {
@@ -116,3 +117,5 @@ module.exports = {
     ])
   ]
 };
+
+module.exports = merge(baseConfig, CesiumWebpackConfig(publicPath));
