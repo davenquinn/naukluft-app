@@ -7,10 +7,11 @@ import { debounce } from "underscore";
 import mbxUtils from "mapbox-gl-utils";
 import {
   createGeologyStyle,
-  createBasicStyle,
+  add3DLayers,
   geologyLayerIDs,
   getMapboxStyle,
-  createGeologySource
+  createGeologySource,
+  emptyStyle
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
 import io, { Socket } from "socket.io-client";
@@ -66,25 +67,44 @@ async function setupStyleImages(map, polygonTypes) {
   );
 }
 
-async function createMapStyle(map, url, enableGeology = true) {
+interface MapStyleBuilderOpts {
+  geology?: boolean;
+  terrain?: boolean;
+  patterns?: boolean;
+}
+
+export async function createMapStyle(
+  map = null,
+  styleUrl: string | null = null,
+  opts: MapStyleBuilderOpts = {}
+) {
+  const { geology = true, terrain = true, patterns = true } = opts;
   const { data: polygonTypes } = await get(
     `${apiBaseURL}/map-data/polygon-types`
   );
-  const baseURL = url.replace(
-    "mapbox://styles",
-    "https://api.mapbox.com/styles/v1"
-  );
-  let baseStyle = await getMapboxStyle(baseURL, {
-    access_token: mapboxgl.accessToken
-  });
-  baseStyle = createBasicStyle(baseStyle);
-  if (!enableGeology) return baseStyle;
-  await setupLineSymbols(map);
-  await setupStyleImages(map, polygonTypes);
+  let baseStyle = emptyStyle;
+  if (styleUrl != null) {
+    const baseURL = styleUrl.replace(
+      "mapbox://styles",
+      "https://api.mapbox.com/styles/v1"
+    );
+    baseStyle = await getMapboxStyle(baseURL, {
+      access_token: mapboxgl.accessToken
+    });
+  }
+  if (terrain) {
+    baseStyle = add3DLayers(baseStyle);
+  }
+  if (!geology) return baseStyle;
+  if (map != null) {
+    await setupLineSymbols(map);
+    await setupStyleImages(map, polygonTypes);
+  }
   return createGeologyStyle(
     baseStyle,
     polygonTypes,
-    apiBaseURL + "/map-data/map-tiles"
+    apiBaseURL + "/map-data/map-tiles",
+    patterns
   );
 }
 
@@ -102,7 +122,7 @@ async function initializeMap(el: HTMLElement, baseLayer: string) {
 
   //map.setStyle("mapbox://styles/jczaplewski/cklb8aopu2cnv18mpxwfn7c9n");
   map.on("load", async function() {
-    const style = await createMapStyle(map, baseLayer, true);
+    const style = await createMapStyle(map, baseLayer, { geology: true });
     map.setStyle(style);
     if (map.getSource("mapbox-dem") == null) return;
     map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });

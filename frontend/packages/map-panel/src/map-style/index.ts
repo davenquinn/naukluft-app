@@ -10,7 +10,26 @@ const createGeologySource = baseURL => ({
   minzoom: 5
 });
 
-function createBasicStyle(baseStyle) {
+const emptyStyle = {
+  version: 8,
+  name: "Empty",
+  metadata: {
+    "mapbox:autocomposite": true
+  },
+  glyphs: "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+  sources: {},
+  layers: [
+    {
+      id: "background",
+      type: "background",
+      paint: {
+        "background-color": "rgba(0,0,0,0)"
+      }
+    }
+  ]
+};
+
+function add3DLayers(baseStyle) {
   let style = { ...baseStyle };
   style.sources["mapbox-dem"] = {
     type: "raster-dem",
@@ -33,7 +52,18 @@ function createBasicStyle(baseStyle) {
   return style;
 }
 
-const geologyLayerDefs = function(colors = {}, patterns = {}) {
+const geologyLayerDefs = function(
+  colors = {},
+  patterns = {},
+  usePatterns = true
+) {
+  let patternPaint = {};
+  if (usePatterns) {
+    patternPaint = {
+      "fill-pattern": ["concat", ["get", "unit_id"], "_fill"]
+    };
+  }
+
   return [
     {
       id: "unit",
@@ -42,8 +72,10 @@ const geologyLayerDefs = function(colors = {}, patterns = {}) {
       type: "fill",
       minzoom: 11,
       paint: {
-        "fill-pattern": ["concat", ["get", "unit_id"], "_fill"],
-        "fill-opacity": 1
+        // Fallback color...
+        "fill-color": ["get", ["get", "unit_id"], ["literal", colors]],
+        "fill-opacity": 1,
+        ...patternPaint
       }
     },
     {
@@ -162,9 +194,9 @@ function geologyLayerIDs() {
 const createGeologyStyle = function(
   baseStyle,
   polygonTypes: any[],
-  hostName = "http://localhost:5555"
+  hostName = "http://localhost:5555",
+  usePatterns = true
 ) {
-  console.log(polygonTypes);
   const colors = {};
   const patterns = {};
   for (let d of polygonTypes) {
@@ -172,7 +204,7 @@ const createGeologyStyle = function(
     patterns[d.id] = d.symbol ?? null;
   }
 
-  const geologyLayers = geologyLayerDefs(colors, patterns);
+  const geologyLayers = geologyLayerDefs(colors, patterns, usePatterns);
 
   let style = baseStyle;
   style.sources.geology = createGeologySource(hostName);
@@ -186,8 +218,9 @@ async function getMapboxStyle(url, { access_token }) {
 }
 
 export {
+  emptyStyle,
   createGeologyStyle,
-  createBasicStyle,
+  add3DLayers,
   createGeologySource,
   getMapboxStyle,
   geologyLayerIDs

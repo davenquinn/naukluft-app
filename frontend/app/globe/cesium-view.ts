@@ -5,13 +5,6 @@ import CesiumView, {
   useCesium
 } from "@macrostrat/cesium-viewer";
 import h from "@macrostrat/hyper";
-import { IonResource, Ion } from "cesium";
-import { useDispatch, useSelector } from "react-redux";
-import { queryMap, mapMoved } from "../actions";
-import {
-  MapChangeTracker,
-  MapClickHandler
-} from "@macrostrat/cesium-viewer/position";
 import {
   HillshadeLayer,
   //GeologyLayer,
@@ -19,44 +12,16 @@ import {
   terrainProvider
 } from "@macrostrat/cesium-viewer/layers";
 import { Cesium3DTileset } from "resium";
+import { GeologyLayer } from "./vector-style";
 import { useMemo } from "react";
 import MVTImageryProvider from "mvt-imagery-provider";
-import { useEffect } from "react";
-
-/*
 import { mapStyle } from "./vector-style";
-
-const GeologyLayer = ({ visibleMaps = null, ...rest }) => {
-  const provider = useMemo(() => {
-    let prov = new MVTImageryProvider({
-      style: mapStyle,
-      maximumZoom: 13,
-      tileSize: 512
-    });
-    return prov;
-  }, [visibleMaps]);
-
-  return h(ImageryLayer, { imageryProvider: provider, ...rest });
-};
-*/
-
-// function NeurasCesiumTileset() {
-//   const { viewer } = useCesium();
-//   //   console.log("Adding 3d tileset", viewer);
-//     var tileset = viewer?.scene.primitives.add(
-//       new Cesium3DTileset({
-//         url: "http://localhost:3002/tilesets/Neuras/tileset.json"
-//       })
-//     );
-//   }, [viewer]);
-
-//   return null;
-// }
 
 function NaukluftCesiumView({
   initialPosition,
   onViewChange,
-  showPhotogrammetry = true
+  showPhotogrammetry = true,
+  showGeology = true
 }) {
   return h(
     CesiumView,
@@ -81,8 +46,8 @@ function NaukluftCesiumView({
         show: showPhotogrammetry,
         maximumScreenSpaceError: 1
       }),
-      //h(HillshadeLayer),
-      h(SatelliteLayer)
+      h(SatelliteLayer),
+      h(GeologyLayer, { alpha: 0.5, show: showGeology })
     ]
     //, h(GeologyLayer, { alpha: 0.8 })]
   );

@@ -82,6 +82,7 @@ function GlobeView() {
       h(ErrorBoundary, [
         h(Globe, {
           showPhotogrammetry: layers.has(Layer.Photogrammetry),
+          showGeology: layers.has(Layer.Geology),
           initialPosition: pos,
           onViewChange(cpos) {
             setPos(cpos.camera);
