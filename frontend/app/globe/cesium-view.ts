@@ -4,7 +4,6 @@ import CesiumView, {
   getInitialPosition,
   useCesium
 } from "@macrostrat/cesium-viewer";
-import { getHashString, setHashString } from "@macrostrat/ui-components";
 import h from "@macrostrat/hyper";
 import { IonResource, Ion } from "cesium";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,16 +40,6 @@ const GeologyLayer = ({ visibleMaps = null, ...rest }) => {
 };
 */
 
-const defaultPosition = getInitialPosition({
-  a: 314,
-  e: 67,
-  x: 16.2015,
-  y: -24.4099,
-  z: 3219
-});
-
-const initialPosition = getInitialPosition(getHashString(), defaultPosition);
-
 // function NeurasCesiumTileset() {
 //   const { viewer } = useCesium();
 //   //   console.log("Adding 3d tileset", viewer);
@@ -64,13 +53,15 @@ const initialPosition = getInitialPosition(getHashString(), defaultPosition);
 //   return null;
 // }
 
-function NaukluftCesiumView({ showPhotogrammetry = true }) {
+function NaukluftCesiumView({
+  initialPosition,
+  onViewChange,
+  showPhotogrammetry = true
+}) {
   return h(
     CesiumView,
     {
-      onViewChange(cpos) {
-        setHashString(buildPositionHash(cpos.camera));
-      },
+      onViewChange,
       onClick({ latitude, longitude, zoom }) {
         console.log(latitude, longitude);
       },
@@ -88,9 +79,8 @@ function NaukluftCesiumView({ showPhotogrammetry = true }) {
           console.log(tileset);
         },
         show: showPhotogrammetry,
-        maximumScreenSpaceError: 2
+        maximumScreenSpaceError: 1
       }),
-      //h(NeurasCesiumTileset),
       //h(HillshadeLayer),
       h(SatelliteLayer)
     ]
