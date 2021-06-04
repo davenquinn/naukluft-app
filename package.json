@@ -7,5 +7,8 @@
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "postinstall": "lerna bootstrap --hoist"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
   }
 }
