@@ -41,9 +41,6 @@ const GeologyLayer = ({ visibleMaps = null, ...rest }) => {
 };
 */
 
-Ion.defaultAccessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzODk2OGM4ZS1mMzlkLTRlNjAtYWQxZS1mODU3YWJjMWFhNzQiLCJpZCI6MjYwODYsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODcxOTU1MTh9._ILy51LI2aF7Nxvas9RQDkhqOP4Tp92uTYAtvewVvNE";
-
 const defaultPosition = getInitialPosition({
   a: 314,
   e: 67,
@@ -67,7 +64,7 @@ const initialPosition = getInitialPosition(getHashString(), defaultPosition);
 //   return null;
 // }
 
-function NaukluftCesiumView(props) {
+function NaukluftCesiumView({ showPhotogrammetry = true }) {
   return h(
     CesiumView,
     {
@@ -80,7 +77,7 @@ function NaukluftCesiumView(props) {
       initialPosition,
       //terrainExaggeration: 1,
       //displayQuality: DisplayQuality.High,
-      showInspector: true,
+      //showInspector: true,
       terrainProvider
     },
     [
@@ -90,7 +87,7 @@ function NaukluftCesiumView(props) {
         onReady(tileset) {
           console.log(tileset);
         },
-        show: true,
+        show: showPhotogrammetry,
         maximumScreenSpaceError: 2
       }),
       //h(NeurasCesiumTileset),

@@ -4,7 +4,7 @@ import h from "@macrostrat/hyper";
 // Maybe this should go in main thread
 import loadable from "@loadable/component";
 import { AppDrawer, NavigationControl } from "~/components";
-import { Spinner, Button, ButtonGroup } from "@blueprintjs/core";
+import { Spinner, Button, ButtonGroup, Switch } from "@blueprintjs/core";
 import { ErrorBoundary } from "@macrostrat/ui-components";
 
 const Globe = loadable(() => import("./cesium-view"), {
@@ -14,6 +14,7 @@ const Globe = loadable(() => import("./cesium-view"), {
 function GlobeView() {
   const [isActive, setActive] = useState(false);
   const [enableGeology, setEnableGeology] = useState(true);
+  const [showPhotogrammetry, setPhotogrammetry] = useState(true);
 
   return h("div#map-root", {}, [
     h("div#map-panel-container", {}, [
@@ -22,7 +23,7 @@ function GlobeView() {
           setActive(!isActive);
         }
       }),
-      h(ErrorBoundary, [h(Globe)]),
+      h(ErrorBoundary, [h(Globe, { showPhotogrammetry })]),
       h(
         AppDrawer,
         {
@@ -33,16 +34,26 @@ function GlobeView() {
           }
         },
         [
-          h("h3", "Geology layers"),
+          h("h3", "Layers"),
           h(
-            Button,
+            Switch,
             {
-              active: enableGeology,
-              onClick() {
+              checked: enableGeology,
+              onChange() {
                 setEnableGeology(!enableGeology);
               }
             },
             "Geology"
+          ),
+          h(
+            Switch,
+            {
+              checked: showPhotogrammetry,
+              onChange(v) {
+                setPhotogrammetry(!showPhotogrammetry);
+              }
+            },
+            "Photogrammetry"
           )
           // h(BaseLayerSwitcher, {
           //   layers: baseLayers,
