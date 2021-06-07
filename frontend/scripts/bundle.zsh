@@ -7,6 +7,8 @@ image_dist="$dist/section-images"
 rm -f "$image_dist"
 ln -s "$images" "$image_dist"
 
+ln -s "$repo_dir/data/tilesets" "$dist/tilesets"
+
 # Copy geologic patterns and symbols
 patterns=app/node_modules/geologic-patterns/assets/png
 rsync -av --delete "$patterns/" "$dist/lithology-patterns/"

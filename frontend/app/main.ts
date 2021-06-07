@@ -23,6 +23,7 @@ import { CrossSectionsPage } from "./cross-sections";
 import CarbonIsotopesPage from "./carbon-isotopes";
 import LateralVariation from "./lateral-variation";
 import { MapView } from "./map-viewer";
+import Globe from "./globe";
 import { HotkeysTarget, Hotkeys, Hotkey } from "@blueprintjs/core";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -50,7 +51,8 @@ const Home = () =>
       ),
       h("ul", { className: "navigation" }, [
         h(NavLink, { to: "/sections" }, "Stratigraphic sections and model"),
-        h(NavLink, { to: "/map" }, "Preliminary geologic map")
+        h(NavLink, { to: "/map" }, "Preliminary geologic map"),
+        h(NavLink, { to: "/globe" }, "High-resolution digital globe (alpha)")
         //h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
         //h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
         //h(NavLink, { to: "/lateral-variation" }, "Lateral Variation")
@@ -82,6 +84,7 @@ class App extends React.Component {
           h(Route, { path: "/map", component: MapView }),
           //route '/map-legend', wrapNavBar(MapLegend)
           h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
+          h(Route, { path: "/globe", component: Globe }),
           h(Route, { path: "/", component: Home })
         ])
       ])

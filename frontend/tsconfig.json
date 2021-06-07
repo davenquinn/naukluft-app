@@ -16,6 +16,7 @@
       "~/*": ["./app/*"],
       "@macrostrat/column-components": ["packages/column-components/src/"],
       "@macrostrat/ui-components": ["packages/ui-components/src/"],
+      "@macrostrat/cesium-viewer": ["packages/cesium-viewer/src/"],
       "naukluft-data-backend": ["packages/naukluft-data-backend/src"]
     }
   },

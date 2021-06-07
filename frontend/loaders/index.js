@@ -68,6 +68,8 @@ const stylusRule = {
   exclude: /node_modules/
 };
 
+const packageSrc = name => path.resolve(__base, "packages", name, "src");
+
 const resolve = {
   extensions: [".js", ".coffee", ".ts"],
   alias: {
@@ -78,18 +80,9 @@ const resolve = {
     */
     "~": path.resolve(__base, "app"),
     react: path.resolve(__base, "node_modules", "react"),
-    "@macrostrat/ui-components": path.resolve(
-      __base,
-      "packages",
-      "ui-components",
-      "src"
-    ),
-    "@macrostrat/column-components": path.resolve(
-      __base,
-      "packages",
-      "column-components",
-      "src"
-    )
+    "@macrostrat/ui-components": packageSrc("ui-components"),
+    "@macrostrat/column-components": packageSrc("column-components"),
+    "@macrostrat/cesium-viewer": packageSrc("cesium-viewer")
   }
 };
 
