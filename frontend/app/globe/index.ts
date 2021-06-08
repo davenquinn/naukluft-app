@@ -51,7 +51,7 @@ const defaultPosition = getInitialPosition({
 
 const layerVals = Object.values(Layer);
 
-let { layers: initialLayers, ...loc } = getHashString();
+let { layers: initialLayers = [], ...loc } = getHashString() ?? {};
 if (!Array.isArray(initialLayers)) {
   initialLayers = [initialLayers];
 }

@@ -3,8 +3,11 @@ const merge = require("webpack-merge");
 const { IgnorePlugin } = require("webpack");
 const { coffeeRule, sqlRule, stylusRule, resolve } = require("./loaders");
 const { version } = require("electron/package.json");
+const CesiumWebpackConfig = require("./packages/cesium-viewer/webpack4-plugins");
 
-const modifyConfig = (cfg) => {
+const publicPath = process.env.PUBLIC_PATH || "/";
+
+const modifyConfig = cfg => {
   cfg.module.rules = [...cfg.module.rules, coffeeRule, sqlRule, stylusRule];
 
   cfg.resolve = merge(cfg.resolve, resolve);
@@ -15,19 +18,16 @@ const modifyConfig = (cfg) => {
   jsRule.use.options.presets = [
     ["@babel/preset-env", { modules: false, targets: { electron: version } }],
     "@babel/preset-react",
-    "@babel/preset-typescript",
+    "@babel/preset-typescript"
   ];
 
   jsRule.use.options.plugins = [
     "@babel/plugin-proposal-nullish-coalescing-operator",
     "@babel/plugin-proposal-optional-chaining",
-    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-class-properties"
   ];
 
-  console.log(JSON.stringify(cfg, null, 4));
-  console.log(JSON.stringify(cfg.plugins[2], null, 4));
-
-  return cfg;
+  return merge(cfg, CesiumWebpackConfig(publicPath));
 };
 
 module.exports = modifyConfig;
