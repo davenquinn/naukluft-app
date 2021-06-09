@@ -126,6 +126,35 @@ function generalize(
   });
 }
 
+class SectionHeightGeneralizer {
+  // Generalizer based on individual divisions of a column.
+  // There's probably a better way to do this...
+  divisions: GeneralizedDivision[];
+  constructor(divisions: GeneralizedDivision[]) {
+    this.divisions = divisions;
+  }
+  findMatchingInterval(sectionID: string, height: number) {
+    return (
+      this.divisions.find(
+        d =>
+          d.original_section == sectionID &&
+          d.original_bottom <= height &&
+          d.original_top >= height
+      ) ?? null
+    );
+  }
+
+  _generalizeHeight(interval: GeneralizedDivision, height: number) {
+    return interval.bottom + (height - interval.original_bottom);
+  }
+
+  generalizeHeight(sectionID: string, height: number): number | null {
+    const interval = this.findMatchingInterval(sectionID, height);
+    if (interval == null) return null;
+    return this._generalizeHeight(interval, height);
+  }
+}
+
 // A context for to pass along ungrouped divisions
 const BaseDivisionsContext = createContext<ColumnDivision[]>([]);
 
@@ -201,9 +230,20 @@ const GeneralizedDivisionsProvider = props => {
   return h(
     BaseDivisionsContext.Provider,
     { value: allDivisions },
-    h(ColumnDivisionsContext.Provider, { value: { divisions } }, props.children)
+    h(
+      ColumnDivisionsContext.Provider,
+      { value: { divisions, generalized: true } },
+      props.children
+    )
   );
 };
+
+function useGeneralizedDivisions(): GeneralizedDivision[] {
+  const value = useContext(ColumnDivisionsContext);
+  const isGeneralized = value?.generalized ?? false;
+  if (!isGeneralized) return [];
+  return value.divisions as GeneralizedDivision[];
+}
 
 // Surfaces
 
@@ -267,28 +307,21 @@ const GeneralizedEditorProvider = props => {
   );
 };
 
+// Symbols
+
 const GeneralizedSymbolProvider = props => {
   const symbols = useQuery("sections/symbols") ?? [];
   const { divisions } = useContext(ColumnDivisionsContext);
-  const genDivisions = divisions as GeneralizedDivision[];
+  const generalizer = new SectionHeightGeneralizer(divisions);
 
   let newSymbols: Symbol[] = [];
   for (let s of symbols) {
-    const div = genDivisions.find(d => {
-      return (
-        d.original_section == s.section_id &&
-        d.original_bottom <= s.height &&
-        d.original_top >= s.height
-      );
-    });
+    const div = generalizer.findMatchingInterval(s.section_id, s.height);
     if (div == null) continue;
-
-    const height = div.bottom + (s.height - div.original_bottom);
+    const height = generalizer._generalizeHeight(div, s.height);
     const section_id = div.section_id;
     newSymbols.push({ ...s, height, section_id, _section_id: s.section_id });
   }
-
-  if (symbols.length > 0) debugger;
 
   return h(SymbolContext.Provider, { value: newSymbols }, props.children);
 };
@@ -305,5 +338,7 @@ export {
   GeneralizedDivisionsProvider,
   GeneralizedDataProvider,
   GeneralizedSurfacesProvider,
-  ColumnDivisionsContext
+  ColumnDivisionsContext,
+  SectionHeightGeneralizer,
+  useGeneralizedDivisions
 };

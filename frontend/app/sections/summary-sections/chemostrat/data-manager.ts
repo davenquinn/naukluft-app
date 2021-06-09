@@ -6,13 +6,10 @@ import { useQuery } from "naukluft-data-backend";
 const IsotopesDataContext = createContext({ isotopes: new Map() });
 
 function IsotopesDataProvider(props: React.PropsWithChildren<{}>) {
-  const data = useQuery("sections/all-carbon-isotopes");
-  if (data == null) {
-    return props.children;
-  }
+  const data = useQuery("sections/all-carbon-isotopes") ?? [];
 
-  const isotopes = group(data, (d) => d.section);
-  isotopes.forEach((values) =>
+  const isotopes = group(data, d => d.section);
+  isotopes.forEach(values =>
     values.sort((a, b) => a.orig_height - b.orig_height)
   );
 

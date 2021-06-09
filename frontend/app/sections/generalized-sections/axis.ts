@@ -3,17 +3,20 @@ import {
   ColumnContext,
   ColumnAxis,
   expandDivisionsByKey,
+  useColumnDivisions
 } from "@macrostrat/column-components";
+import { useGeneralizedDivisions } from "./data-provider";
 import { useContext, useRef, useState, useLayoutEffect } from "react";
 import styles from "./main.styl";
 import { format } from "d3-format";
 import { GeneralizedDivision } from "./types";
+import { isMainFrame } from "process";
 
 const fmt = format("i");
 
 const h = hyperStyled(styles);
 
-const GeneralizedAxis = function (props) {
+const GeneralizedAxis = function(props) {
   const { height, zoom, scale, pixelsPerMeter } = useContext(ColumnContext);
   const ratio = pixelsPerMeter * zoom;
 
@@ -26,7 +29,7 @@ const GeneralizedAxis = function (props) {
     tickSize: 3,
     showLabel(d) {
       return false;
-    },
+    }
   });
 };
 
@@ -61,33 +64,32 @@ const SectionBreak = (props: SectionBreakProps) => {
     "div.section-break",
     {
       style: { height },
-      className: `section-${d.original_section}`,
+      className: `section-${d.original_section}`
     },
     [
       h("span", { ref }, [
         h("span.section-break-title", [
           h.if(showPrefix)("span.prefix", "Section "),
-          h("span.section-id", `${d.original_section}`),
+          h("span.section-id", `${d.original_section}`)
         ]),
-        h("span.height", `${Math.round(heightM)} m`),
-      ]),
+        h("span.height", `${Math.round(heightM)} m`)
+      ])
     ]
   );
 };
 
-const GeneralizedBreaks = (props) => {
-  let { divisions } = useContext(ColumnContext);
-  divisions = divisions.filter((d) => d.original_section != null);
+const GeneralizedBreaks = props => {
+  const divisions = useColumnDivisions();
 
   let breaks: GeneralizedDivision[] = expandDivisionsByKey(
-    divisions,
+    divisions.filter(d => d.original_section != null),
     "original_section"
   );
   breaks.reverse();
 
   return h(
     "div.generalized-breaks",
-    breaks.map((division) => h(SectionBreak, { division }))
+    breaks.map(division => h(SectionBreak, { division }))
   );
 };
 
