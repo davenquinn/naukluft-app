@@ -16,6 +16,8 @@ import {
   LithologyColumnInner,
   extractPadding,
   Padding,
+  useColumn,
+  useColumnLayout
 } from "@macrostrat/column-components";
 import { useSection } from "~/sections/data-providers";
 import { ColumnImages } from "../single-section/images";
@@ -31,22 +33,37 @@ interface SectionProps {
   innerWidth: number;
 }
 
+const ColumnAxisLabel = props => {
+  const { height, id } = props;
+  const { pixelsPerMeter } = useColumn();
+  return h(
+    "text.axis-label",
+    {
+      transform: `translate(-24 ${(height * pixelsPerMeter) / 2}) rotate(-90)`,
+      textAnchor: "middle"
+    },
+    [h("tspan.title", `Section ${id}`), " ", h("tspan.unit", `(m)`)]
+  );
+};
+
+const ColumnTitle = props => {
+  const { id } = props;
+  const { pixelHeight } = useColumnLayout();
+
+  return h("text.section-id", { x: -40, y: pixelHeight + 12 }, `Section ${id}`);
+};
+
 const SectionComponent = (props: SectionProps & Padding) => {
   const { sectionID, lithologyWidth, innerWidth, range, zoom } = props;
   const section = useSection(sectionID);
   const divisions = useColumnDivisions(sectionID);
-  const {
-    showFacies,
-    showFaciesTracts,
-    showSymbols,
-    showNotes,
-  } = useSettings();
   const { id, imageFiles } = section;
 
+  const leftMatterOffset = 40;
   let padding = extractPadding(props);
-  padding.paddingLeft += 54;
+  padding.paddingLeft += leftMatterOffset;
 
-  const showFloodingSurfaces = true;
+  const showFloodingSurfaces = false;
 
   const height = range[1] - range[0];
   const ticks = height / 5;
@@ -61,16 +78,13 @@ const SectionComponent = (props: SectionProps & Padding) => {
 
   return h("div.detail-section", [
     h("div.section-container", [
-      // h("h3", [
-      //   id, " ",
-      //   h("span.height-range", `${range[0]}–${range[1]} m`)
-      // ]),
+      //h("h3", [id, " ", h("span.height-range", `${range[0]}–${range[1]} m`)]),
       h(
         ColumnProvider,
         {
           pixelsPerMeter,
           range,
-          divisions,
+          divisions
         },
         [
           h("div.section", [
@@ -79,21 +93,21 @@ const SectionComponent = (props: SectionProps & Padding) => {
                 GrainsizeLayoutProvider,
                 {
                   width: grainsizeWidth + columnLeftMargin,
-                  grainsizeScaleStart: grainsizeScaleStart + columnLeftMargin,
+                  grainsizeScaleStart: grainsizeScaleStart + columnLeftMargin
                 },
                 [
                   h(
                     ColumnSVG,
                     {
                       innerWidth,
-                      ...padding,
+                      ...padding
                     },
                     [
                       h(TriangleBars, {
-                        offsetLeft: -54,
-                        lineWidth: 20,
+                        offsetLeft: -leftMatterOffset,
+                        lineWidth: 15,
                         minOrder: 2,
-                        maxOrder: 2,
+                        maxOrder: 2
                       }),
                       h(
                         "g",
@@ -102,8 +116,8 @@ const SectionComponent = (props: SectionProps & Padding) => {
                           h(LithologyColumn, { width: lithologyWidth }, [
                             h(FaciesColumnInner),
                             h(CoveredOverlay),
-                            h(LithologyColumnInner),
-                          ]),
+                            h(LithologyColumnInner)
+                          ])
                         ]
                       ),
                       h("g", { transform: `translate(${columnLeftMargin})` }, [
@@ -111,47 +125,35 @@ const SectionComponent = (props: SectionProps & Padding) => {
                           GrainsizeLayoutProvider,
                           {
                             width: grainsizeWidth,
-                            grainsizeScaleStart,
+                            grainsizeScaleStart
                           },
                           [
                             h.if(showFloodingSurfaces)(FloodingSurface, {
                               lineWidth: 20,
-                              offsetLeft: -60,
+                              offsetLeft: -60
                             }),
                             h(GrainsizeAxis),
-                            h(ManagedSymbolColumn, { id, left: 110 }),
+                            h(ColumnTitle, { id }),
+                            h(ManagedSymbolColumn, { id, left: 110 })
                           ]
-                        ),
+                        )
                       ]),
-                      h(
-                        "text.axis-label",
-                        {
-                          transform: `translate(-24 ${
-                            (height * pixelsPerMeter) / 2
-                          }) rotate(-90)`,
-                          textAnchor: "middle",
-                        },
-                        [
-                          h("tspan.title", `Section ${id}`),
-                          " ",
-                          h("tspan.unit", `(m)`),
-                        ]
-                      ),
-                      h(ColumnAxis, { ticks }),
+                      //h(ColumnAxisLabel, { height, id }),
+                      h(ColumnAxis, { ticks })
                     ]
-                  ),
+                  )
                 ]
               ),
               h(ColumnImages, {
                 ...padding,
                 paddingLeft: padding.paddingLeft + lithologyWidth,
-                sectionID,
-              }),
-            ]),
-          ]),
+                sectionID
+              })
+            ])
+          ])
         ]
-      ),
-    ]),
+      )
+    ])
   ]);
 };
 
@@ -169,7 +171,7 @@ SectionComponent.defaultProps = {
   logWidth: 450,
   containerWidth: 1000,
   padding: 10,
-  paddingBottom: 20,
+  paddingBottom: 20
 };
 
 export { SectionComponent };
