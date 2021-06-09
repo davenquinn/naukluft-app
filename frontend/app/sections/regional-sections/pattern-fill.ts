@@ -6,7 +6,8 @@ const PatternPrefixContext = createContext<string>("pattern");
 
 const FaciesPattern = props => {
   const prefix = useContext(PatternPrefixContext);
-  const { facies, id, size, ...rest } = props;
+  let { facies, id, size, ...rest } = props;
+  //id = id?.replace(/-K$/, "-DO");
   return h(GeologicPattern, {
     id,
     prefix,
@@ -58,12 +59,12 @@ const FillPatternDefs = props => {
         //id: "114-DO",
         //size: 120,
         //...grainstoneColors
-        color: grainstoneColors.backgroundColor
+        backgroundColor: grainstoneColors.backgroundColor
       }),
       h(FaciesPattern, {
         facies: "or",
-        id: "105-K",
-        size: 80,
+        id: "416-K",
+        size: 30,
         ...grainstoneColors,
         color: "#3a34b9"
         //backgroundColor: "#71749b"
@@ -74,8 +75,8 @@ const FillPatternDefs = props => {
         id: "431-K",
         patternTransform: "rotate(60)",
         //...grainstoneColors,
-        backgroundColor: "#71749b", //"#6e7396",
-        color: "#3a34b9"
+        backgroundColor: "#bbc0fb", // "#71749b", //"#6e7396",
+        color: "#a9accb" //"#3a34b9"
         //color: "#686B8E" // "#6a6d8f" //"#7d7dbd"
       }),
       h(FaciesPattern, {
