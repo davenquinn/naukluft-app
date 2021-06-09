@@ -268,7 +268,7 @@ const GeneralizedEditorProvider = props => {
 };
 
 const GeneralizedSymbolProvider = props => {
-  const symbols = useContext(SymbolContext);
+  const symbols = useQuery("sections/symbols") ?? [];
   const { divisions } = useContext(ColumnDivisionsContext);
   const genDivisions = divisions as GeneralizedDivision[];
 
@@ -283,10 +283,13 @@ const GeneralizedSymbolProvider = props => {
     });
     if (div == null) continue;
 
-    s.height = div.bottom + (s.height - div.original_bottom);
-    s.section_id = div.section_id;
-    newSymbols.push(s);
+    const height = div.bottom + (s.height - div.original_bottom);
+    const section_id = div.section_id;
+    newSymbols.push({ ...s, height, section_id, _section_id: s.section_id });
   }
+
+  if (symbols.length > 0) debugger;
+
   return h(SymbolContext.Provider, { value: newSymbols }, props.children);
 };
 
