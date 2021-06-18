@@ -3,7 +3,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { get } from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import h from "@macrostrat/hyper";
-import { debounce } from "underscore";
+import { debounce, map } from "underscore";
 import mbxUtils from "mapbox-gl-utils";
 import {
   createGeologyStyle,
@@ -18,6 +18,7 @@ import io, { Socket } from "socket.io-client";
 import { apiBaseURL } from "naukluft-data-backend";
 
 import { lineSymbols } from "./map-style/symbol-layers";
+import { useStoredState } from "packages/ui-components/src";
 
 mapboxgl.accessToken = process.env.MAPBOX_API_TOKEN;
 
@@ -42,6 +43,7 @@ async function loadImage(map, url: string) {
 async function setupLineSymbols(map) {
   return Promise.all(
     lineSymbols.map(async function(symbol) {
+      if (map.hasImage(symbol)) return;
       const image = await loadImage(map, lineSymbolsURL + `/${symbol}.png`);
       if (map.hasImage(symbol)) return;
       map.addImage(symbol, image, { sdf: true, pixelRatio: 3 });
@@ -61,7 +63,7 @@ async function setupStyleImages(map, polygonTypes) {
         color: type.color,
         patternColor: type.symbol_color
       });
-
+      if (map.hasImage(uid)) return;
       map.addImage(uid, img, { sdf: false, pixelRatio: 12 });
     })
   );
@@ -108,7 +110,11 @@ export async function createMapStyle(
   );
 }
 
-async function initializeMap(el: HTMLElement, baseLayer: string) {
+function initializeMap(
+  el: HTMLElement,
+  baseLayer: string,
+  onStyleLoaded = null
+) {
   //const style = createStyle(polygonTypes);
 
   const map = new mapboxgl.Map({
@@ -122,16 +128,20 @@ async function initializeMap(el: HTMLElement, baseLayer: string) {
 
   //map.setStyle("mapbox://styles/jczaplewski/cklb8aopu2cnv18mpxwfn7c9n");
   map.on("load", async function() {
-    const style = await createMapStyle(map, baseLayer, { geology: true });
+    let style = await createMapStyle(map, baseLayer, { geology: true });
+
     map.setStyle(style);
     if (map.getSource("mapbox-dem") == null) return;
-    map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+    map.setTerrain({ source: "mapbox-dem", exaggeration: 1 });
+    map.on("idle", () => {
+      onStyleLoaded?.(map);
+    });
   });
 
   map.on("style.load", async function() {
     console.log("Reloaded style");
     if (map.getSource("mapbox-dem") == null) return;
-    map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+    map.setTerrain({ source: "mapbox-dem", exaggeration: 1 });
   });
 
   mbxUtils.init(map, mapboxgl);
@@ -171,7 +181,10 @@ interface MapComponentProps {
 export function MapComponent({
   reloaderURL = null,
   enableGeology = true,
-  baseLayer = defaultBaseLayers[0].url
+  baseLayer = defaultBaseLayers[0].url,
+  sources = {},
+  layers = {},
+  onMapLoaded = null
 }) {
   const ref = useRef<HTMLElement>();
 
@@ -180,15 +193,39 @@ export function MapComponent({
 
   // reloading for in-development map
   const socket = useRef<Socket | null>();
+  const [styleLoaded, setStyleLoaded] = useState(false);
 
   // Initialize map
   useEffect(() => {
     if (ref.current == null) return;
-    initializeMap(ref.current, baseLayer).then(mapObj => {
-      mapRef.current = mapObj;
+    const mapObj = initializeMap(ref.current, baseLayer, () => {
+      setStyleLoaded(true);
     });
+    mapRef.current = mapObj;
     return () => mapRef.current.remove();
   }, [ref]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map?.style == null) return;
+    if (!styleLoaded) return;
+    console.log("Loading extra layers");
+    for (const [k, features] of Object.entries(sources)) {
+      if (!features.length) return;
+      map.addSource(k, {
+        type: "geojson",
+        data: { type: "FeatureCollection", features }
+      });
+    }
+
+    for (const [k, layer] of Object.entries(layers)) {
+      map.addLayer({
+        ...layer,
+        id: k
+      });
+    }
+    onMapLoaded?.(map);
+  }, [mapRef, styleLoaded, sources, layers]);
 
   const sourceReloader = useCallback(() => {
     if (mapRef.current == null) return noop;
@@ -217,6 +254,7 @@ export function MapComponent({
   useEffect(() => {
     const map = mapRef.current;
     if (map?.style == null) return;
+    if (!styleLoaded) return;
     console.log(enableGeology);
     for (const lyr of geologyLayerIDs()) {
       map.setLayoutProperty(
@@ -225,13 +263,13 @@ export function MapComponent({
         enableGeology ? "visible" : "none"
       );
     }
-  }, [mapRef, enableGeology]);
+  }, [mapRef, enableGeology, styleLoaded]);
 
   useEffect(() => {
     const map = mapRef.current;
     if (map == null) return;
     createMapStyle(map, baseLayer).then(style => map.setStyle(style));
-  }, [mapRef, baseLayer]);
+  }, [mapRef, baseLayer, sources, layers]);
 
   return h("div.map-area", [h("div.map", { ref })]);
 }
