@@ -81,7 +81,6 @@
     "d3-jetpack-module": "^0.0.19",
     "d3-selection-multi": "^1.0.0",
     "dotenv-webpack": "^7.0.2",
-    "dragdealer": "^0.9.9",
     "electron": "^7.1.8",
     "electron-devtools-installer": "^2.2.4",
     "electron-localshortcut": "^1.0.0",

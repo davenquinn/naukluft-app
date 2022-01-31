@@ -7,22 +7,20 @@ import { AppDrawer, NavigationControl } from "~/components";
 import { Spinner, Switch } from "@blueprintjs/core";
 import {
   getInitialPosition,
-  buildPositionHash
+  buildPositionHash,
 } from "@macrostrat/cesium-viewer/query-string";
 import { ErrorBoundary } from "@macrostrat/ui-components";
 import update from "immutability-helper";
 import { getHashString, setHashString } from "@macrostrat/ui-components";
 import { useEffect } from "react";
-import { initial } from "underscore";
-import { array } from "prop-types";
 
 const Globe = loadable(() => import("./cesium-view"), {
-  fallback: h(Spinner)
+  fallback: h(Spinner),
 });
 
 enum Layer {
   Geology = "geology",
-  Photogrammetry = "photogrammetry"
+  Photogrammetry = "photogrammetry",
 }
 
 function LayerSwitch({ layer, layers, setLayers, children }) {
@@ -35,7 +33,7 @@ function LayerSwitch({ layer, layers, setLayers, children }) {
         const action = checked ? "$remove" : "$add";
         const newLayers = update(layers, { [action]: [layer] });
         setLayers(newLayers);
-      }
+      },
     },
     children
   );
@@ -46,7 +44,7 @@ const defaultPosition = getInitialPosition({
   e: 67,
   x: 16.2015,
   y: -24.4099,
-  z: 3219
+  z: 3219,
 });
 
 const layerVals = Object.values(Layer);
@@ -55,7 +53,7 @@ let { layers: initialLayers = [], ...loc } = getHashString() ?? {};
 if (!Array.isArray(initialLayers)) {
   initialLayers = [initialLayers];
 }
-initialLayers = initialLayers.filter(d => layerVals.includes(d));
+initialLayers = initialLayers.filter((d) => layerVals.includes(d));
 if (initialLayers.length == 0) {
   initialLayers = [Layer.Geology];
 }
@@ -77,17 +75,18 @@ function GlobeView() {
       h(NavigationControl, {
         toggleSettings() {
           setActive(!isActive);
-        }
+        },
       }),
       h(ErrorBoundary, [
         h(Globe, {
           showPhotogrammetry: layers.has(Layer.Photogrammetry),
           showGeology: layers.has(Layer.Geology),
           initialPosition: pos,
+          highQuality: true,
           onViewChange(cpos) {
             setPos(cpos.camera);
-          }
-        })
+          },
+        }),
       ]),
       h(
         AppDrawer,
@@ -96,7 +95,7 @@ function GlobeView() {
           title: "Settings",
           onClose() {
             setActive(false);
-          }
+          },
         },
         [
           h("h3", "Layers"),
@@ -110,10 +109,10 @@ function GlobeView() {
             {
               layers,
               layer: Layer.Photogrammetry,
-              setLayers
+              setLayers,
             },
             "Photogrammetry"
-          )
+          ),
           // h(BaseLayerSwitcher, {
           //   layers: baseLayers,
           //   activeLayer: activeLayer,
@@ -122,8 +121,8 @@ function GlobeView() {
           //   }
           // })
         ]
-      )
-    ])
+      ),
+    ]),
     //h(LegendPanel, { isActive })
   ]);
 }

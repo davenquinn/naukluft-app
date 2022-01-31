@@ -2,14 +2,14 @@ import CesiumView, {
   DisplayQuality,
   buildPositionHash,
   getInitialPosition,
-  useCesium
+  useCesium,
 } from "@macrostrat/cesium-viewer";
 import h from "@macrostrat/hyper";
 import {
   HillshadeLayer,
   //GeologyLayer,
   SatelliteLayer,
-  terrainProvider
+  terrainProvider,
 } from "@macrostrat/cesium-viewer/layers";
 import { Cesium3DTileset } from "resium";
 import { GeologyLayer } from "./vector-style";
@@ -21,7 +21,7 @@ function NaukluftCesiumView({
   initialPosition,
   onViewChange,
   showPhotogrammetry = true,
-  showGeology = true
+  showGeology = true,
 }) {
   return h(
     CesiumView,
@@ -31,10 +31,10 @@ function NaukluftCesiumView({
         console.log(latitude, longitude);
       },
       initialPosition,
-      //terrainExaggeration: 1,
-      //displayQuality: DisplayQuality.High,
+      terrainExaggeration: 1,
+      displayQuality: DisplayQuality.High,
       //showInspector: true,
-      terrainProvider
+      terrainProvider,
     },
     [
       h(Cesium3DTileset, {
@@ -44,10 +44,10 @@ function NaukluftCesiumView({
           console.log(tileset);
         },
         show: showPhotogrammetry,
-        maximumScreenSpaceError: 1
+        maximumScreenSpaceError: 1,
       }),
       h(SatelliteLayer),
-      h(GeologyLayer, { alpha: 0.5, show: showGeology })
+      h(GeologyLayer, { alpha: 0.5, show: showGeology }),
     ]
     //, h(GeologyLayer, { alpha: 0.8 })]
   );
