@@ -7,7 +7,7 @@ import { LithologyProvider } from "./lithology";
 import { PlatformContext } from "../platform";
 import { SequenceStratProvider } from "./sequence-strat-context";
 import { SectionSurfacesProvider } from "~/sections/providers";
-import { PhotoLibraryProvider as BasePhotoLibraryProvider } from "@macrostrat/column-components";
+import { PhotoLibraryProvider as BasePhotoLibraryProvider } from "@macrostrat/photo-viewer";
 import { ColumnDivisionsProvider } from "./column/data-source";
 import { SymbolProvider } from "./components/symbols";
 import h, { compose } from "@macrostrat/hyper";
@@ -18,10 +18,10 @@ import {
   runQuery,
   useQuery,
   currentPlatform,
-  Platform
+  Platform,
 } from "naukluft-data-backend";
 
-const sectionFilename = function(fn) {
+const sectionFilename = function (fn) {
   if (currentPlatform == Platform.ELECTRON) {
     return resolve(__dirname, "..", "..", "..", "data", "column-images", fn);
   } else {
@@ -29,12 +29,12 @@ const sectionFilename = function(fn) {
   }
 };
 
-const getSectionData = async function(opts = {}) {
+const getSectionData = async function (opts = {}) {
   const fn = sectionFilename("file-info.json");
   const config = (await getJSON(fn)) ?? {};
 
   const data = await runQuery("sections/sections");
-  return data.map(function(s) {
+  return data.map(function (s) {
     s.id = s.section.trim();
     s.range = [s.start, s.end];
     // Height in meters
@@ -46,7 +46,7 @@ const getSectionData = async function(opts = {}) {
       const scaleFactor = files.height / s.height;
       const sz = 427;
       s.scaleFactor = scaleFactor;
-      s.imageFiles = range(files.n).map(i => {
+      s.imageFiles = range(files.n).map((i) => {
         const filename = sectionFilename(`section_${s.id}_${i + 1}.png`);
         const remaining = files.height - i * sz;
         const height = remaining > sz ? sz : remaining;
@@ -58,7 +58,7 @@ const getSectionData = async function(opts = {}) {
   });
 };
 
-const PhotoLibraryProvider = function({ children }) {
+const PhotoLibraryProvider = function ({ children }) {
   const { computePhotoPath } = useContext(PlatformContext);
   const photos = useQuery("sections/photo");
   return h(BasePhotoLibraryProvider, { photos, computePhotoPath }, children);
@@ -80,7 +80,7 @@ const SectionProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
 const useSection = (id: string): SectionData | null => {
   const sections: SectionData[] = useContext(SectionDataContext);
-  return sections.find(d => d.id == id) ?? null;
+  return sections.find((d) => d.id == id) ?? null;
 };
 
 const SectionDataProvider = compose(
@@ -102,5 +102,5 @@ export {
   useSection,
   SectionDataProvider,
   SectionConsumer,
-  SectionDataContext
+  SectionDataContext,
 };

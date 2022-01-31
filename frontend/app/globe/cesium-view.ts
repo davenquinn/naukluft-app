@@ -13,9 +13,6 @@ import {
 } from "@macrostrat/cesium-viewer/layers";
 import { Cesium3DTileset } from "resium";
 import { GeologyLayer } from "./vector-style";
-import { useMemo } from "react";
-import MVTImageryProvider from "mvt-imagery-provider";
-import { mapStyle } from "./vector-style";
 
 function NaukluftCesiumView({
   initialPosition,
