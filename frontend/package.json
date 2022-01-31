@@ -62,7 +62,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "@loadable/component": "^5.15.2",
     "@macrostrat/revision-info-webpack": "^1.0.0",
+    "@macrostrat/ui-components": "^1.0.5",
     "@turf/polygonize": "^5.1.5",
     "@types/cors": "^2.8.10",
     "@types/morgan": "^1.9.2",
