@@ -38,6 +38,7 @@ async function runBackendQuery(
   try {
     return await db.query(storedProcedure(fn), params, resultMask);
   } catch (err) {
+    console.error(err);
     throw new Error(`Query ${fn} failed to run`);
   }
 }

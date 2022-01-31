@@ -6,6 +6,7 @@ import { ResultMask, runBackendQuery, db } from "./database";
 import { updateSectionInterval } from "./updates";
 import cors from "cors";
 import vectorTileServer from "@macrostrat/vector-tile-server";
+import { queryResult } from "pg-promise";
 
 const baseDir = resolve(__dirname, "..", "sql");
 
@@ -13,7 +14,15 @@ interface Params {
   [key: string]: any;
 }
 interface ExtParams extends Params {
-  __qrm?: ResultMask;
+  __qrm?: string | number;
+}
+
+function normalizeResultMask(
+  __qrm: string | number | undefined
+): ResultMask | undefined {
+  const num = parseInt(`${__qrm}`);
+  if (Number.isNaN(num)) return undefined;
+  return num;
 }
 
 type APIHandler = (params: Params) => Promise<any>;
@@ -41,7 +50,11 @@ function buildQueryFileRoutes(app: any) {
       if (__argsArray != null) {
         newParams = JSON.parse(__argsArray);
       }
-      return await runBackendQuery(newFn, newParams, __qrm);
+      return await runBackendQuery(
+        newFn,
+        newParams,
+        normalizeResultMask(__qrm)
+      );
     };
 
     app.get(newFn, apiRoute(handler));
