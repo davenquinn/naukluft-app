@@ -1,20 +1,24 @@
 import axios from "axios";
 import { createLineSymbolLayers } from "./symbol-layers";
 
-const createGeologySource = baseURL => ({
-  type: "vector",
-
-  tiles: [`${baseURL}/{z}/{x}/{y}.pbf`],
-
-  maxzoom: 15,
-  minzoom: 5
-});
+const createGeologySource = (baseURL, bustCache = false) => {
+  let uri = `${baseURL}/{z}/{x}/{y}.pbf`;
+  if (bustCache) {
+    uri += `?dt=${Date.now()}`;
+  }
+  return {
+    type: "vector",
+    tiles: [uri],
+    maxzoom: 15,
+    minzoom: 5,
+  };
+};
 
 const emptyStyle = {
   version: 8,
   name: "Empty",
   metadata: {
-    "mapbox:autocomposite": true
+    "mapbox:autocomposite": true,
   },
   glyphs: "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
   sources: {},
@@ -23,10 +27,10 @@ const emptyStyle = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "rgba(0,0,0,0)"
-      }
-    }
-  ]
+        "background-color": "rgba(0,0,0,0)",
+      },
+    },
+  ],
 };
 
 function add3DLayers(baseStyle) {
@@ -35,7 +39,7 @@ function add3DLayers(baseStyle) {
     type: "raster-dem",
     url: "mapbox://mapbox.mapbox-terrain-dem-v1",
     tileSize: 512,
-    maxzoom: 14
+    maxzoom: 14,
   };
 
   const skyLayer = {
@@ -44,15 +48,15 @@ function add3DLayers(baseStyle) {
     paint: {
       "sky-type": "atmosphere",
       "sky-atmosphere-sun": [0.0, 0.0],
-      "sky-atmosphere-sun-intensity": 15
-    }
+      "sky-atmosphere-sun-intensity": 15,
+    },
   };
 
   style.layers = [...baseStyle.layers, skyLayer];
   return style;
 }
 
-const geologyLayerDefs = function(
+const geologyLayerDefs = function (
   colors = {},
   patterns = {},
   usePatterns = true
@@ -60,7 +64,7 @@ const geologyLayerDefs = function(
   let patternPaint = {};
   if (usePatterns) {
     patternPaint = {
-      "fill-pattern": ["concat", ["get", "unit_id"], "_fill"]
+      "fill-pattern": ["concat", ["get", "unit_id"], "_fill"],
     };
   }
 
@@ -75,8 +79,8 @@ const geologyLayerDefs = function(
         // Fallback color...
         "fill-color": ["get", ["get", "unit_id"], ["literal", colors]],
         "fill-opacity": 1,
-        ...patternPaint
-      }
+        ...patternPaint,
+      },
     },
     {
       id: "unit-lowzoom",
@@ -86,8 +90,8 @@ const geologyLayerDefs = function(
       maxzoom: 10,
       paint: {
         "fill-color": ["get", ["get", "unit_id"], ["literal", colors]],
-        "fill-opacity": 0.5
-      }
+        "fill-opacity": 0.5,
+      },
     },
     {
       id: "bedrock-contact",
@@ -95,7 +99,7 @@ const geologyLayerDefs = function(
       "source-layer": "contact",
       type: "line",
       layout: {
-        "line-cap": "round"
+        "line-cap": "round",
       },
       paint: {
         "line-color": "#000000",
@@ -106,14 +110,14 @@ const geologyLayerDefs = function(
           10,
           ["*", 3, ["^", 2, -6]],
           24,
-          ["*", 3, ["^", 2, 8]]
-        ]
+          ["*", 3, ["^", 2, 8]],
+        ],
       },
       filter: [
         "all",
         ["!=", "surficial", ["get", "type"]],
-        ["!=", "thrust-fault", ["get", "type"]]
-      ]
+        ["!=", "thrust-fault", ["get", "type"]],
+      ],
     },
     {
       id: "thrust-fault",
@@ -121,7 +125,7 @@ const geologyLayerDefs = function(
       "source-layer": "contact",
       type: "line",
       layout: {
-        "line-cap": "round"
+        "line-cap": "round",
       },
       paint: {
         "line-color": "#000000",
@@ -132,10 +136,10 @@ const geologyLayerDefs = function(
           10,
           ["*", 5, ["^", 2, -6]],
           24,
-          ["*", 5, ["^", 2, 8]]
-        ]
+          ["*", 5, ["^", 2, 8]],
+        ],
       },
-      filter: ["==", "thrust-fault", ["get", "type"]]
+      filter: ["==", "thrust-fault", ["get", "type"]],
     },
     ...createLineSymbolLayers(),
     {
@@ -144,12 +148,12 @@ const geologyLayerDefs = function(
       "source-layer": "contact",
       type: "line",
       layout: {
-        "line-cap": "round"
+        "line-cap": "round",
       },
       paint: {
-        "line-color": "#ffbe17"
+        "line-color": "#ffbe17",
       },
-      filter: ["==", "surficial", ["get", "type"]]
+      filter: ["==", "surficial", ["get", "type"]],
     },
     {
       id: "surface",
@@ -159,8 +163,8 @@ const geologyLayerDefs = function(
       paint: {
         "fill-color": ["get", ["get", "unit_id"], ["literal", colors]],
         //"fill-pattern": ["get", ["get", "unit_id"], ["literal", patterns]],
-        "fill-opacity": 0.5
-      }
+        "fill-opacity": 0.5,
+      },
     },
     {
       id: "watercourse",
@@ -169,9 +173,9 @@ const geologyLayerDefs = function(
       type: "line",
       paint: {
         "line-color": "#3574AC",
-        "line-width": 1
+        "line-width": 1,
       },
-      filter: ["==", "watercourse", ["get", "type"]]
+      filter: ["==", "watercourse", ["get", "type"]],
     },
     {
       id: "line",
@@ -179,19 +183,19 @@ const geologyLayerDefs = function(
       "source-layer": "line",
       type: "line",
       paint: {
-        "line-color": "#cccccc"
+        "line-color": "#cccccc",
       },
-      filter: ["!=", "watercourse", ["get", "type"]]
-    }
+      filter: ["!=", "watercourse", ["get", "type"]],
+    },
   ];
 };
 
 function geologyLayerIDs() {
   const defs = geologyLayerDefs();
-  return defs.map(d => d.id);
+  return defs.map((d) => d.id);
 }
 
-const createGeologyStyle = function(
+const createGeologyStyle = function (
   baseStyle,
   polygonTypes: any[],
   hostName = "http://localhost:5555",
@@ -223,5 +227,5 @@ export {
   add3DLayers,
   createGeologySource,
   getMapboxStyle,
-  geologyLayerIDs
+  geologyLayerIDs,
 };

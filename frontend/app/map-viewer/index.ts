@@ -9,6 +9,7 @@ import { Spinner, Button, ButtonGroup } from "@blueprintjs/core";
 import { useQuery } from "naukluft-data-backend";
 import mapboxgl from "mapbox-gl";
 import { useStoredState } from "@macrostrat/ui-components";
+import { useMapReloader, SocketStatusButton } from "@naukluft/map-panel";
 
 const MapPanel = loadable(() => import("@naukluft/map-panel"), {
   fallback: h(Spinner),
@@ -76,6 +77,8 @@ function MapView() {
     },
   };
 
+  const reloaderSocket = useMapReloader(process.env.NAUKLUFT_MAP_RELOADER_URL);
+
   return h("div#map-root", {}, [
     h("div#map-panel-container", {}, [
       h(NavigationControl, {
@@ -85,7 +88,7 @@ function MapView() {
       }),
       h(MapPanel, {
         enableGeology,
-        reloaderURL: process.env.NAUKLUFT_MAP_RELOADER_URL,
+        reloaderSocket,
         onMapLoaded(map) {
           var popup = new mapboxgl.Popup({
             closeButton: false,
@@ -168,6 +171,13 @@ function MapView() {
           //     setActiveLayer(layer);
           //   }
           // })
+          h("div", [
+            h("h4", "Devlopment"),
+            h(SocketStatusButton, {
+              socket: reloaderSocket,
+              resource: "Map reloader",
+            }),
+          ]),
         ]
       ),
     ]),

@@ -168,22 +168,53 @@ export const defaultBaseLayers = [
 
 const noop = () => {};
 
-let ix = 0;
-function reloadGeologySource(map: Map, sourceID: string) {
-  ix += 1;
-  const newID = `geology-${ix}`;
-  map.addSource(newID, createGeologySource(apiBaseURL + "/map-data/map-tiles"));
-  map.U.setLayerSource(geologyLayerIDs(), newID);
-  map.removeSource(sourceID);
-  return newID;
+function reloadGeologySource(map: Map) {
+  console.log("Reloading geology source");
+
+  const newSource = createGeologySource(
+    apiBaseURL + "/map-data/map-tiles",
+    true
+  );
+  //const newID = `geology-${ix}`;
+  map.getSource("geology").tiles = newSource.tiles;
+
+  const sourceCache = map.style?._sourceCaches["other:geology"];
+
+  // Clear the tile cache for a particular source
+  sourceCache.clearTiles();
+
+  // Load the new tiles for the current viewport (map.transform -> viewport)
+  sourceCache.update(map.transform);
+  map.triggerRepaint();
+  //map.addSource(newID, createGeologySource(apiBaseURL + "/map-data/map-tiles"));
+  //map.U.setLayerSource(geologyLayerIDs(), newID);
+  //map.removeSource(sourceID);
+  //return newID;
 }
 
 interface MapComponentProps {
   reloaderURL: string | null;
+  reloaderSocket: Socket | null;
+}
+
+export function useMapReloader(reloaderURL: string): Socket | null {
+  // reloading for in-development map
+  const socket = useRef<Socket | null>(null);
+
+  // Start up reloader if appropriate
+  useEffect(() => {
+    if (socket.current == null && reloaderURL != null) {
+      socket.current = io(reloaderURL!, { transports: ["websocket"] });
+      console.log("Setting up reloader");
+      socket.current?.connect();
+    }
+  }, [reloaderURL]);
+
+  return socket.current;
 }
 
 export function MapComponent({
-  reloaderURL = null,
+  reloaderSocket,
   enableGeology = true,
   baseLayer = defaultBaseLayers[0].url,
   sources = {},
@@ -193,11 +224,9 @@ export function MapComponent({
 }) {
   const ref = useRef<HTMLElement>();
 
-  const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
+  //const [geologySourceID, setGeologySourceID] = useState(`geology-${ix}`);
   const mapRef = useRef<Map>();
 
-  // reloading for in-development map
-  const socket = useRef<Socket | null>();
   const [styleLoaded, setStyleLoaded] = useState(false);
 
   // Initialize map
@@ -238,26 +267,28 @@ export function MapComponent({
   const sourceReloader = useCallback(() => {
     if (mapRef.current == null) return noop;
     return debounce(() => {
-      const newID = reloadGeologySource(mapRef.current, geologySourceID);
-      setGeologySourceID(newID);
+      reloadGeologySource(mapRef.current);
     }, 500);
-  }, [mapRef, geologySourceID]);
+  }, [mapRef.current]);
 
   // Start up reloader if appropriate
   useEffect(() => {
-    if (socket.current == null && reloaderURL != null) {
-      socket.current = io(reloaderURL!, { transports: ["websocket"] });
-      console.log("Setting up reloader");
+    if (reloaderSocket == null) {
+      console.log("Reloader not found");
+      return;
     }
-
-    socket?.current?.on("topology", (message) => {
+    console.log("Setting up reloader");
+    reloaderSocket.on("topology", (message) => {
+      console.log("Reloading map due to topology change");
       console.log(message);
-      sourceReloader();
+      //reloadGeologySource(mapRef.current);
     });
+
     return () => {
-      socket?.current?.off("topology");
+      reloaderSocket?.off("topology");
+      //reloaderSocket?.off("server-heartbeat");
     };
-  }, [reloaderURL]);
+  }, [reloaderSocket]);
 
   useEffect(() => {
     const map = mapRef.current;
