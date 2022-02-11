@@ -11,7 +11,7 @@ import {
   geologyLayerIDs,
   getMapboxStyle,
   createGeologySource,
-  emptyStyle
+  emptyStyle,
 } from "./map-style";
 import { createUnitFill } from "./map-style/pattern-fill";
 import io, { Socket } from "socket.io-client";
@@ -31,7 +31,7 @@ const terrain = "mapbox://styles/jczaplewski/ckml6tqii4gvn17o073kujk75";
 
 async function loadImage(map, url: string) {
   return new Promise((resolve, reject) => {
-    map.loadImage(url, function(err, image) {
+    map.loadImage(url, function (err, image) {
       // Throw an error if something went wrong
       if (err) reject(err);
       // Declare the image
@@ -42,7 +42,7 @@ async function loadImage(map, url: string) {
 
 async function setupLineSymbols(map) {
   return Promise.all(
-    lineSymbols.map(async function(symbol) {
+    lineSymbols.map(async function (symbol) {
       if (map.hasImage(symbol)) return;
       const image = await loadImage(map, lineSymbolsURL + `/${symbol}.png`);
       if (map.hasImage(symbol)) return;
@@ -53,7 +53,7 @@ async function setupLineSymbols(map) {
 
 async function setupStyleImages(map, polygonTypes) {
   return Promise.all(
-    polygonTypes.map(async function(type: any) {
+    polygonTypes.map(async function (type: any) {
       const { symbol, id } = type;
       const uid = id + "_fill";
       if (map.hasImage(uid)) return;
@@ -61,7 +61,7 @@ async function setupStyleImages(map, polygonTypes) {
       const img = await createUnitFill({
         patternURL: url,
         color: type.color,
-        patternColor: type.symbol_color
+        patternColor: type.symbol_color,
       });
       if (map.hasImage(uid)) return;
       map.addImage(uid, img, { sdf: false, pixelRatio: 12 });
@@ -91,7 +91,7 @@ export async function createMapStyle(
       "https://api.mapbox.com/styles/v1"
     );
     baseStyle = await getMapboxStyle(baseURL, {
-      access_token: mapboxgl.accessToken
+      access_token: mapboxgl.accessToken,
     });
   }
   if (terrain) {
@@ -110,6 +110,12 @@ export async function createMapStyle(
   );
 }
 
+function setupTerrain(map: mapboxgl.Map) {
+  if (map.getSource("mapbox-dem") == null) return;
+  console.log("Setting up terrain layer");
+  map.setTerrain({ source: "mapbox-dem", exaggeration: 1 });
+}
+
 function initializeMap(
   el: HTMLElement,
   baseLayer: string,
@@ -123,25 +129,23 @@ function initializeMap(
     hash: true,
     center: [16.1987, -24.2254],
     zoom: 10,
-    antialias: true
+    antialias: true,
   });
 
   //map.setStyle("mapbox://styles/jczaplewski/cklb8aopu2cnv18mpxwfn7c9n");
-  map.on("load", async function() {
+  map.on("load", async function () {
     let style = await createMapStyle(map, baseLayer, { geology: true });
 
     map.setStyle(style);
-    if (map.getSource("mapbox-dem") == null) return;
-    map.setTerrain({ source: "mapbox-dem", exaggeration: 1 });
+    setupTerrain(map);
     map.on("idle", () => {
       onStyleLoaded?.(map);
     });
   });
 
-  map.on("style.load", async function() {
+  map.on("style.load", async function () {
     console.log("Reloaded style");
-    if (map.getSource("mapbox-dem") == null) return;
-    map.setTerrain({ source: "mapbox-dem", exaggeration: 1 });
+    setupTerrain(map);
   });
 
   mbxUtils.init(map, mapboxgl);
@@ -153,13 +157,13 @@ export const defaultBaseLayers = [
   {
     id: "satellite",
     name: "Satellite",
-    url: "mapbox://styles/mapbox/satellite-v9"
+    url: "mapbox://styles/mapbox/satellite-v9",
   },
   {
     id: "hillshade",
     name: "Hillshade",
-    url: terrain
-  }
+    url: terrain,
+  },
 ];
 
 const noop = () => {};
@@ -184,7 +188,8 @@ export function MapComponent({
   baseLayer = defaultBaseLayers[0].url,
   sources = {},
   layers = {},
-  onMapLoaded = null
+  layerVisibility = {},
+  onMapLoaded = null,
 }) {
   const ref = useRef<HTMLElement>();
 
@@ -211,19 +216,22 @@ export function MapComponent({
     if (!styleLoaded) return;
     console.log("Loading extra layers");
     for (const [k, features] of Object.entries(sources)) {
-      if (!features.length) return;
+      if (!features.length) continue;
+      if (map.getSource(k) != null) continue;
       map.addSource(k, {
         type: "geojson",
-        data: { type: "FeatureCollection", features }
+        data: { type: "FeatureCollection", features },
       });
     }
 
     for (const [k, layer] of Object.entries(layers)) {
+      if (map.getLayer(k) != null) continue;
       map.addLayer({
         ...layer,
-        id: k
+        id: k,
       });
     }
+    // Not sure why we need to do this here...
     onMapLoaded?.(map);
   }, [mapRef, styleLoaded, sources, layers]);
 
@@ -242,7 +250,7 @@ export function MapComponent({
       console.log("Setting up reloader");
     }
 
-    socket?.current?.on("topology", message => {
+    socket?.current?.on("topology", (message) => {
       console.log(message);
       sourceReloader();
     });
@@ -268,8 +276,17 @@ export function MapComponent({
   useEffect(() => {
     const map = mapRef.current;
     if (map == null) return;
-    createMapStyle(map, baseLayer).then(style => map.setStyle(style));
-  }, [mapRef, baseLayer, sources, layers]);
+    createMapStyle(map, baseLayer).then((style) => map.setStyle(style));
+  }, [mapRef, baseLayer]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map?.style == null) return;
+    if (!styleLoaded) return;
+    for (const [k, v] of Object.entries(layerVisibility)) {
+      map.setLayoutProperty(k, "visibility", v ? "visible" : "none");
+    }
+  }, [styleLoaded, layerVisibility]);
 
   return h("div.map-area", [h("div.map", { ref })]);
 }
