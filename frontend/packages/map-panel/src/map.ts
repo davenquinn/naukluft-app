@@ -245,7 +245,7 @@ export function MapComponent({
     if (!styleLoaded) return;
     console.log("Loading extra layers");
     for (const [k, features] of Object.entries(sources)) {
-      if (!features.length) continue;
+      if (!features?.length) continue;
       if (map.getSource(k) != null) continue;
       map.addSource(k, {
         type: "geojson",

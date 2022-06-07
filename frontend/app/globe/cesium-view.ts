@@ -14,6 +14,8 @@ import {
 import { Cesium3DTileset } from "resium";
 import { GeologyLayer } from "./vector-style";
 
+const baseURL = process.env.PUBLIC_PATH ?? "/";
+
 function NaukluftCesiumView({
   initialPosition,
   onViewChange,
@@ -35,7 +37,7 @@ function NaukluftCesiumView({
     },
     [
       h(Cesium3DTileset, {
-        url: "http://localhost:3002/tilesets/Neuras/tileset.json",
+        url: baseURL + "tilesets/Neuras/tileset.json",
         //url: IonResource.fromAssetId(75343),
         onReady(tileset) {
           console.log(tileset);
