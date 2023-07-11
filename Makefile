@@ -11,4 +11,8 @@ database:
 load-data:
 	scripts/load-data
 
+api:
+	docker build -t ghcr.io/davenquinn/naukluft-app/server:latest .
+	docker push ghcr.io/davenquinn/naukluft-app/server:latest
+
 .PHONY: database load-data

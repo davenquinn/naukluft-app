@@ -5,7 +5,8 @@
   "description": "API for Naukluft Nappe Complex mapping",
   "main": "index.js",
   "workspaces": [
-    "../frontend/packages/*"
+    "../frontend/packages/naukluft-data-backend",
+    "../frontend/packages/vector-tile-server"
   ],
   "prettier": {},
   "author": "Daven Quinn",
@@ -15,7 +16,6 @@
   },
   "dependencies": {
     "@types/node": "^15.0.3",
-    "lerna": "^4.0.0",
     "naukluft-data-backend": "*",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
