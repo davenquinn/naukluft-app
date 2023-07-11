@@ -8,3 +8,5 @@ dist-web
 dist-figures
 output
 .cache
+# Apparently another frontend
+naukluft

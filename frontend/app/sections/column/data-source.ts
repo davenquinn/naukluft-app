@@ -25,7 +25,7 @@ interface ColumnDivisionManager {
 
 const ColumnDivisionsContext = createContext<ColumnDivisionManager>({
   divisions: [],
-  updateDivisions() {}
+  updateDivisions() {},
 });
 
 interface ColumnDivisionsProps {
@@ -42,21 +42,21 @@ function ColumnDivisionsProvider(props: ColumnDivisionsProps) {
   // This is incredibly wasteful...
   let divisions = props.divisions ?? rawDivs;
   if (id != null) {
-    divisions = divisions.filter(d => d.section_id === id);
+    divisions = divisions.filter((d) => d.section_id === id);
   }
 
   const value = { divisions, updateDivisions };
   return h(ColumnDivisionsContext.Provider, { value }, children);
 }
 
-const useColumnDivisions = function(id: string) {
+const useColumnDivisions = function (id: string) {
   const { divisions } = useContext(ColumnDivisionsContext);
-  return divisions.filter(d => d.section_id === id);
+  return divisions.filter((d) => d.section_id === id);
 };
 
 export {
   ColumnDivision,
   ColumnDivisionsContext,
   ColumnDivisionsProvider,
-  useColumnDivisions
+  useColumnDivisions,
 };
