@@ -82,9 +82,11 @@ async function addTileServer(app: any) {
 async function createServer() {
   const app = express().disable("x-powered-by");
   if (process.env.NODE_ENV !== "production") {
+    // @ts-ignore
     app.use(morgan("dev"));
   }
   app.use(cors());
+  // @ts-ignore
   app.use(express.json());
   let helpRoutes = buildQueryFileRoutes(app);
   helpRoutes.push(addSectionUpdateRoute(app));
@@ -95,7 +97,7 @@ async function createServer() {
     res.json({
       v: 1,
       description: "The data service for Naukluft Nappe Complex mapping",
-      routes: helpRoutes
+      routes: helpRoutes,
     });
   });
 

@@ -8,7 +8,7 @@ const {
   cssModuleLoader,
   coffeeRule,
   jsRule,
-  cssRule
+  cssRule,
 } = require("./loaders");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const RevisionInfoWebpack = require("@macrostrat/revision-info-webpack");
@@ -32,8 +32,8 @@ if (mode == "development") {
     // use single-page routing
     single: true,
     server: {
-      baseDir: webRoot
-    }
+      baseDir: webRoot,
+    },
   });
   plugins.push(browserSync);
 }
@@ -52,12 +52,12 @@ const baseConfig = {
       {
         test: /\.sql$/,
         use: ["filename-loader"],
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.styl$/,
         use: ["style-loader", cssModuleLoader, "stylus-loader"],
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       jsRule,
       cssRule,
@@ -67,10 +67,10 @@ const baseConfig = {
           {
             loader: "file-loader",
             options: {
-              outputPath: "fonts/"
-            }
-          }
-        ]
+              outputPath: "fonts/",
+            },
+          },
+        ],
       },
       {
         test: /\.(png|svg)$/,
@@ -80,22 +80,24 @@ const baseConfig = {
             options: {
               useRelativePath: true,
               outputPath: "sections/assets/",
-              name: "[name].[ext]"
-            }
-          }
-        ]
-      }
-    ]
+              name: "[name].[ext]",
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve,
   entry: {
-    "assets/web": "./app/web-index.ts"
+    "assets/web": "./app/web-index.ts",
   },
   output: {
     path: webRoot,
     filename: "[name].js",
     sourceMapFilename: "[file].map",
-    publicPath
+    publicPath,
+    // Needed to do this to address a security issue
+    hashFunction: "sha256",
   },
   plugins: [
     ...plugins,
@@ -103,19 +105,19 @@ const baseConfig = {
     new HTMLWebpackPlugin({
       title: "Zebra Nappe mapping and stratigraphy",
       base: publicPath,
-      publicPath
+      publicPath,
     }),
     new EnvironmentPlugin({
       ...RevisionInfoWebpack(pkg, GITHUB_LINK),
       PUBLIC_PATH: publicPath,
       NODE_ENV: JSON.stringify(mode),
-      NAUKLUFT_ALLOW_EDITING: true
+      NAUKLUFT_ALLOW_EDITING: true,
     }),
     new EnvironmentPlugin([
       "NAUKLUFT_API_BASE_URL",
-      "NAUKLUFT_MAP_RELOADER_URL"
-    ])
-  ]
+      "NAUKLUFT_MAP_RELOADER_URL",
+    ]),
+  ],
 };
 
 module.exports = merge(baseConfig, CesiumWebpackConfig(publicPath));

@@ -15,7 +15,7 @@
     "figures": "cd app && figment --spec ./figure-spec.js",
     "watch:api": "nodemon",
     "start:api": "cd ../api && npm run start",
-    "deploy:steno": "scripts/deploy-frontend.zsh"
+    "deploy": "scripts/deploy-frontend.zsh"
   },
   "workspaces": [
     "packages/*",

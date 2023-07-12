@@ -1,24 +1,16 @@
 #!/usr/bin/env zsh
 
-#pg_dump --no-privileges --no-owner -C -h localhost -U Daven Naukluft \
-#| ssh -C birdnest "cat > temp.sql"
+#createdb -h localhost -p 54391 -U macrostrat_admin naukluft
 
-# Ensure that the database container is started
-ssh -t birdnest "cd /projects/naukluft-api; docker-compose up -d db"
-dbid=$(ssh -t birdnest "cd /projects/naukluft-api; docker-compose ps -q db" | xargs)
-echo $dbid
+pg_dump -Fc \
+  --no-privileges --no-owner -C -h localhost -U Daven \
+  --exclude-schema=raster \
+  --exclude-schema=contour \
+  --exclude-schema=tiger \
+  --exclude-schema=tiger_data \
+  Naukluft \
+> /tmp/naukluft-data-export.sql
 
-#docker-compose up --build -d db
-sleep 2
+scp /tmp/naukluft-data-export.sql gunnison:/tmp/naukluft-data-export.sql
 
-# Open up a ssh tunnel
-# Wait for 5 seconds for a port to be opened, otherwise just carry on...
-#ssh -o ExitOnForwardFailure=yes -f -N -L 54455:localhost:54455 birdnest sleep 10
-#sleep 2
-# Dump files to new database from local database
-pg_dump --no-privileges --no-owner -C -h localhost -U Daven Naukluft \
-| gzip -c | ssh birdnest "cat > backup.sql.gz"
-#scp -r /tmp/naukluft-data-export.sql
-#| pv \
-#| ssh birdnest "docker exec naukluft-api_db_1 psql -h localhost -p 5432 -U postgres Naukluft"
-# | psql -h localhost -p 54455 -U postgres Naukluft
+#ssh gunnison "pg_restore -h dev.macrostrat.org -p 5432 -U macrostrat_admin -d naukluft /tmp/naukluft-data-export.sql"

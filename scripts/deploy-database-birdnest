@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+#pg_dump --no-privileges --no-owner -C -h localhost -U Daven Naukluft \
+#| ssh -C birdnest "cat > temp.sql"
+
+# Ensure that the database container is started
+ssh -t birdnest "cd /projects/naukluft-api; docker-compose up -d db"
+dbid=$(ssh -t birdnest "cd /projects/naukluft-api; docker-compose ps -q db" | xargs)
+echo $dbid
+
+#docker-compose up --build -d db
+sleep 2
+
+# Open up a ssh tunnel
+# Wait for 5 seconds for a port to be opened, otherwise just carry on...
+#ssh -o ExitOnForwardFailure=yes -f -N -L 54455:localhost:54455 birdnest sleep 10
+#sleep 2
+# Dump files to new database from local database
+pg_dump --no-privileges --no-owner -C -h localhost -U Daven Naukluft \
+| gzip -c | ssh birdnest "cat > backup.sql.gz"
+#scp -r /tmp/naukluft-data-export.sql
+#| pv \
+#| ssh birdnest "docker exec naukluft-api_db_1 psql -h localhost -p 5432 -U postgres Naukluft"
+# | psql -h localhost -p 54455 -U postgres Naukluft
