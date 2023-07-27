@@ -9,16 +9,18 @@ import { sectionSwatches } from "./swatch-data";
 //import '../single-section/main.styl';
 import "./main.styl";
 
-const Section = function(props) {
+const pages = Object.keys(sectionSwatches);
+
+const Section = function (props) {
   const { id } = props;
   const settings = useSettings();
   return h("div.figure-part", [
-    h("h2", id),
+    //h("h2", id),
     h(SectionComponent, {
       isEditable: false,
       ...props,
-      ...settings
-    })
+      ...settings,
+    }),
   ]);
 };
 
@@ -28,29 +30,32 @@ const Section = function(props) {
 //
 // }
 
-const Sequence = ({ id }: { id: string }) => {
+export const Sequence = ({ id }: { id: string }) => {
+  console.log("Sequence", id);
   return h(
     "div.sequence",
     { className: id },
-    sectionSwatches[id].map(d => h(Section, d))
+    sectionSwatches[id].map((d) => h(Section, d))
   );
 };
 
-const SectionPanel = props => {
+export const SectionDetailsPanel = (props) => {
   return h("div.section-panel", [
     h(Sequence, { id: "s3" }),
     h(Sequence, { id: "s2" }),
-    h(Sequence, { id: "s1" })
+    h(Sequence, { id: "s1" }),
   ]);
 };
 
-const SectionDetailSettings = C(SettingsProvider, { ...defaultSettings });
-
-const Figure = compose(
-  PlatformProvider,
-  SectionDataProvider,
+export const SectionDetails = compose(
   SectionDetailSettings,
-  SectionPanel
+  SectionDetailsPanel
 );
+
+export const SectionDetailSettings = C(SettingsProvider, {
+  ...defaultSettings,
+});
+
+const Figure = compose(PlatformProvider, SectionDataProvider, SectionDetails);
 
 export default (el, opts, cb) => render(h(Figure), el, cb);
