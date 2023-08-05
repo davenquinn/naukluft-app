@@ -14,6 +14,7 @@ import { SectionNavigationControl } from "./util";
 import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";
 import { SectionDetailIndex } from "./section-details/integration";
+import { LithostratigraphicSummaryColumn } from "./lithostrat-summary";
 import { nest } from "d3";
 import ErrorBoundary from "react-error-boundary";
 
@@ -69,6 +70,9 @@ class SectionIndexPage extends Component {
             h(NavLink, { to: `${pathname}/details` }, [
               h("div.title", "Section details"),
             ]),
+            h(NavLink, { to: `${pathname}/lithostratigraphy` }, [
+              h("div.title", "Lithostratigraphy"),
+            ]),
           ]),
           ...locations,
         ]),
@@ -120,6 +124,10 @@ const SectionIndex = ({ match }) =>
         path: match.url + "/details/",
         render: (res) =>
           h(SectionDetailIndex, { base: match.url + "/details" }, null),
+      }),
+      h(Route, {
+        path: match.url + "/lithostratigraphy/",
+        render: (res) => h(wrapWithSections(LithostratigraphicSummaryColumn)),
       }),
       h(Route, {
         path: match.url + "/:id/height/:height",

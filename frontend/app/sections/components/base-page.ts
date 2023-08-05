@@ -13,15 +13,9 @@ type BaseSectionProps<T> = React.PropsWithChildren<{
   id: string;
 }>;
 
-const BaseSectionPage = function<T>(props: BaseSectionProps<T>) {
-  let {
-    children,
-    id,
-    settingsPanel,
-    defaultSettings,
-    className,
-    ...rest
-  } = props;
+const BaseSectionPage = function <T>(props: BaseSectionProps<T>) {
+  let { children, id, settingsPanel, defaultSettings, className, ...rest } =
+    props;
   // State to control whether we show settings panel
   const [showSettings, setShowSettings] = useState(false);
   const toggleSettings = () => setShowSettings(!showSettings);
@@ -33,23 +27,23 @@ const BaseSectionPage = function<T>(props: BaseSectionProps<T>) {
     SettingsProvider,
     {
       storageID: id,
-      ...defaultSettings
+      ...defaultSettings,
     },
     [
       h("div.page.section-page", { className }, [
         h("div.left-panel", [
           h("div.panel-container", [
             h(SectionNavigationControl, { toggleSettings }),
-            h(ErrorBoundary, null, children)
-          ])
+            h(ErrorBoundary, null, children),
+          ]),
         ]),
         h(settingsPanel, {
           isOpen: showSettings,
           onClose() {
             return setShowSettings(false);
-          }
-        })
-      ])
+          },
+        }),
+      ]),
     ]
   );
 };
@@ -57,7 +51,7 @@ const BaseSectionPage = function<T>(props: BaseSectionProps<T>) {
 BaseSectionPage.propTypes = {
   className: T.string,
   id: T.string.isRequired,
-  settingsPanel: T.elementType.isRequired
+  settingsPanel: T.elementType.isRequired,
 };
 
 export { BaseSectionPage };
