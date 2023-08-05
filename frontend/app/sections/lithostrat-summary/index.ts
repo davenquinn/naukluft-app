@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { NavigationControl } from "~/components";
 
 function LithostratigraphicSummaryColumn(props) {
-  const { settingsPanel, ...rest } = props;
+  const { ...rest } = props;
   return h(BaseSectionPage, { id: "summary-sections" }, [
     h(SectionPane, {
       groupMargin: 400,

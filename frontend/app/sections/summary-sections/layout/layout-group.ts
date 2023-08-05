@@ -4,10 +4,14 @@ import Box from "ui-box";
 
 const h = hyperStyled(styles);
 
-const GroupTitle = (props) => {
+function GroupTitle(props) {
   const { children, ...rest } = props;
-  return h(Box, { is: "h1", ...rest }, children);
-};
+  return h(
+    Box,
+    { is: "h1", className: styles["location-group-title"], ...rest },
+    children
+  );
+}
 
 function LayoutGroup(props) {
   const { width, children, className, titleOffset } = props;
