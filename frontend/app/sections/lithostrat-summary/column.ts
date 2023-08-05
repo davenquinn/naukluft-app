@@ -162,35 +162,10 @@ function ArrangedSections(props: ArrangedSectionsProps) {
     "div.grouped-sections",
     { style: outerStyle },
     groups.map((entry, i) => {
-      const [location, sections]: [string, SectionData[]] = entry;
-      let marginRight = groupMargin;
-      // Tighten spacing for Onis and Naukluft
-      if (tightenSpacing) {
-        // if (location === 'Tsams') {
-        //   marginRight = 0;
-        // }
-        if (i === 0) {
-          marginRight /= 2.5;
-        }
-        if (i === 1) {
-          marginRight = 30;
-        }
-      }
-
-      if (location === "Tsams") {
-        marginRight = 0;
-      }
-
-      let style = { marginRight };
-
-      if (location === "Büllsport") {
-        style = { position: "absolute", top: 0, right: 0 };
-      }
-
       return h(SectionGroup, {
         key: location,
         location,
-        style,
+        style: {},
         sections,
         ...rest,
       });
@@ -371,82 +346,19 @@ const ColumnSummaryAxis = function (props) {
   });
 };
 
-const ColumnIsotopes = function (props) {
-  const opts = useSettings();
-  let { id, columnWidth } = props;
-  if (columnWidth == null) {
-    columnWidth = 40;
-  }
-  if (!opts.isotopesPerSection) {
-    return null;
-  }
-  return h([
-    h.if(opts.showCarbonIsotopes)(MinimalIsotopesColumn, {
-      width: columnWidth,
-      section: id,
-      transform: "translate(120)",
-    }),
-    h.if(opts.showOxygenIsotopes)(MinimalIsotopesColumn, {
-      width: columnWidth,
-      section: id,
-      transform: "translate(160)",
-      system: "delta18o",
-    }),
-  ]);
-};
-
-const ColumnUnderlay = function (props) {
-  let { width, paddingLeft } = props;
-  const { pixelHeight } = useContext(ColumnContext);
-  if (paddingLeft == null) {
-    paddingLeft = 5;
-  }
-  return h("rect.underlay", {
-    width,
-    height: pixelHeight + 10,
-    x: -paddingLeft,
-    y: -5,
-    fill: "white",
-  });
-};
-
 const SVGSectionInner = function (props) {
-  let {
-    id,
-    padding,
-    innerWidth,
-    showWhiteUnderlay,
-    offsetTop,
-    absolutePosition,
-  } = props;
+  let { id, padding, innerWidth, offsetTop, absolutePosition } = props;
 
-  const { inEditMode } = useContext(PlatformContext);
-
-  const { sequenceStratOrder, showFloodingSurfaces, showTriangleBars } =
-    useContext(SequenceStratContext);
-
-  const { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
-    useSettings();
+  const showTriangleBars = true;
+  const sequenceStratOrder = [0, 2];
 
   let overallWidth = 120;
   overallWidth += 42; // Symbol column
-
-  let chemostratWidth = 0;
-  if (isotopesPerSection) {
-    if (showCarbonIsotopes) {
-      chemostratWidth += 40;
-    }
-    if (showOxygenIsotopes) {
-      chemostratWidth += 40;
-    }
-  }
-  overallWidth += chemostratWidth;
 
   let triangleBarTranslate = 0;
   let mainTranslate = 0;
 
   let underlayPaddingLeft: number = padding.left;
-  let underlayWidth = 300;
 
   if (showTriangleBars) {
     // How many bars are we rendering?
@@ -456,9 +368,8 @@ const SVGSectionInner = function (props) {
     const triangleBarWidth = 20 * nOrders;
     overallWidth += triangleBarWidth;
     if (props.triangleBarRightSide) {
-      triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
+      triangleBarTranslate = 120 + triangleBarWidth;
       underlayPaddingLeft = 0;
-      underlayWidth = 146 + chemostratWidth;
       overallWidth += 6;
     } else {
       triangleBarTranslate = 20 * (nOrders - 2);
@@ -466,14 +377,6 @@ const SVGSectionInner = function (props) {
       underlayPaddingLeft -= 35 + triangleBarTranslate;
     }
   }
-
-  console.log(sequenceStratOrder, overallWidth);
-
-  const floodingSurfaceStart = 42;
-
-  // Expand SVG past bounds of section
-
-  // We need to change this!
 
   const grainsizeScaleStart = 40;
 
@@ -506,12 +409,6 @@ const SVGSectionInner = function (props) {
               grainsizeScaleStart,
             },
             [
-              h(EditOverlay, {
-                id,
-                allowEditing: inEditMode,
-                left: padding.left + mainTranslate,
-                top: padding.top,
-              }),
               h(
                 ColumnSVG,
                 {
@@ -521,24 +418,12 @@ const SVGSectionInner = function (props) {
                   paddingLeft: padding.left,
                 },
                 [
-                  h.if(showWhiteUnderlay)(ColumnUnderlay, {
-                    width: underlayWidth,
-                    paddingLeft: underlayPaddingLeft,
-                  }),
                   h("g.main", { transform: `translate(${mainTranslate})` }, [
-                    h.if(showFloodingSurfaces)(FloodingSurface, {
-                      offsetLeft: -floodingSurfaceStart,
-                      lineWidth: floodingSurfaceStart,
-                    }),
                     h(props.axisComponent),
                     h(ColumnMain),
                     h(ManagedSymbolColumn, {
                       left: 90,
                       id,
-                    }),
-                    h(ColumnIsotopes, {
-                      id,
-                      columnWidth: props.isotopeColumnWidth,
                     }),
                   ]),
                   h(
@@ -595,13 +480,6 @@ SVGSectionInner.defaultProps = {
     right: 20,
     bottom: 28,
   },
-};
-
-SVGSectionInner.propTypes = {
-  //inEditMode: T.bool
-  absolutePosition: T.bool,
-  isotopesPerSection: T.bool,
-  offsetTop: T.number,
 };
 
 const SVGSectionComponent = (props) => {
