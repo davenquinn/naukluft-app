@@ -12,39 +12,25 @@ import {
 } from "../summary-sections/display-parameters";
 import { SectionPositions } from "../summary-sections/layout/defs";
 import { useSectionPositions } from "../components/link-overlay";
-import T from "prop-types";
 import { useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { EditorContext } from "../summary-sections/editor";
-import { SectionDataContext } from "../data-providers";
-import { ColumnProvider } from "@macrostrat/column-components";
-import { useColumnDivisions } from "../column/data-source";
 import styles from "../summary-sections/main.styl";
+import { sectionData, sectionSurfaces, sectionSymbols } from "./data";
 import "../main.styl";
 
 import {
   GrainsizeLayoutProvider,
   ColumnSVG,
   ColumnBox,
-  FloodingSurface,
   TriangleBars,
-  LithologyColumn,
   GeneralizedSectionColumn,
   SimplifiedLithologyColumn,
   CoveredOverlay,
   FaciesColumnInner,
   ColumnContext,
   ColumnAxis,
-  DivisionEditOverlay,
-  useSettings,
+  SymbolColumn,
+  ColumnProvider,
 } from "@macrostrat/column-components";
-
-import { ManagedSymbolColumn } from "../components";
-import { SequenceStratContext } from "../sequence-strat-context";
-import { ColumnTracker } from "../components/link-overlay";
-import { PlatformContext } from "../../platform";
-import { MinimalIsotopesColumn } from "../summary-sections/chemostrat";
-import { FaciesTractIntervals } from "../column/facies-tracts";
 
 const h = hyperStyled(styles);
 
@@ -58,30 +44,13 @@ interface SectionPaneProps {
 }
 
 const SectionPane = function (props: SectionPaneProps) {
-  let {
-    sections,
-    groupMargin,
-    columnMargin,
-    columnWidth,
-    tightenSpacing,
-    scrollable,
-  } = props;
+  let { groupMargin, columnMargin, columnWidth, tightenSpacing } = props;
 
-  const { showLegend } = useSettings();
+  const showLegend = false;
 
-  if (sections == null) {
-    return null;
-  }
-  if (!(sections.length > 0)) {
-    return null;
-  }
+  let { offset } = sectionData;
 
-  const row = sections.find((d) => d.id === "J");
-  let { offset } = row;
-
-  const overflow = scrollable ? "scroll" : "inherit";
-
-  return h("div#section-pane", { style: { overflow } }, [
+  return h("div#section-pane", { style: { overflow: "scroll" } }, [
     h.if(showLegend)(Legend),
     h(SectionContainer, [
       h(LithostratKey, {
@@ -91,7 +60,6 @@ const SectionPane = function (props: SectionPaneProps) {
       }),
       h("div#section-container", [
         h(ArrangedSections, {
-          sections,
           groupMargin,
           columnMargin,
           columnWidth,
@@ -107,47 +75,9 @@ SectionPane.defaultProps = {
   scrollable: true,
 };
 
-export { SectionPane };
-
-// This might be a bad type declaration
-const orderLike = <T, U>(arr: T[], accessor: (U) => T) => {
-  return (a: U, b: U): number => {
-    /*
-    Function to sort an array like another array
-    */
-    let acc =
-      accessor ??
-      function (d) {
-        return d;
-      };
-    return arr.indexOf(acc(a)) - arr.indexOf(acc(b));
-  };
-};
-
-interface ArrangedSectionsProps {
-  sections: SectionData[];
-  groupMargin: number;
-  location: string;
-}
-
-const sectionData = {
-  section: "A",
-  start: 0,
-  end: 175,
-  clip_end: 175,
-  offset: "0",
-  location: "Tsams",
-  id: "A",
-  range: [0, 175],
-  height: 175,
-  scaleFactor: 40.69714285714286,
-};
-
 function ArrangedSections(props: ArrangedSectionsProps) {
-  const { tightenSpacing, groupMargin, location, ...rest } = props;
+  const { groupMargin, location, ...rest } = props;
   const sections = [sectionData];
-
-  console.log("Arranged sections", sections);
 
   // Divide sections into groups by location
   let groups = Array.from(group(sections, (d) => d.location));
@@ -171,6 +101,29 @@ function ArrangedSections(props: ArrangedSectionsProps) {
       });
     })
   );
+}
+
+export { SectionPane };
+
+// This might be a bad type declaration
+const orderLike = <T, U>(arr: T[], accessor: (U) => T) => {
+  return (a: U, b: U): number => {
+    /*
+    Function to sort an array like another array
+    */
+    let acc =
+      accessor ??
+      function (d) {
+        return d;
+      };
+    return arr.indexOf(acc(a)) - arr.indexOf(acc(b));
+  };
+};
+
+interface ArrangedSectionsProps {
+  sections: SectionData[];
+  groupMargin: number;
+  location: string;
 }
 
 function SectionColumn(props) {
@@ -245,7 +198,7 @@ const SectionGroup = (props: SectionGroupProps) => {
           return h(SVGSectionComponent, {
             zoom: 0.1,
             key: id,
-            triangleBarRightSide: id == "J",
+            triangleBarRightSide: false,
             showCarbonIsotopes: false,
             isotopesPerSection: false,
             offsetTop: 670 - height - offset,
@@ -259,75 +212,6 @@ const SectionGroup = (props: SectionGroupProps) => {
       );
     })
   );
-};
-
-const ColumnMain = function () {
-  const { showFacies, showFaciesTracts, showLithology, showGrainsize } =
-    useSettings();
-  let c = GeneralizedSectionColumn;
-  let width = null;
-  if (!showGrainsize) {
-    c = LithologyColumn;
-    width = 60;
-  }
-
-  return h(c, { width }, [
-    h.if(showFacies)(FaciesColumnInner),
-    h.if(showFaciesTracts)(FaciesTractIntervals),
-    h.if(showLithology)(SimplifiedLithologyColumn),
-    h(CoveredOverlay),
-  ]);
-};
-
-const EditOverlay = function (props) {
-  let navigateTo: (arg0: string) => void;
-  let { interactive } = useSettings();
-  if (interactive == null) {
-    interactive = false;
-  }
-  if (!interactive) {
-    return null;
-  }
-  try {
-    navigateTo = useHistory()?.push;
-  } catch (error) {
-    navigateTo = () => {};
-  }
-
-  let { id, ...rest } = props;
-  const { onEditInterval, editingInterval: interval } =
-    useContext(EditorContext);
-  const editingInterval = interval?.section_id == id ? interval : null;
-
-  const onClick = function ({ height, event, division }) {
-    const sectionID = division?.original_section ?? division?.section_id ?? id;
-    // If we're working with a generalized division, we need to recalculate height
-    let _height = height;
-    if (division?.original_bottom != null) {
-      _height -= division.bottom;
-      _height += division.original_bottom;
-    }
-
-    if (event.shiftKey && onEditInterval != null) {
-      onEditInterval(division);
-      return;
-    }
-
-    // OR, navigate to a certain height
-    let path = `/sections/${sectionID}`;
-    if (_height != null) {
-      // Sometimes, URLs have a problem with non-rounded heights
-      path += `/height/${Math.round(_height)}`;
-    }
-    navigateTo(path);
-  };
-
-  return h(DivisionEditOverlay, {
-    showInfoBox: false,
-    onClick,
-    editingInterval,
-    ...rest,
-  });
 };
 
 const ColumnSummaryAxis = function (props) {
@@ -367,15 +251,9 @@ const SVGSectionInner = function (props) {
     //40
     const triangleBarWidth = 20 * nOrders;
     overallWidth += triangleBarWidth;
-    if (props.triangleBarRightSide) {
-      triangleBarTranslate = 120 + triangleBarWidth;
-      underlayPaddingLeft = 0;
-      overallWidth += 6;
-    } else {
-      triangleBarTranslate = 20 * (nOrders - 2);
-      mainTranslate = triangleBarWidth + 8;
-      underlayPaddingLeft -= 35 + triangleBarTranslate;
-    }
+    triangleBarTranslate = 20 * (nOrders - 2);
+    mainTranslate = triangleBarWidth + 8;
+    underlayPaddingLeft -= 35 + triangleBarTranslate;
   }
 
   const grainsizeScaleStart = 40;
@@ -394,67 +272,60 @@ const SVGSectionInner = function (props) {
       h("div.section-header", [
         h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, id),
       ]),
-      h(
-        ColumnTracker,
-        {
-          className: "section-outer",
-          id,
-          paddingTop: 10,
-        },
-        [
-          h(
-            GrainsizeLayoutProvider,
-            {
-              width: innerWidth,
-              grainsizeScaleStart,
-            },
-            [
-              h(
-                ColumnSVG,
-                {
-                  width: overallWidth,
-                  paddingTop: padding.top,
-                  paddingBottom: padding.bottom,
-                  paddingLeft: padding.left,
-                },
-                [
-                  h("g.main", { transform: `translate(${mainTranslate})` }, [
-                    h(props.axisComponent),
-                    h(ColumnMain),
-                    h(ManagedSymbolColumn, {
-                      left: 90,
-                      id,
-                    }),
-                  ]),
-                  h(
-                    "g.sequence-strat",
-                    { transform: `translate(${triangleBarTranslate})` },
-                    [
-                      h.if(showTriangleBars)(TriangleBars, {
-                        id,
-                        offsetLeft: 0,
-                        lineWidth: 20,
-                        minOrder: sequenceStratOrder[0],
-                        maxOrder: sequenceStratOrder[1],
-                      }),
-                    ]
-                  ),
-                ]
-              ),
-            ]
-          ),
-          h(
-            "div.section-children",
-            {
-              style: {
-                marginTop: padding.top,
-                marginLeft: padding.left + mainTranslate,
+      h("div.section-outer", [
+        h(
+          GrainsizeLayoutProvider,
+          {
+            width: innerWidth,
+            grainsizeScaleStart,
+          },
+          [
+            h(
+              ColumnSVG,
+              {
+                width: overallWidth,
+                paddingTop: padding.top,
+                paddingBottom: padding.bottom,
+                paddingLeft: padding.left,
               },
+              [
+                h("g.main", { transform: `translate(${mainTranslate})` }, [
+                  h(props.axisComponent),
+                  h(GeneralizedSectionColumn, [
+                    h(FaciesColumnInner),
+                    h(SimplifiedLithologyColumn),
+                    h(CoveredOverlay),
+                  ]),
+                  h(SymbolColumn, { symbols: sectionSymbols, left: 90 }),
+                ]),
+                h(
+                  "g.sequence-strat",
+                  { transform: `translate(${triangleBarTranslate})` },
+                  [
+                    h.if(showTriangleBars)(TriangleBars, {
+                      id,
+                      offsetLeft: 0,
+                      lineWidth: 20,
+                      minOrder: sequenceStratOrder[0],
+                      maxOrder: sequenceStratOrder[1],
+                    }),
+                  ]
+                ),
+              ]
+            ),
+          ]
+        ),
+        h(
+          "div.section-children",
+          {
+            style: {
+              marginTop: padding.top,
+              marginLeft: padding.left + mainTranslate,
             },
-            [props.children]
-          ),
-        ]
-      ),
+          },
+          [props.children]
+        ),
+      ]),
     ]
   );
 };
@@ -483,41 +354,25 @@ SVGSectionInner.defaultProps = {
 };
 
 const SVGSectionComponent = (props) => {
-  const { id } = props;
-  return h(SummaryColumnProvider, { id }, h(SVGSectionInner, props));
-};
+  const { zoom = 0.1, children } = props;
 
-const SummaryColumnProvider = (props) => {
-  /*
-  Centralized provider for a single column
-  identified by ID.
-  */
-  const {
-    id,
-    zoom = 0.1,
-    children,
-    filterDivisions = (d) => !d.schematic,
-  } = props;
-
-  const sections = useContext(SectionDataContext);
-  if (sections == null) return null;
-  const row = sections.find((d) => d.id == id);
-
-  let divisions = useColumnDivisions(id);
-  if (filterDivisions != null) {
-    divisions = divisions.filter(filterDivisions);
-  }
+  const row = sectionData;
+  let divisions = sectionSurfaces;
 
   const { start, clip_end: end } = row;
   // Clip off the top of some columns...
   const height = end - start;
   const range = [start, end];
 
-  return h(ColumnProvider, {
-    divisions,
-    height,
-    range,
-    zoom,
-    children,
-  });
+  return h(
+    ColumnProvider,
+    {
+      divisions,
+      height,
+      range,
+      zoom,
+      children,
+    },
+    h(SVGSectionInner, props)
+  );
 };
