@@ -3,7 +3,7 @@ services:
   db:
     # PostgreSQL 13 is needed in order to allow force-dropping the database
     # (in testing mode)
-    image: postgis/postgis:13-3.1
+    image: ${NAUKLUFT_DB_IMAGE:-postgis/postgis:13-3.1}
     environment:
       - POSTGRES_DB=Naukluft
       # This allows connections without a password, which is expedient but insecure...
