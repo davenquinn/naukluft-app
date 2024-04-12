@@ -18,7 +18,7 @@ const GeneralizedSections = (props) =>
       settingsPanel: SummarySectionsSettings,
       defaultSettings,
     },
-    [h(GeneralizedSectionsInner)]
+    h(GeneralizedSectionsInner)
   );
 
 export { GeneralizedSections };

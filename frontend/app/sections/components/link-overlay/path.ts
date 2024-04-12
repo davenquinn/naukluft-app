@@ -16,7 +16,7 @@ const SectionLinkPath = function (props) {
   // dash array for certainty
   let strokeDasharray = null;
   if (certainty < 10) {
-    strokeDasharray = `${certainty} ${10 - certainty}`;
+    strokeDasharray = `${certainty} ${14 - certainty}`;
   }
 
   return h("path", {

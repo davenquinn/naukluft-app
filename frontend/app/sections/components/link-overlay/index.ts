@@ -5,26 +5,26 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import { Component, createContext, useContext, useRef, useEffect } from "react";
-import T from "prop-types";
-import { hyperStyled } from "@macrostrat/hyper";
-import classNames from "classnames";
-import update from "immutability-helper";
 import {
+  ColumnContext,
+  SVG,
   expandInnerSize,
   extractPadding,
   useSettings,
-  ColumnContext,
-  SVG,
 } from "@macrostrat/column-components";
-import { debounce } from "underscore";
+import { hyperStyled } from "@macrostrat/hyper";
+import classNames from "classnames";
 import { pairs } from "d3-array";
 import { linkHorizontal } from "d3-shape";
+import update from "immutability-helper";
+import T from "prop-types";
+import { Component, createContext, useContext, useEffect, useRef } from "react";
+import { debounce } from "underscore";
 import { Notification } from "~/notify";
-import { SectionLinkPath } from "./path";
+import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.styl";
-import { useSurfaces } from "~/sections/providers";
+import { SectionLinkPath } from "./path";
 
 const h = hyperStyled(styles);
 
@@ -40,11 +40,11 @@ const sectionSurfaceProps = function (surface) {
     stroke = "#ccc";
   }
 
-  let strokeWidth = 3 - Math.pow(surface_order, 1.5) * 1.5;
-  if (strokeWidth < 1) {
-    strokeWidth = 1;
+  let strokeWidth = 4 - Math.pow(surface_order, 1.5) * 1.5;
+  if (strokeWidth < 2) {
+    strokeWidth = 2;
   }
-  return { stroke, strokeWidth };
+  return { stroke, strokeWidth, opacity: 0.5 };
 };
 
 const SectionPositionContext = createContext();
@@ -441,13 +441,13 @@ SectionLinkOverlay.defaultProps = {
 };
 
 export {
-  SectionLinks,
-  SectionLinkOverlay,
-  SectionPositionProvider,
-  SectionPositionContext,
-  sectionSurfaceProps,
-  useSectionPositions,
   ColumnTracker,
+  SectionLinkOverlay,
+  SectionLinks,
+  SectionPositionContext,
+  SectionPositionProvider,
   prepareLinkData,
+  sectionSurfaceProps,
   useCanvasSize,
+  useSectionPositions,
 };

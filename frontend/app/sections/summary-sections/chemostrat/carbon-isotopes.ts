@@ -1,25 +1,25 @@
-import { format } from "d3-format";
-import { Component, useContext } from "react";
 import h from "@macrostrat/hyper";
-import classNames from "classnames";
-import chroma from "chroma-js";
-import { schemeCategory10 } from "d3-scale-chromatic";
 import { AxisBottom } from "@vx/axis";
+import chroma from "chroma-js";
+import classNames from "classnames";
+import { format } from "d3-format";
+import { schemeCategory10 } from "d3-scale-chromatic";
+import { Component, useContext } from "react";
 
-import { sectionIsotopeScheme } from "../display-parameters";
-import { useIsotopes } from "./data-manager";
 import { sectionSurfaceProps } from "../../components/link-overlay";
+import { sectionIsotopeScheme } from "../display-parameters";
 import {
-  IsotopesDataArea,
-  useDataLocator,
   IsotopeDataLine,
   IsotopeDataPoint,
+  IsotopesDataArea,
+  useDataLocator,
 } from "./data-area";
+import { useIsotopes } from "./data-manager";
 
 import {
+  ColumnLayoutContext,
   ColumnSVG,
   CrossAxisLayoutProvider,
-  ColumnLayoutContext,
   useSettings,
 } from "@macrostrat/column-components";
 import T from "prop-types";
@@ -72,7 +72,6 @@ class IsotopesColumnInner extends Component {
     super(...args);
     this.renderAxisLines = this.renderAxisLines.bind(this);
     this.renderData = this.renderData.bind(this);
-    this.renderScale = this.renderScale.bind(this);
   }
 
   static initClass() {
@@ -97,7 +96,7 @@ class IsotopesColumnInner extends Component {
         left: 10,
         top: 10,
         right: 10,
-        bottom: 30,
+        bottom: 60,
       },
     };
     this.propTypes = {
@@ -105,12 +104,12 @@ class IsotopesColumnInner extends Component {
     };
   }
   render() {
-    const { padding, label, system } = this.props;
+    const { padding, label, system, tickValues } = this.props;
     const { width: innerWidth } = this.context;
     const { left, top, right, bottom } = padding;
 
     return h("div.isotopes-column", [
-      h("div.section-header.subtle", [h("h2", label)]),
+      h("div.section-header.subtle", [h("h2", "")]),
       h("div.section-outer", [
         h(
           ColumnSVG,
@@ -122,9 +121,8 @@ class IsotopesColumnInner extends Component {
             paddingBottom: padding.bottom,
           },
           [
-            //this.renderScale(),
             this.renderAxisLines(),
-            h(MinimalColumnScale, { system }),
+            h(MinimalColumnScale, { system, tickValues }),
             this.renderData(),
           ]
         ),
@@ -223,16 +221,6 @@ class IsotopesColumnInner extends Component {
       })
     );
   }
-
-  renderScale() {
-    const { nTicks } = this.props;
-    const { xScale } = this.context;
-    const v = xScale.ticks(nTicks);
-    return h(
-      "g.scale",
-      v.map((d) => h(ScaleLine, { value: d, labelBottom: true }))
-    );
-  }
 }
 IsotopesColumnInner.initClass();
 
@@ -253,8 +241,13 @@ const MinimalColumnScale = function (props) {
     h(
       "g.scale-lines",
       tickValues.map((value) => {
-        const strokeDasharray = value == 0 ? null : "2 6";
-        return h(ScaleLine, { value, stroke: "#ddd", strokeDasharray });
+        const strokeDasharray = value == 0 ? null : "2 4";
+        return h(ScaleLine, {
+          value,
+          stroke: "#aaa",
+          strokeDasharray,
+          strokeWidth: 3,
+        });
       })
     ),
     h("rect.underlay", {
@@ -280,11 +273,18 @@ const MinimalColumnScale = function (props) {
           dx,
           fontSize: 10,
           textAnchor: "middle",
-          fill: "#aaa",
+          fill: "#000",
         };
       },
       labelOffset: 0,
       label,
+      labelProps: {
+        style: {
+          fontFamily: "Merriweather",
+          fill: "#000",
+        },
+        fontSize: 20,
+      },
     }),
   ]);
 };
