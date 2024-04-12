@@ -1,12 +1,11 @@
-import express from "express";
-import morgan from "morgan";
-import { sync as glob } from "glob";
-import { join, resolve } from "path";
-import { ResultMask, runBackendQuery, db } from "./database";
-import { updateSectionInterval } from "./updates";
-import cors from "cors";
 import vectorTileServer from "@macrostrat/vector-tile-server";
-import { queryResult } from "pg-promise";
+import cors from "cors";
+import express from "express";
+import { sync as glob } from "glob";
+import morgan from "morgan";
+import { join, resolve } from "path";
+import { ResultMask, db, runBackendQuery } from "./database";
+import { updateSectionInterval } from "./updates";
 
 const baseDir = resolve(__dirname, "..", "sql");
 
@@ -80,6 +79,7 @@ async function addTileServer(app: any) {
 }
 
 async function createServer() {
+  console.log("Creating server");
   const app = express().disable("x-powered-by");
   if (process.env.NODE_ENV !== "production") {
     // @ts-ignore
@@ -90,7 +90,8 @@ async function createServer() {
   app.use(express.json());
   let helpRoutes = buildQueryFileRoutes(app);
   helpRoutes.push(addSectionUpdateRoute(app));
-  helpRoutes.push(await addTileServer(app));
+  // The tileserver is outmoded by Mapboard
+  //helpRoutes.push(await addTileServer(app));
   // create help route
   app.get("/", (req: any, res: any) => {
     helpRoutes.sort();

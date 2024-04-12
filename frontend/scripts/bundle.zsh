@@ -8,4 +8,5 @@ rsync -av --delete "$patterns/" "$dist/lithology-patterns/"
 rsync -av --delete "assets/column-patterns/" "$dist/column-symbols/"
 
 # scripts/serialize-queries
-(cd ../api && nodemon) & webpack --watch
+# Concurrent running is'nt working quite right
+webpack --watch

@@ -20,7 +20,6 @@
     "is-electron": "^2.2.0",
     "morgan": "^1.10.0",
     "pg": "^8.6.0",
-    "pg-native": "^3.0.1",
     "pg-promise": "^11.5.0",
     "react": "^16.11.0",
     "use-async-effect": "^2.2.3"

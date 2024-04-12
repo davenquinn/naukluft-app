@@ -1,14 +1,14 @@
+import { useColumn } from "@macrostrat/column-components";
+import h from "@macrostrat/hyper";
 import {
   sectionSwatches,
-  SwatchData
+  SwatchData,
 } from "~/sections/section-details/swatch-data";
-import { useColumn } from "@macrostrat/column-components";
 import {
   SectionHeightGeneralizer,
-  useGeneralizedDivisions
+  useGeneralizedDivisions,
 } from "../data-provider";
 import { GeneralizedDivision } from "../types";
-import h from "@macrostrat/hyper";
 
 const allSwatches = () => {
   let swatches: SwatchData[] = [];
@@ -18,51 +18,55 @@ const allSwatches = () => {
   return swatches;
 };
 
+function tectonicsPaperSwatches(): SwatchData[] {
+  return sectionSwatches.tectonics_paper;
+}
+
 const generalizedSwatches = (
   divisions: GeneralizedDivision[]
 ): SwatchData[] => {
   const generalizer = new SectionHeightGeneralizer(divisions ?? []);
-  return allSwatches().map(d => {
+  return tectonicsPaperSwatches().map((d) => {
     const div = generalizer.findMatchingInterval(d.sectionID, d.range[0]);
     if (div == null) return d;
     return {
       id: d.id,
+      label: d.label,
       sectionID: div.section_id,
-      range: d.range.map(v => generalizer.generalizeHeight(d.sectionID, v))
+      range: d.range.map((v) => generalizer.generalizeHeight(d.sectionID, v)),
     };
   });
 };
-
-function sectionFigureReferences(sectionID: string) {
-  return allSwatches().filter(d => d.sectionID == sectionID);
-}
 
 function useGeneralizedFigureRefs(sectionID: string) {
   /* React hook for generalized divisions */
   const divisions = useGeneralizedDivisions();
   console.log(divisions);
-  return generalizedSwatches(divisions).filter(d => d.sectionID == sectionID);
+  return generalizedSwatches(divisions).filter((d) => d.sectionID == sectionID);
 }
 
 function SectionFigureRef(props: SwatchData) {
   const { scale } = useColumn();
   const top = scale(props.range[1]);
   const height = scale(props.range[0]) - top;
+  const label = props.label ?? `${props.id.toLowerCase()}`;
+
   return h(
     "div.figure-reference",
     {
       className: props.id,
-      style: { position: "absolute", top, height }
+      style: { position: "absolute", top, height },
     },
-    [h("div.marker"), h("p.label", `${props.id.toLowerCase()}`)]
+    [h("div.marker"), h("p.label", label)]
   );
 }
 
 export function SectionFigureReferences(props) {
   const { id: section_id } = useColumn();
   const swatches = useGeneralizedFigureRefs(section_id);
+  console.log(swatches);
   return h(
     "div",
-    swatches.map(d => h(SectionFigureRef, d))
+    swatches.map((d) => h(SectionFigureRef, d))
   );
 }
