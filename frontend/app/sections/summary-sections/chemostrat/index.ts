@@ -3,14 +3,14 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import { hyperStyled } from "@macrostrat/hyper";
 import { ColumnProvider, useSettings } from "@macrostrat/column-components";
-import styles from "../main.styl";
+import { hyperStyled } from "@macrostrat/hyper";
 import T from "prop-types";
-import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
+import { useSurfaces } from "~/sections/providers";
 import { rangeForSection } from "../../util";
 import { LayoutGroup } from "../layout";
-import { useSurfaces } from "~/sections/providers";
+import styles from "../main.styl";
+import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
 
 const h = hyperStyled(styles);
 
@@ -34,12 +34,9 @@ const ChemostratigraphyGroup = function (props) {
 };
 
 const BaseChemostratigraphyColumn = (props) => {
-  const { sections, colorScheme, range, showLines, keySection } = props;
-  const {
-    correctIsotopeRatios,
-    showCarbonIsotopes,
-    showOxygenIsotopes,
-  } = useSettings();
+  const { sections, colorScheme, range, showLines, keySection, nTicks } = props;
+  const { correctIsotopeRatios, showCarbonIsotopes, showOxygenIsotopes } =
+    useSettings();
 
   if (!showCarbonIsotopes && !showOxygenIsotopes) {
     return null;
@@ -71,12 +68,15 @@ const BaseChemostratigraphyColumn = (props) => {
         corrected: correctIsotopeRatios,
         showLines,
         keySection,
+        tickValues: [-10, -5, 0, 5],
       }),
       h.if(showOxygenIsotopes)(IsotopesColumn, {
         ...rest,
+        nTicks,
         zoom: 0.1,
         system: "delta18o",
         label: "δ¹⁸O",
+        tickValues: [-15, -10, -5, 0],
         domain: [-15, 2],
         key: "oxygen-isotopes",
         colorScheme,
@@ -116,9 +116,9 @@ ChemostratigraphyColumn.propTypes = {
 };
 
 export {
+  BaseChemostratigraphyColumn,
+  ChemostratigraphyColumn,
+  ChemostratigraphyGroup,
   IsotopesColumn,
   MinimalIsotopesColumn,
-  ChemostratigraphyColumn,
-  BaseChemostratigraphyColumn,
-  ChemostratigraphyGroup,
 };

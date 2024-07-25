@@ -2,6 +2,7 @@ export interface SwatchData {
   id: string;
   sectionID: string;
   range: [number, number];
+  label?: string;
 }
 
 interface SequenceSwatchData {
@@ -9,6 +10,20 @@ interface SequenceSwatchData {
 }
 
 export const sectionSwatches: SequenceSwatchData = {
+  tectonics_paper: [
+    {
+      id: "A",
+      sectionID: "J",
+      range: [140, 160],
+      label: "Fig. 10a",
+    },
+    {
+      id: "B",
+      sectionID: "J",
+      range: [295, 315],
+      label: "Fig. 10b",
+    },
+  ],
   dz: [
     {
       id: "B",
