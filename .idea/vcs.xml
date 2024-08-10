@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/frontend/packages/cesium-viewer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/frontend/packages/column-components" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/frontend/packages/geologic-patterns" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/frontend/packages/mvt-imagery-provider" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/frontend/packages/vector-tile-server" vcs="Git" />
+  </component>
+</project>
