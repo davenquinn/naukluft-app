@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 dist="dist-web"
 
 scripts/link-data.zsh
