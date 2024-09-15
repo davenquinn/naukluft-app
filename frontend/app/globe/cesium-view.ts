@@ -10,7 +10,7 @@ import {
   //GeologyLayer,
   SatelliteLayer,
   terrainProvider,
-} from "@macrostrat/cesium-viewer/layers";
+} from "@macrostrat/cesium-viewer/src/layers";
 import { Cesium3DTileset } from "resium";
 import { GeologyLayer } from "./vector-style";
 

@@ -2,7 +2,7 @@ import { Component } from "react";
 import "./main.styl";
 import styles from "./section-index.styl";
 // We should really resolve this from the /src directory...
-import "@macrostrat/column-components/main.styl";
+import "@macrostrat/column-components/src/main.styl";
 import h from "react-hyperscript";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { NavLink } from "../nav";

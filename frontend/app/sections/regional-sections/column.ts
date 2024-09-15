@@ -13,7 +13,7 @@ import { ColumnTracker } from "../components/link-overlay";
 import { FillPatternDefs } from "./pattern-fill";
 import { useFaciesColors } from "./util";
 
-import styles from "./main.styl";
+import styles from "./main.module.styl";
 const h = hyperStyled(styles);
 
 const FaciesTractIntervals = function (props) {

@@ -1,6 +1,6 @@
 import { SectionGroup } from "./section-group";
 import { hyperStyled } from "@macrostrat/hyper";
-import styles from "../main.styl";
+import styles from "../main.module.styl";
 import { group } from "d3-array";
 // This should be wrapped into a context
 import { groupOrder } from "../display-parameters";

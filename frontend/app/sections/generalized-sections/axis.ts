@@ -7,7 +7,7 @@ import {
 } from "@macrostrat/column-components";
 import { useGeneralizedDivisions } from "./data-provider";
 import { useContext, useRef, useState, useLayoutEffect } from "react";
-import styles from "./main.styl";
+import styles from "./main.module.styl";
 import { format } from "d3-format";
 import { GeneralizedDivision } from "./types";
 import { isMainFrame } from "process";

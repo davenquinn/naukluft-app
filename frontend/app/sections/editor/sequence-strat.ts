@@ -8,7 +8,7 @@ import { SectionSurfacesContext } from "~/sections/providers";
 import { SurfaceOrderSlider } from "@macrostrat/column-components";
 
 import { hyperStyled } from "@macrostrat/hyper";
-import styles from "./style.styl";
+import styles from "./style.module.styl";
 const h = hyperStyled(styles);
 
 const surfaceTypes = [

@@ -29,7 +29,7 @@ import { MinimalIsotopesColumn } from "./chemostrat";
 import { FaciesTractIntervals } from "../column/facies-tracts";
 
 import { hyperStyled } from "@macrostrat/hyper";
-import styles from "./main.styl";
+import styles from "./main.module.styl";
 const h = hyperStyled(styles);
 
 const ColumnMain = function() {

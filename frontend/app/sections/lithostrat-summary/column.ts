@@ -13,7 +13,7 @@ import {
 import { SectionPositions } from "../summary-sections/layout/defs";
 import { useSectionPositions } from "../components/link-overlay";
 import { useContext } from "react";
-import styles from "../summary-sections/main.styl";
+import styles from "../summary-sections/main.module.styl";
 import { sectionData, sectionSurfaces, sectionSymbols } from "./data";
 import "../main.styl";
 

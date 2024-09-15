@@ -33,7 +33,7 @@ import {
 import { updateSectionInterval } from "naukluft-data-backend";
 import { SequenceStratControls } from "./sequence-strat";
 import { hyperStyled } from "@macrostrat/hyper";
-import styles from "./style.styl";
+import styles from "./style.module.styl";
 const h = hyperStyled(styles);
 
 const floodingSurfaceOrders = [-1, -2, -3, -4, -5, null, 5, 4, 3, 2, 1];

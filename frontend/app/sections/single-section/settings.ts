@@ -33,7 +33,7 @@ const defaultSettings = {
   showFaciesTracts: false,
   // Allows us to test the serialized query mode
   // we are developing for the web
-  serializedQueries: global.SERIALIZED_QUERIES,
+  serializedQueries: SERIALIZED_QUERIES,
   condensedDisplay: true,
   sectionIDs: [],
   showCarbonIsotopes: false

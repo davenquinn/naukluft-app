@@ -9,7 +9,7 @@ import T from "prop-types";
 import { useSurfaces } from "~/sections/providers";
 import { rangeForSection } from "../../util";
 import { LayoutGroup } from "../layout";
-import styles from "../main.styl";
+import styles from "../main.module.styl";
 import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
 
 const h = hyperStyled(styles);

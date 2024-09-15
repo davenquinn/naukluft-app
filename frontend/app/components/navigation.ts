@@ -1,15 +1,9 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import h from "@macrostrat/hyper";
 import { useHistory } from "react-router";
 import { NavLink, BackLink } from "../nav";
 import { ButtonGroup, Button } from "@blueprintjs/core";
 import T from "prop-types";
-import { LinkButton } from "@macrostrat/ui-components";
+import { LinkButton } from "~/components/buttons";
 
 const BackButton = function() {
   const history = useHistory();

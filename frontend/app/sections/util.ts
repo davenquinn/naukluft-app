@@ -6,7 +6,7 @@
  */
 import { Component } from "react";
 import h from "@macrostrat/hyper";
-import { LinkButton } from "@macrostrat/ui-components";
+import { LinkButton } from "~/components/buttons";
 import { SVGNamespaces } from "@macrostrat/column-components";
 import { NavigationControl as SectionNavigationControl } from "~/components";
 

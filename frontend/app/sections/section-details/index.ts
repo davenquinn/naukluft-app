@@ -11,6 +11,30 @@ import "./main.styl";
 
 const pages = Object.keys(sectionSwatches);
 
+export const SectionDetailsPanel = (props) => {
+  return h("div.section-panel", [
+    h(Sequence, { id: "s3" }),
+    h(Sequence, { id: "s2" }),
+    h(Sequence, { id: "s1" }),
+  ]);
+};
+
+
+
+export const SectionDetailSettings = C(SettingsProvider, {
+  ...defaultSettings,
+});
+
+export const SectionDetails = compose(
+  SectionDetailSettings,
+  SectionDetailsPanel
+);
+
+
+
+const Figure = compose(PlatformProvider, SectionDataProvider, SectionDetails);
+
+
 const Section = function (props) {
   const { id } = props;
   const settings = useSettings();
@@ -39,23 +63,5 @@ export const Sequence = ({ id }: { id: string }) => {
   );
 };
 
-export const SectionDetailsPanel = (props) => {
-  return h("div.section-panel", [
-    h(Sequence, { id: "s3" }),
-    h(Sequence, { id: "s2" }),
-    h(Sequence, { id: "s1" }),
-  ]);
-};
-
-export const SectionDetails = compose(
-  SectionDetailSettings,
-  SectionDetailsPanel
-);
-
-export const SectionDetailSettings = C(SettingsProvider, {
-  ...defaultSettings,
-});
-
-const Figure = compose(PlatformProvider, SectionDataProvider, SectionDetails);
 
 export default (el, opts, cb) => render(h(Figure), el, cb);

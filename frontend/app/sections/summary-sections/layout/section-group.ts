@@ -2,7 +2,7 @@ import { hyperStyled } from "@macrostrat/hyper";
 import { useSettings } from "@macrostrat/column-components";
 import { SVGSectionComponent } from "../column";
 import { LayoutGroup } from "./layout-group";
-import styles from "../main.styl";
+import styles from "../main.module.styl";
 import { sectionOffsets, stackGroups } from "../display-parameters";
 import { SectionData, SectionPositions } from "./defs";
 import { useSectionPositions } from "../../components/link-overlay";

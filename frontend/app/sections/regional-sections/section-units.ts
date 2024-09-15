@@ -5,7 +5,6 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import h from "react-hyperscript";
-import { join } from "path";
 import { select } from "d3-selection";
 import { Component } from "react";
 import { findDOMNode } from "react-dom";
@@ -25,6 +24,8 @@ import { FillPatternDefs } from "./pattern-fill";
 //
 // const fileNames = {S1,S2,S3};
 
+import { joinPath } from "~/utils"
+
 const getFile = async function(id) {
   // console.log(id)
   // if (fn.startsWith("data:image/svg+xml;base64,")) {
@@ -33,7 +34,7 @@ const getFile = async function(id) {
   // // }
   try {
     const { readFileSync } = __non_webpack_require__("fs");
-    const fn = join(__dirname, "sequence-data-edited", id + ".svg");
+    const fn = joinPath(__dirname, "sequence-data-edited", id + ".svg");
     const svg = readFileSync(fn, "utf-8");
     return Promise.resolve(svg);
   } catch (error) {

@@ -7,7 +7,7 @@ import { ArrangedSections } from "./layout";
 import { Legend } from "./legend";
 import { useSurfaces } from "~/sections/providers";
 import { SectionData } from "./layout/defs";
-import styles from "./main.styl";
+import styles from "./main.module.styl";
 import "../main.styl";
 
 const h = hyperStyled(styles);

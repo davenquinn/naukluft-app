@@ -1,6 +1,5 @@
 import { Component, createContext, useContext } from "react";
 import h from "react-hyperscript";
-import { join, resolve } from "path";
 import LocalStorage from "./sections/storage";
 import update from "immutability-helper";
 import {
@@ -10,18 +9,15 @@ import {
 } from "@macrostrat/column-components";
 //# Set whether we are on the backend or frontend
 
+let global = globalThis;
+
 global.ELECTRON = "electron";
 global.WEB = "web";
 
-if (process.versions?.electron != null) {
-  global.PLATFORM = ELECTRON;
-  global.SERIALIZED_QUERIES = false;
-  global.BASE_DIR = resolve(join(__dirname, ".."));
-} else {
-  global.PLATFORM = WEB;
-  global.SERIALIZED_QUERIES = true;
-  global.BASE_URL = process.env.PUBLIC_PATH ?? "/";
-}
+
+global.PLATFORM = WEB;
+global.SERIALIZED_QUERIES = true;
+global.BASE_URL = "/";
 console.log(`Running application on ${PLATFORM}`);
 
 const Platform = Object.freeze({
@@ -30,17 +26,17 @@ const Platform = Object.freeze({
   PRINT: 3
 });
 
+
+function join(...args: string[]): string {
+  return args.join("/");
+}
+
 const DarkModeContext = createContext(false);
 
 const DarkModeProvider = function(props) {
-  let value;
+  console.log("Setting up dark mode provider")
+  let value = false
   const { children } = props;
-  try {
-    const { systemPreferences } = require("electron");
-    value = systemPreferences.isDarkMode();
-  } catch (error1) {
-    value = false;
-  }
   return h(DarkModeContext.Provider, { value }, children);
 };
 
@@ -48,24 +44,17 @@ const useDarkMode = () => useContext(DarkModeContext);
 
 const PlatformContext = createContext({});
 
-const baseURL = process.env.PUBLIC_PATH ?? "/";
+const baseURL = "/";
 
 console.log("Base url:", baseURL);
 
 class PlatformProvider extends Component {
   constructor(props) {
-    let platform = Platform.ELECTRON;
-    if (global.BASE_DIR == null) {
-      global.BASE_DIR = join(__dirname, "..");
-    }
 
-    let baseUrl = "file://" + resolve(BASE_DIR);
     let editable = true;
-    if (global.PLATFORM === WEB) {
-      platform = Platform.WEB;
-      editable = false;
-      baseUrl = "/";
-    }
+    let platform = Platform.WEB;
+    editable = false;
+    let baseUrl = "/";
 
     super(props);
     this.state = {
@@ -166,16 +155,7 @@ class PlatformProvider extends Component {
   }
 
   resolveSymbol(sym) {
-    try {
-      if (this.state.platform === Platform.ELECTRON) {
-        const q = resolve(join(BASE_DIR, "assets", "column-patterns", sym));
-        return "file://" + q;
-      } else {
-        return join(baseURL, "column-symbols", sym);
-      }
-    } catch (error1) {
-      return "";
-    }
+    return join(baseURL, "column-symbols", sym);
   }
 
   resolveLithologySymbol(id, opts = {}) {

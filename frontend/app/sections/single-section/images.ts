@@ -5,9 +5,9 @@ import { PlatformContext, Platform } from "~/platform";
 import { sum, max } from "d3-array";
 import T from "prop-types";
 import { hyperStyled } from "@macrostrat/hyper";
-import styles from "./main.styl";
+//import styles from "./main.styl";
 
-const h = hyperStyled(styles);
+const h = hyperStyled({});
 
 const ColumnImages = function (props) {
   const { sectionID } = props;

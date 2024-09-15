@@ -21,8 +21,8 @@ import {
   GeneralizedDataProvider,
 } from "./data-provider";
 
-import "../summary-sections/main.styl";
-import styles from "./main.styl";
+import "../summary-sections/main.module.styl";
+import styles from "./main.module.styl";
 const h = hyperStyled(styles);
 
 const GeneralizedSection = function (props) {

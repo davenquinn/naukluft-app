@@ -1,5 +1,4 @@
 import { getJSON } from "../util";
-import { join, resolve } from "path";
 import useAsyncEffect from "use-async-effect";
 import React, { createContext, useContext, useState } from "react";
 import { FaciesProvider } from "./facies";
@@ -21,12 +20,13 @@ import {
   Platform,
 } from "naukluft-data-backend";
 
+function join(...args) {
+  return args.join("/");
+}
+
 const sectionFilename = function (fn) {
-  if (currentPlatform == Platform.ELECTRON) {
-    return resolve(__dirname, "..", "..", "..", "data", "column-images", fn);
-  } else {
-    return join(BASE_URL, "section-images", fn);
-  }
+  const BASE_URL = "/"
+  return join(BASE_URL, "section-images", fn);
 };
 
 const getSectionData = async function (opts = {}) {

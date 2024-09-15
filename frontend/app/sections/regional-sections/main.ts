@@ -11,9 +11,9 @@ import {
 } from "../generalized-sections/data-provider";
 import { SettingsProvider } from "../summary-sections/settings";
 
-import "../summary-sections/main.styl";
-import styles from "../generalized-sections/main.styl";
-import styles2 from "./main.styl";
+import "../summary-sections/main.module.styl";
+import styles from "../generalized-sections/main.module.styl";
+import styles2 from "./main.module.styl";
 const h = hyperStyled({ ...styles, ...styles2 });
 
 const RegionalSectionsContainer = compose(

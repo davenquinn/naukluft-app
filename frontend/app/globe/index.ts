@@ -8,7 +8,7 @@ import { Spinner, Switch } from "@blueprintjs/core";
 import {
   getInitialPosition,
   buildPositionHash,
-} from "@macrostrat/cesium-viewer/query-string";
+} from "@macrostrat/cesium-viewer/src/query-string";
 import { ErrorBoundary } from "@macrostrat/ui-components";
 import update from "immutability-helper";
 import { getHashString, setHashString } from "@macrostrat/ui-components";

@@ -6,10 +6,9 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import h from "react-hyperscript";
-import style from "./main.styl";
+import  "./main.styl";
 import { Icon } from "@blueprintjs/core";
 
-console.log(style);
 
 class NavLink extends React.Component {
   render() {

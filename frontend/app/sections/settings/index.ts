@@ -121,6 +121,8 @@ const BaseSettingsPanel = function (props) {
   });
 };
 
+export const SERIALIZED_QUERIES = false;
+
 export {
   SettingsSwitch,
   SettingsPicker,

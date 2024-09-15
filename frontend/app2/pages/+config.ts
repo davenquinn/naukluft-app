@@ -5,9 +5,8 @@ import Layout from "../layouts/LayoutDefault.js";
 
 // Default config (can be overridden by pages)
 export default {
-  Layout,
-  Head,
-
+  //Layout,
+  //Head,
   // <title>
   title: "Naukluft",
   extends: vikeReact,

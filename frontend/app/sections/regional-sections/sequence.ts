@@ -11,7 +11,7 @@ import { exportSequence } from "./svg-export";
 import { CrossSectionUnits } from "./section-units";
 import { PlatformContext, Platform } from "~/platform";
 
-import styles from "./main.styl";
+import styles from "./main.module.styl";
 const h = hyperStyled(styles);
 
 const LinkOverlay = function (props) {

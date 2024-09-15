@@ -23,7 +23,7 @@ import { debounce } from "underscore";
 import { Notification } from "~/notify";
 import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
-import styles from "./main.styl";
+import styles from "./main.module.styl";
 import { SectionLinkPath } from "./path";
 
 const h = hyperStyled(styles);

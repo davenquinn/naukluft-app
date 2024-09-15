@@ -1,9 +1,7 @@
-const requireFoolWebpack = require("require-fool-webpack");
-// Because webpack is super annoying
 import "@babel/polyfill"; // this seems suspect
 
 import { Platform, currentPlatform } from "naukluft-data-backend";
-import { PlatformProvider } from "./platform";
+import { PlatformProvider } from "~/platform";
 import React from "react";
 import {
   BrowserRouter,
@@ -16,14 +14,14 @@ import h from "@macrostrat/hyper";
 import { FocusStyleManager, Icon } from "@blueprintjs/core";
 FocusStyleManager.onlyShowFocusOnTabs();
 
-import { NavBar, NavLink } from "./nav";
-import { SectionIndex } from "./sections";
-import { CrossSectionsPage } from "./cross-sections";
+import { NavBar, NavLink } from "~/nav";
+import { SectionIndex } from "~/sections";
+import { CrossSectionsPage } from "~/cross-sections";
 //MapLegend = require './map-legend/component'
-import CarbonIsotopesPage from "./carbon-isotopes";
-import LateralVariation from "./lateral-variation";
-import { MapView } from "./map-viewer";
-import Globe from "./globe";
+import CarbonIsotopesPage from "~/carbon-isotopes";
+import LateralVariation from "~/lateral-variation";
+import { MapView } from "~/map-viewer";
+import Globe from "~/globe";
 import { HotkeysTarget, Hotkeys, Hotkey } from "@blueprintjs/core";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -73,18 +71,18 @@ class App extends React.Component {
       h("div#root", [
         h(Switch, [
           h(Route, { path: "/sections", component: SectionIndex }),
-          h(Route, {
-            path: "/carbon-isotopes",
-            component: wrapNavBar(CarbonIsotopesPage)
-          }),
-          h(Route, {
-            path: "/lateral-variation",
-            component: wrapNavBar(LateralVariation)
-          }),
-          h(Route, { path: "/map", component: MapView }),
-          //route '/map-legend', wrapNavBar(MapLegend)
-          h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
-          h(Route, { path: "/globe", component: Globe }),
+          // h(Route, {
+          //   path: "/carbon-isotopes",
+          //   component: wrapNavBar(CarbonIsotopesPage)
+          // }),
+          // h(Route, {
+          //   path: "/lateral-variation",
+          //   component: wrapNavBar(LateralVariation)
+          // }),
+          // h(Route, { path: "/map", component: MapView }),
+          // //route '/map-legend', wrapNavBar(MapLegend)
+          // h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
+          //h(Route, { path: "/globe", component: Globe }),
           h(Route, { path: "/", component: Home })
         ])
       ])
@@ -112,7 +110,6 @@ class App extends React.Component {
 // This doesn't work for unknown reasons
 //HotkeysTarget(App);
 
-const basename = process.env.PUBLIC_PATH ?? "";
-const RouterApp = () => h(Router, { basename }, [h(App)]);
+const basename =  "";
+export const Page = () => h(Router, { basename }, [h(App)]);
 
-export default RouterApp;
