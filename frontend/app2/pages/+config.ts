@@ -9,6 +9,6 @@ export default {
   Head,
 
   // <title>
-  title: "My Vike App",
+  title: "Naukluft",
   extends: vikeReact,
 } satisfies Config;

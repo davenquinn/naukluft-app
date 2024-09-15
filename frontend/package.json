@@ -92,5 +92,5 @@
     "webpack": "^4.41.5",
     "webpack-cli": "4"
   },
-  "packageManager": "yarn@4.4.0"
+  "packageManager": "yarn@4.4.1"
 }
