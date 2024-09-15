@@ -15,4 +15,4 @@ api:
 	docker build -t ghcr.io/davenquinn/naukluft-app/server:latest .
 	docker push ghcr.io/davenquinn/naukluft-app/server:latest
 
-.PHONY: database load-data
+.PHONY: database load-data api

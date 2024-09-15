@@ -1,5 +1,7 @@
-process.env.NAUKLUFT_DB =
-  "postgresql://mapboard_admin:a1d491c9-1fe5-426d-bdd3-2365ea17deee@localhost:54398/naukluft";
+// Check that NAUKLUFT_DB environment variable is set, otherwise throw an error
+if (!process.env.NAUKLUFT_DB) {
+  throw new Error("NAUKLUFT_DB environment variable not set");
+}
 
 import { createServer } from "naukluft-data-backend/src/api";
 // We should maybe move this to another file
