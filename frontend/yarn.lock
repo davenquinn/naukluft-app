@@ -3324,6 +3324,90 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@naukluft/app@workspace:app":
+  version: 0.0.0-use.local
+  resolution: "@naukluft/app@workspace:app"
+  dependencies:
+    "@babel/core": "npm:^7.6.4"
+    "@blueprintjs/core": "npm:^3.22.3"
+    "@blueprintjs/select": "npm:^3.11.2"
+    "@macrostrat/cesium-viewer": "npm:*"
+    "@macrostrat/hyper": "npm:^1.2.13"
+    "@types/d3-array": "npm:^2.0.0"
+    "@types/d3-format": "npm:^1.3.1"
+    "@types/d3-scale": "npm:^2.1.1"
+    "@types/react": "npm:^16.9.17"
+    "@types/react-hyperscript": "npm:^3.0.4"
+    "@types/react-router-dom": "npm:^5.1.3"
+    "@types/underscore": "npm:^1.9.4"
+    "@vx/axis": "npm:0.0.192"
+    babel-plugin-module-resolver: "npm:^3.2.0"
+    babel-plugin-root-import: "npm:^6.4.1"
+    bluebird: "npm:^3.5.0"
+    bulk: "npm:^2.0.1"
+    calculate-size: "npm:^1.1.1"
+    chroma-js: "npm:^1.2.1"
+    class-names: "npm:^1.0.0"
+    classnames: "npm:^2.2.5"
+    constate: "npm:^1.3.2"
+    css-modules-electron: "npm:^1.0.0"
+    css-modules-require-hook: "npm:^4.0.1"
+    d3: "npm:^4.2.6"
+    d3-array: "npm:^2.4.0"
+    d3-hierarchy: "npm:^1.0.2"
+    d3-jetpack: "npm:^2.0.13"
+    d3-legend: "npm:^1.0.0"
+    d3-scale-chromatic: "npm:^1.1.1"
+    d3-selection-multi: "npm:^1.0.0"
+    d3-tip: "npm:^0.7.1"
+    dom-to-image: "npm:^2.6.0"
+    electron-localshortcut: "npm:^0.6.0"
+    geologic-patterns: "npm:*"
+    immutability-helper: "npm:^2.6.6"
+    jquery: "npm:^3.0.0"
+    js-yaml: "npm:^3.6.1"
+    labella: "npm:^1.1.4"
+    mapbox-gl: "npm:^0.44.1"
+    moment: "npm:^2.18.1"
+    naukluft-data-backend: "npm:*"
+    pg: "npm:^8.6.0"
+    pg-native: "npm:^3.0.0"
+    pg-promise: "npm:^10.10.2"
+    postcss-modules: "npm:^1.4.1"
+    postgis-promise: "npm:^1.0.0"
+    prop-types: "npm:^15.7.2"
+    react: "npm:^16.11.0"
+    react-color: "npm:^2.13.8"
+    react-dom: "npm:^16.11.0"
+    react-error-boundary: "npm:^1.2.5"
+    react-fullscreen: "npm:^0.1.0"
+    react-hyperscript: "npm:^3.0.0"
+    react-hyperscript-helpers: "npm:^1.2.0"
+    react-images: "npm:^1.0.0"
+    react-localstorage: "npm:^0.3.1"
+    react-measure: "npm:^2.0.2"
+    react-pan-zoom-element: "npm:^2.0.1"
+    react-router: "npm:^5.1.2"
+    react-router-dom: "npm:^5.1.2"
+    react-scroll: "npm:^1.7.14"
+    react-select: "npm:^3.0.8"
+    react-sizeme: "npm:^2.3.6"
+    react-svg-textures: "npm:^1.4.7"
+    react-tooltip: "npm:^3.3.0"
+    react-transition-group: "npm:^2.3.0"
+    react-visibility-sensor: "npm:^3.9.0"
+    replace-ext: "npm:^1.0.0"
+    request-promise: "npm:^4.2.2"
+    semantic-ui-react: "npm:^0.70.0"
+    stylus: "npm:^0.54.5"
+    typescript: "npm:^3.7.4"
+    ui-box: "npm:^3.0.2"
+    underscore: "npm:^1.13.1"
+    use-async-effect: "npm:^2.2.1"
+    uuid: "npm:^3.1.0"
+  languageName: unknown
+  linkType: soft
+
 "@naukluft/map-panel@workspace:packages/map-panel":
   version: 0.0.0-use.local
   resolution: "@naukluft/map-panel@workspace:packages/map-panel"
@@ -3334,6 +3418,30 @@ __metadata:
     react: "npm:*"
     socket.io-client: "npm:^2.2.0"
     underscore: "npm:^1.13.1"
+  languageName: unknown
+  linkType: soft
+
+"@naukluft/web-app2@workspace:*, @naukluft/web-app2@workspace:app2":
+  version: 0.0.0-use.local
+  resolution: "@naukluft/web-app2@workspace:app2"
+  dependencies:
+    "@types/express": "npm:^4.17.21"
+    "@types/react": "npm:^18.3.5"
+    "@types/react-dom": "npm:^18.3.0"
+    "@universal-middleware/core": "npm:^0.2.6"
+    "@universal-middleware/express": "npm:^0.2.3"
+    "@vitejs/plugin-react": "npm:^4.3.1"
+    cross-env: "npm:^7.0.3"
+    cross-fetch: "npm:^4.0.0"
+    dotenv: "npm:^16.4.5"
+    express: "npm:^4.19.2"
+    react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
+    tsx: "npm:^4.19.0"
+    typescript: "npm:^5.5.4"
+    vike: "npm:^0.4.195"
+    vike-react: "npm:^0.5.5"
+    vite: "npm:^5.4.3"
   languageName: unknown
   linkType: soft
 
@@ -5168,90 +5276,6 @@ __metadata:
   checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
   languageName: node
   linkType: hard
-
-"app@workspace:app":
-  version: 0.0.0-use.local
-  resolution: "app@workspace:app"
-  dependencies:
-    "@babel/core": "npm:^7.6.4"
-    "@blueprintjs/core": "npm:^3.22.3"
-    "@blueprintjs/select": "npm:^3.11.2"
-    "@macrostrat/cesium-viewer": "npm:*"
-    "@macrostrat/hyper": "npm:^1.2.13"
-    "@types/d3-array": "npm:^2.0.0"
-    "@types/d3-format": "npm:^1.3.1"
-    "@types/d3-scale": "npm:^2.1.1"
-    "@types/react": "npm:^16.9.17"
-    "@types/react-hyperscript": "npm:^3.0.4"
-    "@types/react-router-dom": "npm:^5.1.3"
-    "@types/underscore": "npm:^1.9.4"
-    "@vx/axis": "npm:0.0.192"
-    babel-plugin-module-resolver: "npm:^3.2.0"
-    babel-plugin-root-import: "npm:^6.4.1"
-    bluebird: "npm:^3.5.0"
-    bulk: "npm:^2.0.1"
-    calculate-size: "npm:^1.1.1"
-    chroma-js: "npm:^1.2.1"
-    class-names: "npm:^1.0.0"
-    classnames: "npm:^2.2.5"
-    constate: "npm:^1.3.2"
-    css-modules-electron: "npm:^1.0.0"
-    css-modules-require-hook: "npm:^4.0.1"
-    d3: "npm:^4.2.6"
-    d3-array: "npm:^2.4.0"
-    d3-hierarchy: "npm:^1.0.2"
-    d3-jetpack: "npm:^2.0.13"
-    d3-legend: "npm:^1.0.0"
-    d3-scale-chromatic: "npm:^1.1.1"
-    d3-selection-multi: "npm:^1.0.0"
-    d3-tip: "npm:^0.7.1"
-    dom-to-image: "npm:^2.6.0"
-    electron-localshortcut: "npm:^0.6.0"
-    geologic-patterns: "npm:*"
-    immutability-helper: "npm:^2.6.6"
-    jquery: "npm:^3.0.0"
-    js-yaml: "npm:^3.6.1"
-    labella: "npm:^1.1.4"
-    mapbox-gl: "npm:^0.44.1"
-    moment: "npm:^2.18.1"
-    naukluft-data-backend: "npm:*"
-    pg: "npm:^8.6.0"
-    pg-native: "npm:^3.0.0"
-    pg-promise: "npm:^10.10.2"
-    postcss-modules: "npm:^1.4.1"
-    postgis-promise: "npm:^1.0.0"
-    prop-types: "npm:^15.7.2"
-    react: "npm:^16.11.0"
-    react-color: "npm:^2.13.8"
-    react-dom: "npm:^16.11.0"
-    react-error-boundary: "npm:^1.2.5"
-    react-fullscreen: "npm:^0.1.0"
-    react-hyperscript: "npm:^3.0.0"
-    react-hyperscript-helpers: "npm:^1.2.0"
-    react-images: "npm:^1.0.0"
-    react-localstorage: "npm:^0.3.1"
-    react-measure: "npm:^2.0.2"
-    react-pan-zoom-element: "npm:^2.0.1"
-    react-router: "npm:^5.1.2"
-    react-router-dom: "npm:^5.1.2"
-    react-scroll: "npm:^1.7.14"
-    react-select: "npm:^3.0.8"
-    react-sizeme: "npm:^2.3.6"
-    react-svg-textures: "npm:^1.4.7"
-    react-tooltip: "npm:^3.3.0"
-    react-transition-group: "npm:^2.3.0"
-    react-visibility-sensor: "npm:^3.9.0"
-    replace-ext: "npm:^1.0.0"
-    request-promise: "npm:^4.2.2"
-    semantic-ui-react: "npm:^0.70.0"
-    stylus: "npm:^0.54.5"
-    typescript: "npm:^3.7.4"
-    ui-box: "npm:^3.0.2"
-    underscore: "npm:^1.13.1"
-    use-async-effect: "npm:^2.2.1"
-    uuid: "npm:^3.1.0"
-  languageName: unknown
-  linkType: soft
 
 "aproba@npm:^1.0.3, aproba@npm:^1.1.1":
   version: 1.2.0
@@ -9347,6 +9371,13 @@ __metadata:
   peerDependencies:
     webpack: ^4 || ^5
   checksum: 10c0/49ffff039369c3192acfdf4a5c2d2fce5cef908e7ba56b5eb0dbc2e634eb3541ddba6242df2ed57ca42ab83a71bffd159e0352c8b26f017a8c44d41863995439
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.5":
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 10c0/48d92870076832af0418b13acd6e5a5a3e83bb00df690d9812e94b24aff62b88ade955ac99a05501305b8dc8f1b0ee7638b18493deb6fe93d680e5220936292f
   languageName: node
   linkType: hard
 
@@ -15141,29 +15172,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"my-app@workspace:app2":
-  version: 0.0.0-use.local
-  resolution: "my-app@workspace:app2"
-  dependencies:
-    "@types/express": "npm:^4.17.21"
-    "@types/react": "npm:^18.3.5"
-    "@types/react-dom": "npm:^18.3.0"
-    "@universal-middleware/core": "npm:^0.2.6"
-    "@universal-middleware/express": "npm:^0.2.3"
-    "@vitejs/plugin-react": "npm:^4.3.1"
-    cross-env: "npm:^7.0.3"
-    cross-fetch: "npm:^4.0.0"
-    express: "npm:^4.19.2"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    tsx: "npm:^4.19.0"
-    typescript: "npm:^5.5.4"
-    vike: "npm:^0.4.195"
-    vike-react: "npm:^0.5.5"
-    vite: "npm:^5.4.3"
-  languageName: unknown
-  linkType: soft
-
 "nan@npm:2.19.0":
   version: 2.19.0
   resolution: "nan@npm:2.19.0"
@@ -15243,6 +15251,7 @@ __metadata:
     "@macrostrat/column-components": "workspace:*"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
     "@macrostrat/ui-components": "npm:^1.0.5"
+    "@naukluft/web-app2": "workspace:*"
     "@turf/polygonize": "npm:^5.1.5"
     "@types/cors": "npm:^2.8.10"
     "@types/morgan": "npm:^1.9.2"
@@ -15278,6 +15287,7 @@ __metadata:
     leaflet: "npm:^1.0.3"
     lerna: "npm:^4.0.0"
     mini-css-extract-plugin: "npm:^2.9.0"
+    naukluft-data-backend: "workspace:*"
     node-mkdirp: "npm:0.0.1"
     nodemon: "npm:^1.11.0"
     noop-loader: "npm:^1.0.0"
@@ -15300,7 +15310,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"naukluft-data-backend@npm:*, naukluft-data-backend@workspace:packages/naukluft-data-backend":
+"naukluft-data-backend@npm:*, naukluft-data-backend@workspace:*, naukluft-data-backend@workspace:packages/naukluft-data-backend":
   version: 0.0.0-use.local
   resolution: "naukluft-data-backend@workspace:packages/naukluft-data-backend"
   dependencies:

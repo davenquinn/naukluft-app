@@ -17,7 +17,7 @@ enum queryResult {
   any = 6
 }
 
-const apiBaseURL = "http://localhost:5555";
+const apiBaseURL = "/api";
 
 export const runQuery = async function(
   key: string,

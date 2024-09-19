@@ -2,12 +2,21 @@ import { resolve, join } from "path";
 const PGPromise = require("pg-promise");
 const { readFileSync } = require("fs");
 import { queryResult } from "pg-promise";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const opts = {
-  noWarnings: true
+  noWarnings: false
 };
 
-const pg_conn = process.env.NAUKLUFT_DB ?? "postgresql:///Naukluft";
+
+
+let pg_conn = process.env.NAUKLUFT_DB;
+
+pg_conn = pg_conn.replace("postgresql://", "postgres://");
+
+console.log("Connecting to database:", pg_conn);
 
 // Create database connection
 const pgp = PGPromise(opts);

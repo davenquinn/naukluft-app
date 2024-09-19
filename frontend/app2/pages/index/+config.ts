@@ -1,10 +1,11 @@
 export default {
-    meta: {
-        Page: {
-            env: {
-                client: true,
-                server: false,
-            },
-        },
-    },
+  meta: {
+      Page: {
+          env: {
+              client: true,
+              server: false,
+          },
+      },
+  },
+  route: "*"
 };

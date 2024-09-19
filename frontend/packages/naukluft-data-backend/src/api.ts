@@ -86,6 +86,14 @@ async function createServer() {
     app.use(morgan("dev"));
   }
   app.use(cors());
+
+  setupRoutes(app);
+
+
+  return app;
+}
+
+function setupRoutes(app: any) {
   // @ts-ignore
   app.use(express.json());
   let helpRoutes = buildQueryFileRoutes(app);
@@ -101,8 +109,6 @@ async function createServer() {
       routes: helpRoutes,
     });
   });
-
-  return app;
 }
 
-export { createServer };
+export { createServer, setupRoutes };

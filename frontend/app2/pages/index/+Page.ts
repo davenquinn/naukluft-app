@@ -49,12 +49,12 @@ const Home = () =>
       ),
       h("ul", { className: "navigation" }, [
         h(NavLink, { to: "/sections" }, "Stratigraphic sections and model"),
-        h(NavLink, { to: "/map" }, "Preliminary geologic map"),
-        h(NavLink, { to: "/globe" }, "High-resolution digital globe (alpha)")
-        //h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
-        //h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
-        //h(NavLink, { to: "/lateral-variation" }, "Lateral Variation")
-        //h(NavLink, { to: "/map-legend" }, "Map legend")
+        // h(NavLink, { to: "/map" }, "Preliminary geologic map"),
+        // h(NavLink, { to: "/globe" }, "High-resolution digital globe (alpha)"),
+        // h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
+        // h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
+        // h(NavLink, { to: "/lateral-variation" }, "Lateral Variation"),
+        // h(NavLink, { to: "/map-legend" }, "Map legend")
       ])
     ])
   ]);
@@ -79,10 +79,10 @@ class App extends React.Component {
           //   path: "/lateral-variation",
           //   component: wrapNavBar(LateralVariation)
           // }),
-          // h(Route, { path: "/map", component: MapView }),
-          // //route '/map-legend', wrapNavBar(MapLegend)
-          // h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
-          //h(Route, { path: "/globe", component: Globe }),
+          //h(Route, { path: "/map", component: MapView }),
+          //route '/map-legend', wrapNavBar(MapLegend)
+          //h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
+          h(Route, { path: "/globe", component: Globe }),
           h(Route, { path: "/", component: Home })
         ])
       ])

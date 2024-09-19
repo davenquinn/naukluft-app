@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { createTodoHandler } from "./server/create-todo-handler";
 import { vikeHandler } from "./server/vike-handler";
 import { createHandler } from "@universal-middleware/express";
+import { setupRoutes } from "../packages/naukluft-data-backend/src/api";
 import express from "express";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -11,6 +12,7 @@ const __dirname = dirname(__filename);
 const root = __dirname;
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 const hmrPort = process.env.HMR_PORT ? parseInt(process.env.HMR_PORT, 10) : 24678;
+
 
 export default (await startServer()) as unknown;
 
@@ -32,6 +34,12 @@ async function startServer() {
     ).middlewares;
     app.use(viteDevMiddleware);
   }
+
+  // Add the API routes
+  // Create a sub-router for the API routes
+  const api = express.Router();
+  setupRoutes(api);
+  app.use("/api", api);
 
   app.post("/api/todo/create", createHandler(createTodoHandler)());
 
