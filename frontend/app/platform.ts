@@ -54,8 +54,6 @@ const PlatformContext = createContext({});
 
 const baseURL = "/";
 
-console.log("Base url:", baseURL);
-
 class PlatformProvider extends Component {
   constructor(props) {
 

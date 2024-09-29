@@ -41,8 +41,6 @@ async function startServer() {
   setupRoutes(api);
   app.use("/api", api);
 
-  app.post("/api/todo/create", createHandler(createTodoHandler)());
-
   /**
    * Vike route
    *
@@ -51,7 +49,7 @@ async function startServer() {
   app.all("*", createHandler(vikeHandler)());
 
   app.listen(port, () => {
-    console.log(`Server listening on http://localhost:${port}`);
+    console.log(`Naukluft app listening on http://localhost:${port}`);
   });
 
   return app;
