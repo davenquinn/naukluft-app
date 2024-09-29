@@ -1,4 +1,4 @@
-import h from "@macrostrat/hyper";
+import hyper from "@macrostrat/hyper";
 import { AxisBottom } from "@vx/axis";
 import chroma from "chroma-js";
 import classNames from "classnames";
@@ -15,6 +15,9 @@ import {
   useDataLocator,
 } from "./data-area";
 import { useIsotopes } from "./data-manager";
+import styles from "./main.module.styl";
+
+const h = hyper.styled(styles);
 
 import {
   ColumnLayoutContext,

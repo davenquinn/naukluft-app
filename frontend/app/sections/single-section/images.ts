@@ -5,7 +5,7 @@ import { PlatformContext, Platform } from "~/platform";
 import { sum, max } from "d3-array";
 import T from "prop-types";
 import { hyperStyled } from "@macrostrat/hyper";
-//import styles from "./main.styl";
+//import styles from "./main.module.styl";
 
 const h = hyperStyled({});
 

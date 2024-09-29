@@ -13,7 +13,7 @@ import { defaultSettings, SettingsPanel } from "./settings";
 import { useSettings } from "@macrostrat/column-components";
 
 import "../main.styl";
-import "./main.styl";
+import "./main.module.styl";
 
 const SectionMain = function(props) {
   // Set up routing to jump to a specific height

@@ -3,6 +3,7 @@ body
   margin: 0
   padding: 0
   position: relative
+  --background-color: white
   background-color: white
   min-width 480px
 
@@ -82,12 +83,14 @@ body
   .active
     background-color: dodgerblue
 
-/*
+
 @media(prefers-color-scheme: dark)
   body
+    --background-color: #232327
     background-color: #232327 !important
+
   *
-    color #eee
+    color: #eee
 
   ul.navigation
     li a
@@ -96,4 +99,3 @@ body
       &:hover
         background-color: darken(dodgerblue,50%)
         color: dodgerblue
-*/

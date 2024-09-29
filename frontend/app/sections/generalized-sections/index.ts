@@ -6,7 +6,7 @@ import {
 } from "../summary-sections/settings";
 import { GeneralizedSections as GeneralizedSectionsInner } from "./main";
 
-//import "../summary-sections/main.styl";
+//import "../summary-sections/main.module.styl";
 import styles from "./main.module.styl";
 const h = hyperStyled(styles);
 

@@ -6,7 +6,7 @@ import { defaultSettings } from "../single-section/settings";
 import { PlatformProvider } from "~/platform";
 import { SectionDataProvider, useSection } from "~/sections/data-providers";
 import { sectionSwatches } from "./swatch-data";
-//import '../single-section/main.styl';
+//import '../single-section/main.module.styl';
 import "./main.styl";
 
 const pages = Object.keys(sectionSwatches);

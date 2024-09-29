@@ -1,6 +1,6 @@
 import "./main.styl";
 // We should really resolve this from the /src directory...
-import "@macrostrat/column-components/src/main.styl";
+import "../../../packages/column-components/src/main.module.styl";
 import h from "react-hyperscript";
 import { Route, Switch } from "react-router-dom";
 import { NavLink } from "../../nav";

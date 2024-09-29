@@ -1,2 +1,62 @@
-@import "./core-styles.styl"
 
+.section-pane-static
+  width 1200px
+  height max-content
+  .generalized-sections
+    flex-grow 1
+    display flex
+    flex-direction row
+    width 1200px
+  //justify-content space-between
+  .section-column
+    z-index: 10
+    flex-grow 1
+    svg
+      margin-left -20px !important
+    &:first-child
+      flex-grow 0.2
+      margin-left: 10em
+      margin-right 1.2em
+    &:last-child
+      flex-grow 0
+      margin-right: 500px
+
+  .polygons path
+    opacity: 0.99
+
+  :global
+    g.triangle-bars path
+      fill #eee !important
+
+.sequence
+  position relative
+  &>svg
+    position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+    g.linework
+      mix-blend-mode: darken
+
+.underlay
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  z-index 1
+
+
+:global
+  .section-positioner
+    position relative
+
+  .section-page.regional-sections
+    .section-pane-static
+      width 1300px
+      margin 2em 4em
+
+g.lithology-column use.frame
+  stroke-width: 2px
+  stroke: #444
