@@ -1,4 +1,4 @@
-import { Component, createContext, useContext } from "react";
+import {Component, createContext, useContext} from "react";
 import h from "react-hyperscript";
 import LocalStorage from "./sections/storage";
 import update from "immutability-helper";
@@ -10,8 +10,13 @@ import {
 //# Set whether we are on the backend or frontend
 
 // Vite glob imports of pattern
-const patternSVGs = import.meta.glob("../packages/geologic-patterns/assets/svg/*.svg", {eager: true})
-const patternPNGs = import.meta.glob("../packages/geologic-patterns/assets/png-compressed/*.png", {eager: true})
+const patternSVGs = import.meta.glob("../packages/geologic-patterns/assets/svg/*.svg", {eager: true, import: 'default'})
+const patternPNGs = import.meta.glob("../packages/geologic-patterns/assets/png-compressed/*.png", {
+  eager: true,
+  import: 'default'
+})
+
+const columnPatterns = import.meta.glob("../assets/column-patterns/*.svg", { eager: true, import: 'default' })
 
 
 let global = globalThis;
@@ -38,11 +43,11 @@ function join(...args: string[]): string {
 
 const DarkModeContext = createContext(false);
 
-const DarkModeProvider = function(props) {
+const DarkModeProvider = function (props) {
   console.log("Setting up dark mode provider")
   let value = false
-  const { children } = props;
-  return h(DarkModeContext.Provider, { value }, children);
+  const {children} = props;
+  return h(DarkModeContext.Provider, {value}, children);
 };
 
 const useDarkMode = () => useContext(DarkModeContext);
@@ -81,7 +86,7 @@ class PlatformProvider extends Component {
     if (v == null) {
       return;
     }
-    this.state = update(this.state, { inEditMode: { $set: v } });
+    this.state = update(this.state, {inEditMode: {$set: v}});
   }
 
   render() {
@@ -91,11 +96,11 @@ class PlatformProvider extends Component {
       resolveLithologySymbol,
       updateState
     } = this;
-    let { serializedQueries, ...restState } = this.state;
+    let {serializedQueries, ...restState} = this.state;
     if (this.state.platform === Platform.WEB) {
       serializedQueries = true;
     }
-    const { children, ...rest } = this.props;
+    const {children, ...rest} = this.props;
     const value = {
       ...rest,
       ...restState,
@@ -106,12 +111,12 @@ class PlatformProvider extends Component {
       resolveLithologySymbol
     };
 
-    ({ resolveSymbol } = this.props);
+    ({resolveSymbol} = this.props);
     if (resolveSymbol == null) {
-      ({ resolveSymbol } = this);
+      ({resolveSymbol} = this);
     }
 
-    const assetPathFunctions = { resolveSymbol, resolveLithologySymbol };
+    const assetPathFunctions = {resolveSymbol, resolveLithologySymbol};
     return h(DarkModeProvider, [
       h(
         GeologicPatternProvider,
@@ -124,7 +129,7 @@ class PlatformProvider extends Component {
             {
               resolveSymbol: this.resolveSymbol
             },
-            [h(PlatformContext.Provider, { value }, children)]
+            [h(PlatformContext.Provider, {value}, children)]
           )
         ]
       )
@@ -164,14 +169,14 @@ class PlatformProvider extends Component {
   }
 
   resolveLithologySymbol(id, opts = {}) {
-    const { svg = true } = opts;
+    const {svg = true} = opts;
     if (id == null) {
       return null;
     }
     if (svg) {
-      return patternSVGs[`../packages/geologic-patterns/assets/svg/${id}.svg`].default;
+      return patternSVGs[`../packages/geologic-patterns/assets/svg/${id}.svg`];
     } else {
-      return patternPNGs[`../packages/geologic-patterns/assets/png-compressed/${id}.png`].default;
+      return patternPNGs[`../packages/geologic-patterns/assets/png-compressed/${id}.png`];
     }
   }
 
@@ -181,9 +186,9 @@ class PlatformProvider extends Component {
       global.SERIALIZED_QUERIES = this.state.serializedQueries;
     }
 
-    const { inEditMode } = this.state;
+    const {inEditMode} = this.state;
     if (prevState.inEditMode !== inEditMode) {
-      return this.storage.set({ inEditMode });
+      return this.storage.set({inEditMode});
     }
   }
 }

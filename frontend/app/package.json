@@ -14,6 +14,7 @@
   "workspaces": [
     "../packages/*"
   ],
+  "prettier": {},
   "license": "ISC",
   "dependencies": {
     "@blueprintjs/core": "^3.22.3",
