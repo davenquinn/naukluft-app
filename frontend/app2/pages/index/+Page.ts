@@ -26,6 +26,9 @@ import { HotkeysTarget, Hotkeys, Hotkey } from "@blueprintjs/core";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import { ErrorBoundary } from "@macrostrat/ui-components";
+
+import "~/main.styl";
+
 //import "@macrostrat/ui-components/lib/index.css"
 
 const wrapNavBar = function(component) {

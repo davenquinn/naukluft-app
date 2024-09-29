@@ -12,7 +12,7 @@ import { SymbolProvider } from "./components/symbols";
 import h, { compose } from "@macrostrat/hyper";
 import { IsotopesDataProvider } from "./summary-sections/chemostrat/data-manager";
 import { range } from "underscore";
-import "./main.styl";
+
 import {
   runQuery,
   useQuery,

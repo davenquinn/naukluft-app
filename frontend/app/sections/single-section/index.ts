@@ -6,12 +6,13 @@
 import { useContext } from "react";
 import h from "@macrostrat/hyper";
 
-import "../main.styl";
 import { SectionComponent } from "./column";
 import { PlatformContext } from "~/platform";
 import { BaseSectionPage } from "../components";
 import { defaultSettings, SettingsPanel } from "./settings";
 import { useSettings } from "@macrostrat/column-components";
+
+import "../main.styl";
 import "./main.styl";
 
 const SectionMain = function(props) {

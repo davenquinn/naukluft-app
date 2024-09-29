@@ -1,9 +1,9 @@
 import { Component } from "react";
 import "./main.styl";
-import styles from "./section-index.styl";
+import styles from "./section-index.module.styl";
 // We should really resolve this from the /src directory...
 import "@macrostrat/column-components/src/main.styl";
-import h from "react-hyperscript";
+import hyper from "@macrostrat/hyper";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { NavLink } from "../nav";
 import { SectionDataProvider, SectionConsumer } from "./data-providers";
@@ -17,6 +17,8 @@ import { SectionDetailIndex } from "./section-details/integration";
 import { LithostratigraphicSummaryColumn } from "./lithostrat-summary";
 import { nest } from "d3";
 import ErrorBoundary from "react-error-boundary";
+
+const h = hyper.styled(styles);
 
 const SectionLink = function ({ base, id }) {
   if (base == null) {
