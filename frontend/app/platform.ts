@@ -1,10 +1,9 @@
 import {Component, createContext, useContext} from "react";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import LocalStorage from "./sections/storage";
 import update from "immutability-helper";
 import {
   AssetPathProvider,
-  AssetPathContext,
   GeologicPatternProvider
 } from "@macrostrat/column-components";
 //# Set whether we are on the backend or frontend
@@ -17,7 +16,6 @@ const patternPNGs = import.meta.glob("../packages/geologic-patterns/assets/png-c
 })
 
 const columnPatterns = import.meta.glob("../assets/column-patterns/*.svg", { eager: true, import: 'default' })
-
 
 let global = globalThis;
 
@@ -165,7 +163,15 @@ class PlatformProvider extends Component {
   }
 
   resolveSymbol(sym) {
-    return join(baseURL, "column-symbols", sym);
+    if (sym == null) {
+      return null;
+    }
+    let sym1 = sym
+    // Just in case we are passing full names
+    if (sym1.endsWith(".svg")) {
+      sym1 = sym1.slice(0, -4);
+    }
+    return columnPatterns[`../assets/column-patterns/${sym1}.svg`];
   }
 
   resolveLithologySymbol(id, opts = {}) {
