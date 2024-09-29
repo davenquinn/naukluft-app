@@ -9,6 +9,11 @@ import {
 } from "@macrostrat/column-components";
 //# Set whether we are on the backend or frontend
 
+// Vite glob imports of pattern
+const patternSVGs = import.meta.glob("../packages/geologic-patterns/assets/svg/*.svg", {eager: true})
+const patternPNGs = import.meta.glob("../packages/geologic-patterns/assets/png-compressed/*.png", {eager: true})
+
+
 let global = globalThis;
 
 global.ELECTRON = "electron";
@@ -159,24 +164,14 @@ class PlatformProvider extends Component {
   }
 
   resolveLithologySymbol(id, opts = {}) {
-    let { svg } = opts;
-    svg = true;
-    if (svg == null) {
-      svg = false;
-    }
+    const { svg = true } = opts;
     if (id == null) {
       return null;
     }
-    if (this.state.platform === Platform.ELECTRON) {
-      let fp = `png/${id}.png`;
-      if (svg) {
-        fp = `svg/${id}.svg`;
-      }
-      const proj = process.env.PROJECT_DIR || "";
-      const q = join(proj, "versioned/deps/geologic-patterns/assets", fp);
-      return "file://" + q;
+    if (svg) {
+      return patternSVGs[`../packages/geologic-patterns/assets/svg/${id}.svg`].default;
     } else {
-      return this.path("lithology-patterns", `${id}.png`);
+      return patternPNGs[`../packages/geologic-patterns/assets/png-compressed/${id}.png`].default;
     }
   }
 
