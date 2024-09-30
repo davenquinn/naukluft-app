@@ -1,24 +1,37 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "moduleResolution": "node",
-    "target": "es6",
-    "module": "commonjs",
-    "lib": ["es2015", "es2016", "es2017", "dom"],
     "strict": true,
-    "sourceMap": true,
-    "declaration": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "allowJs": true,
+    "checkJs": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "module": "ESNext",
+    "noEmit": true,
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "vite/client",
+      "vike-react"
+    ],
+    "jsx": "preserve",
+    "jsxImportSource": "react",
     "paths": {
-      "~/*": ["./app/*"],
-      "@macrostrat/column-components": ["packages/column-components/src/"],
-      "@macrostrat/ui-components": ["packages/ui-components/src/"],
-      "@macrostrat/cesium-viewer": ["packages/cesium-viewer/src/"],
-      "naukluft-data-backend": ["packages/naukluft-data-backend/src"]
+      "~/*": ["./src/*"],
+      "@macrostrat/column-components": ["./packages/column-components/src/"],
+      "@macrostrat/ui-components": ["./packages/ui-components/src/"],
+      "@macrostrat/cesium-viewer": ["./packages/cesium-viewer/src/"],
+      "naukluft-data-backend": ["./packages/naukluft-data-backend/src"]
     }
   },
-  "include": ["app"]
+  "exclude": [
+    "./dist"
+  ]
 }

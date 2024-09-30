@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     conditions: ["typescript"],
     alias: {
-      "~": path.resolve("../app"),
+      "~": path.resolve("./src"),
     },
   },
   plugins: [vike({}), react({})],

@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { createTodoHandler } from "./server/create-todo-handler";
 import { vikeHandler } from "./server/vike-handler";
 import { createHandler } from "@universal-middleware/express";
-import { setupRoutes } from "../packages/naukluft-data-backend/src/api";
+import { setupRoutes } from "./packages/naukluft-data-backend/src/api";
 import express from "express";
 
 const __filename = fileURLToPath(import.meta.url);
