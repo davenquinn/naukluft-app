@@ -13,7 +13,7 @@ import classNames from "classnames";
 import { Component, createContext } from "react";
 import { findDOMNode } from "react-dom";
 import "d3-jetpack";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import { join } from "path";
 
 const createRow = (data) => console.log(data);

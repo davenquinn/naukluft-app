@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { RaisedSelect } from "@macrostrat/column-components";
 import { ButtonGroup, Button } from "@blueprintjs/core";
 import { SectionSurfacesContext } from "~/sections/providers";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 
 const SurfaceLabel = (props) => {
   const d = props.surface;

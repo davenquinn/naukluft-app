@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import { ColumnLayoutContext } from "@macrostrat/column-components";
 import { AxisBottom } from "@vx/axis";
 

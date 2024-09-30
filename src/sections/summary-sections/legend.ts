@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import classNames from "classnames";
 import {
   FaciesContext,

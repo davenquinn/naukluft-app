@@ -1480,15 +1480,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.2.0":
-  version: 7.25.6
-  resolution: "@babel/runtime@npm:7.25.6"
-  dependencies:
-    regenerator-runtime: "npm:^0.14.0"
-  checksum: 10c0/d6143adf5aa1ce79ed374e33fdfd74fa975055a80bc6e479672ab1eadc4e4bfd7484444e17dd063a1d180e051f3ec62b357c7a2b817e7657687b47313158c3d2
-  languageName: node
-  linkType: hard
-
 "@babel/template@npm:^7.24.7, @babel/template@npm:^7.25.0":
   version: 7.25.0
   resolution: "@babel/template@npm:7.25.0"
@@ -2322,7 +2313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@macrostrat/hyper@npm:^2.0.1":
+"@macrostrat/hyper@npm:^2.0.1, @macrostrat/hyper@npm:^2.2.1":
   version: 2.2.1
   resolution: "@macrostrat/hyper@npm:2.2.1"
   dependencies:
@@ -3965,13 +3956,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"batch-processor@npm:1.0.0":
-  version: 1.0.0
-  resolution: "batch-processor@npm:1.0.0"
-  checksum: 10c0/048b868811bed4cd03a0eec35264055f0f3fe4ab62f501809dce4a8a7b845d905fa5051b4af8b3c5123181116b1e2b6dfabf608829043b60cf61f4da3a359b60
-  languageName: node
-  linkType: hard
-
 "bcrypt-pbkdf@npm:^1.0.0":
   version: 1.0.2
   resolution: "bcrypt-pbkdf@npm:1.0.2"
@@ -4348,13 +4332,6 @@ __metadata:
   version: 0.12.0
   resolution: "caseless@npm:0.12.0"
   checksum: 10c0/ccf64bcb6c0232cdc5b7bd91ddd06e23a4b541f138336d4725233ac538041fb2f29c2e86c3c4a7a61ef990b665348db23a047060b9414c3a6603e9fa61ad4626
-  languageName: node
-  linkType: hard
-
-"centered-pan-zoom@npm:2.0.0":
-  version: 2.0.0
-  resolution: "centered-pan-zoom@npm:2.0.0"
-  checksum: 10c0/0dadead5f512b28a9c55086e6e7aca4417f33444757f4c600c6710a8303370890386e643bae19d7ce69957af69e6ab66d9045fccf5164ef0bdad2eb69cd72ea2
   languageName: node
   linkType: hard
 
@@ -5996,15 +5973,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"element-resize-detector@npm:^1.2.1":
-  version: 1.2.4
-  resolution: "element-resize-detector@npm:1.2.4"
-  dependencies:
-    batch-processor: "npm:1.0.0"
-  checksum: 10c0/8c180c8c2a6d5b83678f994e937890f06db6355009cce2bde3c690a45510c92f53f927431926b27db416739aa7b661c7d3afe237d17cd16491ecccfa740cda08
-  languageName: node
-  linkType: hard
-
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
@@ -7066,13 +7034,6 @@ __metadata:
     has-symbols: "npm:^1.0.3"
     hasown: "npm:^2.0.0"
   checksum: 10c0/0a9b82c16696ed6da5e39b1267104475c47e3a9bdbe8b509dfe1710946e38a87be70d759f4bb3cda042d76a41ef47fe769660f3b7c0d1f68750299344ffb15b7
-  languageName: node
-  linkType: hard
-
-"get-node-dimensions@npm:^1.2.1":
-  version: 1.2.2
-  resolution: "get-node-dimensions@npm:1.2.2"
-  checksum: 10c0/5b8c2a6361e54b09bd5d4befb46cc9e497fcbb3ec9c05205c3207bfdaa56c2d92e573a8c1f14c2f3fe4ca0bc477b776241655a25c5c1392275ba73b64100488b
   languageName: node
   linkType: hard
 
@@ -8248,7 +8209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^3.10.0, js-yaml@npm:^3.13.1, js-yaml@npm:^3.7.0":
+"js-yaml@npm:^3.10.0, js-yaml@npm:^3.13.1":
   version: 3.14.1
   resolution: "js-yaml@npm:3.14.1"
   dependencies:
@@ -9168,7 +9129,7 @@ __metadata:
     "@loadable/component": "npm:^5.15.2"
     "@macrostrat/cesium-viewer": "npm:*"
     "@macrostrat/column-components": "workspace:*"
-    "@macrostrat/hyper": "npm:^1.2.13"
+    "@macrostrat/hyper": "npm:^2.2.1"
     "@macrostrat/photo-viewer": "workspace:*"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
     "@macrostrat/ui-components": "npm:^1.0.5"
@@ -9206,7 +9167,6 @@ __metadata:
     express: "npm:^4.19.2"
     geologic-patterns: "workspace:*"
     immutability-helper: "npm:^2.6.6"
-    js-yaml: "npm:^3.7.0"
     labella: "npm:^1.1.4"
     mapbox-gl: "npm:^0.44.1"
     naukluft-data-backend: "workspace:*"
@@ -9219,18 +9179,11 @@ __metadata:
     react-color: "npm:^2.13.8"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^1.2.5"
-    react-fullscreen: "npm:^0.1.0"
-    react-hyperscript: "npm:^3.0.0"
-    react-hyperscript-helpers: "npm:^1.2.0"
     react-images: "npm:^1.0.0"
-    react-localstorage: "npm:^0.3.1"
-    react-measure: "npm:^2.0.2"
-    react-pan-zoom-element: "npm:^2.0.1"
     react-router: "npm:^5.1.2"
     react-router-dom: "npm:^5.1.2"
     react-scroll: "npm:^1.7.14"
     react-select: "npm:^3.0.8"
-    react-sizeme: "npm:^2.3.6"
     react-svg-textures: "npm:^1.4.7"
     react-tooltip: "npm:^3.3.0"
     react-transition-group: "npm:^2.3.0"
@@ -11045,17 +10998,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-es6-component@npm:*":
-  version: 0.0.4
-  resolution: "react-es6-component@npm:0.0.4"
-  dependencies:
-    underscore: "npm:1.8.3"
-  peerDependencies:
-    react: "*"
-  checksum: 10c0/69f20b421193d282864353738e4e821422fd98f08dd2585ab129e0d54d461d123d6e5c2f636e8c815122117e341a59d55147556f672b73f2aa6d2119dde5e43e
-  languageName: node
-  linkType: hard
-
 "react-focus-lock@npm:^2.11.3":
   version: 2.12.1
   resolution: "react-focus-lock@npm:2.12.1"
@@ -11120,25 +11062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-fullscreen@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "react-fullscreen@npm:0.1.0"
-  peerDependencies:
-    react: ^0.13.0 || ^0.14.0-a
-  checksum: 10c0/453147b962ce2b6e51cabba1f75aca13e69415ff896fed28d7fbb3bc6addb3bc4881e30059e7bcb629a1e432f79994ef1e070958c0fdda947329a35d7fe5d46d
-  languageName: node
-  linkType: hard
-
-"react-hyperscript-helpers@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "react-hyperscript-helpers@npm:1.2.0"
-  peerDependencies:
-    react: ">=0.13.0"
-  checksum: 10c0/be5aa04fd76de816a6a9ef1395a6bf3d418991f816a9bff9b5d54b7a42d70bd6d5becb15388852b5cdb4b4f6c915a947c361ee744d9c1eacedb098a75bacdfb3
-  languageName: node
-  linkType: hard
-
-"react-hyperscript@npm:^3.0.0, react-hyperscript@npm:^3.2.0":
+"react-hyperscript@npm:^3.2.0":
   version: 3.2.0
   resolution: "react-hyperscript@npm:3.2.0"
   peerDependencies:
@@ -11244,28 +11168,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-localstorage@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "react-localstorage@npm:0.3.1"
-  checksum: 10c0/d05d8dd216db710f65f3e85b5bde571ce95d3db79f5a28b6c903905ba7bbf69edb7a67f8c061fa9d45a3bfdbeb402e5f08a10c4a2a960e6e8fd93cfc1314f4fe
-  languageName: node
-  linkType: hard
-
-"react-measure@npm:^2.0.2":
-  version: 2.5.2
-  resolution: "react-measure@npm:2.5.2"
-  dependencies:
-    "@babel/runtime": "npm:^7.2.0"
-    get-node-dimensions: "npm:^1.2.1"
-    prop-types: "npm:^15.6.2"
-    resize-observer-polyfill: "npm:^1.5.0"
-  peerDependencies:
-    react: ">0.13.0"
-    react-dom: ">0.13.0"
-  checksum: 10c0/5c1b2f27cc2c08efcb30ed3e7be995bb11df3f377ee4ecd7b877562fc834c4c26107fb73a6014b182e3d853b331f568732383ae1e3d64bf6843141fce512ea34
-  languageName: node
-  linkType: hard
-
 "react-motion@npm:^0.5.0":
   version: 0.5.2
   resolution: "react-motion@npm:0.5.2"
@@ -11276,19 +11178,6 @@ __metadata:
   peerDependencies:
     react: ^0.14.9 || ^15.3.0 || ^16.0.0
   checksum: 10c0/4ea6f1cc7079f0161fd786cc755133a822d87d9c0510369b8fb348d9ad602111efa2e3496dbcc390c967229e39e3eb5f6dd5dd6d3d124289443de31d6035a6c8
-  languageName: node
-  linkType: hard
-
-"react-pan-zoom-element@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "react-pan-zoom-element@npm:2.0.1"
-  dependencies:
-    centered-pan-zoom: "npm:2.0.0"
-    react-es6-component: "npm:*"
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: 10c0/457e3179e2ce7c576f617ee11343dc4cb559d05c92e4572a640bd76be0c474b4d0064cef6e1479f6934e46846aad80e3444a9e1e369a78033dfc4ff12bf8563a
   languageName: node
   linkType: hard
 
@@ -11451,21 +11340,6 @@ __metadata:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   checksum: 10c0/49e4703b58275ae6ce8ba82ce490a9e5ca13dcf65eb8603c7bf2449cb6714491c34ac8f9486dd777222ede6e880ab0438623df95fb414dc27b1d5f7e76eb8490
-  languageName: node
-  linkType: hard
-
-"react-sizeme@npm:^2.3.6":
-  version: 2.6.12
-  resolution: "react-sizeme@npm:2.6.12"
-  dependencies:
-    element-resize-detector: "npm:^1.2.1"
-    invariant: "npm:^2.2.4"
-    shallowequal: "npm:^1.1.0"
-    throttle-debounce: "npm:^2.1.0"
-  peerDependencies:
-    react: ^0.14.0 || ^15.0.0-0 || ^16.0.0
-    react-dom: ^0.14.0 || ^15.0.0-0 || ^16.0.0
-  checksum: 10c0/0d38b1d7a597a62cbca2ae3dd4cd4eaec46665b6a326af595d7bc9e8d13691c94dc748ce526a2255e7125222a04914ca95539baa36f2206a89a7677fce05f405
   languageName: node
   linkType: hard
 
@@ -11824,13 +11698,6 @@ __metadata:
   version: 1.5.0
   resolution: "resize-observer-polyfill@npm:1.5.0"
   checksum: 10c0/5112173d546f4c6c74b39dc53544544a6358d758abd1458bf70411de0601f3a3ca3e10e8dde1fecf4aaa282684ef5a80667d23337d87ff1b472464c4129bc040
-  languageName: node
-  linkType: hard
-
-"resize-observer-polyfill@npm:^1.5.0":
-  version: 1.5.1
-  resolution: "resize-observer-polyfill@npm:1.5.1"
-  checksum: 10c0/5e882475067f0b97dc07e0f37c3e335ac5bc3520d463f777cec7e894bb273eddbfecb857ae668e6fb6881fd6f6bb7148246967172139302da50fa12ea3a15d95
   languageName: node
   linkType: hard
 
@@ -12305,13 +12172,6 @@ __metadata:
   version: 0.0.1
   resolution: "shallow-copy@npm:0.0.1"
   checksum: 10c0/ab1c762e36fa3a02cec228e111f227be0b46457a82f123c5ef13f3bc970be16b74dbfd0f1b6ffb450a66db856832800c86713ffc1ec5733d61f59f23fe114769
-  languageName: node
-  linkType: hard
-
-"shallowequal@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "shallowequal@npm:1.1.0"
-  checksum: 10c0/b926efb51cd0f47aa9bc061add788a4a650550bbe50647962113a4579b60af2abe7b62f9b02314acc6f97151d4cf87033a2b15fc20852fae306d1a095215396c
   languageName: node
   linkType: hard
 
@@ -13068,13 +12928,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"throttle-debounce@npm:^2.1.0":
-  version: 2.3.0
-  resolution: "throttle-debounce@npm:2.3.0"
-  checksum: 10c0/41648e4cf46f935818af32ecac34f9876c618f24e300551cbe3a0ca2c5828cb8d2f9b73e6e1e2f8c64237f70fbc8c541f9b5c9114da70b33b1ed10ba4cc6b15f
-  languageName: node
-  linkType: hard
-
 "through2@npm:^2.0.0, through2@npm:^2.0.3, through2@npm:~2.0.3":
   version: 2.0.5
   resolution: "through2@npm:2.0.5"
@@ -13437,13 +13290,6 @@ __metadata:
     has-symbols: "npm:^1.0.3"
     which-boxed-primitive: "npm:^1.0.2"
   checksum: 10c0/81ca2e81134167cc8f75fa79fbcc8a94379d6c61de67090986a2273850989dd3bae8440c163121b77434b68263e34787a675cbdcb34bb2f764c6b9c843a11b66
-  languageName: node
-  linkType: hard
-
-"underscore@npm:1.8.3":
-  version: 1.8.3
-  resolution: "underscore@npm:1.8.3"
-  checksum: 10c0/b9f8c5756252e01c057859c4b0932dc0bea73122121bbe465f1e1fa975ca6c3b6a3c8b967b7918d374686f9f1beb96c0d5c5d52788fc1328992bff02dba3599c
   languageName: node
   linkType: hard
 

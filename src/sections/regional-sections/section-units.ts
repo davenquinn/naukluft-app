@@ -4,7 +4,7 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import { select } from "d3-selection";
 import { Component } from "react";
 import { findDOMNode } from "react-dom";

@@ -4,7 +4,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 import { Component } from "react";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import { NavLink, BackLink } from "../nav";
 import { Icon } from "@blueprintjs/core";
 

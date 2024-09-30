@@ -1,5 +1,5 @@
 import { Component } from "react";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import { SectionNavigationControl } from "../util";
 import {
   FaciesDescriptionSmall,

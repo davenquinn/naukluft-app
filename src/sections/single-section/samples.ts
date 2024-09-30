@@ -2,7 +2,7 @@ import { format } from "d3-format";
 import { useContext } from "react";
 import { ColumnContext } from "@macrostrat/column-components";
 import { IsotopesDataContext } from "../summary-sections/chemostrat/data-manager";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 
 const fmt = format("+.1f");
 

@@ -5,7 +5,7 @@
  */
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import  "./main.styl";
 import { Icon } from "@blueprintjs/core";
 

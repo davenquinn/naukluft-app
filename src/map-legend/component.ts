@@ -9,7 +9,7 @@ import { Component } from "react";
 import * as d3 from "d3";
 import "d3-selection-multi";
 import "d3-jetpack";
-import h from "react-hyperscript";
+import h from "@macrostrat/hyper";
 import createLegend from ".";
 import "./main.styl";
 
