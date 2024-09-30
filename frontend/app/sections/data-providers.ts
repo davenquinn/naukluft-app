@@ -13,6 +13,8 @@ import h, { compose } from "@macrostrat/hyper";
 import { IsotopesDataProvider } from "./summary-sections/chemostrat/data-manager";
 import { range } from "underscore";
 
+import { fileInfo } from "./section-image-info";
+
 import {
   runQuery,
   useQuery,
@@ -24,14 +26,15 @@ function join(...args) {
   return args.join("/");
 }
 
+// Vite environment variables
+const ASSETS_BASE_URL = import.meta.env.VITE_ASSETS_BASE_URL;
+
 const sectionFilename = function (fn) {
-  const BASE_URL = "/"
-  return join(BASE_URL, "section-images", fn);
+  return join(ASSETS_BASE_URL, "column-images", fn);
 };
 
 const getSectionData = async function (opts = {}) {
-  const fn = sectionFilename("file-info.json");
-  const config = (await getJSON(fn)) ?? {};
+  const config = fileInfo;
 
   const data = await runQuery("sections/sections");
   return data.map(function (s) {
@@ -53,7 +56,6 @@ const getSectionData = async function (opts = {}) {
         return { width: sz, height, filename };
       });
     }
-    console.log(s);
     return s;
   });
 };
