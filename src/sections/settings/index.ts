@@ -7,7 +7,7 @@
 import { useContext } from "react";
 import h from "@macrostrat/hyper";
 import { Switch, RangeSlider } from "@blueprintjs/core";
-import { PlatformContext } from "../../platform";
+import { PlatformContext } from "~/platform";
 import {
   PickerControl,
   useSettings,

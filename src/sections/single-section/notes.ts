@@ -1,4 +1,3 @@
-import { format } from "d3-format";
 import { useState, useContext, useCallback, useMemo } from "react";
 import h from "@macrostrat/hyper";
 import { PlatformContext, Platform } from "~/platform";
@@ -10,7 +9,6 @@ import {
 } from "naukluft-data-backend";
 import { PhotoOverlay } from "@macrostrat/photo-viewer";
 
-const fmt = format(".1f");
 
 const PhotoLinks = function ({ photos }) {
   if (photos == null) {
