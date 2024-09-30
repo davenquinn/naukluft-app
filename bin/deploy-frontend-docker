@@ -1,4 +1,0 @@
-# Code to deploy the current frontend as a Docker container to GHCR
-
-# Build locally
-# Note: disabled for now
