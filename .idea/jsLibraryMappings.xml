@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/api/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/app/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/app2/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/cesium-viewer/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/column-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/map-panel/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/naukluft-data-backend/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/photo-viewer/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/vector-tile-server/package.json" />
+  </component>
+</project>

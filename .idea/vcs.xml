@@ -36,8 +36,6 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend/app2" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/frontend/packages/cesium-viewer" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/frontend/packages/column-components" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/frontend/packages/geologic-patterns" vcs="Git" />
