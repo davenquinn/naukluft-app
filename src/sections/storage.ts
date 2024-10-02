@@ -1,2 +1,2 @@
-import { LocalStorage } from "@macrostrat/column-components";
+import { LocalStorage } from "@macrostrat/ui-components";
 export default LocalStorage;
