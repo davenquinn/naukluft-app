@@ -1,19 +1,17 @@
 import { useContext } from "react";
 import { ColumnContext } from "@macrostrat/column-components";
 import { useSection } from "~/sections/data-providers";
-import { PlatformContext, Platform } from "~/platform";
 import { sum, max } from "d3-array";
 import T from "prop-types";
 import { hyperStyled } from "@macrostrat/hyper";
 import { extractPadding } from "@macrostrat/ui-components";
-//import styles from "./main.module.styl";
+import styles from "./main.module.styl";
 
-const h = hyperStyled({});
+const h = hyperStyled(styles);
 
 const ColumnImages = function (props) {
   const { sectionID } = props;
   let { height } = useContext(ColumnContext);
-  const { platform } = useContext(PlatformContext);
   const { zoom, pixelsPerMeter, range } = useContext(ColumnContext);
   const { range: sectionRange, imageFiles } = useSection(sectionID);
   const { paddingTop, paddingLeft } = extractPadding(props);
@@ -50,11 +48,7 @@ const ColumnImages = function (props) {
   };
 
   const getSrc = (im) => {
-    if (platform === Platform.ELECTRON) {
-      return "file://" + im.filename;
-    } else {
-      return im.filename;
-    }
+    return im.filename;
   };
 
   const imHeight = 427 * zs;
@@ -66,7 +60,6 @@ const ColumnImages = function (props) {
       imageFiles.map((im, i) => {
         const pos = imHeight * i;
         const src = getSrc(im);
-        console.log(src);
         if (pos < top - imHeight) return null;
         if (pos > bottom) return null;
         return h("img", {

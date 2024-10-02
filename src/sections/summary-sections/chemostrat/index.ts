@@ -11,10 +11,9 @@ import { rangeForSection } from "../../util";
 import { LayoutGroup } from "../layout";
 // Not sure if this one is really used
 import styles from "../main.module.styl";
-import styles2 from "./main.module.styl"
 import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
 
-const h = hyperStyled({...styles, ...styles2});
+const h = hyperStyled(styles);
 
 const ChemostratigraphyGroup = function (props) {
   const { range, children } = props;

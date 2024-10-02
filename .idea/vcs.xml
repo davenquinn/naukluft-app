@@ -36,10 +36,10 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend/packages/cesium-viewer" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend/packages/column-components" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend/packages/geologic-patterns" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend/packages/mvt-imagery-provider" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/frontend/packages/vector-tile-server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/cesium-viewer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/column-components" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/geologic-patterns" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/mvt-imagery-provider" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/vector-tile-server" vcs="Git" />
   </component>
 </project>
