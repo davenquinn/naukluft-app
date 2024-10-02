@@ -1,6 +1,3 @@
-[submodule "frontend/app/bundledDeps/column-components"]
-	path = packages/column-components
-	url = git://github.com/UW-Macrostrat/column-components.git
 [submodule "frontend/app/bundledDeps/geologic-patterns"]
 	path = packages/geologic-patterns
 	url = git://github.com/davenquinn/geologic-patterns.git

@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import h from "@macrostrat/hyper";
 
 import { useColumnDivisions } from "../column/data-source";
@@ -8,17 +7,16 @@ import {
   ColumnAxis,
   ColumnProvider,
   GrainsizeLayoutProvider,
-  useSettings,
   LithologyColumn,
   TriangleBars,
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner,
-  extractPadding,
   Padding,
   useColumn,
   useColumnLayout
 } from "@macrostrat/column-components";
+import { extractPadding } from "@macrostrat/ui-components"
 import { useSection } from "~/sections/data-providers";
 import { ColumnImages } from "../single-section/images";
 import { ManagedSymbolColumn } from "../components";
