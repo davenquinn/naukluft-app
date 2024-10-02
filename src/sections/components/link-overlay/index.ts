@@ -8,10 +8,9 @@
 import {
   ColumnContext,
   SVG,
-  expandInnerSize,
-  extractPadding,
   useSettings,
 } from "@macrostrat/column-components";
+import {expandInnerSize, extractPadding} from "@macrostrat/ui-components"
 import { hyperStyled } from "@macrostrat/hyper";
 import classNames from "classnames";
 import { pairs } from "d3-array";

@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { ColumnContext, extractPadding } from "@macrostrat/column-components";
+import { ColumnContext } from "@macrostrat/column-components";
 import { useSection } from "~/sections/data-providers";
 import { PlatformContext, Platform } from "~/platform";
 import { sum, max } from "d3-array";
 import T from "prop-types";
 import { hyperStyled } from "@macrostrat/hyper";
+import { extractPadding } from "@macrostrat/ui-components";
 //import styles from "./main.module.styl";
 
 const h = hyperStyled({});
