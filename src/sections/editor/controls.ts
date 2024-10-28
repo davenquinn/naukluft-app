@@ -8,7 +8,7 @@ const SurfaceLabel = (props) => {
   const d = props.surface;
   if (d == null) return null;
   return h("div.correlated-surface-row", [
-    h("span.bp3-code", d.surface_id),
+    h("span.bp5-code", d.surface_id),
     " ",
     h("span", d.note),
   ]);

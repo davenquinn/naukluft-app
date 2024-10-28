@@ -366,7 +366,7 @@ const ModalEditor = (props: ModalEditorProps) => {
   return h(
     AppDrawer,
     {
-      className: "bp3-minimal editor-drawer",
+      className: "bp5-minimal editor-drawer",
       title: "Edit interval",
       isOpen,
       onClose: closeDialog

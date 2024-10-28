@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@blueprintjs/core": "^3.22.3",
-    "@blueprintjs/select": "^3.11.2",
+    "@blueprintjs/core": "^5",
+    "@blueprintjs/select": "^5",
     "@loadable/component": "^5.15.2",
     "@macrostrat/cesium-viewer": "workspace:*",
     "@macrostrat/column-components": "1.0.0-dev2",

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import "./main.styl";
-import styles from "./section-index.module.styl";
+import "../main.styl";
+import styles from "./main.module.sass";
 // We should really resolve this from the /src directory...
 import "@macrostrat/column-components/dist/main.css";
 import hyper from "@macrostrat/hyper";
@@ -56,7 +57,6 @@ class SectionIndexPage extends Component {
         h(ErrorBoundary, [
           h("div.title-block", [
             h("h1", "Stratigraphic sections of the Zebra Nappe"),
-            h("p.author", "Dissertation plate 5.2 – Daven Quinn"),
             h("p", `Summary sections can be used to access detailed sections`),
           ]),
           h("ul.navigation", [
