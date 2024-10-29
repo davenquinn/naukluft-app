@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import h from "@macrostrat/hyper";
-import T from "prop-types";
 import { SectionNavigationControl } from "../util";
 import { ErrorBoundary } from "@macrostrat/ui-components";
 import { SettingsProvider } from "@macrostrat/column-components";
@@ -44,14 +43,8 @@ const BaseSectionPage = function <T>(props: BaseSectionProps<T>) {
           },
         }),
       ]),
-    ]
+    ],
   );
-};
-
-BaseSectionPage.propTypes = {
-  className: T.string,
-  id: T.string.isRequired,
-  settingsPanel: T.elementType.isRequired,
 };
 
 export { BaseSectionPage };

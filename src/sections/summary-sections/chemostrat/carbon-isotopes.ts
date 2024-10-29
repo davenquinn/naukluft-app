@@ -39,7 +39,7 @@ const IsotopeText = function ({ datum, text, ...rest }) {
       y,
       ...rest,
     },
-    text
+    text,
   );
 };
 
@@ -127,7 +127,7 @@ class IsotopesColumnInner extends Component {
             this.renderAxisLines(),
             h(MinimalColumnScale, { system, tickValues }),
             this.renderData(),
-          ]
+          ],
         ),
       ]),
     ]);
@@ -167,7 +167,7 @@ class IsotopesColumnInner extends Component {
           transform: `translate(0, ${y})`,
           ...sectionSurfaceProps(d),
         });
-      })
+      }),
     );
   }
 
@@ -207,7 +207,7 @@ class IsotopesColumnInner extends Component {
                 stroke: actualStroke,
                 strokeWidth: 4,
               });
-            })
+            }),
           ),
           h.if(this.props.showLines)(IsotopeDataLine, {
             values: values.filter((d) => d.in_zebra_nappe),
@@ -221,7 +221,7 @@ class IsotopesColumnInner extends Component {
             text: key,
           }),
         ]);
-      })
+      }),
     );
   }
 }
@@ -249,9 +249,9 @@ const MinimalColumnScale = function (props) {
           value,
           stroke: "#aaa",
           strokeDasharray,
-          strokeWidth: 3,
+          strokeWidth: 1,
         });
-      })
+      }),
     ),
     h("rect.underlay", {
       x: 0,
@@ -359,13 +359,13 @@ class MinimalIsotopesColumnInner extends Component {
                 stroke,
                 strokeWidth: 4,
               });
-            })
+            }),
           ),
           h.if(this.props.showLines)(IsotopeDataLine, {
             values: isotopes,
             stroke,
           }),
-        ]
+        ],
       ),
     ]);
   }
@@ -378,7 +378,7 @@ const IsotopesColumn = function (props) {
   return h(
     CrossAxisLayoutProvider,
     { width, domain },
-    h(IsotopesColumnInner, { isotopes, ...rest })
+    h(IsotopesColumnInner, { isotopes, ...rest }),
   );
 };
 
@@ -412,7 +412,7 @@ const MinimalIsotopesColumn = function (props) {
       isotopes: vals,
       section,
       ...rest,
-    })
+    }),
   );
 };
 

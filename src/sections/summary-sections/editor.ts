@@ -17,7 +17,7 @@ const EditorContext = createContext<EditorCtx>(null);
 const EditorProvider = (props) => {
   const { children } = props;
 
-  const allDivisions = useContext(ColumnDivisionsContext).divisions;
+  const allDivisions = useContext(ColumnDivisionsContext).divisions ?? [];
 
   const [editingIntervalIx, setEditingInterval] = useState<number>(null);
   const onEditInterval = (interval: ColumnDivision) => {
@@ -27,9 +27,9 @@ const EditorProvider = (props) => {
   };
   const editingInterval = allDivisions[editingIntervalIx];
 
-  const value = { editingInterval, onEditInterval };
-
   const divisions = useColumnDivisions(editingInterval?.section_id);
+
+  const value = { editingInterval, onEditInterval };
 
   return h(EditorContext.Provider, { value }, [
     h(ModalEditor, {

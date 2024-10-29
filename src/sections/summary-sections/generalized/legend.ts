@@ -10,7 +10,7 @@ function Legend(props) {
   return h("div.legend", [
     h("div.facies", [h("h2", "Facies"), h(FaciesLegend)]),
     h("div.symbols", [h("h2", "Symbols"), h(SymbolLegend)]),
-    h("div.triangle-bars", [h("h2", ""), h(TriangleBarsLegend)]),
+    //h("div.triangle-bars", [h("h2", ""), h(TriangleBarsLegend)]),
   ]);
 }
 

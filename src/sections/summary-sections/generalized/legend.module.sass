@@ -35,18 +35,6 @@
 
   div.facies-description
     flex-grow: 2
-  div.facies-description-inner
-    display: flex
-    flex-direction: row
-    margin: 0 -1em
-    &>div
-      flex: 1
-      margin: 0 1em
-      &:last-child
-        flex-grow: 1.2
-        margin-top: -2em
-    .color-swatch
-      margin-bottom: 0.5em
 
   div.symbol-legend
     img
@@ -77,6 +65,10 @@
   top: 4.5em
   display: flex
   flex-direction: row
+  z-index: 10
+  gap: 1em
+  width: 650px
+  background-color: var(--background-color)
   h1, h2, h3, h4
     line-height: inherit
     margin-bottom: 0.5em

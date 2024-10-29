@@ -8,15 +8,6 @@ export function NavLink({ to, children }) {
   return h("li", h(Link, { to }, children));
 }
 
-export const BackLink = withRouter((props) => {
-  const { history } = props;
-  return h("li", [
-    h("a", { onClick: history.goBack }, [
-      h(Icon, { icon: "arrow-left", iconSize: 24 }),
-    ]),
-  ]);
-});
-
 export function BackButton() {
   const history = useHistory();
   const onClick = () => history.goBack();
