@@ -13,7 +13,10 @@ COPY ./packages /app/packages/
 
 RUN yarn install
 
+# Build the app
+COPY . .
 
+RUN yarn run build
 
 EXPOSE 5555
 

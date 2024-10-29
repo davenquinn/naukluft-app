@@ -2,7 +2,6 @@ import { useState } from "react";
 import useAsyncEffect from "use-async-effect";
 import { currentPlatform, Platform } from "./platform";
 import get from "axios";
-import { array } from "~/node_modules/@types/prop-types";
 import { query } from "~/db";
 
 // Copied from pg-promise
@@ -14,15 +13,15 @@ enum queryResult {
   /** Expecting no rows, to be resolved with `null`. */
   none = 4,
   /** `many|none` - any result is expected, to be resolved with an array of rows-objects. */
-  any = 6
+  any = 6,
 }
 
 const apiBaseURL = "/api";
 
-export const runQuery = async function(
+export const runQuery = async function (
   key: string,
   params: any = null,
-  resultMask: queryResult = queryResult.any
+  resultMask: queryResult = queryResult.any,
 ): Promise<any> {
   /*
   Generalized query that picks the best method for
@@ -60,11 +59,11 @@ export const runQuery = async function(
 export function useUpdateableQuery(
   key: string,
   params: any = null,
-  resultMask: queryResult = queryResult.any
+  resultMask: queryResult = queryResult.any,
 ) {
   /** A react hook to use the result of a query */
   const [result, updateResult] = useState<any>(null);
-  const queryFunc = async function() {
+  const queryFunc = async function () {
     const res = await runQuery(key, params, resultMask);
     return updateResult(res);
   };
@@ -75,7 +74,7 @@ export function useUpdateableQuery(
 export function useQuery(
   key: string,
   params: any = null,
-  resultMask: queryResult = queryResult.any
+  resultMask: queryResult = queryResult.any,
 ) {
   /** A react hook to use the result of a query */
   const [res, _] = useUpdateableQuery(key, params, resultMask);
