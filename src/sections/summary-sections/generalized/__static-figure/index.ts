@@ -8,7 +8,7 @@ import { SettingsProvider } from "@macrostrat/column-components";
 import { SectionSurfacesProvider } from "~/sections/providers";
 import { Legend } from "./legend";
 
-import "../../summary-sections/__static-figure/fonts.css";
+import "../../__static-figure/fonts.css";
 import "./main.styl";
 
 const StaticSectionSettings = C(SettingsProvider, {
@@ -34,7 +34,7 @@ const Figure = compose(
   SectionSurfacesProvider,
   StaticSectionSettings,
   "div.page.generalized-sections-static",
-  Inner
+  Inner,
 );
 
 export default (el, opts, cb) => render(h(Figure), el, cb);

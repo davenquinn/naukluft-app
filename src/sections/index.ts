@@ -9,7 +9,7 @@ import { NavigationList, NavLink } from "~/components/navigation";
 import { SectionDataProvider, SectionConsumer } from "./data-providers";
 import SectionPage from "./single-section";
 import { SummarySections } from "./summary-sections";
-import { GeneralizedSections } from "./generalized-sections";
+import { GeneralizedSections } from "./summary-sections/generalized";
 import { SectionNavigationControl } from "./util";
 import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";

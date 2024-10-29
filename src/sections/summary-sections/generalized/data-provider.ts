@@ -1,11 +1,14 @@
 import h, { compose, C } from "@macrostrat/hyper";
 import { useQuery } from "naukluft-data-backend";
 import { useContext, createContext } from "react";
-import { ColumnDivision, ColumnDivisionsContext } from "../column/data-source";
-import { EditorProvider, EditorContext } from "../summary-sections/editor";
+import {
+  ColumnDivision,
+  ColumnDivisionsContext,
+} from "../../column/data-source";
+import { EditorProvider, EditorContext } from "../editor";
 import { SectionSurfacesContext } from "~/sections/providers";
-import { SectionDataContext } from "../data-providers";
-import { SymbolContext } from "../components/symbols";
+import { SectionDataContext } from "../../data-providers";
+import { SymbolContext } from "../../components/symbols";
 import { GeneralizedDivision } from "./types";
 import { group, pairs } from "d3-array";
 import { last } from "underscore";
@@ -33,7 +36,7 @@ function orderBreaks(breaks: SectionBreak[]): SectionBreak[] {
   let items: GeneralizedBreak[];
   while (breaks.length > 0) {
     let ix = breaks.findIndex(
-      d => d.lower_section == last(orderedBreaks).upper_section
+      (d) => d.lower_section == last(orderedBreaks).upper_section,
     );
     if (ix != -1) {
       items = breaks.splice(ix, 1);
@@ -41,7 +44,7 @@ function orderBreaks(breaks: SectionBreak[]): SectionBreak[] {
       continue;
     }
     ix = breaks.findIndex(
-      d => d.upper_section == orderedBreaks[0].lower_section
+      (d) => d.upper_section == orderedBreaks[0].lower_section,
     );
     if (ix != -1) {
       items = breaks.splice(ix, 1);
@@ -65,7 +68,7 @@ function calculateSectionRanges(breaks: SectionBreak[]) {
     orderedBreaks.unshift({
       lower_section: null,
       upper_section: first.lower_section,
-      surface: null
+      surface: null,
     });
   }
   const last = orderedBreaks[orderedBreaks.length - 1];
@@ -73,7 +76,7 @@ function calculateSectionRanges(breaks: SectionBreak[]) {
     orderedBreaks.push({
       lower_section: last.upper_section,
       upper_section: null,
-      surface: null
+      surface: null,
     });
   }
 
@@ -84,7 +87,7 @@ function calculateSectionRanges(breaks: SectionBreak[]) {
     sectionRanges.push({
       section: b0.upper_section,
       lower_surface: b0.surface,
-      upper_surface: b1.surface
+      upper_surface: b1.surface,
     });
   }
   return sectionRanges;
@@ -97,10 +100,10 @@ interface ExtraArgs {
 function generalize(
   divs: ColumnDivision[],
   start_height: number,
-  section_id: string
+  section_id: string,
 ): GeneralizedDivision[] {
   let newBottom = start_height;
-  return divs.map(d => {
+  return divs.map((d) => {
     const {
       section_id: original_section,
       top: original_top,
@@ -121,7 +124,7 @@ function generalize(
       bottom,
       original_top,
       original_bottom,
-      ...rest
+      ...rest,
     };
   });
 }
@@ -136,10 +139,10 @@ class SectionHeightGeneralizer {
   findMatchingInterval(sectionID: string, height: number) {
     return (
       this.divisions.find(
-        d =>
+        (d) =>
           d.original_section == sectionID &&
           d.original_bottom <= height &&
-          d.original_top >= height
+          d.original_top >= height,
       ) ?? null
     );
   }
@@ -158,7 +161,7 @@ class SectionHeightGeneralizer {
 // A context for to pass along ungrouped divisions
 const BaseDivisionsContext = createContext<ColumnDivision[]>([]);
 
-const GeneralizedDivisionsProvider = props => {
+const GeneralizedDivisionsProvider = (props) => {
   /*
   Provides all surfaces used in Summary Sections diagram
   */
@@ -176,7 +179,7 @@ const GeneralizedDivisionsProvider = props => {
 
   const groupedBreaks = group<GeneralizedBreak, string>(
     breaks,
-    d => d.locality
+    (d) => d.locality,
   );
   let divisions: GeneralizedDivision[] = [];
 
@@ -187,27 +190,27 @@ const GeneralizedDivisionsProvider = props => {
       top: 0,
       surface_type: "mfs",
       surface_order: 0,
-      original_section: null
+      original_section: null,
     });
     let baseOffset = 0;
     const sectionRanges = calculateSectionRanges(breaks);
     for (const range of sectionRanges) {
       // Filter within each section range to get only the required divisions
-      const section = sectionData.find(d => d.section == range.section)!;
+      const section = sectionData.find((d) => d.section == range.section)!;
 
       let sectionDivisions = allDivisions.filter(
-        d => d.section_id == range.section && !(d.schematic ?? false)
+        (d) => d.section_id == range.section && !(d.schematic ?? false),
       );
       let bottomIx = 0,
         topIx = sectionDivisions.length;
       if (range.lower_surface != null) {
         bottomIx = sectionDivisions.findIndex(
-          d => d.surface == range.lower_surface
+          (d) => d.surface == range.lower_surface,
         );
       }
       if (range.upper_surface != null) {
         topIx = sectionDivisions.findIndex(
-          d => d.surface == range.upper_surface
+          (d) => d.surface == range.upper_surface,
         );
       }
 
@@ -233,8 +236,8 @@ const GeneralizedDivisionsProvider = props => {
     h(
       ColumnDivisionsContext.Provider,
       { value: { divisions, generalized: true } },
-      props.children
-    )
+      props.children,
+    ),
   );
 };
 
@@ -252,17 +255,17 @@ const match = (d, v): boolean => {
 };
 
 function compactMap<A, B>(arr: A[], mapper: (arg0: A) => B): B[] {
-  return arr.map(mapper).filter(d => d != null);
+  return arr.map(mapper).filter((d) => d != null);
 }
 
-const GeneralizedSurfacesProvider = props => {
+const GeneralizedSurfacesProvider = (props) => {
   // Repackage section surfaces with respect to new generalized sections
   const { surfaces, updateSurfaces } = useContext(SectionSurfacesContext);
   const { divisions } = useContext(ColumnDivisionsContext);
 
-  const newSurfaces = surfaces.map(surface => {
-    const section_height = compactMap(surface.section_height, v => {
-      const div = divisions.find(d => match(d, v));
+  const newSurfaces = surfaces.map((surface) => {
+    const section_height = compactMap(surface.section_height, (v) => {
+      const div = divisions.find((d) => match(d, v));
       if (div == null) return null;
       return { ...v, height: div.bottom, section: div.section_id };
     });
@@ -280,19 +283,19 @@ const matchDivisions = (a: GeneralizedDivision, b: ColumnDivision): boolean => {
   );
 };
 
-const GeneralizedEditorProvider = props => {
+const GeneralizedEditorProvider = (props) => {
   const { onEditInterval, editingInterval } = useContext(EditorContext);
   const allDivisions = useContext(BaseDivisionsContext);
   const { divisions } = useContext(ColumnDivisionsContext);
 
   // Must be a child of GeneralizedDivisionsProvider
   const onEditGeneralizedInterval = (interval: GeneralizedDivision) => {
-    const v = allDivisions.find(d => matchDivisions(interval, d));
+    const v = allDivisions.find((d) => matchDivisions(interval, d));
     onEditInterval(v);
   };
 
   const generalizedEditInterval = divisions?.find((d: GeneralizedDivision) =>
-    matchDivisions(d, editingInterval)
+    matchDivisions(d, editingInterval),
   );
 
   return h(
@@ -300,16 +303,16 @@ const GeneralizedEditorProvider = props => {
     {
       value: {
         editingInterval: generalizedEditInterval,
-        onEditInterval: onEditGeneralizedInterval
-      }
+        onEditInterval: onEditGeneralizedInterval,
+      },
     },
-    props.children
+    props.children,
   );
 };
 
 // Symbols
 
-const GeneralizedSymbolProvider = props => {
+const GeneralizedSymbolProvider = (props) => {
   const symbols = useQuery("sections/symbols") ?? [];
   const { divisions } = useContext(ColumnDivisionsContext);
   const generalizer = new SectionHeightGeneralizer(divisions);
@@ -331,7 +334,7 @@ const GeneralizedDataProvider = compose(
   GeneralizedDivisionsProvider,
   GeneralizedSymbolProvider,
   GeneralizedEditorProvider,
-  GeneralizedSurfacesProvider
+  GeneralizedSurfacesProvider,
 );
 
 export {
@@ -340,5 +343,5 @@ export {
   GeneralizedSurfacesProvider,
   ColumnDivisionsContext,
   SectionHeightGeneralizer,
-  useGeneralizedDivisions
+  useGeneralizedDivisions,
 };

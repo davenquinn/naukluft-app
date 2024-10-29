@@ -1,8 +1,5 @@
-import { BaseSectionPage } from "../components/base-page";
-import {
-  SummarySectionsSettings,
-  defaultSettings,
-} from "../summary-sections/settings";
+import { BaseSectionPage } from "../../components/base-page";
+import { SummarySectionsSettings, defaultSettings } from "../settings";
 import { compose } from "@macrostrat/hyper";
 import { group } from "d3-array";
 
@@ -14,9 +11,9 @@ import {
   SectionContainer,
   SectionLinkOverlay,
   SectionPositionProvider,
-} from "../components";
-import { SVGSectionInner } from "../summary-sections/column";
-import { LithostratigraphyColumn } from "../summary-sections/lithostrat-key";
+} from "../../components";
+import { SVGSectionInner } from "../column";
+import { LithostratigraphyColumn } from "../lithostrat-key";
 import { SectionFigureReferences } from "./__static-figure/figure-references";
 import { Legend } from "./__static-figure/legend";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";

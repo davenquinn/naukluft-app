@@ -1,7 +1,7 @@
 import h from "@macrostrat/hyper";
 import { useContext } from "react";
-import { BaseChemostratigraphyColumn } from "../summary-sections/chemostrat";
-import { IsotopesDataContext } from "../summary-sections/chemostrat/data-manager";
+import { BaseChemostratigraphyColumn } from "../chemostrat";
+import { IsotopesDataContext } from "../chemostrat/data-manager";
 
 const IsotopeDataRescaler = ({ scale, children }) => {
   /** Rescales isotope data for generalized section view
@@ -16,7 +16,7 @@ const IsotopeDataRescaler = ({ scale, children }) => {
           d.height = scale(d.height);
           return d;
         })
-        .filter((d) => d.height > 0)
+        .filter((d) => d.height > 0),
     );
   });
 
