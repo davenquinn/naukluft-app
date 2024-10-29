@@ -1,7 +1,7 @@
 import { hyperStyled } from "@macrostrat/hyper";
 import { SectionContainer } from "../components";
 import { LithostratKey } from "../summary-sections/lithostrat-key";
-import { Legend } from "../summary-sections/legend";
+import { Index } from "../summary-sections/legend";
 import { group } from "d3-array";
 // This should be wrapped into a context
 import { groupOrder } from "../summary-sections/display-parameters";
@@ -51,7 +51,7 @@ const SectionPane = function (props: SectionPaneProps) {
   let { offset } = sectionData;
 
   return h("div#section-pane", { style: { overflow: "scroll" } }, [
-    h.if(showLegend)(Legend),
+    h.if(showLegend)(Index),
     h(SectionContainer, [
       h(LithostratKey, {
         zoom: 0.1,
@@ -99,7 +99,7 @@ function ArrangedSections(props: ArrangedSectionsProps) {
         sections,
         ...rest,
       });
-    })
+    }),
   );
 }
 
@@ -146,7 +146,7 @@ const SectionGroup = (props: SectionGroupProps) => {
 
   // Sort into columns within this group, using `stackGroups` variable
   let columns = group(sections, (d) =>
-    stackGroups.findIndex((v) => v.includes(d.section))
+    stackGroups.findIndex((v) => v.includes(d.section)),
   );
   columns = Array.from(columns);
   columns.sort((a, b) => a[0] - b[0]);
@@ -208,9 +208,9 @@ const SectionGroup = (props: SectionGroupProps) => {
             end,
             id,
           });
-        })
+        }),
       );
-    })
+    }),
   );
 };
 
@@ -309,11 +309,11 @@ const SVGSectionInner = function (props) {
                       minOrder: sequenceStratOrder[0],
                       maxOrder: sequenceStratOrder[1],
                     }),
-                  ]
+                  ],
                 ),
-              ]
+              ],
             ),
-          ]
+          ],
         ),
         h(
           "div.section-children",
@@ -323,10 +323,10 @@ const SVGSectionInner = function (props) {
               marginLeft: padding.left + mainTranslate,
             },
           },
-          [props.children]
+          [props.children],
         ),
       ]),
-    ]
+    ],
   );
 };
 
@@ -373,6 +373,6 @@ const SVGSectionComponent = (props) => {
       zoom,
       children,
     },
-    h(SVGSectionInner, props)
+    h(SVGSectionInner, props),
   );
 };
