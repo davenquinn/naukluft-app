@@ -15,7 +15,7 @@ import {
 import { SVGSectionInner } from "../column";
 import { LithostratigraphyColumn } from "../lithostrat-key";
 import { SectionFigureReferences } from "./__static-figure/figure-references";
-import { Legend } from "./__static-figure/legend";
+import { Legend } from "./legend";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";
 import { ChemostratigraphyColumn } from "./chemostrat";
 import {

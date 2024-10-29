@@ -6,7 +6,7 @@ import { SectionDataProvider } from "~/sections/data-providers";
 import { GeneralizedSections } from "../main";
 import { SettingsProvider } from "@macrostrat/column-components";
 import { SectionSurfacesProvider } from "~/sections/providers";
-import { Legend } from "./legend";
+import { Legend } from "../legend";
 
 import "../../__static-figure/fonts.css";
 import "./main.styl";
