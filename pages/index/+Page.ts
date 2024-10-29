@@ -3,11 +3,10 @@
 import { PlatformProvider } from "~/platform";
 import { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import hyper from "@macrostrat/hyper";
 import { FocusStyleManager } from "@blueprintjs/core";
 FocusStyleManager.onlyShowFocusOnTabs();
 
-import { NavLink } from "~/components";
+import { NavigationList, NavLink } from "~/components";
 import { SectionIndex } from "~/sections";
 import { CrossSectionsPage } from "~/cross-sections";
 //MapLegend = require './map-legend/component'
@@ -20,29 +19,26 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "@macrostrat/ui-components/dist/main.css";
 
-import styles from "./main.module.sass";
-
-const h = hyper.styled(styles);
+import h from "./+Page.module.sass";
+import { NavigationLayout } from "~/layouts";
 
 const Router = BrowserRouter;
 
 function Home() {
-  return h("div#homepage", [
-    h("div#homepage-inner", [
-      h("h1", "Southern Naukluft Mountains mapping and stratigraphy"),
-      h(
-        "p",
-        "Data products of research in the Southern Naukluft mountains, for presentation on the web alongside journal publication",
-      ),
-      h("ul", { className: "navigation" }, [
-        h(NavLink, { to: "/sections" }, "Stratigraphic sections and model"),
-        // h(NavLink, { to: "/map" }, "Preliminary geologic map"),
-        // h(NavLink, { to: "/globe" }, "High-resolution digital globe (alpha)"),
-        // h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
-        // h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
-        // h(NavLink, { to: "/lateral-variation" }, "Lateral Variation"),
-        // h(NavLink, { to: "/map-legend" }, "Map legend")
-      ]),
+  return h(NavigationLayout, [
+    h("h1", "Southern Naukluft Mountains mapping and stratigraphy"),
+    h(
+      "p",
+      "Data products of research in the Southern Naukluft mountains, for presentation on the web alongside journal publication",
+    ),
+    h(NavigationList, [
+      h(NavLink, { to: "/sections" }, "Stratigraphic sections and model"),
+      // h(NavLink, { to: "/map" }, "Preliminary geologic map"),
+      // h(NavLink, { to: "/globe" }, "High-resolution digital globe (alpha)"),
+      // h(NavLink, { to: "/cross-sections" }, "Structural cross-sections"),
+      // h(NavLink, { to: "/carbon-isotopes" }, "Carbon Isotopes"),
+      // h(NavLink, { to: "/lateral-variation" }, "Lateral Variation"),
+      // h(NavLink, { to: "/map-legend" }, "Map legend")
     ]),
   ]);
 }

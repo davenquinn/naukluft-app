@@ -5,7 +5,7 @@ import styles from "./main.module.sass";
 import "@macrostrat/column-components/dist/main.css";
 import hyper from "@macrostrat/hyper";
 import { Route, Switch, withRouter } from "react-router-dom";
-import { NavLink } from "~/components/navigation";
+import { NavigationList, NavLink } from "~/components/navigation";
 import { SectionDataProvider, SectionConsumer } from "./data-providers";
 import SectionPage from "./single-section";
 import { SummarySections } from "./summary-sections";
@@ -16,7 +16,7 @@ import { RegionalSectionsPage } from "./regional-sections";
 import { SectionDetailIndex } from "./section-details/integration";
 import { LithostratigraphicSummaryColumn } from "./lithostrat-summary";
 import { nest } from "d3";
-import ErrorBoundary from "react-error-boundary";
+import { NavigationLayout } from "~/layouts";
 
 const h = hyper.styled(styles);
 
@@ -44,40 +44,37 @@ class SectionIndexPage extends Component {
       return h("div.location", [
         h("h2", key),
         h(
-          "ul.navigation.sections",
+          NavigationList,
+          { className: "sections" },
           values.map((d) => h(SectionLink, { id: d.id })),
         ),
       ]);
     });
 
-    return h("div#homepage", [
+    return h(NavigationLayout, [
       h(SectionNavigationControl),
-      h("div#homepage-inner", [
-        h(ErrorBoundary, [
-          h("div.title-block", [
-            h("h1", "Stratigraphic sections of the Zebra Nappe"),
-            h("p", `Summary sections can be used to access detailed sections`),
-          ]),
-          h("ul.navigation", [
-            h(NavLink, { to: `${pathname}/summary` }, [
-              h("div.title.summary-sections", "Summary sections"),
-            ]),
-            h(NavLink, { to: `${pathname}/generalized` }, [
-              h("div.title", "Generalized sections"),
-            ]),
-            h(NavLink, { to: `${pathname}/regional` }, [
-              h("div.title.regional", "Regional cross section"),
-            ]),
-            h(NavLink, { to: `${pathname}/details` }, [
-              h("div.title", "Section details"),
-            ]),
-            h(NavLink, { to: `${pathname}/lithostratigraphy` }, [
-              h("div.title", "Lithostratigraphy"),
-            ]),
-          ]),
-          ...locations,
+      h("div.title-block", [
+        h("h1", "Stratigraphy of the Zebra Nappe"),
+        h("p", `Summary sections can be used to access detailed sections`),
+      ]),
+      h(NavigationList, [
+        h(NavLink, { to: `${pathname}/summary` }, [
+          h("div.title.summary-sections", "Summary sections"),
+        ]),
+        h(NavLink, { to: `${pathname}/generalized` }, [
+          h("div.title", "Generalized sections"),
+        ]),
+        h(NavLink, { to: `${pathname}/regional` }, [
+          h("div.title.regional", "Regional cross section"),
+        ]),
+        h(NavLink, { to: `${pathname}/details` }, [
+          h("div.title", "Section details"),
+        ]),
+        h(NavLink, { to: `${pathname}/lithostratigraphy` }, [
+          h("div.title", "Lithostratigraphy"),
         ]),
       ]),
+      ...locations,
     ]);
   }
 }

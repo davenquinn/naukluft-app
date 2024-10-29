@@ -1,4 +1,4 @@
-import { compose, hyperStyled } from "@macrostrat/hyper";
+import hyper, { compose } from "@macrostrat/hyper";
 import { group } from "d3-array";
 
 import { ColumnProvider, ColumnSVG } from "@macrostrat/column-components";
@@ -22,8 +22,7 @@ import {
 } from "./data-provider";
 
 import "../summary-sections/main.module.styl";
-import styles from "./main.module.styl";
-const h = hyperStyled(styles);
+import h from "./main.module.styl";
 
 const GeneralizedSection = function (props) {
   const { range, height, divisions, zoom, offsetTop, ...rest } = props;
@@ -47,9 +46,9 @@ const GeneralizedSection = function (props) {
             absolutePosition: false,
             axisComponent: GeneralizedAxis,
           },
-          [h(GeneralizedBreaks), h(SectionFigureReferences)]
+          [h(GeneralizedBreaks), h(SectionFigureReferences)],
         ),
-      ]
+      ],
     ),
   ]);
 };
@@ -94,7 +93,7 @@ const GeneralizedLithostratKey = (props) => {
             ]),
           ]),
         ]),
-      ]
+      ],
     ),
   ]);
 };
@@ -169,7 +168,7 @@ const SectionPane = function (props) {
             height: end - start,
             divisions: surfaces,
           });
-        })
+        }),
       ),
     ]),
   ]);
@@ -179,7 +178,7 @@ const GeneralizedSections = compose(
   SectionSurfacesProvider,
   GeneralizedDataProvider,
   SectionPositionProvider,
-  SectionPane
+  SectionPane,
 );
 
 export { GeneralizedSections };

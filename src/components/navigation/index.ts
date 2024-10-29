@@ -2,7 +2,7 @@ import { Link, withRouter } from "react-router-dom";
 import { useHistory } from "react-router";
 import { LinkButton } from "~/components/buttons";
 
-import h from "@macrostrat/hyper";
+import h from "./index.module.sass";
 import { Icon, ButtonGroup, Button } from "@blueprintjs/core";
 
 export function NavLink({ to, children }) {
@@ -42,3 +42,7 @@ export const NavigationControl = function (props) {
     }),
   ]);
 };
+
+export function NavigationList({ children, className }) {
+  return h("ul.navigation", { className }, children);
+}

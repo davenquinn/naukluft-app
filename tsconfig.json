@@ -18,6 +18,8 @@
       "ESNext"
     ],
     "types": [
+      // Type overrides go _before_ the types they override
+      "./module-overrides.d.ts",
       "vite/client",
       "vike-react"
     ],
