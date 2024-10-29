@@ -1192,11 +1192,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@macrostrat/column-components@npm:1.0.0-dev2":
-  version: 1.0.0-dev2
-  resolution: "@macrostrat/column-components@npm:1.0.0-dev2"
+"@macrostrat/column-components@npm:1.0.0-dev3":
+  version: 1.0.0-dev3
+  resolution: "@macrostrat/column-components@npm:1.0.0-dev3"
   dependencies:
-    "@macrostrat/hyper": "npm:^2.1.0"
+    "@macrostrat/hyper": "npm:^3.0.2"
     chroma-js: "npm:^2.1.0"
     classnames: "npm:^2.2.6"
     d3-axis: "npm:^1.0.12"
@@ -1217,13 +1217,13 @@ __metadata:
     react-scroll: "npm:^1.7.16"
     react-select: "npm:^3.0.8"
     react-svg-textures: "npm:^1.4.7"
-    ui-box: "npm:^3.0.2"
+    ui-box: "npm:^5.4.1"
     uuid: "npm:^7.0.3"
   peerDependencies:
     "@blueprintjs/core": ^5.0.0
-    "@macrostrat/ui-components": 4.0.1
+    "@macrostrat/ui-components": 4.0.7
     react: ^16.12.0||^17.0.0||^18
-  checksum: 10c0/3a231755b5965878af3ffdfa76b2ae5d789b6dc23f81e288ef2ce745f7e57c7990c78cc2fe5228277b00524baa1132ec460cc84fe96c1c3e577d0cd90537305c
+  checksum: 10c0/9fd89d563335b91964ec00059f7b85b71a14c96b0a68ea54d26624ec84feb7bdd63a919829abd46f42d17c78615867e31b908140aabf5a9c706696d576ac45b4
   languageName: node
   linkType: hard
 
@@ -1239,7 +1239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@macrostrat/hyper@npm:^2.0.1, @macrostrat/hyper@npm:^2.1.0, @macrostrat/hyper@npm:^2.2.1":
+"@macrostrat/hyper@npm:^2.0.1, @macrostrat/hyper@npm:^2.2.1":
   version: 2.2.1
   resolution: "@macrostrat/hyper@npm:2.2.1"
   dependencies:
@@ -1261,6 +1261,18 @@ __metadata:
   peerDependencies:
     react: ">= 0.12.0 < 20.0.0"
   checksum: 10c0/bd4a6b270be7225d00b37d887503b64253eb344527a7f834a4f0ad0bfd49f27ce1f6548b11be0ab60d284664f5e6b38c4c77e7e1254e46c0274fa7812c67a439
+  languageName: node
+  linkType: hard
+
+"@macrostrat/hyper@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@macrostrat/hyper@npm:3.0.2"
+  dependencies:
+    "@types/react": "npm:>= 16.0.0 < 20.0.0"
+    classnames: "npm:^2.5.1"
+  peerDependencies:
+    react: ">= 0.12.0 < 20.0.0"
+  checksum: 10c0/b66a6d068aec7333e705a6a9aa79d55724067db69b102fce230fa0844ba6881fbb281e0c704e2508c314d3402fbd98062889bf316df9a3e69b35a53250031ddd
   languageName: node
   linkType: hard
 
@@ -2263,7 +2275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-hyperscript@npm:^3.0.4, @types/react-hyperscript@npm:^3.0.5":
+"@types/react-hyperscript@npm:^3.0.5":
   version: 3.0.13
   resolution: "@types/react-hyperscript@npm:3.0.13"
   dependencies:
@@ -7319,8 +7331,8 @@ __metadata:
     "@blueprintjs/select": "npm:^5"
     "@loadable/component": "npm:^5.15.2"
     "@macrostrat/cesium-viewer": "workspace:*"
-    "@macrostrat/column-components": "npm:1.0.0-dev2"
-    "@macrostrat/hyper": "npm:^2.2.1"
+    "@macrostrat/column-components": "npm:1.0.0-dev3"
+    "@macrostrat/hyper": "npm:^3.0.0"
     "@macrostrat/photo-viewer": "workspace:*"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
     "@macrostrat/ui-components": "npm:^4.0.1"
@@ -7334,7 +7346,6 @@ __metadata:
     "@types/node": "npm:^15.0.1"
     "@types/react": "npm:^18.3.5"
     "@types/react-dom": "npm:^18.3.0"
-    "@types/react-hyperscript": "npm:^3.0.4"
     "@types/underscore": "npm:^1.9.4"
     "@universal-middleware/core": "npm:^0.2.6"
     "@universal-middleware/express": "npm:^0.2.3"

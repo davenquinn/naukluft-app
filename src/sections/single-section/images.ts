@@ -30,7 +30,7 @@ const ColumnImages = function (props) {
   const internalScaleFactor = imageHeight / sectionHeight / pixelsPerMeter;
   const zs = zoom / internalScaleFactor;
   const style = {
-    marginTop: paddingTop,
+    //marginTop: paddingTop,
     marginLeft: paddingLeft,
     height: height * externalScaleFactor,
     width: imageWidth * zs,
@@ -65,14 +65,14 @@ const ColumnImages = function (props) {
         return h("img", {
           src,
           width: im.width * zs,
-          height: imHeight,
           style: {
             position: "absolute",
             top: pos,
             left: 0,
+            maxHeight: imHeight,
           },
         });
-      })
+      }),
     ),
   ]);
 };

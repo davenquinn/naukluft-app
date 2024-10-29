@@ -1,6 +1,5 @@
 import { Link, withRouter } from "react-router-dom";
 import { useHistory } from "react-router";
-import { LinkButton } from "~/components/buttons";
 
 import h from "./index.module.sass";
 import { Icon, ButtonGroup, Button } from "@blueprintjs/core";
@@ -29,11 +28,22 @@ export function BackButton() {
   });
 }
 
+export function HomeButton() {
+  const history = useHistory();
+  const onClick = () => history.push("/");
+  return h(Button, {
+    icon: "home",
+    size: 24,
+    large: true,
+    onClick,
+  });
+}
+
 export const NavigationControl = function (props) {
   const { toggleSettings, children } = props;
   return h(ButtonGroup, { className: "controls" }, [
     h(BackButton),
-    h(LinkButton, { to: "/", icon: "home", large: true }),
+    h(HomeButton),
     children,
     h.if(toggleSettings != null)(Button, {
       onClick: toggleSettings,
