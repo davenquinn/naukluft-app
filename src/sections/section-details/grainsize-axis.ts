@@ -3,7 +3,7 @@ import h from "@macrostrat/hyper";
 import { ColumnLayoutContext } from "@macrostrat/column-components";
 import { AxisBottom } from "@vx/axis";
 
-const GrainsizeAxis = (props) => {
+export function GrainsizeAxis(props) {
   const ref = useRef();
   const { grainsizeScale: gs, pixelHeight } = useContext(ColumnLayoutContext);
   if (gs == null) {
@@ -28,5 +28,3 @@ const GrainsizeAxis = (props) => {
     ]
   );
 };
-
-export { GrainsizeAxis };

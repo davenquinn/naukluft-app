@@ -1,6 +1,5 @@
 import { Component } from "react";
 import "./main.styl";
-import "../main.styl";
 import styles from "./main.module.sass";
 // We should really resolve this from the /src directory...
 import "@macrostrat/column-components/dist/main.css";
@@ -46,7 +45,7 @@ class SectionIndexPage extends Component {
         h("h2", key),
         h(
           "ul.navigation.sections",
-          values.map((d) => h(SectionLink, { id: d.id }))
+          values.map((d) => h(SectionLink, { id: d.id })),
         ),
       ]);
     });
@@ -160,4 +159,4 @@ const SectionIndex = ({ match }) =>
     ]),
   ]);
 
-export { SectionIndex, SectionDataProvider };
+export { SectionIndex };
