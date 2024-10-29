@@ -7,6 +7,3 @@
 [submodule "MVTImageryProvider"]
 	path = packages/mvt-imagery-provider
 	url = git://github.com/davenquinn/MVTImageryProvider.git
-[submodule "cesium-viewer"]
-	path = packages/cesium-viewer
-	url = git://github.com/UW-Macrostrat/cesium-viewer.git
