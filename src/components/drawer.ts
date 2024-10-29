@@ -1,7 +1,7 @@
 import { hyperStyled } from "@macrostrat/hyper";
 import classNames from "classnames";
 import { Drawer, DrawerProps } from "@blueprintjs/core";
-import styles from "./main.module.styl";
+import styles from "./drawer.module.sass";
 import React from "react";
 const h = hyperStyled(styles);
 
@@ -22,10 +22,10 @@ const AppDrawer = (props: AppDrawerProps) => {
         hasBackdrop: false,
         enforceFocus: false,
         canOutsideClickClose: false,
-        ...rest
+        ...rest,
       },
-      h("div.content", null, children)
-    )
+      h("div.content", null, children),
+    ),
   );
 };
 

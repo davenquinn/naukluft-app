@@ -5,7 +5,7 @@ import styles from "./main.module.sass";
 import "@macrostrat/column-components/dist/main.css";
 import hyper from "@macrostrat/hyper";
 import { Route, Switch, withRouter } from "react-router-dom";
-import { NavLink } from "../nav";
+import { NavLink } from "~/components/navigation";
 import { SectionDataProvider, SectionConsumer } from "./data-providers";
 import SectionPage from "./single-section";
 import { SummarySections } from "./summary-sections";

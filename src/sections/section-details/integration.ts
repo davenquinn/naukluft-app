@@ -3,7 +3,7 @@ import "./main.styl";
 import "@macrostrat/column-components/dist/main.css";
 import h from "@macrostrat/hyper";
 import { Route, Switch } from "react-router-dom";
-import { NavLink } from "../../nav";
+import { NavLink } from "~/components";
 import { SectionDetailSettings, Sequence } from ".";
 import { sectionSwatches } from "./swatch-data";
 import { ErrorBoundary } from "@macrostrat/ui-components";

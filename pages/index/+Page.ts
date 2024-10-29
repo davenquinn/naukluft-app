@@ -7,7 +7,7 @@ import hyper from "@macrostrat/hyper";
 import { FocusStyleManager } from "@blueprintjs/core";
 FocusStyleManager.onlyShowFocusOnTabs();
 
-import { NavLink } from "~/nav";
+import { NavLink } from "~/components";
 import { SectionIndex } from "~/sections";
 import { CrossSectionsPage } from "~/cross-sections";
 //MapLegend = require './map-legend/component'
