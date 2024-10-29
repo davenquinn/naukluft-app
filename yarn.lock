@@ -1286,16 +1286,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@macrostrat/vector-tile-server@npm:^1.0.0, @macrostrat/vector-tile-server@workspace:packages/vector-tile-server":
-  version: 0.0.0-use.local
-  resolution: "@macrostrat/vector-tile-server@workspace:packages/vector-tile-server"
-  dependencies:
-    "@types/node": "npm:^15.0.2"
-    express: "npm:^4.17.1"
-    pg-promise: "npm:^11.0.0"
-  languageName: unknown
-  linkType: soft
-
 "@macrostrat/vite-plugin-hyperstyles@npm:^1.0.0":
   version: 1.0.0
   resolution: "@macrostrat/vite-plugin-hyperstyles@npm:1.0.0"
@@ -2124,7 +2114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^15.0.1, @types/node@npm:^15.0.2":
+"@types/node@npm:^15.0.1":
   version: 15.14.9
   resolution: "@types/node@npm:15.14.9"
   checksum: 10c0/fe5b69cffd20f97c814d568c1d791b3c367f9efa6567a18d2c15cd73c5437f47bcff73a2e10bdfe59f90ce7df47e6cc3c6d431c76d2213bf6099e8ab5d16d355
@@ -6620,12 +6610,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mvt-imagery-provider@workspace:packages/mvt-imagery-provider":
-  version: 0.0.0-use.local
-  resolution: "mvt-imagery-provider@workspace:packages/mvt-imagery-provider"
-  languageName: unknown
-  linkType: soft
-
 "nan@npm:2.19.0":
   version: 2.19.0
   resolution: "nan@npm:2.19.0"
@@ -6732,7 +6716,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "naukluft-data-backend@workspace:packages/naukluft-data-backend"
   dependencies:
-    "@macrostrat/vector-tile-server": "npm:^1.0.0"
     "@types/express": "npm:^4.17.11"
     "@types/node": "npm:^15.0.1"
     axios: "npm:^0.21.1"
@@ -7228,7 +7211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-promise@npm:^11.0.0, pg-promise@npm:^11.5.0":
+"pg-promise@npm:^11.5.0":
   version: 11.9.1
   resolution: "pg-promise@npm:11.9.1"
   dependencies:
