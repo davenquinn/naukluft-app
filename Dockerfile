@@ -9,7 +9,7 @@ COPY .yarn/releases .yarn/releases
 COPY .yarnrc.yml yarn.lock package.json ./
 
 # Add submodules
-COPY ./packages /app/packages/
+COPY ./packages /usr/src/app/packages/
 
 RUN yarn install
 
@@ -18,6 +18,6 @@ COPY . .
 
 RUN yarn run build
 
-EXPOSE 5555
+EXPOSE 3000
 
-CMD yarn run start
+CMD yarn run preview
