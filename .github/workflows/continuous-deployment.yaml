@@ -1,5 +1,3 @@
-# Note: see https://github.com/overhangio/tutor/releases for a well-developed release schedule
-# We could use a CHANGELOG generator to forward information about changes...
 name: Naukluft App release generation
 on:
   push:
@@ -22,22 +20,35 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: backend_meta
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker metadata
+        id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/davenquinn/naukluft-app/server
+          images: ghcr.io/davenquinn/naukluft-app/server:latest
           tags: |
+            type=raw,value=sha-{{github.sha}}
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-')}}
+            type=raw,value=latest-itb-{{date 'YYYYMMDDHHmmss'}},enable=${{ startsWith(github.ref, 'refs/tags/v') && contains(github.ref, '-')}}
+            type=ref,event=pr,suffix=-{{date 'YYYYMMDDHHmmss'}}
+            type=ref,event=pr
+            type=ref,event=branch,suffix=-{{date 'YYYYMMDDHHmmss'}}
             type=ref,event=branch
+            type=ref,event=tag,suffix=-{{date 'YYYYMMDDHHmmss'}}
+            type=ref,event=tag
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
-            type=raw,value={{branch}}-{{date 'YYYYMMDD'}}
+            type=semver,pattern={{version}},suffix=-{{date 'YYYYMMDDHHmmss'}}
+          flavor: |
+            latest=false
+
       - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ steps.backend_meta.outputs.tags }}
-          labels: ${{ steps.backend_meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/davenquinn/naukluft-app/server:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=ghcr.io/davenquinn/naukluft-app/server:main
           cache-to: type=inline

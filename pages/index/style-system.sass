@@ -7,6 +7,8 @@
   --text-color: black
   --text-color-highlight: white
 
+$dark-background-highlight: color.adjust(dodgerblue, $lightness: -40%)
+
 body
   background-color: var(--background-color)
 
@@ -14,6 +16,6 @@ body
     background-color: #232327
     --background-color: #232327
     --background-color-secondary: #333
-    --background-color-highlight: color.adjust(#fff, $lightness: -50%)
+    --background-color-highlight: #{$dark-background-highlight}
     --text-color: #eee
     --text-color-highlight: dodgerblue
