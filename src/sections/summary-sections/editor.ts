@@ -27,7 +27,7 @@ const EditorProvider = (props) => {
   };
   const editingInterval = allDivisions[editingIntervalIx];
 
-  const divisions = useColumnDivisions(editingInterval?.section_id);
+  const divisions = useColumnDivisions(editingInterval?.section_id) ?? [];
 
   const value = { editingInterval, onEditInterval };
 

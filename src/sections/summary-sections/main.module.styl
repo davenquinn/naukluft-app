@@ -5,13 +5,15 @@
   position absolute
   font-size 2em
   color #888
-  background-color white
+  background-color var(--background-color)
   padding-left 3px
   padding-right 8px 
 
 .section-page.summary-sections
   .location-group#Tsams
     margin-right 0
+
+  --section-header-height: 23px
 
   .section-header h2
     margin-top 0
@@ -33,6 +35,10 @@
   left 0
 
 :global
+
+  .section-page.summary-sections
+    --section-header-height: 45px
+
   div.section-page#generalized-sections svg
     margin-bottom 1em
 
@@ -46,10 +52,10 @@
       border 2px solid black
       z-index 20
 
-.location-group
-  position relative
-  &.chemostratigraphy
-    margin 35px 2em 0 2em
+//.location-group
+//  position relative
+//  &.chemostratigraphy
+//    margin 35px 0 0 0
 
 .section-header
   height: 30px

@@ -4,9 +4,6 @@
 :root
   --section-header-height: 30px
 
-body
-  background-color: var(--background-color)
-
 ul
   list-style: none
   padding-left: 0
@@ -65,7 +62,7 @@ div.location-group
   flex-direction: column
 
 div.lithostratigraphy-names
-  margin-top 3em
+  margin-top: calc(var(--section-header-height, 30px) + 10px)
   margin-bottom 3em
   padding-top 4px
   text

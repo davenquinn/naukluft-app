@@ -48,7 +48,7 @@ const SectionPane = function (props: SectionPaneProps) {
   const showChemostrat = options.correlatedIsotopes;
   const overflow = scrollable ? "scroll" : "inherit";
 
-  return h("div#section-pane", { style: { overflow } }, [
+  return h("div.section-pane", { style: { overflow } }, [
     h.if(showLegend)(Index),
     h(SectionContainer, [
       h(SectionLinkOverlay, {
