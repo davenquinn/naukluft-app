@@ -21,7 +21,7 @@ import {
 } from "@macrostrat/column-components";
 
 import { ManagedSymbolColumn } from "../components";
-import { SequenceStratContext } from "../sequence-strat-context";
+import { useSequenceStratSettings } from "../sequence-strat-context";
 import { SummaryColumnProvider } from "./data-provider";
 import { ColumnTracker } from "../components/link-overlay";
 import { PlatformContext } from "../../platform";
@@ -169,7 +169,7 @@ const SVGSectionInner = function (props) {
   const { inEditMode } = useContext(PlatformContext);
 
   const { sequenceStratOrder, showFloodingSurfaces, showTriangleBars } =
-    useContext(SequenceStratContext);
+    useSequenceStratSettings();
 
   const { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
     useSettings();

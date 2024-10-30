@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useEffect } from "react";
+import React, { createContext, useMemo, useEffect, useContext } from "react";
 import h from "@macrostrat/hyper";
 import { useStoredState } from "@macrostrat/ui-components";
 
@@ -17,7 +17,7 @@ type SequenceStratCtx = SequenceStratState & {
   actions: SequenceStratActions;
 };
 
-const defaultState: SequenceStratState = {
+export const defaultState: SequenceStratState = {
   showTriangleBars: true,
   showFloodingSurfaces: false,
   sequenceStratOrder: [0, 1],
@@ -59,19 +59,21 @@ function SequenceStratProvider({ children }: { children: React.ReactNode }) {
       ...state,
       actions: {
         updateState: (val) => setState(val),
-        toggleBooleanState: (
-          key: "showTriangleBars" | "showFloodingSurfaces"
-        ) => () => {
-          let newState = { ...state };
-          newState[key] = !state[key];
-          setState(newState);
-        },
+        toggleBooleanState:
+          (key: "showTriangleBars" | "showFloodingSurfaces") => () => {
+            let newState = { ...state };
+            newState[key] = !state[key];
+            setState(newState);
+          },
       },
     };
   }, [state]);
   return h(SequenceStratContext.Provider, { value }, children);
 }
 
-const SequenceStratConsumer = SequenceStratContext.Consumer;
+function useSequenceStratSettings(): SequenceStratCtx {
+  const res = useContext(SequenceStratContext);
+  return { ...defaultState, ...res };
+}
 
-export { SequenceStratProvider, SequenceStratConsumer, SequenceStratContext };
+export { SequenceStratProvider, useSequenceStratSettings };

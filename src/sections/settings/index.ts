@@ -13,7 +13,7 @@ import {
   useSettings,
   updateSettings,
 } from "@macrostrat/column-components";
-import { SequenceStratContext } from "../sequence-strat-context";
+import { useSequenceStratSettings } from "../sequence-strat-context";
 import { AppDrawer } from "~/components";
 import T from "prop-types";
 import "./main.styl";
@@ -81,7 +81,7 @@ const SerializedQueriesControl = function (props) {
 };
 
 const SequenceStratControlPanel = function (props) {
-  const value = useContext(SequenceStratContext);
+  const value = useSequenceStratSettings();
   const { actions, ...rest } = value;
   return h("div", props, [
     h("h3", "Sequence stratigraphy"),

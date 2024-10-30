@@ -4,7 +4,7 @@ import h from "@macrostrat/hyper";
 import {
   ColumnDivision,
   ColumnDivisionsContext,
-  useColumnDivisions
+  useColumnDivisions,
 } from "../column/data-source";
 import { PlatformContext } from "~/platform";
 import { ColumnImages } from "./images";
@@ -23,7 +23,7 @@ import {
   CoveredOverlay,
   FaciesColumnInner,
   LithologyColumnInner,
-  DivisionEditOverlay
+  DivisionEditOverlay,
 } from "@macrostrat/column-components";
 import { ResultMask, useQueryRunner } from "naukluft-data-backend";
 import Samples from "./samples";
@@ -31,7 +31,7 @@ import { ManagedSymbolColumn } from "../components";
 import { ModalEditor, Direction } from "../editor";
 import { Intent, IToastProps } from "@blueprintjs/core";
 import { Notification } from "../../notify";
-import { SequenceStratContext } from "../sequence-strat-context";
+import { useSequenceStratSettings } from "../sequence-strat-context";
 import { ManagedNotesColumn } from "./notes";
 import { FaciesTractIntervals } from "../column/facies-tracts";
 
@@ -42,13 +42,13 @@ type NotifyOpts = Omit<IToastProps, "message">;
 const sectionNotify = (
   section_id: number,
   height: number,
-  opts: NotifyOpts = {}
+  opts: NotifyOpts = {},
 ) => {
   const message = `Section ${section_id} — ${fmt(height)} m`;
   Notification.show({ message, ...opts });
 };
 
-const notifyScroll = section_id => height => {
+const notifyScroll = (section_id) => (height) => {
   if (height == null || isNaN(height)) return;
   sectionNotify(section_id, height, { intent: Intent.PRIMARY });
 };
@@ -92,7 +92,7 @@ const SectionInner = (props: SectionInnerProps) => {
     editingHeight,
     scrollToHeight,
     onEditInterval,
-    range
+    range,
   } = props;
 
   const divisions = useColumnDivisions(id);
@@ -102,14 +102,11 @@ const SectionInner = (props: SectionInnerProps) => {
     showFaciesTracts,
     showCarbonIsotopes,
     showSymbols,
-    showNotes
+    showNotes,
   } = useSettings();
 
-  const {
-    showTriangleBars,
-    showFloodingSurfaces,
-    sequenceStratOrder
-  } = useContext(SequenceStratContext);
+  const { showTriangleBars, showFloodingSurfaces, sequenceStratOrder } =
+    useSequenceStratSettings();
 
   const { inEditMode } = useContext(PlatformContext);
 
@@ -147,7 +144,7 @@ const SectionInner = (props: SectionInnerProps) => {
         {
           zoom,
           range,
-          divisions
+          divisions,
         },
         [
           h("div.section", [
@@ -158,13 +155,13 @@ const SectionInner = (props: SectionInnerProps) => {
                 onScrolled: notifyScroll(id),
                 scrollContainer() {
                   return document.querySelector(".section-pane");
-                }
+                },
               }),
               h(
                 GrainsizeLayoutProvider,
                 {
                   width: grainsizeWidth + columnLeftMargin,
-                  grainsizeScaleStart: grainsizeScaleStart + columnLeftMargin
+                  grainsizeScaleStart: grainsizeScaleStart + columnLeftMargin,
                 },
                 [
                   h(DivisionEditOverlay, {
@@ -173,7 +170,7 @@ const SectionInner = (props: SectionInnerProps) => {
                     selectedHeight: editingHeight,
                     top: padding.top,
                     left: paddingLeft,
-                    allowEditing: inEditMode
+                    allowEditing: inEditMode,
                   }),
                   h(
                     ColumnSVG,
@@ -182,14 +179,14 @@ const SectionInner = (props: SectionInnerProps) => {
                       paddingLeft,
                       paddingTop: props.padding.top,
                       paddingBottom: props.padding.bottom,
-                      paddingRight: props.padding.right
+                      paddingRight: props.padding.right,
                     },
                     [
                       h(ColumnAxis, { ticks }),
                       h.if(showFaciesTracts)(
                         LithologyColumn,
                         { width: lithologyWidth },
-                        [h(FaciesTractIntervals)]
+                        [h(FaciesTractIntervals)],
                       ),
                       h(
                         "g",
@@ -198,73 +195,73 @@ const SectionInner = (props: SectionInnerProps) => {
                           h(LithologyColumn, { width: lithologyWidth }, [
                             h.if(showFacies)(FaciesColumnInner),
                             h(CoveredOverlay),
-                            h(LithologyColumnInner)
-                          ])
-                        ]
+                            h(LithologyColumnInner),
+                          ]),
+                        ],
                       ),
                       h("g", { transform: `translate(${columnLeftMargin})` }, [
                         h(
                           GrainsizeLayoutProvider,
                           {
                             width: grainsizeWidth,
-                            grainsizeScaleStart
+                            grainsizeScaleStart,
                           },
                           [
                             h(GrainsizeAxis),
                             h.if(shouldRenderGeneralized)(
                               GeneralizedSectionColumn,
                               {
-                                range: grainsizeRange
+                                range: grainsizeRange,
                               },
                               h(LithologyColumnInner, {
-                                width: grainsizeRange[1]
-                              })
+                                width: grainsizeRange[1],
+                              }),
                             ),
                             h.if(showCarbonIsotopes)(Samples, {
-                              section_id: id
+                              section_id: id,
                             }),
                             h.if(showFloodingSurfaces)(FloodingSurface),
                             h.if(showTriangleBars)(TriangleBars, {
                               offsetLeft: -40 - 25 * nOrders,
                               lineWidth: 25,
                               minOrder: sequenceStratOrder[0],
-                              maxOrder: sequenceStratOrder[1]
+                              maxOrder: sequenceStratOrder[1],
                             }),
                             h.if(showSymbols)(ManagedSymbolColumn, {
                               id,
-                              left: 215
+                              left: 215,
                             }),
                             h.if(showNotes)(ManagedNotesColumn, {
                               visible: true,
                               id,
                               width: props.logWidth,
                               editable: inEditMode,
-                              transform: `translate(${props.innerWidth})`
-                            })
-                          ]
-                        )
-                      ])
-                    ]
-                  )
-                ]
+                              transform: `translate(${props.innerWidth})`,
+                            }),
+                          ],
+                        ),
+                      ]),
+                    ],
+                  ),
+                ],
               ),
               h.if(shouldShowImages)(ColumnImages, {
                 paddingTop: props.padding.top,
                 paddingRight: props.padding.right,
                 paddingBottom: props.padding.bottom,
                 paddingLeft: paddingLeft + lithologyWidth,
-                sectionID: id
-              })
-            ])
-          ])
-        ]
-      )
-    ])
+                sectionID: id,
+              }),
+            ]),
+          ]),
+        ],
+      ),
+    ]),
   ]);
 };
 
 SectionInner.defaultProps = {
-  zoom: 1
+  zoom: 1,
 };
 
 const SectionComponent = (props: SectionProps) => {
@@ -275,9 +272,8 @@ const SectionComponent = (props: SectionProps) => {
   const { id: section_id } = props;
   const divisions = useColumnDivisions(section_id);
 
-  const [editingInterval, setEditingInterval] = useState<EditingInterval>(
-    nullDivision
-  );
+  const [editingInterval, setEditingInterval] =
+    useState<EditingInterval>(nullDivision);
 
   /* EDITING FUNCTIONS */
   function editInterval({ division, height }: EditArgs) {
@@ -292,7 +288,7 @@ const SectionComponent = (props: SectionProps) => {
     const { id: newID } = await dispatch(
       "section/add-interval",
       { section: section_id, height },
-      ResultMask.one
+      ResultMask.one,
     );
     const { id: oldID, height: newHeight } = editingInterval;
     let interval: EditingInterval = nullDivision;
@@ -307,14 +303,14 @@ const SectionComponent = (props: SectionProps) => {
     await dispatch(
       "section/remove-interval",
       { section: section_id, id },
-      ResultMask.none
+      ResultMask.none,
     );
     await updateDivisions();
     setEditingInterval(nullDivision);
   }
 
   function moveCursor(direction: Direction) {
-    let ix = divisions.findIndex(d => d.id == editingInterval.id);
+    let ix = divisions.findIndex((d) => d.id == editingInterval.id);
     switch (direction) {
       case Direction.Down: {
         if (ix > 0) ix -= 1;
@@ -333,14 +329,14 @@ const SectionComponent = (props: SectionProps) => {
     setEditingInterval(nullDivision);
   }
 
-  const interval = divisions.find(d => d.id === editingInterval.id);
+  const interval = divisions.find((d) => d.id === editingInterval.id);
 
   return h([
     h(SectionInner, {
       editingInterval: interval,
       editingHeight: editingInterval.height,
       onEditInterval: editInterval,
-      ...props
+      ...props,
     }),
     h(ModalEditor, {
       isOpen: interval != null,
@@ -353,8 +349,8 @@ const SectionComponent = (props: SectionProps) => {
         setEditingInterval(nullDivision);
       },
       addInterval,
-      removeInterval
-    })
+      removeInterval,
+    }),
   ]);
 };
 
@@ -375,8 +371,8 @@ SectionComponent.defaultProps = {
     left: 30,
     top: 30,
     right: 30,
-    bottom: 30
-  }
+    bottom: 30,
+  },
 };
 
 export { SectionComponent };
