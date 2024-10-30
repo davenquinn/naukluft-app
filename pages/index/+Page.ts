@@ -22,6 +22,7 @@ import "./style-system.sass";
 
 import h from "./+Page.module.sass";
 import { NavigationLayout } from "~/layouts";
+import { usePageContext } from "vike-react/usePageContext";
 
 const Router = BrowserRouter;
 
@@ -42,7 +43,6 @@ function Home() {
       // h(NavLink, { to: "/map-legend" }, "Map legend")
     ]),
   ]);
-  h(Footer);
 }
 
 class App extends Component {
@@ -53,7 +53,7 @@ class App extends Component {
   }
   render() {
     return h(PlatformProvider, [
-      h("div#root", [
+      h("div.app-root#root", [
         h(Switch, [
           h(Route, { path: "/sections", component: SectionIndex }),
           // h(Route, {
@@ -97,19 +97,3 @@ class App extends Component {
 
 const basename = "";
 export const Page = () => h(Router, { basename }, [h(App)]);
-
-function Footer() {
-  // @ts-ignore
-  const compileDate = import.meta.env.VITE_COMPILE_DATE;
-
-  return h("footer", [
-    h("p", [
-      "Created by ",
-      h("a", { href: "https://davenquinn.com" }, "Daven Quinn"),
-    ]),
-    h.if(compileDate != null)("p", [
-      "Last updated on ",
-      new Date(compileDate).toLocaleString(),
-    ]),
-  ]);
-}

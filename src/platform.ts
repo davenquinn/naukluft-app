@@ -1,14 +1,12 @@
-import { Component, createContext, useContext } from "react";
+import { Component, createContext } from "react";
 import h from "@macrostrat/hyper";
-import LocalStorage from "./sections/storage";
+import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
+
 import update from "immutability-helper";
 import {
   AssetPathProvider,
   GeologicPatternProvider,
 } from "@macrostrat/column-components";
-//# Set whether we are on the backend or frontend
-
-import { DarkModeProvider } from "@macrostrat/ui-components";
 
 // Vite glob imports of pattern
 const patternSVGs = import.meta.glob(

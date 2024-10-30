@@ -1,4 +1,4 @@
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 
 import h from "./index.module.sass";
@@ -47,3 +47,5 @@ export const NavigationControl = function (props) {
 export function NavigationList({ children, className }) {
   return h("ul.navigation", { className }, children);
 }
+
+export const SectionNavigationControl = NavigationControl;

@@ -1,4 +1,3 @@
-import { getJSON } from "../util";
 import useAsyncEffect from "use-async-effect";
 import React, { createContext, useContext, useState } from "react";
 import { FaciesProvider } from "./facies";
@@ -15,26 +14,22 @@ import { range } from "underscore";
 
 import { fileInfo } from "./section-image-info";
 
-import {
-  runQuery,
-  useQuery,
-  currentPlatform,
-  Platform,
-} from "naukluft-data-backend";
+import { runQuery, useQuery } from "naukluft-data-backend";
+import { usePageContext } from "vike-react/usePageContext";
+import { PageContext } from "vike/types";
 
 function join(...args) {
   return args.join("/");
 }
 
-// Vite environment variables
-const ASSETS_BASE_URL = import.meta.env.VITE_ASSETS_BASE_URL;
-
-const sectionFilename = function (fn) {
-  return join(ASSETS_BASE_URL, "column-images", fn);
+const sectionFilename = function (baseURL, fn) {
+  return join(baseURL, "column-images", fn);
 };
 
-const getSectionData = async function (opts = {}) {
+const getSectionData = async function (ctx: PageContext) {
   const config = fileInfo;
+
+  const baseURL = ctx.runtimeEnv?.ASSETS_BASE_URL;
 
   const data = await runQuery("sections/sections");
   return data.map(function (s) {
@@ -50,7 +45,10 @@ const getSectionData = async function (opts = {}) {
       const sz = 427;
       s.scaleFactor = scaleFactor;
       s.imageFiles = range(files.n).map((i) => {
-        const filename = sectionFilename(`section_${s.id}_${i + 1}.png`);
+        const filename = sectionFilename(
+          baseURL,
+          `section_${s.id}_${i + 1}.png`,
+        );
         const remaining = files.height - i * sz;
         const height = remaining > sz ? sz : remaining;
         return { width: sz, height, filename };
@@ -68,14 +66,15 @@ const PhotoLibraryProvider = function ({ children }) {
 
 const SectionDataContext = createContext<SectionData[]>([]);
 
-function useSectionData() {
+function useSectionData(ctx: PageContext) {
   const [sections, setSections] = useState<SectionData[] | null>(null);
-  useAsyncEffect(async () => setSections(await getSectionData()), []);
+  useAsyncEffect(async () => setSections(await getSectionData(ctx)), []);
   return sections;
 }
 
 const SectionProvider = ({ children }: React.PropsWithChildren<{}>) => {
-  const sections = useSectionData();
+  const ctx = usePageContext();
+  const sections = useSectionData(ctx);
   if (sections == null) return null;
   return h(SectionDataContext.Provider, { value: sections }, children);
 };
@@ -94,7 +93,7 @@ const SectionDataProvider = compose(
   SectionSurfacesProvider,
   SequenceStratProvider,
   IsotopesDataProvider,
-  SectionProvider
+  SectionProvider,
 );
 
 const SectionConsumer = SectionDataContext.Consumer;

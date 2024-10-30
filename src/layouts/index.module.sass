@@ -5,11 +5,24 @@
   overflow-y: scroll
 
   .inner
-    margin: 2em auto 4em
-    padding: 0 2em
+    padding: 2em
+    margin: 0 auto
     max-width: var(--content-width, 72em)
-    h1
-      font-size: 3em
-      margin-bottom: 1em
-    p
-      font-size: 1.2em
+    display: flex
+    flex-direction: column
+    min-height: 100vh
+
+    .main
+      h1
+        font-size: 3em
+        margin-bottom: 1em
+      p
+        font-size: 1.2em
+      margin-bottom: 2em
+
+    .spacer
+      flex-grow: 1
+
+    .page-footer
+      color: var(--text-color-secondary)
+

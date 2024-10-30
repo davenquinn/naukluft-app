@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import h from "@macrostrat/hyper";
-import { SectionNavigationControl } from "../util";
+import { SectionNavigationControl } from "~/components";
 import { ErrorBoundary } from "@macrostrat/ui-components";
 import { SettingsProvider } from "@macrostrat/column-components";
 import classNames from "classnames";

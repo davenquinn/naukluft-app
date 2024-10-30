@@ -1,6 +1,6 @@
 import { Component } from "react";
 import h from "@macrostrat/hyper";
-import { SectionNavigationControl } from "../util";
+import { SectionNavigationControl } from "~/components";
 import {
   FaciesDescriptionSmall,
   FaciesSwatch,

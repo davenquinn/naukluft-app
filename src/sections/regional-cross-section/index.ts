@@ -12,7 +12,7 @@ import { Component, useContext, useState, useEffect } from "react";
 import { findDOMNode } from "react-dom";
 import h from "@macrostrat/hyper";
 import { SVG } from "@macrostrat/column-components";
-import { SectionNavigationControl } from "../util";
+import { SectionNavigationControl } from "~/components";
 import { path } from "d3-path";
 import { schemeSet3 } from "d3-scale-chromatic";
 import { geoPath, geoTransform } from "d3-geo";
@@ -76,9 +76,9 @@ const PatternDefs = function ({ patterns, size }) {
             ...patternLoc,
             ...patternSize,
           }),
-        ]
+        ],
       );
-    })
+    }),
   );
 };
 
@@ -139,7 +139,7 @@ class RegionalCrossSectionPage extends Component {
               return schemeSet3[i % 12];
             },
           },
-          [h(PatternDefs, { patterns: Object.values(facies_ix), size: 30 })]
+          [h(PatternDefs, { patterns: Object.values(facies_ix), size: 30 })],
         ),
         h("g.linework"),
         h("g.overlay"),

@@ -1,7 +1,6 @@
 import { Component } from "react";
 import "./main.styl";
 import styles from "./main.module.sass";
-// We should really resolve this from the /src directory...
 import "@macrostrat/column-components/dist/main.css";
 import hyper from "@macrostrat/hyper";
 import { Route, Switch, withRouter } from "react-router-dom";
@@ -10,7 +9,7 @@ import { SectionDataProvider, SectionConsumer } from "./data-providers";
 import SectionPage from "./single-section";
 import { SummarySections } from "./summary-sections";
 import { GeneralizedSections } from "./summary-sections/generalized";
-import { SectionNavigationControl } from "./util";
+import { SectionNavigationControl } from "~/components";
 import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";
 import { SectionDetailIndex } from "./section-details/integration";

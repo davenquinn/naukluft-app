@@ -1,13 +1,6 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { ColumnProvider, useSettings } from "@macrostrat/column-components";
 import { hyperStyled } from "@macrostrat/hyper";
-import T from "prop-types";
 import { useSurfaces } from "~/sections/providers";
-import { rangeForSection } from "../../util";
 import { LayoutGroup } from "../layout";
 // Not sure if this one is really used
 import styles from "../main.module.styl";
@@ -15,7 +8,7 @@ import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
 
 const h = hyperStyled(styles);
 
-const ChemostratigraphyGroup = function (props) {
+function ChemostratigraphyGroup(props) {
   const { range, children } = props;
   return h(
     LayoutGroup,
@@ -29,12 +22,12 @@ const ChemostratigraphyGroup = function (props) {
         range,
         zoom: 0.1,
       },
-      children
-    )
+      children,
+    ),
   );
-};
+}
 
-const BaseChemostratigraphyColumn = (props) => {
+function BaseChemostratigraphyColumn(props) {
   const { sections, colorScheme, range, showLines, keySection, nTicks } = props;
   const { correctIsotopeRatios, showCarbonIsotopes, showOxygenIsotopes } =
     useSettings();
@@ -88,12 +81,18 @@ const BaseChemostratigraphyColumn = (props) => {
         showLines,
         keySection,
       }),
-    ]
+    ],
   );
-};
+}
 
-const ChemostratigraphyColumn = function (props) {
-  const { sections, keySection } = props;
+interface ChemostratigraphyColumnProps {
+  sections: any[];
+  keySection?: string;
+  showLines?: boolean;
+}
+
+export function ChemostratigraphyColumn(props: ChemostratigraphyColumnProps) {
+  const { sections, keySection = "J", showLines = true } = props;
 
   let row = sections[0];
   if (keySection != null) {
@@ -103,22 +102,21 @@ const ChemostratigraphyColumn = function (props) {
 
   return h(BaseChemostratigraphyColumn, {
     range: rangeForSection(row),
+    showLines,
     ...props,
   });
-};
+}
 
-ChemostratigraphyColumn.defaultProps = {
-  keySection: "J",
-  showLines: true,
-};
-
-ChemostratigraphyColumn.propTypes = {
-  showLines: T.bool,
+const rangeForSection = function (row) {
+  let { start, end, clip_end } = row;
+  if (clip_end == null) {
+    clip_end = end;
+  }
+  return [start, clip_end];
 };
 
 export {
   BaseChemostratigraphyColumn,
-  ChemostratigraphyColumn,
   ChemostratigraphyGroup,
   IsotopesColumn,
   MinimalIsotopesColumn,
