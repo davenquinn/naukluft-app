@@ -70,21 +70,7 @@ function addSectionUpdateRoute(app: any) {
   return routeName + " [POST]";
 }
 
-async function createServer() {
-  console.log("Creating server");
-  const app = express().disable("x-powered-by");
-  if (process.env.NODE_ENV !== "production") {
-    // @ts-ignore
-    app.use(morgan("dev"));
-  }
-  app.use(cors());
-
-  setupRoutes(app);
-
-  return app;
-}
-
-function setupRoutes(app: any) {
+export function setupRoutes(app: any) {
   // @ts-ignore
   app.use(express.json());
   let helpRoutes = buildQueryFileRoutes(app);
@@ -101,5 +87,3 @@ function setupRoutes(app: any) {
     });
   });
 }
-
-export { createServer, setupRoutes };

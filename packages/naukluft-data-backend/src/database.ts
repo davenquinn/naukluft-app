@@ -6,12 +6,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const opts = {
-  noWarnings: false
-};
-
-
-
 let pg_conn = process.env.NAUKLUFT_DB;
 
 pg_conn = pg_conn.replace("postgresql://", "postgres://");
@@ -19,13 +13,16 @@ pg_conn = pg_conn.replace("postgresql://", "postgres://");
 console.log("Connecting to database:", pg_conn);
 
 // Create database connection
-const pgp = PGPromise(opts);
-const db = pgp(pg_conn, { log: true });
+const pgp = PGPromise();
+const db = pgp({
+  connectionString: pg_conn,
+  max: 10,
+});
 const { helpers } = pgp;
 
 const queryFiles: { [k: string]: string } = {};
 
-const storedProcedure = function(fileName: string) {
+const storedProcedure = function (fileName: string) {
   // Don't hit the filesystem repeatedly
   // in a session
   const fn = resolve(fileName);
@@ -38,7 +35,7 @@ const storedProcedure = function(fileName: string) {
 async function runBackendQuery(
   key: string,
   params: any = null,
-  resultMask: queryResult = queryResult.any
+  resultMask: queryResult = queryResult.any,
 ) {
   let fn = key;
   if (!key.endsWith(".sql")) {
