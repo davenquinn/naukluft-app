@@ -31,7 +31,7 @@ function Facies(props) {
     },
     [
       h("div.header", [
-        h("p.name", children || d.name),
+        h("p.facies-name", children || d.name),
         h(FaciesSwatch, { facies: d }),
       ]),
     ],
@@ -92,7 +92,7 @@ function LegendInner() {
 }
 
 function Index() {
-  return h("div.legend#summary-sections-legend", [
+  return h("div.legend.summary-sections-legend", [
     h("h1", [h("span", "Zebra Nappe"), " stratigraphic model"]),
     h(LegendInner),
   ]);
