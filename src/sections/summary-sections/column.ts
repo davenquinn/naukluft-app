@@ -194,6 +194,8 @@ const SVGSectionInner = function (props) {
   let underlayPaddingLeft: number = padding.left;
   let underlayWidth = 300;
 
+  let triangleBars: any = null;
+
   if (showTriangleBars && sequenceStratOrder != null) {
     // How many bars are we rendering
 
@@ -201,6 +203,7 @@ const SVGSectionInner = function (props) {
 
     //40
     const triangleBarWidth = 20 * nOrders;
+
     overallWidth += triangleBarWidth;
     if (props.triangleBarRightSide) {
       triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
@@ -212,6 +215,14 @@ const SVGSectionInner = function (props) {
       mainTranslate = triangleBarWidth + 8;
       underlayPaddingLeft -= 35 + triangleBarTranslate;
     }
+
+    triangleBars = h(TriangleBars, {
+      id,
+      offsetLeft: 0,
+      lineWidth: 20,
+      minOrder: sequenceStratOrder[0],
+      maxOrder: sequenceStratOrder[1],
+    });
   }
 
   const floodingSurfaceStart = 42;
@@ -289,15 +300,7 @@ const SVGSectionInner = function (props) {
                   h(
                     "g.sequence-strat",
                     { transform: `translate(${triangleBarTranslate})` },
-                    [
-                      h.if(showTriangleBars)(TriangleBars, {
-                        id,
-                        offsetLeft: 0,
-                        lineWidth: 20,
-                        minOrder: sequenceStratOrder[0],
-                        maxOrder: sequenceStratOrder[1],
-                      }),
-                    ],
+                    triangleBars,
                   ),
                 ],
               ),
