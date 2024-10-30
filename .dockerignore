@@ -2,5 +2,10 @@ dist
 dist-web
 node_modules
 **/node_modules
-assets
-data
+.yarn/cache
+.pnp.cjs
+.pnp.loader.mjs
+
+__archive
+output
+Naukluft-stratigraphy-figures.ai

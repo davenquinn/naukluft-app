@@ -1,16 +1,23 @@
-FROM node:18
+FROM node:20 AS builder
+
+ENV NODE_ENV=production
 
 # Prepare for installation
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY ./frontend/packages/naukluft-data-backend /app/frontend/packages/naukluft-data-backend/
-COPY ./frontend/packages/vector-tile-server /app/frontend/packages/vector-tile-server/
-COPY ./api /app/api/
+COPY .yarn/releases .yarn/releases
+COPY .yarnrc.yml yarn.lock package.json ./
 
-WORKDIR /app/api
+# Add submodules
+COPY ./packages /usr/src/app/packages/
 
 RUN yarn install
 
-EXPOSE 5555
+# Build the app
+COPY . .
 
-CMD yarn run start
+RUN yarn run build
+
+EXPOSE 3000
+
+CMD yarn run preview

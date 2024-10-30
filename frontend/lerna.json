@@ -1,4 +1,0 @@
-{
-  "packages": ["packages/*", "app"],
-  "version": "independent"
-}

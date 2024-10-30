@@ -1,15 +1,3 @@
-[submodule "frontend/app/bundledDeps/column-components"]
-	path = frontend/packages/column-components
-	url = git://github.com/UW-Macrostrat/column-components.git
 [submodule "frontend/app/bundledDeps/geologic-patterns"]
-	path = frontend/packages/geologic-patterns
+	path = packages/geologic-patterns
 	url = git://github.com/davenquinn/geologic-patterns.git
-[submodule "frontend/packages/vector-tile-server"]
-	path = frontend/packages/vector-tile-server
-	url = git://github.com/UW-Macrostrat/vector-tile-server.git
-[submodule "MVTImageryProvider"]
-	path = frontend/packages/mvt-imagery-provider
-	url = git://github.com/davenquinn/MVTImageryProvider.git
-[submodule "cesium-viewer"]
-	path = frontend/packages/cesium-viewer
-	url = git://github.com/UW-Macrostrat/cesium-viewer.git

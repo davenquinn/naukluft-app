@@ -1,0 +1,63 @@
+@use "sass:color"
+
+body
+  margin: 0
+  padding: 0
+  position: relative
+  --background-color: white
+  background-color: white
+  min-width: 480px
+
+*
+  user-select: none
+  box-sizing: border-box
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+
+:global
+
+  #app
+    width: 100%
+    height: 100vh
+  .page
+    height: 100vh
+    flex-direction: column
+
+  #root
+    width: 100%
+    height: 100%
+    display: flex
+    flex-direction: column
+
+  *:focus
+    outline: 0
+
+  div.facies-descriptions
+
+    ul
+      list-style: inherit
+      padding-left: 1.25em
+
+    img
+      max-width: 400px
+      max-height: 400px
+
+:local
+  .active
+    background-color: dodgerblue
+
+
+@media(prefers-color-scheme: dark)
+  body
+    --background-color: #232327
+    background-color: #232327 !important
+
+  *
+    color: #eee
+
+  ul.navigation
+    li a
+      background-color: #444 !important
+      color: white
+      &:hover
+        background-color: color.adjust(dodgerblue, $lightness: -50%)
+        color: dodgerblue
