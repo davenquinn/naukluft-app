@@ -13,7 +13,7 @@ import { CrossSectionsPage } from "~/cross-sections";
 import CarbonIsotopesPage from "~/carbon-isotopes";
 import LateralVariation from "~/lateral-variation";
 import { MapView } from "~/map-viewer";
-import Globe from "~/globe";
+//import Globe from "~/globe";
 import { HotkeysTarget, Hotkeys, Hotkey } from "@blueprintjs/core";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -65,7 +65,7 @@ class App extends Component {
           //h(Route, { path: "/map", component: MapView }),
           //route '/map-legend', wrapNavBar(MapLegend)
           //h(Route, { path: "/cross-sections", component: CrossSectionsPage }),
-          h(Route, { path: "/globe", component: Globe }),
+          //h(Route, { path: "/globe", component: Globe }),
           h(Route, { path: "/", component: Home }),
         ]),
       ]),

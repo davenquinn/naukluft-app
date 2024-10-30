@@ -1,4 +1,3 @@
-import vectorTileServer from "@macrostrat/vector-tile-server";
 import cors from "cors";
 import express from "express";
 import { sync as glob } from "glob";
@@ -17,7 +16,7 @@ interface ExtParams extends Params {
 }
 
 function normalizeResultMask(
-  __qrm: string | number | undefined
+  __qrm: string | number | undefined,
 ): ResultMask | undefined {
   const num = parseInt(`${__qrm}`);
   if (Number.isNaN(num)) return undefined;
@@ -52,7 +51,7 @@ function buildQueryFileRoutes(app: any) {
       return await runBackendQuery(
         newFn,
         newParams,
-        normalizeResultMask(__qrm)
+        normalizeResultMask(__qrm),
       );
     };
 
@@ -71,13 +70,6 @@ function addSectionUpdateRoute(app: any) {
   return routeName + " [POST]";
 }
 
-async function addTileServer(app: any) {
-  const routeName = "/map-data/map-tiles";
-  // create vector tiles server
-  app.use(routeName, await vectorTileServer(db, "map-data"));
-  return routeName;
-}
-
 async function createServer() {
   console.log("Creating server");
   const app = express().disable("x-powered-by");
@@ -88,7 +80,6 @@ async function createServer() {
   app.use(cors());
 
   setupRoutes(app);
-
 
   return app;
 }
