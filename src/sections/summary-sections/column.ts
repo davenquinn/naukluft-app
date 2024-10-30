@@ -194,8 +194,9 @@ const SVGSectionInner = function (props) {
   let underlayPaddingLeft: number = padding.left;
   let underlayWidth = 300;
 
-  if (showTriangleBars) {
-    // How many bars are we rendering?
+  if (showTriangleBars && sequenceStratOrder != null) {
+    // How many bars are we rendering
+
     const nOrders = sequenceStratOrder[1] - sequenceStratOrder[0] + 1;
 
     //40
@@ -212,8 +213,6 @@ const SVGSectionInner = function (props) {
       underlayPaddingLeft -= 35 + triangleBarTranslate;
     }
   }
-
-  console.log(sequenceStratOrder, overallWidth);
 
   const floodingSurfaceStart = 42;
 
