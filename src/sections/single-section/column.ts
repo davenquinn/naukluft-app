@@ -84,7 +84,7 @@ type SectionInnerProps = SectionProps & {
 const SectionInner = (props: SectionInnerProps) => {
   const {
     lithologyWidth,
-    zoom,
+    zoom = 1,
     id,
     height,
     padding,
@@ -120,14 +120,24 @@ const SectionInner = (props: SectionInnerProps) => {
 
   let paddingLeft = props.padding.left + 40;
 
-  const nOrders = sequenceStratOrder[1] - sequenceStratOrder[0] + 1;
+  let triangleBars: any = null;
+
+  if (showTriangleBars && sequenceStratOrder != null) {
+    const nOrders = sequenceStratOrder[1] - sequenceStratOrder[0] + 1;
+    paddingLeft += 25 * nOrders;
+    triangleBars = h(TriangleBars, {
+      offsetLeft: -40 - 25 * nOrders,
+      lineWidth: 25,
+      minOrder: sequenceStratOrder[0],
+      maxOrder: sequenceStratOrder[1],
+    });
+  }
 
   const shouldRenderGeneralized = activeDisplayMode === "generalized";
   const shouldShowImages = zoom >= 0.25 && !shouldRenderGeneralized;
 
   let lithologyLeftMargin = 0;
   if (showFaciesTracts) lithologyLeftMargin += lithologyWidth;
-  if (showTriangleBars) paddingLeft += 25 * nOrders;
 
   const columnLeftMargin = lithologyLeftMargin + lithologyWidth;
 
@@ -221,12 +231,7 @@ const SectionInner = (props: SectionInnerProps) => {
                               section_id: id,
                             }),
                             h.if(showFloodingSurfaces)(FloodingSurface),
-                            h.if(showTriangleBars)(TriangleBars, {
-                              offsetLeft: -40 - 25 * nOrders,
-                              lineWidth: 25,
-                              minOrder: sequenceStratOrder[0],
-                              maxOrder: sequenceStratOrder[1],
-                            }),
+                            triangleBars,
                             h.if(showSymbols)(ManagedSymbolColumn, {
                               id,
                               left: 215,
@@ -258,10 +263,6 @@ const SectionInner = (props: SectionInnerProps) => {
       ),
     ]),
   ]);
-};
-
-SectionInner.defaultProps = {
-  zoom: 1,
 };
 
 const SectionComponent = (props: SectionProps) => {

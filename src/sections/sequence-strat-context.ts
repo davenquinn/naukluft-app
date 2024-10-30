@@ -47,7 +47,7 @@ function SequenceStratProvider({ children }: { children: React.ReactNode }) {
       !Array.isArray(stateObj.sequenceStratOrder) ||
       stateObj.sequenceStratOrder.length == 2
     ) {
-      delete stateObj.sequenceStratOrder;
+      stateObj.sequenceStratOrder = defaultState.sequenceStratOrder;
     }
     stateObj = { ...defaultState, ...stateObj };
 
