@@ -1,0 +1,19 @@
+@use "sass:color"
+
+:root
+  --background-color: white
+  --background-color-secondary: #aaa
+  --background-color-highlight: dodgerblue
+  --text-color: black
+  --text-color-highlight: white
+
+body
+  background-color: var(--background-color)
+
+  &.bp5-dark
+    background-color: #232327
+    --background-color: #232327
+    --background-color-secondary: #333
+    --background-color-highlight: color.adjust(#fff, $lightness: -50%)
+    --text-color: #eee
+    --text-color-highlight: dodgerblue

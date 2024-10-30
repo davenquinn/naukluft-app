@@ -7,6 +7,7 @@
 import terrainQuery from "./get-terrain.sql";
 import intersectionsQuery from "./unit-intersections.sql";
 import { SVG, expandInnerSize } from "@macrostrat/column-components";
+import { useInDarkMode } from "@macrostrat/ui-components";
 
 import { useQuery } from "~/db";
 import { useDarkMode } from "~/platform";
@@ -66,7 +67,7 @@ const CrossSectionsPage = function () {
   // State management
   const res = useQuery(terrainQuery);
 
-  const darkMode = useDarkMode();
+  const darkMode = useInDarkMode();
   const className = darkMode ? "dark-mode" : null;
   return h("div.cross-sections", { className }, [
     h(NavigationControl),
@@ -79,7 +80,7 @@ const CrossSectionsPage = function () {
           h("h3", d.name),
           h(CrossSection, { geometry, heightRange }),
         ]);
-      })
+      }),
     ),
   ]);
 };

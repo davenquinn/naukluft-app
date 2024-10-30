@@ -17,7 +17,7 @@ import {
   ColumnContext,
   ColumnAxis,
   DivisionEditOverlay,
-  useSettings
+  useSettings,
 } from "@macrostrat/column-components";
 
 import { ManagedSymbolColumn } from "../components";
@@ -32,13 +32,9 @@ import { hyperStyled } from "@macrostrat/hyper";
 import styles from "./main.module.styl";
 const h = hyperStyled(styles);
 
-const ColumnMain = function() {
-  const {
-    showFacies,
-    showFaciesTracts,
-    showLithology,
-    showGrainsize
-  } = useSettings();
+const ColumnMain = function () {
+  const { showFacies, showFaciesTracts, showLithology, showGrainsize } =
+    useSettings();
   let c = GeneralizedSectionColumn;
   let width = null;
   if (!showGrainsize) {
@@ -50,11 +46,11 @@ const ColumnMain = function() {
     h.if(showFacies)(FaciesColumnInner),
     h.if(showFaciesTracts)(FaciesTractIntervals),
     h.if(showLithology)(SimplifiedLithologyColumn),
-    h(CoveredOverlay)
+    h(CoveredOverlay),
   ]);
 };
 
-const EditOverlay = function(props) {
+const EditOverlay = function (props) {
   let navigateTo: (arg0: string) => void;
   let { interactive } = useSettings();
   if (interactive == null) {
@@ -70,12 +66,11 @@ const EditOverlay = function(props) {
   }
 
   let { id, ...rest } = props;
-  const { onEditInterval, editingInterval: interval } = useContext(
-    EditorContext
-  );
+  const { onEditInterval, editingInterval: interval } =
+    useContext(EditorContext);
   const editingInterval = interval?.section_id == id ? interval : null;
 
-  const onClick = function({ height, event, division }) {
+  const onClick = function ({ height, event, division }) {
     const sectionID = division?.original_section ?? division?.section_id ?? id;
     // If we're working with a generalized division, we need to recalculate height
     let _height = height;
@@ -102,11 +97,11 @@ const EditOverlay = function(props) {
     showInfoBox: false,
     onClick,
     editingInterval,
-    ...rest
+    ...rest,
   });
 };
 
-const ColumnSummaryAxis = function(props) {
+const ColumnSummaryAxis = function (props) {
   const { height, zoom, scale, pixelsPerMeter } = useContext(ColumnContext);
   const ratio = pixelsPerMeter * zoom;
 
@@ -118,11 +113,11 @@ const ColumnSummaryAxis = function(props) {
     ticks: (height * zoom) / 5,
     showLabel(d) {
       return d < maxVal;
-    }
+    },
   });
 };
 
-const ColumnIsotopes = function(props) {
+const ColumnIsotopes = function (props) {
   const opts = useSettings();
   let { id, columnWidth } = props;
   if (columnWidth == null) {
@@ -135,18 +130,18 @@ const ColumnIsotopes = function(props) {
     h.if(opts.showCarbonIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: "translate(120)"
+      transform: "translate(120)",
     }),
     h.if(opts.showOxygenIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
       transform: "translate(160)",
-      system: "delta18o"
-    })
+      system: "delta18o",
+    }),
   ]);
 };
 
-const ColumnUnderlay = function(props) {
+const ColumnUnderlay = function (props) {
   let { width, paddingLeft } = props;
   const { pixelHeight } = useContext(ColumnContext);
   if (paddingLeft == null) {
@@ -157,33 +152,27 @@ const ColumnUnderlay = function(props) {
     height: pixelHeight + 10,
     x: -paddingLeft,
     y: -5,
-    fill: "white"
+    fill: "var(--background-color)",
   });
 };
 
-const SVGSectionInner = function(props) {
+const SVGSectionInner = function (props) {
   let {
     id,
     padding,
     innerWidth,
     showWhiteUnderlay,
     offsetTop,
-    absolutePosition
+    absolutePosition,
   } = props;
 
   const { inEditMode } = useContext(PlatformContext);
 
-  const {
-    sequenceStratOrder,
-    showFloodingSurfaces,
-    showTriangleBars
-  } = useContext(SequenceStratContext);
+  const { sequenceStratOrder, showFloodingSurfaces, showTriangleBars } =
+    useContext(SequenceStratContext);
 
-  const {
-    showCarbonIsotopes,
-    showOxygenIsotopes,
-    isotopesPerSection
-  } = useSettings();
+  const { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
+    useSettings();
 
   let overallWidth = 120;
   overallWidth += 42; // Symbol column
@@ -242,32 +231,32 @@ const SVGSectionInner = function(props) {
       width: overallWidth,
       marginLeft: 0,
       marginRight: 0,
-      absolutePosition
+      absolutePosition,
     },
     [
       h("div.section-header", [
-        h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, id)
+        h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, id),
       ]),
       h(
         ColumnTracker,
         {
           className: "section-outer",
           id,
-          paddingTop: 10
+          paddingTop: 10,
         },
         [
           h(
             GrainsizeLayoutProvider,
             {
               width: innerWidth,
-              grainsizeScaleStart
+              grainsizeScaleStart,
             },
             [
               h(EditOverlay, {
                 id,
                 allowEditing: inEditMode,
                 left: padding.left + mainTranslate,
-                top: padding.top
+                top: padding.top,
               }),
               h(
                 ColumnSVG,
@@ -275,28 +264,28 @@ const SVGSectionInner = function(props) {
                   width: overallWidth,
                   paddingTop: padding.top,
                   paddingBottom: padding.bottom,
-                  paddingLeft: padding.left
+                  paddingLeft: padding.left,
                 },
                 [
                   h.if(showWhiteUnderlay)(ColumnUnderlay, {
                     width: underlayWidth,
-                    paddingLeft: underlayPaddingLeft
+                    paddingLeft: underlayPaddingLeft,
                   }),
                   h("g.main", { transform: `translate(${mainTranslate})` }, [
                     h.if(showFloodingSurfaces)(FloodingSurface, {
                       offsetLeft: -floodingSurfaceStart,
-                      lineWidth: floodingSurfaceStart
+                      lineWidth: floodingSurfaceStart,
                     }),
                     h(props.axisComponent),
                     h(ColumnMain),
                     h(ManagedSymbolColumn, {
                       left: 90,
-                      id
+                      id,
                     }),
                     h(ColumnIsotopes, {
                       id,
-                      columnWidth: props.isotopeColumnWidth
-                    })
+                      columnWidth: props.isotopeColumnWidth,
+                    }),
                   ]),
                   h(
                     "g.sequence-strat",
@@ -307,27 +296,27 @@ const SVGSectionInner = function(props) {
                         offsetLeft: 0,
                         lineWidth: 20,
                         minOrder: sequenceStratOrder[0],
-                        maxOrder: sequenceStratOrder[1]
-                      })
-                    ]
-                  )
-                ]
-              )
-            ]
+                        maxOrder: sequenceStratOrder[1],
+                      }),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
           h(
             "div.section-children",
             {
               style: {
                 marginTop: padding.top,
-                marginLeft: padding.left + mainTranslate
-              }
+                marginLeft: padding.left + mainTranslate,
+              },
             },
-            [props.children]
-          )
-        ]
-      )
-    ]
+            [props.children],
+          ),
+        ],
+      ),
+    ],
   );
 };
 
@@ -350,18 +339,18 @@ SVGSectionInner.defaultProps = {
     left: 30,
     top: 10,
     right: 20,
-    bottom: 28
-  }
+    bottom: 28,
+  },
 };
 
 SVGSectionInner.propTypes = {
   //inEditMode: T.bool
   absolutePosition: T.bool,
   isotopesPerSection: T.bool,
-  offsetTop: T.number
+  offsetTop: T.number,
 };
 
-const SVGSectionComponent = props => {
+const SVGSectionComponent = (props) => {
   const { id } = props;
   return h(SummaryColumnProvider, { id }, h(SVGSectionInner, props));
 };

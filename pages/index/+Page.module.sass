@@ -1,5 +1,3 @@
-@use "sass:color"
-
 body
   margin: 0
   padding: 0
@@ -45,19 +43,3 @@ body
   .active
     background-color: dodgerblue
 
-
-@media(prefers-color-scheme: dark)
-  body
-    --background-color: #232327
-    background-color: #232327 !important
-
-  *
-    color: #eee
-
-  ul.navigation
-    li a
-      background-color: #444 !important
-      color: white
-      &:hover
-        background-color: color.adjust(dodgerblue, $lightness: -50%)
-        color: dodgerblue
