@@ -10,14 +10,16 @@ let pg_conn = process.env.NAUKLUFT_DB;
 
 pg_conn = pg_conn.replace("postgresql://", "postgres://");
 
-console.log("Connecting to database:", pg_conn);
-
 // Create database connection
 const pgp = PGPromise();
 const db = pgp({
   connectionString: pg_conn,
   max: 10,
+  error(err: any, e: any) {
+    console.error(err);
+  },
 });
+
 const { helpers } = pgp;
 
 const queryFiles: { [k: string]: string } = {};
