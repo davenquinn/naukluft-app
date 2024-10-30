@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        submodules: 'recursive'
+        with:
+          submodules: 'recursive'
 
       - name: Log in to the GitHub Container Registry
         uses: docker/login-action@v3
