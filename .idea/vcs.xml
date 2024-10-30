@@ -31,6 +31,10 @@
           <option name="issueRegexp" value="\(#(\d+)\)" />
           <option name="linkRegexp" value="https://git///github.com/UW-Macrostrat/cesium-viewer/issues/$1" />
         </IssueNavigationLink>
+        <IssueNavigationLink>
+          <option name="issueRegexp" value="\(#(\d+)\)" />
+          <option name="linkRegexp" value="https://github.com/davenquinn/geologic-patterns/issues/$1" />
+        </IssueNavigationLink>
       </list>
     </option>
   </component>

@@ -12,4 +12,7 @@ export default defineConfig({
     },
   },
   plugins: [vike({}), react({}), hyperStyles()],
+  build: {
+    sourcemap: true,
+  },
 });
