@@ -19,35 +19,38 @@ function Footer() {
   // @ts-ignore
   const env = usePageContext()?.runtimeEnv;
 
-  // @ts-ignore = The COMPILE_DATE variable is injected by Vite at build time
-  let compileDate = COMPILE_DATE;
+  const compileDate = getCompileDate();
 
-  if (compileDate != null) {
-    try {
-      compileDate = JSON.parse(compileDate);
-    } catch (e) {
-      console.error(e);
-      compileDate = "an unknown date";
-    }
-  }
-
-  let compileDate = JSON.parse(env?.COMPILE_DATE);
+  const dateText = compileDate?.toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
 
   return h("footer.page-footer", [
     h("p", [
       "Created by ",
       h("a", { href: "https://davenquinn.com" }, "Daven Quinn"),
     ]),
-    h.if(compileDate != null)("p.last-updated", [
-      "Last updated on ",
-      new Date(compileDate).toLocaleString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      }),
-    ]),
+    h.if(dateText != null)("p.last-updated", ["Last updated on ", dateText]),
   ]);
+}
+
+function getCompileDate(): Date | null {
+  // @ts-ignore = The COMPILE_DATE variable is injected by Vite at build time
+  const compileDate = COMPILE_DATE;
+
+  if (compileDate == null || compileDate == "") {
+    return null;
+  }
+
+  try {
+    return new Date(JSON.parse(compileDate));
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
 }
