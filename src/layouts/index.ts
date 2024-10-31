@@ -1,6 +1,5 @@
 import h from "./index.module.sass";
 import { ErrorBoundary } from "@macrostrat/ui-components";
-import { usePageContext } from "vike-react/usePageContext";
 
 export function NavigationLayout({ children }) {
   return h("div.navigation-layout.text-page", [
@@ -16,9 +15,6 @@ export function NavigationLayout({ children }) {
 }
 
 function Footer() {
-  // @ts-ignore
-  const env = usePageContext()?.runtimeEnv;
-
   const compileDate = getCompileDate();
 
   const dateText = compileDate?.toLocaleString("en-US", {
