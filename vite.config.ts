@@ -5,8 +5,6 @@ import hyperStyles from "@macrostrat/vite-plugin-hyperstyles";
 
 import path from "path";
 
-process.env["VITE_COMPILE_DATE"] = JSON.stringify(new Date().toISOString());
-
 export default defineConfig({
   resolve: {
     conditions: ["typescript"],
@@ -15,6 +13,9 @@ export default defineConfig({
     },
   },
   plugins: [vike({}), react({}), hyperStyles()],
+  define: {
+    COMPILE_DATE: JSON.stringify(new Date().toISOString()),
+  },
   build: {
     sourcemap: true,
   },

@@ -18,7 +18,18 @@ export function NavigationLayout({ children }) {
 function Footer() {
   // @ts-ignore
   const env = usePageContext()?.runtimeEnv;
-  console.log(env);
+
+  // @ts-ignore = The COMPILE_DATE variable is injected by Vite at build time
+  let compileDate = COMPILE_DATE;
+
+  if (compileDate != null) {
+    try {
+      compileDate = JSON.parse(compileDate);
+    } catch (e) {
+      console.error(e);
+      compileDate = "an unknown date";
+    }
+  }
 
   let compileDate = JSON.parse(env?.COMPILE_DATE);
 
