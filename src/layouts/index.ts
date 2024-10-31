@@ -43,8 +43,14 @@ function getCompileDate(): Date | null {
     return null;
   }
 
+  let parsedDate = compileDate;
+  // We might have a JSON string
+  if (compileDate.startsWith('"')) {
+    parsedDate = JSON.parse(compileDate);
+  }
+
   try {
-    return new Date(JSON.parse(compileDate));
+    return new Date(parsedDate);
   } catch (e) {
     console.error(e);
     return null;
