@@ -45,7 +45,7 @@ const Figure = compose(
   StaticSectionSettings,
   "div.page.section-page-static.section-page.summary-sections",
   "div.panel-container",
-  SummarySectionsStatic
+  SummarySectionsStatic,
 );
 
 export default (el, opts, cb) => render(h(Figure), el, cb);

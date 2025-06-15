@@ -5,12 +5,11 @@ import { BaseSectionPage } from "../components";
 import { EditorProvider } from "./editor";
 import { SummarySectionsSettings, defaultSettings } from "./settings";
 
-function SummarySectionsBase ({
-                                showNavigationController = true,
-                                settingsPanel = SummarySectionsSettings,
-                                ...rest
-                              }) {
-
+function SummarySectionsBase({
+  showNavigationController = true,
+  settingsPanel = SummarySectionsSettings,
+  ...rest
+}) {
   return h(
     BaseSectionPage,
     {
@@ -26,15 +25,14 @@ function SummarySectionsBase ({
         showNavigationController,
         ...rest,
       }),
-    ]
+    ],
   );
 }
-
 
 const SummarySections = compose(
   SectionPositionProvider,
   EditorProvider,
-  SummarySectionsBase
+  SummarySectionsBase,
 );
 
 export { SummarySections, SummarySectionsBase, SectionPane };

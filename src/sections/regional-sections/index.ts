@@ -11,7 +11,7 @@ const RegionalSectionsPage = (props) =>
       id: "regional-sections",
       settingsPanel,
     },
-    [h(RegionalSections)]
+    [h(RegionalSections)],
   );
 
 export { RegionalSectionsPage };

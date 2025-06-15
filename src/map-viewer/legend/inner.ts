@@ -74,7 +74,7 @@ var makeUnit = function (node) {
 
   if (show_in_legend) {
     parts.push(
-      h("div.header", [swatch, h("h1", name), h("p.desc", desc) || null])
+      h("div.header", [swatch, h("h1", name), h("p.desc", desc) || null]),
     );
   }
 

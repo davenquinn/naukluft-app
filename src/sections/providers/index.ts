@@ -36,14 +36,14 @@ const SectionSurfacesProvider = (props) => {
   */
   const { children } = props;
   const [surfaces, updateSurfaces] = useUpdateableQuery(
-    "sections/all-surfaces"
+    "sections/all-surfaces",
   );
 
   if (surfaces == null) return null;
   return h(
     SectionSurfacesContext.Provider,
     { value: { surfaces, updateSurfaces } },
-    children
+    children,
   );
 };
 

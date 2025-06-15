@@ -47,7 +47,7 @@ function NaukluftCesiumView({
       }),
       h(SatelliteLayer),
       h(GeologyLayer, { alpha: 0.5, show: showGeology }),
-    ]
+    ],
     //, h(GeologyLayer, { alpha: 0.8 })]
   );
 }

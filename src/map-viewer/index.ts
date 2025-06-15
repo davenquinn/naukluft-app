@@ -30,9 +30,9 @@ function BaseLayerSwitcher({ layers, activeLayer, onSetLayer }) {
             onSetLayer(d);
           },
         },
-        d.name
+        d.name,
       );
-    })
+    }),
   );
 }
 
@@ -148,7 +148,7 @@ function MapView() {
                   });
                 },
               },
-              "Geology"
+              "Geology",
             ),
             h(
               Button,
@@ -161,7 +161,7 @@ function MapView() {
                   });
                 },
               },
-              "Measurements"
+              "Measurements",
             ),
           ]),
           // h(BaseLayerSwitcher, {
@@ -178,7 +178,7 @@ function MapView() {
               resource: "Map reloader",
             }),
           ]),
-        ]
+        ],
       ),
     ]),
     //h(LegendPanel, { isActive })

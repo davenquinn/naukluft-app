@@ -47,7 +47,7 @@ async function setupLineSymbols(map) {
       const image = await loadImage(map, lineSymbolsURL + `/${symbol}.png`);
       if (map.hasImage(symbol)) return;
       map.addImage(symbol, image, { sdf: true, pixelRatio: 3 });
-    })
+    }),
   );
 }
 
@@ -65,7 +65,7 @@ async function setupStyleImages(map, polygonTypes) {
       });
       if (map.hasImage(uid)) return;
       map.addImage(uid, img, { sdf: false, pixelRatio: 12 });
-    })
+    }),
   );
 }
 
@@ -78,17 +78,17 @@ interface MapStyleBuilderOpts {
 export async function createMapStyle(
   map = null,
   styleUrl: string | null = null,
-  opts: MapStyleBuilderOpts = {}
+  opts: MapStyleBuilderOpts = {},
 ) {
   const { geology = true, terrain = true, patterns = true } = opts;
   const { data: polygonTypes } = await get(
-    `${apiBaseURL}/map-data/polygon-types`
+    `${apiBaseURL}/map-data/polygon-types`,
   );
   let baseStyle = emptyStyle;
   if (styleUrl != null) {
     const baseURL = styleUrl.replace(
       "mapbox://styles",
-      "https://api.mapbox.com/styles/v1"
+      "https://api.mapbox.com/styles/v1",
     );
     baseStyle = await getMapboxStyle(baseURL, {
       access_token: mapboxgl.accessToken,
@@ -106,7 +106,7 @@ export async function createMapStyle(
     baseStyle,
     polygonTypes,
     apiBaseURL + "/map-data/map-tiles",
-    patterns
+    patterns,
   );
 }
 
@@ -119,7 +119,7 @@ function setupTerrain(map: mapboxgl.Map) {
 function initializeMap(
   el: HTMLElement,
   baseLayer: string,
-  onStyleLoaded = null
+  onStyleLoaded = null,
 ) {
   //const style = createStyle(polygonTypes);
 
@@ -173,7 +173,7 @@ function reloadGeologySource(map: Map) {
 
   const newSource = createGeologySource(
     apiBaseURL + "/map-data/map-tiles",
-    true
+    true,
   );
   //const newID = `geology-${ix}`;
   map.getSource("geology").tiles = newSource.tiles;
@@ -299,7 +299,7 @@ export function MapComponent({
       map.setLayoutProperty(
         lyr,
         "visibility",
-        enableGeology ? "visible" : "none"
+        enableGeology ? "visible" : "none",
       );
     }
   }, [mapRef, enableGeology, styleLoaded]);

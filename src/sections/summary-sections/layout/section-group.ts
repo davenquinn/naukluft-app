@@ -30,7 +30,7 @@ const SectionGroup = (props: SectionGroupProps) => {
 
   // Sort into columns within this group, using `stackGroups` variable
   let columns = group(sections, (d) =>
-    stackGroups.findIndex((v) => v.includes(d.section))
+    stackGroups.findIndex((v) => v.includes(d.section)),
   );
   columns = Array.from(columns);
   columns.sort((a, b) => a[0] - b[0]);
@@ -96,9 +96,9 @@ const SectionGroup = (props: SectionGroupProps) => {
             end,
             id,
           });
-        })
+        }),
       );
-    })
+    }),
   );
 };
 

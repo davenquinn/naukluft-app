@@ -25,6 +25,6 @@ export function GrainsizeAxis(props) {
           return majorTicks.includes(t) ? t : "";
         },
       }),
-    ]
+    ],
   );
-};
+}

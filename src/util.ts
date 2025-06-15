@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Platform, currentPlatform } from "naukluft-data-backend";
 
-const getJSON = async function(url) {
+const getJSON = async function (url) {
   let data;
   if (currentPlatform == Platform.WEB) {
     // We are using a web-like backend

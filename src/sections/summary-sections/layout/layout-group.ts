@@ -9,7 +9,7 @@ function GroupTitle(props) {
   return h(
     Box,
     { is: "h1", className: styles["location-group-title"], ...rest },
-    children
+    children,
   );
 }
 

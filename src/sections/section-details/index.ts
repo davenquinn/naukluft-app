@@ -19,21 +19,16 @@ export const SectionDetailsPanel = (props) => {
   ]);
 };
 
-
-
 export const SectionDetailSettings = C(SettingsProvider, {
   ...defaultSettings,
 });
 
 export const SectionDetails = compose(
   SectionDetailSettings,
-  SectionDetailsPanel
+  SectionDetailsPanel,
 );
 
-
-
 const Figure = compose(PlatformProvider, SectionDataProvider, SectionDetails);
-
 
 const Section = function (props) {
   const { id } = props;
@@ -59,9 +54,8 @@ export const Sequence = ({ id }: { id: string }) => {
   return h(
     "div.sequence",
     { className: id },
-    sectionSwatches[id].map((d) => h(Section, d))
+    sectionSwatches[id].map((d) => h(Section, d)),
   );
 };
-
 
 export default (el, opts, cb) => render(h(Figure), el, cb);

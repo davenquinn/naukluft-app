@@ -9,15 +9,15 @@ export const GeologyLayer = ({ visibleMaps = null, ...rest }) => {
   const [provider, setProvider] = useState(null);
   useEffect(() => {
     createMapStyle(null, null, { terrain: false, patterns: false }).then(
-      style => {
+      (style) => {
         setProvider(
           new MVTImageryProvider({
             style,
             maximumZoom: 16,
-            tileSize: 512
-          })
+            tileSize: 512,
+          }),
         );
-      }
+      },
     );
   }, []);
 

@@ -24,7 +24,7 @@ const filenameForID = (id, ext) => {
     process.cwd(),
     __dirname,
     "sequence-data",
-    `${id}.${ext}`
+    `${id}.${ext}`,
   );
 };
 

@@ -5,30 +5,30 @@ import style from "./main.styl";
 import { query } from "../db";
 import classNames from "classnames";
 
-const makeMapUnit = d => console.log(d);
+const makeMapUnit = (d) => console.log(d);
 
-var makeNested = function(item) {
+var makeNested = function (item) {
   // Recursively callable function to make nested data
   //
   const h = item.append("div").attrs({ class: style.header });
 
-  h.append("h1").text(d => d.data.name);
-  h.append("p").text(d => d.data.desc);
+  h.append("h1").text((d) => d.data.name);
+  h.append("p").text((d) => d.data.desc);
 
-  const color = d => d.data.color || "white";
+  const color = (d) => d.data.color || "white";
 
   item.styles({
-    "border-color": color
+    "border-color": color,
   });
 
   const c = item.append("div").attrs({ class: style.children });
 
   const children = c
     .selectAll("div.child")
-    .data(function(d) {
+    .data(function (d) {
       const vals = d.children || [];
       vals.sort((a, b) => a.data.order < b.data.order);
-      return vals.filter(d => d.data.level != null);
+      return vals.filter((d) => d.data.level != null);
     })
     .enter()
     .append("div")
@@ -37,9 +37,9 @@ var makeNested = function(item) {
         console.log(d);
         const ch = d.children || [];
         return classNames("child", d.data.type || "div", {
-          nochildren: ch.length === 0
+          nochildren: ch.length === 0,
         });
-      }
+      },
     });
 
   if (!children.empty()) {
@@ -47,15 +47,15 @@ var makeNested = function(item) {
   }
 };
 
-const createLegend = async function(el) {
+const createLegend = async function (el) {
   const data = await query("unit-data", null, { baseDir: __dirname });
 
   const wrap = d3.select(el);
 
   data.push({ unit_id: "root", name: "Legend" });
 
-  const t = key =>
-    function(d) {
+  const t = (key) =>
+    function (d) {
       try {
         return d[key].trim();
       } catch (error) {
@@ -63,9 +63,7 @@ const createLegend = async function(el) {
       }
     };
 
-  const strat = stratify()
-    .id(t("unit_id"))
-    .parentId(t("member_of"));
+  const strat = stratify().id(t("unit_id")).parentId(t("member_of"));
 
   const units = strat(data);
 

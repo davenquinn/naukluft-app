@@ -9,7 +9,6 @@ import {
 } from "naukluft-data-backend";
 import { PhotoOverlay } from "@macrostrat/photo-viewer";
 
-
 const PhotoLinks = function ({ photos }) {
   if (photos == null) {
     return null;
@@ -50,7 +49,7 @@ const PhotoNoteComponent = function (props) {
       xmlns: "http://www.w3.org/1999/xhtml",
       onClick,
     },
-    [h("span.text", text), " ", h(PhotoLinks, { photos })]
+    [h("span.text", text), " ", h(PhotoLinks, { photos })],
   );
 };
 
@@ -62,7 +61,7 @@ const ManagedNotesColumn = function (props) {
 
   const [baseNotes, updateNotes] = useUpdateableQuery(
     "section/notes/log-notes",
-    params
+    params,
   );
 
   const notes = baseNotes ?? [];
@@ -78,19 +77,19 @@ const ManagedNotesColumn = function (props) {
         await dispatch(
           "section/notes/set-invisible",
           [noteID],
-          ResultMask.none
+          ResultMask.none,
         );
       } else {
         await dispatch(
           "section/notes/update-note",
           { note_id: noteID, note_text: newText },
-          ResultMask.none
+          ResultMask.none,
         );
       }
       updateNotes();
       console.log(`Note ${noteID} edited`);
     },
-    [dispatch]
+    [dispatch],
   );
 
   const editable = inEditMode;

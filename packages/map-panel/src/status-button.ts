@@ -62,6 +62,6 @@ export function SocketStatusButton({ socket, resource = "Server", ...rest }) {
       },
       ...rest,
     },
-    text
+    text,
   );
 }

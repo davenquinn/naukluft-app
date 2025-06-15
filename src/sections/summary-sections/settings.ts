@@ -7,7 +7,7 @@ import h from "@macrostrat/hyper";
 import {
   SettingsProvider as BaseSettingsProvider,
   useSettings,
-  updateSettings
+  updateSettings,
 } from "@macrostrat/column-components";
 import {
   BaseSettingsPanel,
@@ -15,13 +15,13 @@ import {
   SequenceStratControlPanel,
   EditModeControl,
   SerializedQueriesControl,
-  SERIALIZED_QUERIES
+  SERIALIZED_QUERIES,
 } from "../settings";
 
 const defaultSettings = {
   modes: [
     { value: "normal", label: "Normal" },
-    { value: "skeleton", label: "Skeleton" }
+    { value: "skeleton", label: "Skeleton" },
   ],
   showNavigationController: true,
   activeMode: "normal",
@@ -44,10 +44,10 @@ const defaultSettings = {
   correlatedIsotopes: true,
   isotopesPerSection: false,
   correctIsotopeRatios: false,
-  interactive: true
+  interactive: true,
 };
 
-const SettingsProvider = function(props) {
+const SettingsProvider = function (props) {
   const { children, ...overrides } = props;
   const storageID = "summary-section-component";
   return h(
@@ -55,9 +55,9 @@ const SettingsProvider = function(props) {
     {
       storageID,
       ...defaultSettings,
-      ...overrides
+      ...overrides,
     },
-    children
+    children,
   );
 };
 
@@ -70,24 +70,24 @@ const SummarySectionsSettings = ({ isOpen, onClose }) =>
       h(SettingsSwitch, { id: "showOxygenIsotopes", label: "Oxygen isotopes" }),
       h(SettingsSwitch, {
         id: "correlatedIsotopes",
-        label: "Show correlated isotopes"
+        label: "Show correlated isotopes",
       }),
       h(SettingsSwitch, {
         id: "isotopesPerSection",
-        label: "Show isotopes for each section"
+        label: "Show isotopes for each section",
       }),
       h(SettingsSwitch, {
         id: "correctIsotopeRatios",
-        label: "Experimental standard correction"
-      })
+        label: "Experimental standard correction",
+      }),
     ]),
     h(SettingsSwitch, {
       id: "showLithostratigraphy",
-      label: "Lithostratigraphic correlations"
+      label: "Lithostratigraphic correlations",
     }),
     h(SettingsSwitch, {
       id: "showSequenceStratigraphy",
-      label: "Sequence-stratigraphic correlations"
+      label: "Sequence-stratigraphic correlations",
     }),
     h(SettingsSwitch, { id: "showFacies", label: "Facies" }),
     h(SettingsSwitch, { id: "showFaciesTracts", label: "Facies tracts" }),
@@ -100,13 +100,13 @@ const SummarySectionsSettings = ({ isOpen, onClose }) =>
     h("div", [
       h("h3", "Backend"),
       h(EditModeControl),
-      h(SerializedQueriesControl)
-    ])
+      h(SerializedQueriesControl),
+    ]),
   ]);
 export {
   SettingsProvider,
   useSettings,
   updateSettings,
   SummarySectionsSettings,
-  defaultSettings
+  defaultSettings,
 };

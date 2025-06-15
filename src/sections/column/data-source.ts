@@ -37,7 +37,7 @@ interface ColumnDivisionsProps {
 function ColumnDivisionsProvider(props: ColumnDivisionsProps) {
   const { id, children } = props;
   const [rawDivs, updateDivisions] = useUpdateableQuery(
-    "sections/section-lithology"
+    "sections/section-lithology",
   );
   // This is incredibly wasteful...
   let divisions = props.divisions ?? rawDivs;

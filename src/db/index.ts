@@ -22,7 +22,7 @@ if (global.PLATFORM === global.ELECTRON) {
     "versioned",
     "Products",
     "webroot",
-    "queries"
+    "queries",
   );
 } else {
   QUERY_DIRECTORY = join(BASE_URL, "queries");

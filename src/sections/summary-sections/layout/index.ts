@@ -76,7 +76,7 @@ function ArrangedSections(props: ArrangedSectionsProps) {
         sections,
         ...rest,
       });
-    })
+    }),
   );
 }
 

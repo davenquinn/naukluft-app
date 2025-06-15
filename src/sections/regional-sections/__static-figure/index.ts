@@ -13,7 +13,7 @@ const RegionalSectionsFigure = compose(
   SectionDataProvider,
   SectionSurfacesProvider,
   RegionalSections,
-  Legend
+  Legend,
 );
 
 export default (el, opts, cb) => render(h(RegionalSectionsFigure), el, cb);

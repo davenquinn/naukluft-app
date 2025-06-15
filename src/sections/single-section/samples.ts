@@ -24,7 +24,7 @@ const Samples = (props: { section_id: string }) => {
         h("text", { x: -10, y: -5 }, "∂¹³C " + fmt(d.avg_delta13c)),
         h("text", { x: -10, y: 5 }, "∂¹⁸O " + fmt(d.avg_delta18o)),
       ]);
-    })
+    }),
   );
 };
 

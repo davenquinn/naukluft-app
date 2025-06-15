@@ -9,7 +9,7 @@ const SectionContainer = (props) => {
       {
         style: { zoom: 1, minHeight },
       },
-      children
+      children,
     ),
   ]);
 };

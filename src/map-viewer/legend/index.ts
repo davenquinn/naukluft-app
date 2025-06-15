@@ -29,14 +29,14 @@ class LegendPanel extends Component {
                 h("p", "Preliminary version 4/18/2018"),
                 h(
                   "p",
-                  "Fault ticks, fold axes, bedding orientations, and unit labels are not rendered"
+                  "Fault ticks, fold axes, bedding orientations, and unit labels are not rendered",
                 ),
               ]),
             ]),
             h(MapLegendList),
           ]),
         ]),
-      ]
+      ],
     );
   }
 }

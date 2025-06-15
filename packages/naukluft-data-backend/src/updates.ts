@@ -8,7 +8,7 @@ export async function updateSectionInterval(intervalID: number, data: any) {
   switch (currentPlatform) {
     case Platform.WEB:
       const res = await axios.post("http://localhost:5555/" + key, data, {
-        params: { intervalID }
+        params: { intervalID },
       });
       if (res.status == 200) {
         let { data } = res;
@@ -23,7 +23,7 @@ export async function updateSectionInterval(intervalID: number, data: any) {
       const { TableName, update } = helpers;
       const tbl = new TableName({
         table: "section_lithology",
-        schema: "section"
+        schema: "section",
       });
       let sql = update(data, null, tbl) + " WHERE id=${id}";
       console.log(sql);

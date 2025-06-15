@@ -15,7 +15,7 @@ import { useSettings } from "@macrostrat/column-components";
 import "../main.styl";
 import "./main.module.styl";
 
-const SectionMain = function(props) {
+const SectionMain = function (props) {
   // Set up routing to jump to a specific height
   const { children } = props;
   const { inEditMode } = useContext(PlatformContext);
@@ -25,11 +25,11 @@ const SectionMain = function(props) {
     ...props,
     isEditable: inEditMode,
     ...settings,
-    children
+    children,
   });
 };
 
-const SectionPage = function(props) {
+const SectionPage = function (props) {
   // Set up routing to jump to a specific height
   const { section, height: scrollToHeight } = props;
 
@@ -38,16 +38,16 @@ const SectionPage = function(props) {
     {
       defaultSettings,
       id: "single-section",
-      settingsPanel: SettingsPanel
+      settingsPanel: SettingsPanel,
     },
     [
       h(SectionMain, {
         ...section,
         scrollToHeight,
         offsetTop: 0,
-        key: section.id
-      })
-    ]
+        key: section.id,
+      }),
+    ],
   );
 };
 

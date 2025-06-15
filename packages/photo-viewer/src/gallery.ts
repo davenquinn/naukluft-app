@@ -12,7 +12,7 @@ function PhotoGallery() {
       pswpRef.current,
       PhotoSwipeUI_Default,
       this.data.map(getSizeInfo),
-      opts
+      opts,
     );
   }, [pswpRef]);
 

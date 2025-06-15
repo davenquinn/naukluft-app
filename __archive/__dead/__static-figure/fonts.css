@@ -22,7 +22,8 @@
 
 @font-face {
   font-family: "museo-sans";
-  src: url("https://use.typekit.net/af/620bf8/00000000000000000000e7fe/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3")
+  src:
+    url("https://use.typekit.net/af/620bf8/00000000000000000000e7fe/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/620bf8/00000000000000000000e7fe/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3")
       format("woff"),
@@ -35,7 +36,8 @@
 
 @font-face {
   font-family: "museo-sans";
-  src: url("https://use.typekit.net/af/5cca6d/00000000000000000000e802/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i3&v=3")
+  src:
+    url("https://use.typekit.net/af/5cca6d/00000000000000000000e802/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i3&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/5cca6d/00000000000000000000e802/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i3&v=3")
       format("woff"),
@@ -48,7 +50,8 @@
 
 @font-face {
   font-family: "museo-sans";
-  src: url("https://use.typekit.net/af/e3ca36/00000000000000000000e805/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+  src:
+    url("https://use.typekit.net/af/e3ca36/00000000000000000000e805/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/e3ca36/00000000000000000000e805/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
       format("woff"),
@@ -61,7 +64,8 @@
 
 @font-face {
   font-family: "museo-sans";
-  src: url("https://use.typekit.net/af/2841b6/00000000000000000000e806/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3")
+  src:
+    url("https://use.typekit.net/af/2841b6/00000000000000000000e806/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/2841b6/00000000000000000000e806/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3")
       format("woff"),
@@ -74,7 +78,8 @@
 
 @font-face {
   font-family: "chaparral-pro";
-  src: url("https://use.typekit.net/af/9da37c/00000000000000003b9aee4e/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+  src:
+    url("https://use.typekit.net/af/9da37c/00000000000000003b9aee4e/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/9da37c/00000000000000003b9aee4e/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
       format("woff"),
@@ -87,7 +92,8 @@
 
 @font-face {
   font-family: "chaparral-pro";
-  src: url("https://use.typekit.net/af/6d0ba6/00000000000000003b9aee4d/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3")
+  src:
+    url("https://use.typekit.net/af/6d0ba6/00000000000000003b9aee4d/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/6d0ba6/00000000000000003b9aee4d/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3")
       format("woff"),
@@ -100,7 +106,8 @@
 
 @font-face {
   font-family: "chaparral-pro";
-  src: url("https://use.typekit.net/af/17d530/00000000000000003b9aee4f/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3")
+  src:
+    url("https://use.typekit.net/af/17d530/00000000000000003b9aee4f/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3")
       format("woff2"),
     url("https://use.typekit.net/af/17d530/00000000000000003b9aee4f/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n6&v=3")
       format("woff"),

@@ -22,7 +22,7 @@ const LSLabel = (props) => {
       {
         transform: "rotate(-90) translate(5,-4)",
       },
-      name
+      name,
     ),
   ]);
 };
@@ -66,13 +66,13 @@ function LithostratigraphyColumn({ keySection = "J" }) {
     }
     if (surfaceData.level === 3) {
       formations.push(
-        h(LSLabel, { y, name: surfaceData.short_name, extend: true })
+        h(LSLabel, { y, name: surfaceData.short_name, extend: true }),
       );
       continue;
     }
     if (d.commonality === 2) {
       formations.push(
-        h(LSLabel, { y, name: surfaceData.formation_short_name })
+        h(LSLabel, { y, name: surfaceData.formation_short_name }),
       );
     }
     members.push(h(LSLabel, { y, name: surfaceData.short_name }));
@@ -86,7 +86,7 @@ function LithostratigraphyColumn({ keySection = "J" }) {
         transform: "translate(20)",
         style: { fontSize: 14, fontStyle: "italic" },
       },
-      members
+      members,
     ),
   ]);
 }
@@ -116,7 +116,7 @@ const BaseSVGSectionComponent = (props) => {
           ]),
         ]),
       ]),
-    ]
+    ],
   );
 };
 

@@ -35,7 +35,7 @@ function LayerSwitch({ layer, layers, setLayers, children }) {
         setLayers(newLayers);
       },
     },
-    children
+    children,
   );
 }
 
@@ -102,7 +102,7 @@ function GlobeView() {
           h(
             LayerSwitch,
             { layers, layer: Layer.Geology, setLayers },
-            "Geology"
+            "Geology",
           ),
           h(
             LayerSwitch,
@@ -111,7 +111,7 @@ function GlobeView() {
               layer: Layer.Photogrammetry,
               setLayers,
             },
-            "Photogrammetry"
+            "Photogrammetry",
           ),
           // h(BaseLayerSwitcher, {
           //   layers: baseLayers,
@@ -120,7 +120,7 @@ function GlobeView() {
           //     setActiveLayer(layer);
           //   }
           // })
-        ]
+        ],
       ),
     ]),
     //h(LegendPanel, { isActive })

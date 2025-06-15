@@ -7,14 +7,14 @@ import h from "@macrostrat/hyper";
 import {
   SettingsProvider as BaseSettingsProvider,
   useSettings,
-  updateSettings
+  updateSettings,
 } from "@macrostrat/column-components";
 import {
   BaseSettingsPanel,
   SettingsSwitch,
   SequenceStratControlPanel,
   EditModeControl,
-  SerializedQueriesControl
+  SerializedQueriesControl,
 } from "../settings";
 
 const defaultSettings = {
@@ -22,7 +22,7 @@ const defaultSettings = {
   activeMode: "normal",
   displayModes: [
     { value: "image", label: "Full-resolution" },
-    { value: "generalized", label: "Generalized" }
+    { value: "generalized", label: "Generalized" },
   ],
   activeDisplayMode: "image",
   showNotes: true,
@@ -36,10 +36,10 @@ const defaultSettings = {
   serializedQueries: SERIALIZED_QUERIES,
   condensedDisplay: true,
   sectionIDs: [],
-  showCarbonIsotopes: false
+  showCarbonIsotopes: false,
 };
 
-const SettingsProvider = function(props) {
+const SettingsProvider = function (props) {
   const { children, ...overrides } = props;
   const storageID = "section-component";
   return h(
@@ -47,9 +47,9 @@ const SettingsProvider = function(props) {
     {
       storageID,
       ...defaultSettings,
-      ...overrides
+      ...overrides,
     },
-    children
+    children,
   );
 };
 
@@ -65,8 +65,8 @@ const SettingsPanel = ({ isOpen, onClose }) =>
     h("div", [
       h("h3", "Backend"),
       h(EditModeControl),
-      h(SerializedQueriesControl)
-    ])
+      h(SerializedQueriesControl),
+    ]),
   ]);
 
 export { SettingsPanel, defaultSettings };

@@ -9,7 +9,7 @@ function loadImage(url): Promise<HTMLImageElement> {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.addEventListener("load", () => resolve(img));
-    img.addEventListener("error", err => reject(err));
+    img.addEventListener("error", (err) => reject(err));
     img.src = url;
   });
 }
@@ -17,7 +17,7 @@ function loadImage(url): Promise<HTMLImageElement> {
 function recolorPatternImage(
   img: HTMLImageElement,
   backgroundColor: string,
-  color: string
+  color: string,
 ) {
   // create hidden canvas
   var canvas = document.createElement("canvas");

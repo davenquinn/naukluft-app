@@ -16,7 +16,7 @@ function IsotopesDataProvider(props: React.PropsWithChildren<{}>) {
   return h(
     IsotopesDataContext.Provider,
     { value: { isotopes } },
-    props.children
+    props.children,
   );
 }
 

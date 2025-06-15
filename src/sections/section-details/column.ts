@@ -14,9 +14,9 @@ import {
   LithologyColumnInner,
   Padding,
   useColumn,
-  useColumnLayout
+  useColumnLayout,
 } from "@macrostrat/column-components";
-import { extractPadding } from "@macrostrat/ui-components"
+import { extractPadding } from "@macrostrat/ui-components";
 import { useSection } from "~/sections/data-providers";
 import { ColumnImages } from "../single-section/images";
 import { ManagedSymbolColumn } from "../components";
@@ -31,20 +31,20 @@ interface SectionProps {
   innerWidth: number;
 }
 
-const ColumnAxisLabel = props => {
+const ColumnAxisLabel = (props) => {
   const { height, id } = props;
   const { pixelsPerMeter } = useColumn();
   return h(
     "text.axis-label",
     {
       transform: `translate(-24 ${(height * pixelsPerMeter) / 2}) rotate(-90)`,
-      textAnchor: "middle"
+      textAnchor: "middle",
     },
-    [h("tspan.title", `Section ${id}`), " ", h("tspan.unit", `(m)`)]
+    [h("tspan.title", `Section ${id}`), " ", h("tspan.unit", `(m)`)],
   );
 };
 
-const ColumnTitle = props => {
+const ColumnTitle = (props) => {
   const { id } = props;
   const { pixelHeight } = useColumnLayout();
 
@@ -82,7 +82,7 @@ const SectionComponent = (props: SectionProps & Padding) => {
         {
           pixelsPerMeter,
           range,
-          divisions
+          divisions,
         },
         [
           h("div.section", [
@@ -91,21 +91,21 @@ const SectionComponent = (props: SectionProps & Padding) => {
                 GrainsizeLayoutProvider,
                 {
                   width: grainsizeWidth + columnLeftMargin,
-                  grainsizeScaleStart: grainsizeScaleStart + columnLeftMargin
+                  grainsizeScaleStart: grainsizeScaleStart + columnLeftMargin,
                 },
                 [
                   h(
                     ColumnSVG,
                     {
                       innerWidth,
-                      ...padding
+                      ...padding,
                     },
                     [
                       h(TriangleBars, {
                         offsetLeft: -leftMatterOffset,
                         lineWidth: 15,
                         minOrder: 2,
-                        maxOrder: 2
+                        maxOrder: 2,
                       }),
                       h(
                         "g",
@@ -114,44 +114,44 @@ const SectionComponent = (props: SectionProps & Padding) => {
                           h(LithologyColumn, { width: lithologyWidth }, [
                             h(FaciesColumnInner),
                             h(CoveredOverlay),
-                            h(LithologyColumnInner)
-                          ])
-                        ]
+                            h(LithologyColumnInner),
+                          ]),
+                        ],
                       ),
                       h("g", { transform: `translate(${columnLeftMargin})` }, [
                         h(
                           GrainsizeLayoutProvider,
                           {
                             width: grainsizeWidth,
-                            grainsizeScaleStart
+                            grainsizeScaleStart,
                           },
                           [
                             h.if(showFloodingSurfaces)(FloodingSurface, {
                               lineWidth: 20,
-                              offsetLeft: -60
+                              offsetLeft: -60,
                             }),
                             h(GrainsizeAxis),
                             h(ColumnTitle, { id }),
-                            h(ManagedSymbolColumn, { id, left: 110 })
-                          ]
-                        )
+                            h(ManagedSymbolColumn, { id, left: 110 }),
+                          ],
+                        ),
                       ]),
                       //h(ColumnAxisLabel, { height, id }),
-                      h(ColumnAxis, { ticks })
-                    ]
-                  )
-                ]
+                      h(ColumnAxis, { ticks }),
+                    ],
+                  ),
+                ],
               ),
               h(ColumnImages, {
                 ...padding,
                 paddingLeft: padding.paddingLeft + lithologyWidth,
-                sectionID
-              })
-            ])
-          ])
-        ]
-      )
-    ])
+                sectionID,
+              }),
+            ]),
+          ]),
+        ],
+      ),
+    ]),
   ]);
 };
 
@@ -169,7 +169,7 @@ SectionComponent.defaultProps = {
   logWidth: 450,
   containerWidth: 1000,
   padding: 10,
-  paddingBottom: 20
+  paddingBottom: 20,
 };
 
 export { SectionComponent };

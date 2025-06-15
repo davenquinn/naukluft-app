@@ -59,7 +59,7 @@ function add3DLayers(baseStyle) {
 const geologyLayerDefs = function (
   colors = {},
   patterns = {},
-  usePatterns = true
+  usePatterns = true,
 ) {
   let patternPaint = {};
   if (usePatterns) {
@@ -199,7 +199,7 @@ const createGeologyStyle = function (
   baseStyle,
   polygonTypes: any[],
   hostName = "http://localhost:5555",
-  usePatterns = true
+  usePatterns = true,
 ) {
   const colors = {};
   const patterns = {};

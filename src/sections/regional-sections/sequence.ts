@@ -27,14 +27,8 @@ const LinkOverlay = function (props) {
 };
 
 const CorrelationContainer = function (props) {
-  const {
-    id,
-    sections,
-    children,
-    paddingBottom,
-    exportCorrelations,
-    ...rest
-  } = props;
+  const { id, sections, children, paddingBottom, exportCorrelations, ...rest } =
+    props;
   const domID = `sequence-${id}`;
 
   const ctx = useContext(PlatformContext);
@@ -116,7 +110,7 @@ const SequenceCorrelations = function (props) {
         topSurface,
         ...rest,
       });
-    })
+    }),
   );
 };
 

@@ -5,12 +5,8 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import {
-  ColumnContext,
-  SVG,
-  useSettings,
-} from "@macrostrat/column-components";
-import {expandInnerSize, extractPadding} from "@macrostrat/ui-components"
+import { ColumnContext, SVG, useSettings } from "@macrostrat/column-components";
+import { expandInnerSize, extractPadding } from "@macrostrat/ui-components";
 import { hyperStyled } from "@macrostrat/hyper";
 import classNames from "classnames";
 import { pairs } from "d3-array";
@@ -136,7 +132,7 @@ class SectionPositionProvider extends Component {
         h(SectionPositionContext.Provider, { value: this.setPosition }, [
           h(SectionObserverContext.Provider, { value }, children),
         ]),
-      ]
+      ],
     );
   }
 
@@ -195,7 +191,7 @@ const SectionTrackerRects = function (props) {
         return null;
       }
       return h("rect.section-tracker", { x, y, width, height, ...props });
-    })
+    }),
   );
 };
 
@@ -388,8 +384,8 @@ const SectionLinks = function (props) {
   return h(
     "g.section-links",
     surfacesNew.map((surface) =>
-      h(FilteredSectionLink, { surface, connectLines })
-    )
+      h(FilteredSectionLink, { surface, connectLines }),
+    ),
   );
 };
 
@@ -428,7 +424,7 @@ const SectionLinkOverlay = function (props) {
     [
       h.if(showSectionTrackers)(SectionTrackerRects),
       h(SectionLinks, { connectLines, surfaces }),
-    ]
+    ],
   );
 };
 

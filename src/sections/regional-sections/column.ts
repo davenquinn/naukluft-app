@@ -46,13 +46,13 @@ const SVGSectionInner = function (props) {
 
   if (bottomSurface != null) {
     const { bottom: bottomHeight } = divisions.find(
-      (d) => d.surface === bottomSurface
+      (d) => d.surface === bottomSurface,
     );
     range[0] = bottomHeight;
   }
   if (topSurface != null) {
     const { bottom: topHeight } = divisions.find(
-      (d) => d.surface === topSurface
+      (d) => d.surface === topSurface,
     );
     range[1] = topHeight;
   }
@@ -134,14 +134,14 @@ const SVGSectionInner = function (props) {
                     offsetLeft: -18,
                     lineWidth: 15,
                   }),
-                ]
+                ],
               ),
               children,
-            ]
+            ],
           ),
-        ]
+        ],
       ),
-    ]
+    ],
   );
 };
 

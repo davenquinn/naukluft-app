@@ -85,7 +85,7 @@ const IsotopesDataArea = function (props: DataAreaProps) {
   return h(
     IsotopesDataContext.Provider,
     { value },
-    h("g.data", null, children)
+    h("g.data", null, children),
   );
 };
 

@@ -23,7 +23,7 @@ function tectonicsPaperSwatches(): SwatchData[] {
 }
 
 const generalizedSwatches = (
-  divisions: GeneralizedDivision[]
+  divisions: GeneralizedDivision[],
 ): SwatchData[] => {
   const generalizer = new SectionHeightGeneralizer(divisions ?? []);
   return tectonicsPaperSwatches().map((d) => {
@@ -57,7 +57,7 @@ function SectionFigureRef(props: SwatchData) {
       className: props.id,
       style: { position: "absolute", top, height },
     },
-    [h("div.marker"), h("p.label", label)]
+    [h("div.marker"), h("p.label", label)],
   );
 }
 
@@ -67,6 +67,6 @@ export function SectionFigureReferences(props) {
   console.log(swatches);
   return h(
     "div",
-    swatches.map((d) => h(SectionFigureRef, d))
+    swatches.map((d) => h(SectionFigureRef, d)),
   );
 }
