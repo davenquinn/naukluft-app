@@ -1,8 +1,6 @@
-import "d3-selection-multi";
 import { stratify } from "d3-hierarchy";
 import classNames from "classnames";
 import { Component, createContext } from "react";
-//import "d3-jetpack";
 import h from "@macrostrat/hyper";
 import { useData } from "vike-react/useData";
 
@@ -150,12 +148,6 @@ class _MapLegendList extends Component {
     this.state = { data: [] };
   }
 
-  async createData() {
-    const data = []; //await query("unit-data", null, { baseDir: __dirname });
-    console.log(data);
-    return this.setState({ data });
-  }
-
   render() {
     const undiv = "Undivided";
 
@@ -175,10 +167,6 @@ class _MapLegendList extends Component {
               u("lower-omkyk"),
             ]),
             u("dabis"),
-          ]),
-          g("Pre-Damara basement", [
-            u("newedam-group"),
-            u("basement", "Igneous and metamorphic rocks"),
           ]),
         ]),
         g("Naukluft Nappe Complex", [
@@ -224,6 +212,10 @@ class _MapLegendList extends Component {
             u("kudu", undiv),
             u("southern-pavian", "Shale component"),
           ]),
+        ]),
+        g("Pre-Damara basement", [
+          u("newedam-group"),
+          u("basement", "Igneous and metamorphic rocks"),
         ]),
       ]),
     ]);

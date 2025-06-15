@@ -6,9 +6,7 @@ export function LegendPanel() {
     h("div.legend-inner", {}, [
       h("div.title-block", [
         h("h1", "Geologic map of the southern Naukluft Mountains"),
-        h("p", "Daven Quinn - Dissertation plate 4.1"),
         h("div.admonition", [
-          h("p", "Preliminary version 4/18/2018"),
           h(
             "p",
             "Fault ticks, fold axes, bedding orientations, and unit labels are not rendered",
