@@ -4,7 +4,7 @@
   "description": "Application for Naukluft Nappe Complex mapping",
   "type": "module",
   "scripts": {
-    "dev": "tsx ./express-entry.ts",
+    "dev": "nodemon --watch 'server' --watch packages/naukluft-data-backend --exec tsx ./express-entry.ts",
     "build": "vite build",
     "preview": "cross-env NODE_ENV=production tsx ./express-entry.ts",
     "format": "prettier --write ."
@@ -20,6 +20,7 @@
     "@types/express": "^4.17.21",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "nodemon": "^3.1.10",
     "prettier": "^3.3.3",
     "sass-embedded": "^1.79.4",
     "typescript": "^5.5.4"
