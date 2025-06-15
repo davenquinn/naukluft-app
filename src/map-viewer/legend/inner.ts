@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { Component, createContext } from "react";
 //import "d3-jetpack";
 import h from "@macrostrat/hyper";
+import { useData } from "vike-react/useData";
 
 var makeNested = function (item) {
   // Recursively callable function to make nested data
@@ -134,7 +135,12 @@ class Group extends Component {
 
 const g = (n, c) => h(Group, { name: n }, c);
 
-class MapLegendList extends Component {
+export function MapLegendList() {
+  const data = useData();
+  return h(_MapLegendList, { data });
+}
+
+class _MapLegendList extends Component {
   static initClass() {
     this.defaultProps = {};
   }
@@ -142,8 +148,6 @@ class MapLegendList extends Component {
     super(props);
     this.createLegend = this.createLegend.bind(this);
     this.state = { data: [] };
-
-    this.createData();
   }
 
   async createData() {
@@ -155,7 +159,7 @@ class MapLegendList extends Component {
   render() {
     const undiv = "Undivided";
 
-    return h(SwatchDataContext.Provider, { value: this.state.data }, [
+    return h(SwatchDataContext.Provider, { value: this.props.data }, [
       h("div#map-units-list", [
         g("Cover", [u("alluvium"), u("colluvium"), u("tufa"), u("dune")]),
         g("Footwall", [
@@ -243,6 +247,4 @@ class MapLegendList extends Component {
     return makeUnit(rootUnit);
   }
 }
-MapLegendList.initClass();
-
-export { MapLegendList };
+_MapLegendList.initClass();
