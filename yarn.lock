@@ -4119,10 +4119,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"d3-hierarchy@npm:^1.0.2":
-  version: 1.1.9
-  resolution: "d3-hierarchy@npm:1.1.9"
-  checksum: 10c0/63b0ae0953bda076866b8705f8ea6fa1f67ded7ee99d98b20ef4364ce21868c292c9b45e887fde0f0dba1d0202466b2a87e7d5a6cc6388e759aadc5f055142e0
+"d3-hierarchy@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "d3-hierarchy@npm:3.1.2"
+  checksum: 10c0/6dcdb480539644aa7fc0d72dfc7b03f99dfbcdf02714044e8c708577e0d5981deb9d3e99bbbb2d26422b55bcc342ac89a0fa2ea6c9d7302e2fc0951dd96f89cf
   languageName: node
   linkType: hard
 
@@ -8309,7 +8309,7 @@ __metadata:
     cross-env: "npm:^7.0.3"
     d3: "npm:^4.4.1"
     d3-array: "npm:^2.4.0"
-    d3-hierarchy: "npm:^1.0.2"
+    d3-hierarchy: "npm:^3.1.2"
     d3-jetpack: "npm:^2.0.13"
     d3-jetpack-module: "npm:^0.0.19"
     d3-legend: "npm:^1.0.0"

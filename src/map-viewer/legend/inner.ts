@@ -1,28 +1,13 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS206: Consider reworking classes to avoid initClass
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-import * as d3 from "d3";
 import "d3-selection-multi";
 import { stratify } from "d3-hierarchy";
-import { query, storedProcedure } from "../../db";
 import classNames from "classnames";
 import { Component, createContext } from "react";
-import { findDOMNode } from "react-dom";
-import "d3-jetpack";
+//import "d3-jetpack";
 import h from "@macrostrat/hyper";
-import { join } from "path";
-
-const createRow = (data) => console.log(data);
 
 var makeNested = function (item) {
   // Recursively callable function to make nested data
   //
-  item.each(createRows);
-
   const header = item.append("div").attrs({ class: style.header });
 
   header.append("h1").text((d) => d.data.name);
@@ -93,13 +78,7 @@ var makeUnit = function (node) {
 const SwatchDataContext = createContext({ swatches: [] });
 
 const getSwatch = function (id) {
-  let dn, fn;
-  if (PLATFORM === WEB) {
-    dn = BASE_URL;
-  } else {
-    dn = join(process.env.PROJECT_DIR, "versioned", "Products");
-  }
-  return (fn = join(dn, "map-patterns", `${id}.svg`));
+  return null;
 };
 
 class Swatch extends Component {
@@ -168,7 +147,7 @@ class MapLegendList extends Component {
   }
 
   async createData() {
-    const data = await query("unit-data", null, { baseDir: __dirname });
+    const data = []; //await query("unit-data", null, { baseDir: __dirname });
     console.log(data);
     return this.setState({ data });
   }
