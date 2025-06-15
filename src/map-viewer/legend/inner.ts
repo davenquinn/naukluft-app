@@ -1,6 +1,6 @@
 import { stratify } from "d3-hierarchy";
 import classNames from "classnames";
-import { Component, createContext } from "react";
+import { Component, createContext, useContext } from "react";
 import h from "@macrostrat/hyper";
 import { useData } from "vike-react/useData";
 
@@ -74,68 +74,143 @@ var makeUnit = function (node) {
   return h("div.map-unit", { className }, parts);
 };
 
-const SwatchDataContext = createContext({ swatches: [] });
+const LegendDataContext = createContext([]);
+
+function useLegendData() {
+  const data = useContext(LegendDataContext);
+  if (data == null) {
+    throw new Error(
+      "useLegendData must be used within a LegendDataContext.Provider",
+    );
+  }
+  return data;
+}
 
 const getSwatch = function (id) {
   return null;
 };
 
-class Swatch extends Component {
-  render() {
-    let { color, fgdc_symbol, unit_id } = this.props;
-    const style = { border: "1px solid #444", width: 30, height: 20 };
-    if (fgdc_symbol != null) {
-      color = `url('file://${getSwatch(unit_id)}')`;
-    }
-    style.background = color;
-
-    return h("div.swatch", { style });
+function Swatch({ color, symbol, unit_id }: any) {
+  const style = { border: "1px solid #444", width: 30, height: 20 };
+  if (symbol != null) {
+    const url = `https://mapboard.local/styles/pattern/${symbol}.svg`;
+    color = `url(${url})`;
   }
+  style.background = color;
+
+  return h("div.swatch", { style });
 }
 
-class MapUnit extends Component {
-  render() {
-    return h(SwatchDataContext.Consumer, {}, (swatches) => {
-      let desc;
-      console.log(swatches);
-      let id = this.props.children;
-      let name = null;
-      if (Array.isArray(id)) {
-        [id, name, desc] = id;
-      }
-      console.log(id, name, desc);
-      if (!(swatches.length > 0)) {
-        return;
-      }
-      let swatchData = swatches.find((d) => d.unit_id === id);
-      if (swatchData == null) {
-        swatchData = {};
-      }
-      const { name: nameData } = swatchData;
-      if (name == null) {
-        name = nameData;
-      }
-      return h("div.unit", [
-        h(Swatch, swatchData),
-        h("div.right", [h("div.label", name)]),
-      ]);
-    });
+function MapUnit({ children }) {
+  let desc;
+  let id = children;
+  let name = null;
+  if (Array.isArray(id)) {
+    [id, name, desc] = id;
   }
+  const swatches = useLegendData();
+  console.log(id, name, desc);
+  if (!(swatches.length > 0)) {
+    return;
+  }
+  let swatchData = swatches.find((d) => d.unit_id === id);
+  if (swatchData == null) {
+    swatchData = {};
+  }
+  console.log(swatchData);
+
+  const { name: nameData } = swatchData;
+  if (name == null) {
+    name = nameData;
+  }
+  return h("div.unit", [
+    h(Swatch, swatchData),
+    h("div.right", [h("div.label", name)]),
+  ]);
 }
 
 const u = (d, name, desc) => h(MapUnit, [d, name, desc]);
 
-class Group extends Component {
-  render() {
-    return h("div.unit-group", [h("h1", this.props.name), this.props.children]);
-  }
+function Group({ name, children }) {
+  return h("div.unit-group", [h("h1", name), children]);
 }
 
 const g = (n, c) => h(Group, { name: n }, c);
 
 export function MapLegendList() {
   const data = useData();
-  return h(_MapLegendList, { data });
+  return h(LegendDataContext.Provider, { value: data }, h(MapLegendListStatic));
+}
+
+function MapLegendListStatic() {
+  const undiv = "Undivided";
+
+  return h("div#map-units-list", [
+    g("Cover", [u("alluvium"), u("colluvium"), u("tufa"), u("dune")]),
+    g("Footwall", [
+      g("Nama Group", [
+        u("urikos"),
+        u("urusis"),
+        u("houghland", "Houghland Formation"),
+        g("Omkyk Formation", [
+          u("upper-omkyk-grainstone", "Biostrome (to upper)"),
+          u("upper-omkyk", "Upper"),
+          u("middle-omkyk"),
+          u("middle-omkyk-reef", "Patch reef (to middle)"),
+          u("lower-omkyk"),
+        ]),
+        u("dabis"),
+      ]),
+    ]),
+    g("Naukluft Nappe Complex", [
+      g("Zebra Series", [
+        g("Tafel Formation", [
+          u("adler", "Upper"),
+          u("zebra-limestone", "Lower"),
+          u("tafel", undiv),
+        ]),
+        g("Onis Formation", [
+          u("upper-onis", "Upper"),
+          u("middle-onis", "Middle"),
+          u("lower-onis", "Lower"),
+          u("onis", undiv),
+        ]),
+        g("Lemoenputs Formation", [
+          u("upper-lemoenputs", "Upper"),
+          u("lemoenputs-ooid", "Bed B (to middle)"),
+          u("middle-lemoenputs", "Middle"),
+          u("lemoenputs-a", "Bed A (to lower)"),
+          u("lower-lemoenputs", "Lower"),
+        ]),
+        g("Tsams Formation", [
+          u("tsams-c", "Member C"),
+          u("tsams-b", "Member B"),
+          u("tsams-a", "Member A"),
+        ]),
+        u("ubisis", "Ubisis Formation"),
+        u("neuras", "Neuras Formation"),
+      ]),
+      g("Dassie Nappe", [
+        u("dassie", undiv),
+        u("aubslucht", "Shale component"),
+      ]),
+      g("Pavian Nappe", [
+        g("Southern Pavian Nappe", [
+          u("bullsport-outlier", "Büllsport outlier"),
+          u("arbeit-adelt-outlier", "Arbeit Adelt outlier"),
+        ]),
+        u("northern-pavian", "Northern Pavian nappe"),
+      ]),
+      g("Kudu Nappe", [
+        u("kudu", undiv),
+        u("southern-pavian", "Shale component"),
+      ]),
+    ]),
+    g("Pre-Damara basement", [
+      u("newedam-group"),
+      u("basement", "Igneous and metamorphic rocks"),
+    ]),
+  ]);
 }
 
 class _MapLegendList extends Component {
@@ -146,79 +221,6 @@ class _MapLegendList extends Component {
     super(props);
     this.createLegend = this.createLegend.bind(this);
     this.state = { data: [] };
-  }
-
-  render() {
-    const undiv = "Undivided";
-
-    return h(SwatchDataContext.Provider, { value: this.props.data }, [
-      h("div#map-units-list", [
-        g("Cover", [u("alluvium"), u("colluvium"), u("tufa"), u("dune")]),
-        g("Footwall", [
-          g("Nama Group", [
-            u("urikos"),
-            u("urusis"),
-            u("houghland", "Houghland Formation"),
-            g("Omkyk Formation", [
-              u("upper-omkyk-grainstone", "Biostrome (to upper)"),
-              u("upper-omkyk", "Upper"),
-              u("middle-omkyk"),
-              u("middle-omkyk-reef", "Patch reef (to middle)"),
-              u("lower-omkyk"),
-            ]),
-            u("dabis"),
-          ]),
-        ]),
-        g("Naukluft Nappe Complex", [
-          g("Zebra Nappe", [
-            g("Tafel Formation", [
-              u("adler", "Upper"),
-              u("zebra-limestone", "Lower"),
-              u("tafel", undiv),
-            ]),
-            g("Onis Formation", [
-              u("upper-onis", "Upper"),
-              u("middle-onis", "Middle"),
-              u("lower-onis", "Lower"),
-              u("onis", undiv),
-            ]),
-            g("Lemoenputs Formation", [
-              u("upper-lemoenputs", "Upper"),
-              u("lemoenputs-ooid", "Bed B (to middle)"),
-              u("middle-lemoenputs", "Middle"),
-              u("lemoenputs-a", "Bed A (to lower)"),
-              u("lower-lemoenputs", "Lower"),
-            ]),
-            g("Tsams Formation", [
-              u("tsams-c", "Member C"),
-              u("tsams-b", "Member B"),
-              u("tsams-a", "Member A"),
-            ]),
-            u("ubisis", "Ubisis Formation"),
-            u("neuras", "Neuras Formation"),
-          ]),
-          g("Dassie Nappe", [
-            u("dassie", undiv),
-            u("aubslucht", "Shale component"),
-          ]),
-          g("Pavian Nappe", [
-            g("Southern Pavian Nappe", [
-              u("bullsport-outlier", "Büllsport outlier"),
-              u("arbeit-adelt-outlier", "Arbeit Adelt outlier"),
-            ]),
-            u("northern-pavian", "Northern Pavian nappe"),
-          ]),
-          g("Kudu Nappe", [
-            u("kudu", undiv),
-            u("southern-pavian", "Shale component"),
-          ]),
-        ]),
-        g("Pre-Damara basement", [
-          u("newedam-group"),
-          u("basement", "Igneous and metamorphic rocks"),
-        ]),
-      ]),
-    ]);
   }
 
   createLegend() {
