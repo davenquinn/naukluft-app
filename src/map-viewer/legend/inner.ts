@@ -1,78 +1,12 @@
 import { stratify } from "d3-hierarchy";
 import classNames from "classnames";
 import { Component, createContext, useContext } from "react";
-import h from "@macrostrat/hyper";
+import hyper from "@macrostrat/hyper";
+import style from "./legend.module.sass";
 import { useData } from "vike-react/useData";
+import { useRuntimeEnv } from "~/sections/data-providers";
 
-var makeNested = function (item) {
-  // Recursively callable function to make nested data
-  //
-  const header = item.append("div").attrs({ class: style.header });
-
-  header.append("h1").text((d) => d.data.name);
-  header.append("p").text((d) => d.data.desc);
-
-  const color = (d) => d.data.color || "white";
-
-  const c = item.append("div").attrs({ class: style.children });
-
-  const children = c
-    .selectAll("div.child")
-    .data(function (d) {
-      const vals = d.children || [];
-      vals.sort((a, b) => a.data.order < b.data.order);
-      return vals.filter((d) => d.data.level != null);
-    })
-    .enter()
-    .append("div")
-    .attrs({
-      class(d) {
-        const ch = d.children || [];
-        return classNames("child", d.data.type || "div", {
-          nochildren: ch.length === 0,
-        });
-      },
-    });
-
-  if (!children.empty()) {
-    return children.call(makeNested);
-  }
-};
-
-var makeUnit = function (node) {
-  const { data, children } = node;
-  let { unit_id, name, desc, level, type, is_map_unit, show_in_legend } = data;
-
-  if (desc != null) {
-    desc = h("p.desc", desc);
-  }
-
-  let swatch = null;
-  if (is_map_unit) {
-    const backgroundColor = data.color || "white";
-    swatch = h("div.swatch", { style: { backgroundColor } });
-  }
-
-  console.log(node);
-  const parts = [];
-
-  if (show_in_legend) {
-    parts.push(
-      h("div.header", [swatch, h("h1", name), h("p.desc", desc) || null]),
-    );
-  }
-
-  if (children != null) {
-    children.sort((a, b) => a.data.order < b.data.order);
-
-    const v = children.filter((d) => d.data.level != null).map(makeUnit);
-
-    parts.push(h("div.children", v));
-  }
-
-  const className = classNames(unit_id, type, `level-${level}`);
-  return h("div.map-unit", { className }, parts);
-};
+const h = hyper.styled(style);
 
 const LegendDataContext = createContext([]);
 
@@ -86,19 +20,18 @@ function useLegendData() {
   return data;
 }
 
-const getSwatch = function (id) {
-  return null;
-};
+function Swatch({ unitID, color, symbol, symbolColor }: any) {
+  const baseURL = useRuntimeEnv("MAPBOARD_BASE_URL");
 
-function Swatch({ color, symbol, unit_id }: any) {
-  const style = { border: "1px solid #444", width: 30, height: 20 };
+  let background = color;
   if (symbol != null) {
-    const url = `https://mapboard.local/styles/pattern/${symbol}.svg`;
-    color = `url(${url})`;
+    let url = `${baseURL}/styles/project/naukluft/main/pattern/${unitID}.svg?scale=5`;
+    background = `url("${url}")`;
   }
-  style.background = color;
 
-  return h("div.swatch", { style });
+  return h("div.swatch", {
+    style: { background },
+  });
 }
 
 function MapUnit({ children }) {
@@ -124,7 +57,7 @@ function MapUnit({ children }) {
     name = nameData;
   }
   return h("div.unit", [
-    h(Swatch, swatchData),
+    h(Swatch, { ...swatchData, unitID: id }),
     h("div.right", [h("div.label", name)]),
   ]);
 }
@@ -242,3 +175,73 @@ class _MapLegendList extends Component {
   }
 }
 _MapLegendList.initClass();
+
+var makeNested = function (item) {
+  // Recursively callable function to make nested data
+  //
+  const header = item.append("div").attrs({ class: style.header });
+
+  header.append("h1").text((d) => d.data.name);
+  header.append("p").text((d) => d.data.desc);
+
+  const color = (d) => d.data.color || "white";
+
+  const c = item.append("div").attrs({ class: style.children });
+
+  const children = c
+    .selectAll("div.child")
+    .data(function (d) {
+      const vals = d.children || [];
+      vals.sort((a, b) => a.data.order < b.data.order);
+      return vals.filter((d) => d.data.level != null);
+    })
+    .enter()
+    .append("div")
+    .attrs({
+      class(d) {
+        const ch = d.children || [];
+        return classNames("child", d.data.type || "div", {
+          nochildren: ch.length === 0,
+        });
+      },
+    });
+
+  if (!children.empty()) {
+    return children.call(makeNested);
+  }
+};
+
+var makeUnit = function (node) {
+  const { data, children } = node;
+  let { unit_id, name, desc, level, type, is_map_unit, show_in_legend } = data;
+
+  if (desc != null) {
+    desc = h("p.desc", desc);
+  }
+
+  let swatch = null;
+  if (is_map_unit) {
+    const backgroundColor = data.color || "white";
+    swatch = h("div.swatch", { style: { backgroundColor } });
+  }
+
+  console.log(node);
+  const parts = [];
+
+  if (show_in_legend) {
+    parts.push(
+      h("div.header", [swatch, h("h1", name), h("p.desc", desc) || null]),
+    );
+  }
+
+  if (children != null) {
+    children.sort((a, b) => a.data.order < b.data.order);
+
+    const v = children.filter((d) => d.data.level != null).map(makeUnit);
+
+    parts.push(h("div.children", v));
+  }
+
+  const className = classNames(unit_id, type, `level-${level}`);
+  return h("div.map-unit", { className }, parts);
+};
