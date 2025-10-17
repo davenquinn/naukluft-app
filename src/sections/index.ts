@@ -1,7 +1,7 @@
 import { Component } from "react";
 import "./main.styl";
 import styles from "./main.module.sass";
-import "@macrostrat/column-components/dist/main.css";
+//import "@macrostrat/column-components/dist/main.css";
 import hyper from "@macrostrat/hyper";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { NavigationList, NavLink } from "~/components/navigation";

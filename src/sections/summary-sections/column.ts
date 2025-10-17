@@ -245,7 +245,7 @@ const SVGSectionInner = function (props) {
     },
     [
       h("div.section-header", [
-        h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, id),
+        h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, `${id}`),
       ]),
       h(
         ColumnTracker,

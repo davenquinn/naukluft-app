@@ -17,7 +17,7 @@ import { MapView } from "~/map-viewer";
 import { HotkeysTarget, Hotkeys, Hotkey } from "@blueprintjs/core";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "@macrostrat/ui-components/dist/main.css";
+//import "@macrostrat/ui-components/dist/main.css";
 import "./style-system.sass";
 
 import h from "./+Page.module.sass";

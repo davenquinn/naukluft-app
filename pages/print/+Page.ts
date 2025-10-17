@@ -9,6 +9,7 @@ export function Page() {
       ]),
       h("li", [
         h("a", { href: "/print/stratigraphic-model" }, "Stratigraphic model"),
+      ]),
     ]),
   ]);
 }
