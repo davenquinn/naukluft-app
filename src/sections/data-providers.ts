@@ -103,6 +103,13 @@ const SectionDataProvider = compose(
 
 const SectionConsumer = SectionDataContext.Consumer;
 
+export const wrapWithSections = (component) => (props) => {
+  return h(SectionConsumer, null, (sections) => {
+    if (sections.length === 0) return null;
+    return h(component, { sections, ...props }, null);
+  });
+};
+
 export {
   getSectionData,
   useSection,

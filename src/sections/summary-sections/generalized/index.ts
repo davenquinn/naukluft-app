@@ -189,7 +189,7 @@ const SectionPane = function (props) {
   ]);
 };
 
-const GeneralizedSectionsInner = compose(
+export const GeneralizedSectionsInner = compose(
   SectionSurfacesProvider,
   GeneralizedDataProvider,
   SectionPositionProvider,

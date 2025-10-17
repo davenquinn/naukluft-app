@@ -5,7 +5,7 @@ import { BaseSectionPage } from "../components";
 import { EditorProvider } from "./editor";
 import { SummarySectionsSettings, defaultSettings } from "./settings";
 
-function SummarySectionsBase({
+function SummarySections({
   showNavigationController = true,
   settingsPanel = SummarySectionsSettings,
   ...rest
@@ -18,10 +18,7 @@ function SummarySectionsBase({
       defaultSettings,
     },
     [
-      h(SectionPane, {
-        groupMargin: 400,
-        columnMargin: 100,
-        columnWidth: 150,
+      h(SummarySectionsInner, {
         showNavigationController,
         ...rest,
       }),
@@ -29,10 +26,20 @@ function SummarySectionsBase({
   );
 }
 
-const SummarySections = compose(
+function SummarySectionsInnerV0(props) {
+  return h(SectionPane, {
+    groupMargin: 400,
+    columnMargin: 100,
+    columnWidth: 150,
+    showNavigationController: false,
+    ...props,
+  });
+}
+
+const SummarySectionsInner = compose(
   SectionPositionProvider,
   EditorProvider,
-  SummarySectionsBase,
+  SummarySectionsInnerV0,
 );
 
-export { SummarySections, SummarySectionsBase, SectionPane };
+export { SummarySectionsInner, SummarySections, SectionPane };
