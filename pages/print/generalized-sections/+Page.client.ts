@@ -6,11 +6,23 @@ import {
   wrapWithSections,
 } from "~/sections/data-providers";
 import "~/shared/global-styles";
+import {
+  defaultSettings,
+  SettingsProvider,
+} from "~/sections/summary-sections/settings";
+import { PlatformProvider } from "~/platform";
 
 export function Page() {
   return h(
     PrintArea,
     { filename: "generalized-sections.pdf" },
-    h(SectionDataProvider, h(wrapWithSections(GeneralizedSectionsInner))),
+    h(
+      PlatformProvider,
+      h(
+        SettingsProvider,
+        { ...defaultSettings, interactive: false },
+        h(SectionDataProvider, h(wrapWithSections(GeneralizedSectionsInner))),
+      ),
+    ),
   );
 }

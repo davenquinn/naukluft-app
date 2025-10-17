@@ -99,7 +99,18 @@ class PlatformProvider extends Component {
           h(
             AssetPathProvider,
             {
-              resolveSymbol: this.resolveSymbol,
+              resolveSymbol(sym) {
+                console.log("Resolving symbol", sym);
+                if (sym == null) {
+                  return null;
+                }
+                let sym1 = sym;
+                // Just in case we are passing full names
+                if (sym1.endsWith(".svg")) {
+                  sym1 = sym1.slice(0, -4);
+                }
+                return columnPatterns[`../assets/column-patterns/${sym1}.svg`];
+              },
             },
             [h(PlatformContext.Provider, { value }, children)],
           ),
@@ -137,6 +148,7 @@ class PlatformProvider extends Component {
   }
 
   resolveSymbol(sym) {
+    console.log("Resolving symbol", sym);
     if (sym == null) {
       return null;
     }

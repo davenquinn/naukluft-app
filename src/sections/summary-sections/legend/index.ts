@@ -1,11 +1,8 @@
 import { useContext } from "react";
 import h from "./index.module.sass";
 import classNames from "classnames";
-import {
-  FaciesContext,
-  SymbolLegend,
-  FaciesSwatch,
-} from "@macrostrat/column-components";
+import { FaciesContext, FaciesSwatch } from "@macrostrat/column-components";
+import { SymbolLegend } from "~/sections/symbol-column";
 
 function Facies(props) {
   const { facies } = useContext(FaciesContext);

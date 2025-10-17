@@ -24,7 +24,7 @@ import { ManagedSymbolColumn } from "../components";
 import { useSequenceStratSettings } from "../sequence-strat-context";
 import { SummaryColumnProvider } from "./data-provider";
 import { ColumnTracker } from "../components/link-overlay";
-import { PlatformContext } from "../../platform";
+import { PlatformContext } from "~/platform";
 import { MinimalIsotopesColumn } from "./chemostrat";
 import { FaciesTractIntervals } from "../column/facies-tracts";
 
@@ -166,7 +166,7 @@ const SVGSectionInner = function (props) {
     absolutePosition,
   } = props;
 
-  const { inEditMode } = useContext(PlatformContext);
+  const { inEditMode = false } = useContext(PlatformContext);
 
   const { sequenceStratOrder, showFloodingSurfaces, showTriangleBars } =
     useSequenceStratSettings();

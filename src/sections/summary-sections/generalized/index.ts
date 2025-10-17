@@ -23,8 +23,6 @@ import {
   GeneralizedDataProvider,
 } from "./data-provider";
 
-//import "../summary-sections/main.module.styl";
-//import "../summary-sections/main.module.styl";
 import h from "./main.module.styl";
 
 export function GeneralizedSections(props) {
@@ -61,7 +59,10 @@ const GeneralizedSection = function (props) {
             absolutePosition: false,
             axisComponent: GeneralizedAxis,
           },
-          [h(GeneralizedBreaks), h(SectionFigureReferences)],
+          [
+            h(GeneralizedBreaks),
+            //h(SectionFigureReferences)
+          ],
         ),
       ],
     ),

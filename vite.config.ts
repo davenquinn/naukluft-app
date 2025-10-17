@@ -17,7 +17,6 @@ export default defineConfig({
       "@macrostrat/mapbox-react",
       "@macrostrat/map-interface",
       "@macrostrat/column-views",
-      "ui-box",
     ],
     alias: {
       "~": path.resolve("./src"),
