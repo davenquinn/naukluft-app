@@ -19,7 +19,6 @@ function SummarySections({
     },
     [
       h(SummarySectionsInner, {
-        showNavigationController,
         ...rest,
       }),
     ],
@@ -31,7 +30,6 @@ function SummarySectionsInnerV0(props) {
     groupMargin: 400,
     columnMargin: 100,
     columnWidth: 150,
-    showNavigationController: false,
     ...props,
   });
 }

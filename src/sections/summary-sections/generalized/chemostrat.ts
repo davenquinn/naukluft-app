@@ -30,7 +30,7 @@ IsotopeDataRescaler.defaultProps = {
   },
 };
 
-const ChemostratigraphyColumn = function (props) {
+export function GeneralizedChemostratigraphyColumn(props) {
   const { sections, keySection, ...rest } = props;
 
   let row = sections[0];
@@ -56,6 +56,4 @@ const ChemostratigraphyColumn = function (props) {
       range,
     }),
   ]);
-};
-
-export { ChemostratigraphyColumn };
+}

@@ -115,16 +115,16 @@ export function SymbolColumn(props: SymbolColumnProps) {
   ]);
 }
 
-export function SymbolLegend() {
+export function SymbolLegend({ className }) {
   const arr = [];
   for (let name in symbolIndex) {
     const symbol = symbolIndex[name];
     const sym = h("div", { key: name }, [
-      h("img", { src: resolveSymbol(symbol) }),
+      h("img.symbol-legend-swatch", { src: resolveSymbol(symbol) }),
       h("span.label", name),
     ]);
     arr.push(sym);
   }
 
-  return h("div.symbol-legend", arr);
+  return h("div.symbol-legend", { className }, arr);
 }

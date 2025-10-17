@@ -14,60 +14,30 @@ import {
 } from "../../components";
 import { SVGSectionInner } from "../column";
 import { LithostratigraphyColumn } from "../lithostrat-key";
-import { SectionFigureReferences } from "./__static-figure/figure-references";
-import { Legend } from "./legend";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";
-import { ChemostratigraphyColumn } from "./chemostrat";
+import { GeneralizedChemostratigraphyColumn } from "./chemostrat";
 import {
   ColumnDivisionsContext,
   GeneralizedDataProvider,
 } from "./data-provider";
+import { TriangleBars } from "@macrostrat/column-components";
+import { LegendInner } from "~/sections/summary-sections/legend";
 
-import h from "./main.module.styl";
+import { hyperStyled } from "@macrostrat/hyper";
+import styles from "./main.module.styl";
+const h = hyperStyled(styles);
 
 export function GeneralizedSections(props) {
   return h(
     BaseSectionPage,
     {
-      id: "generalized-sections",
+      id: "generalized-sections-page",
       settingsPanel: SummarySectionsSettings,
       defaultSettings,
     },
     h(GeneralizedSectionsInner),
   );
 }
-
-const GeneralizedSection = function (props) {
-  const { range, height, divisions, zoom, offsetTop, ...rest } = props;
-  const { id } = rest;
-  return h("div.section-column", { className: id }, [
-    h(
-      ColumnProvider,
-      {
-        id,
-        range,
-        height,
-        divisions,
-        zoom,
-      },
-      [
-        h(
-          SVGSectionInner,
-          {
-            ...rest,
-            offsetTop,
-            absolutePosition: false,
-            axisComponent: GeneralizedAxis,
-          },
-          [
-            h(GeneralizedBreaks),
-            //h(SectionFigureReferences)
-          ],
-        ),
-      ],
-    ),
-  ]);
-};
 
 const rangeForDivisions = (divisions: ColumnDivision[]): [number, number] => {
   const start = divisions[0].bottom;
@@ -128,6 +98,7 @@ const compactOffsets = {
 };
 
 const SectionPane = function (props) {
+  const { className } = props;
   const { divisions } = useContext(ColumnDivisionsContext);
   const surfaceMap = group(divisions, (s) => s.section_id);
   const sections = Array.from(surfaceMap, function ([key, surfaces]) {
@@ -142,8 +113,8 @@ const SectionPane = function (props) {
 
   const showChemostrat = true;
 
-  return h("div#section-pane", [
-    h(Legend),
+  return h("div.section-pane", { className }, [
+    h(LegendInner, { className: "legend" }),
     h(SectionContainer, [
       h(SectionLinkOverlay),
       h(GeneralizedLithostratKey, {
@@ -152,7 +123,7 @@ const SectionPane = function (props) {
         keySection: "Onis",
         offset: 0,
       }),
-      h.if(showChemostrat)(ChemostratigraphyColumn, {
+      h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,
         showLines: false,
         keySection: "Onis",
@@ -189,6 +160,53 @@ const SectionPane = function (props) {
     ]),
   ]);
 };
+
+const GeneralizedSection = function (props) {
+  const { range, height, divisions, zoom, offsetTop, ...rest } = props;
+  const { id } = rest;
+  return h("div.section-column", { className: id }, [
+    h(
+      ColumnProvider,
+      {
+        id,
+        range,
+        height,
+        divisions,
+        zoom,
+      },
+      [
+        h(
+          SVGSectionInner,
+          {
+            ...rest,
+            offsetTop,
+            absolutePosition: false,
+            axisComponent: GeneralizedAxis,
+          },
+          [
+            h(GeneralizedBreaks),
+            //h(SectionFigureReferences)
+          ],
+        ),
+      ],
+    ),
+  ]);
+};
+
+function TriangleBarsLegend() {
+  return h(
+    ColumnProvider,
+    {
+      range: [0, 3],
+      divisions: [
+        { bottom: 0, surface_type: "sb", surface_order: 0 },
+        { bottom: 1, surface_type: "mfs", surface_order: 0 },
+        { bottom: 2, surface_type: "sb", surface_order: 0 },
+      ],
+    },
+    [h(ColumnSVG, [h(TriangleBars, { order: 0 })])],
+  );
+}
 
 export const GeneralizedSectionsInner = compose(
   SectionSurfacesProvider,

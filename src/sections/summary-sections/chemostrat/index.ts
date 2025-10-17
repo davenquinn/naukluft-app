@@ -3,7 +3,7 @@ import { hyperStyled } from "@macrostrat/hyper";
 import { useSurfaces } from "~/sections/providers";
 import { LayoutGroup } from "../layout";
 // Not sure if this one is really used
-import styles from "../main.module.styl";
+import styles from "./main.module.styl";
 import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
 
 const h = hyperStyled(styles);

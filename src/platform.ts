@@ -3,10 +3,7 @@ import h from "@macrostrat/hyper";
 import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 
 import update from "immutability-helper";
-import {
-  AssetPathProvider,
-  GeologicPatternProvider,
-} from "@macrostrat/column-components";
+import { GeologicPatternProvider } from "@macrostrat/column-components";
 
 const columnPatterns = import.meta.glob("../assets/column-patterns/*.svg", {
   eager: true,
@@ -95,26 +92,7 @@ class PlatformProvider extends Component {
             return `https://dev.macrostrat.org/assets/geologic-patterns/svg/${patternID}.svg`;
           },
         },
-        [
-          h(
-            AssetPathProvider,
-            {
-              resolveSymbol(sym) {
-                console.log("Resolving symbol", sym);
-                if (sym == null) {
-                  return null;
-                }
-                let sym1 = sym;
-                // Just in case we are passing full names
-                if (sym1.endsWith(".svg")) {
-                  sym1 = sym1.slice(0, -4);
-                }
-                return columnPatterns[`../assets/column-patterns/${sym1}.svg`];
-              },
-            },
-            [h(PlatformContext.Provider, { value }, children)],
-          ),
-        ],
+        h(PlatformContext.Provider, { value }, children),
       ),
     ]);
   }

@@ -9,20 +9,6 @@
     margin: 0 1em
 
 
-.symbol-legend-container > :global(.symbol-legend)
-  img
-    width: 30px
-    height: 30px
-  &>div
-    display: flex
-    flex-direction: row
-    align-items: center
-    justify-content: middle
-    span
-      flex-grow: 1
-      display: block
-      margin-left: 1em
-
 p.note
   font-style: italic
 
@@ -44,19 +30,21 @@ p.note
   width: 50em
   z-index: 12
   align-items: top
-  background-color: var(--background-color)
   h2
     font-size: 1.5em
 
   h4
     margin-top: 0em
-  div.facies .header
-    display: flex
-    flex-direction: row
-    align-items: center
-    p.facies-name
-      margin: 0.2em 1em 0 0
-      flex-grow: 1
+
+.facies .header
+  display: flex
+  flex-direction: row-reverse
+  gap: 1em
+  align-items: center
+  margin: 0.2em 0 0.5em
+  p.facies-name
+    flex-grow: 1
+    margin: 0
 
   p.explanation
     display: flex
@@ -66,3 +54,52 @@ p.note
     span.description
       flex-grow: 1
       margin-left: 1em
+
+.legend-inner
+  display: flex
+  flex-direction: row
+  margin-top: 0
+  gap: 1em
+  width: var(--legend-width, 44em)
+  z-index: 12
+  align-items: top
+  &>*>*
+    background-color: var(--background-color)
+
+  h2
+    font-size: 1.2em
+
+  h4
+    margin-top: 0em
+
+  p.note
+    font-style: italic
+
+.facies-description
+  flex: 2
+
+.symbol-legend-container
+  flex: 1
+
+.symbol-legend
+  img
+    width: 30px
+    height: 30px
+  &>div
+    display: flex
+    flex-direction: row
+    align-items: center
+    span
+      flex-grow: 1
+      display: block
+      margin-left: 1em
+
+p.explanation
+  display: flex
+  flex-direction: row
+  span.key
+    font-size: 1.5em
+  span.description
+    flex-grow: 1
+    margin-left: 1em
+

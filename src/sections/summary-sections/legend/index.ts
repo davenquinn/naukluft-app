@@ -1,8 +1,11 @@
 import { useContext } from "react";
-import h from "./index.module.sass";
+import styles from "./index.module.sass";
 import classNames from "classnames";
 import { FaciesContext, FaciesSwatch } from "@macrostrat/column-components";
 import { SymbolLegend } from "~/sections/symbol-column";
+import hyper from "@macrostrat/hyper";
+
+const h = hyper.styled(styles);
 
 function Facies(props) {
   const { facies } = useContext(FaciesContext);
@@ -71,15 +74,15 @@ function FaciesLegend(props) {
   ]);
 }
 
-function LegendInner() {
-  return h("div.legend-inner", [
+export function LegendInner({ className }) {
+  return h("div.legend-inner", { className }, [
     h("div.facies-description", [
       h("h2", "Sedimentary facies"),
       h(FaciesLegend),
     ]),
     h("div.symbol-legend-container", [
-      h("h2", "Symbology"),
-      h(SymbolLegend),
+      h("h2", "Symbols"),
+      h(SymbolLegend, { className: "symbol-legend" }),
       h(
         "p.note",
         "Triangle bars represent variation in accomodation space at the parasequence set level",
@@ -95,4 +98,4 @@ function Index() {
   ]);
 }
 
-export { Index, FaciesLegend, SymbolLegend };
+export { Index, FaciesLegend };
