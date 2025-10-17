@@ -39,7 +39,6 @@ function LithostratigraphyColumn({ keySection = "J" }) {
   }
 
   const findSurfaceHeight = (d) => {
-    console.log(d);
     const { section_height, ...rest } = d;
     return {
       height: section_height?.find((v) => v.section === keySection)?.height,

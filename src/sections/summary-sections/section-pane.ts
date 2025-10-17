@@ -21,14 +21,14 @@ interface SectionPaneProps {
   tightenSpacing: boolean;
 }
 
-const SectionPane = function (props: SectionPaneProps) {
+export function SectionPane(props: SectionPaneProps) {
   let {
     sections,
     groupMargin,
     columnMargin,
     columnWidth,
-    tightenSpacing,
-    scrollable,
+    tightenSpacing = true,
+    scrollable = true,
   } = props;
 
   const surfaces = useSurfaces();
@@ -76,11 +76,4 @@ const SectionPane = function (props: SectionPaneProps) {
       ]),
     ]),
   ]);
-};
-
-SectionPane.defaultProps = {
-  tightenSpacing: true,
-  scrollable: true,
-};
-
-export { SectionPane };
+}

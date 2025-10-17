@@ -8,19 +8,6 @@ import {
   GeologicPatternProvider,
 } from "@macrostrat/column-components";
 
-// Vite glob imports of pattern
-const patternSVGs = import.meta.glob(
-  "../packages/geologic-patterns/assets/svg/*.svg",
-  { eager: true, import: "default" },
-);
-const patternPNGs = import.meta.glob(
-  "../packages/geologic-patterns/assets/png-compressed/*.png",
-  {
-    eager: true,
-    import: "default",
-  },
-);
-
 const columnPatterns = import.meta.glob("../assets/column-patterns/*.svg", {
   eager: true,
   import: "default",
@@ -70,7 +57,6 @@ class PlatformProvider extends Component {
     this.updateState = this.updateState.bind(this);
     this.computePhotoPath = this.computePhotoPath.bind(this);
     this.resolveSymbol = this.resolveSymbol.bind(this);
-    this.resolveLithologySymbol = this.resolveLithologySymbol.bind(this);
 
     this.storage = new LocalStorage("edit-mode");
     const v = this.storage.get();
@@ -81,12 +67,7 @@ class PlatformProvider extends Component {
   }
 
   render() {
-    let {
-      computePhotoPath,
-      resolveSymbol,
-      resolveLithologySymbol,
-      updateState,
-    } = this;
+    let { computePhotoPath, resolveSymbol, updateState } = this;
     let { serializedQueries, ...restState } = this.state;
     if (this.state.platform === Platform.WEB) {
       serializedQueries = true;
@@ -99,7 +80,6 @@ class PlatformProvider extends Component {
       updateState,
       computePhotoPath,
       resolveSymbol,
-      resolveLithologySymbol,
     };
 
     ({ resolveSymbol } = this.props);
@@ -107,12 +87,13 @@ class PlatformProvider extends Component {
       ({ resolveSymbol } = this);
     }
 
-    const assetPathFunctions = { resolveSymbol, resolveLithologySymbol };
     return h(DarkModeProvider, [
       h(
         GeologicPatternProvider,
         {
-          resolvePattern: this.resolveLithologySymbol,
+          resolvePattern(patternID) {
+            return `https://dev.macrostrat.org/assets/geologic-patterns/svg/${patternID}.svg`;
+          },
         },
         [
           h(
@@ -165,20 +146,6 @@ class PlatformProvider extends Component {
       sym1 = sym1.slice(0, -4);
     }
     return columnPatterns[`../assets/column-patterns/${sym1}.svg`];
-  }
-
-  resolveLithologySymbol(id, opts = {}) {
-    const { svg = true } = opts;
-    if (id == null) {
-      return null;
-    }
-    if (svg) {
-      return patternSVGs[`../packages/geologic-patterns/assets/svg/${id}.svg`];
-    } else {
-      return patternPNGs[
-        `../packages/geologic-patterns/assets/png-compressed/${id}.png`
-      ];
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {

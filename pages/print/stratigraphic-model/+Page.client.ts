@@ -5,6 +5,7 @@ import {
   wrapWithSections,
 } from "~/sections/data-providers";
 import { SummarySectionsInner } from "~/sections/summary-sections";
+import "~/shared/global-styles";
 
 export function Page() {
   return h(
