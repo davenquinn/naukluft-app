@@ -108,7 +108,7 @@ const IsotopeDataPoint = function (props) {
   let opacity = 1;
   if (adjustOpacity) {
     // Make points with high stddev more transparent
-    opacity -= Math.min((x1 - x0) / 5, 0.5);
+    opacity -= Math.min((x1 - x0) / 4, 0.5);
   }
 
   return h("line", {

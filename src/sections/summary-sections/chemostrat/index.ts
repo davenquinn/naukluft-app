@@ -33,7 +33,7 @@ function ChemostratigraphyGroup(props) {
 }
 
 export function SimpleChemostratigraphyColumn(props) {
-  const { sections, colorScheme, range, showLines, keySection, nTicks } = props;
+  const { sections, range, showLines, keySection, nTicks } = props;
   const correctIsotopeRatios = true;
 
   let row = sections[0];
@@ -155,18 +155,22 @@ interface ChemostratigraphyColumnProps {
   sections: any[];
   keySection?: string;
   showLines?: boolean;
+  simple?: boolean;
 }
 
 export function ChemostratigraphyColumn(props: ChemostratigraphyColumnProps) {
-  const { sections, keySection = "J", showLines = true } = props;
+  const { sections, keySection = "J", showLines = true, simple = true } = props;
 
   let row = sections[0];
   if (keySection != null) {
     row = sections.find((d) => d.id === keySection);
   }
-  const offset = row?.offset ?? 0;
 
-  return h(BaseChemostratigraphyColumn, {
+  const component = simple
+    ? SimpleChemostratigraphyColumn
+    : BaseChemostratigraphyColumn;
+
+  return h(component, {
     range: rangeForSection(row),
     showLines,
     ...props,

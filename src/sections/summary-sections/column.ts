@@ -117,29 +117,30 @@ const ColumnSummaryAxis = function (props) {
   });
 };
 
-const ColumnIsotopes = function (props) {
-  const opts = useSettings();
-  let { id, columnWidth } = props;
-  if (columnWidth == null) {
-    columnWidth = 40;
-  }
-  if (!opts.isotopesPerSection) {
-    return null;
-  }
+function ColumnIsotopes(props) {
+  let {
+    id,
+    columnWidth = 40,
+    showCarbonIsotopes = true,
+    showOxygenIsotopes = true,
+  } = props;
+
+  const left = 120;
   return h([
-    h.if(opts.showCarbonIsotopes)(MinimalIsotopesColumn, {
+    h.if(showCarbonIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: "translate(120)",
+      transform: `translate(${left})`,
+      system: "delta13c",
     }),
-    h.if(opts.showOxygenIsotopes)(MinimalIsotopesColumn, {
+    h.if(showOxygenIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: "translate(160)",
+      transform: `translate(${left + columnWidth})`,
       system: "delta18o",
     }),
   ]);
-};
+}
 
 const ColumnUnderlay = function (props) {
   let { width, paddingLeft } = props;
@@ -292,9 +293,11 @@ const SVGSectionInner = function (props) {
                       left: 90,
                       id,
                     }),
-                    h(ColumnIsotopes, {
+                    h.if(isotopesPerSection)(ColumnIsotopes, {
                       id,
                       columnWidth: props.isotopeColumnWidth,
+                      showCarbonIsotopes,
+                      showOxygenIsotopes,
                     }),
                   ]),
                   h(

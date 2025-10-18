@@ -4,7 +4,7 @@ import { ChemostratigraphyColumn } from "./chemostrat";
 import { SectionLinkOverlay, SectionContainer } from "../components";
 import { LithostratKey } from "./lithostrat-key";
 import { ArrangedSections } from "./layout";
-import { Index } from "./legend";
+import { LegendFull } from "./legend";
 import { useSurfaces } from "~/sections/providers";
 import { SectionData } from "./layout/defs";
 import styles from "./main.module.styl";
@@ -24,9 +24,9 @@ interface SectionPaneProps {
 export function SectionPane(props: SectionPaneProps) {
   let {
     sections,
-    groupMargin,
-    columnMargin,
-    columnWidth,
+    groupMargin = 400,
+    columnMargin = 100,
+    columnWidth = 150,
     tightenSpacing = true,
     scrollable = true,
   } = props;
@@ -49,7 +49,7 @@ export function SectionPane(props: SectionPaneProps) {
   const overflow = scrollable ? "scroll" : "inherit";
 
   return h("div.section-pane", { style: { overflow } }, [
-    h.if(showLegend)(Index),
+    h.if(showLegend)(LegendFull),
     h(SectionContainer, [
       h(SectionLinkOverlay, {
         connectLines: false,
@@ -63,7 +63,7 @@ export function SectionPane(props: SectionPaneProps) {
       h.if(showChemostrat)(ChemostratigraphyColumn, {
         sections,
         showLines: false,
-        options,
+        simple: true,
       }),
       h("div#section-container", [
         h(ArrangedSections, {

@@ -12,7 +12,7 @@ import {
 } from "./data-providers";
 import SectionPage from "./single-section";
 import { SummarySections } from "./summary-sections";
-import { GeneralizedSections } from "./summary-sections/generalized";
+import { GeneralizedSections } from "./generalized-sections";
 import { SectionNavigationControl } from "~/components";
 import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";

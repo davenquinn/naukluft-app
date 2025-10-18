@@ -5,11 +5,6 @@ import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 import update from "immutability-helper";
 import { GeologicPatternProvider } from "@macrostrat/column-components";
 
-const columnPatterns = import.meta.glob("../assets/column-patterns/*.svg", {
-  eager: true,
-  import: "default",
-});
-
 let global = globalThis;
 
 global.ELECTRON = "electron";
@@ -53,7 +48,6 @@ class PlatformProvider extends Component {
     this.path = this.path.bind(this);
     this.updateState = this.updateState.bind(this);
     this.computePhotoPath = this.computePhotoPath.bind(this);
-    this.resolveSymbol = this.resolveSymbol.bind(this);
 
     this.storage = new LocalStorage("edit-mode");
     const v = this.storage.get();
@@ -64,7 +58,7 @@ class PlatformProvider extends Component {
   }
 
   render() {
-    let { computePhotoPath, resolveSymbol, updateState } = this;
+    let { computePhotoPath, updateState } = this;
     let { serializedQueries, ...restState } = this.state;
     if (this.state.platform === Platform.WEB) {
       serializedQueries = true;
@@ -76,13 +70,7 @@ class PlatformProvider extends Component {
       serializedQueries,
       updateState,
       computePhotoPath,
-      resolveSymbol,
     };
-
-    ({ resolveSymbol } = this.props);
-    if (resolveSymbol == null) {
-      ({ resolveSymbol } = this);
-    }
 
     return h(DarkModeProvider, [
       h(
@@ -123,19 +111,6 @@ class PlatformProvider extends Component {
     }
     // Original photo
     return photo.path;
-  }
-
-  resolveSymbol(sym) {
-    console.log("Resolving symbol", sym);
-    if (sym == null) {
-      return null;
-    }
-    let sym1 = sym;
-    // Just in case we are passing full names
-    if (sym1.endsWith(".svg")) {
-      sym1 = sym1.slice(0, -4);
-    }
-    return columnPatterns[`../assets/column-patterns/${sym1}.svg`];
   }
 
   componentDidUpdate(prevProps, prevState) {

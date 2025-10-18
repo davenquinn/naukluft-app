@@ -25,19 +25,10 @@ function SummarySections({
   );
 }
 
-function SummarySectionsInnerV0(props) {
-  return h(SectionPane, {
-    groupMargin: 400,
-    columnMargin: 100,
-    columnWidth: 150,
-    ...props,
-  });
-}
-
 const SummarySectionsInner = compose(
   SectionPositionProvider,
   EditorProvider,
-  SummarySectionsInnerV0,
+  SectionPane,
 );
 
 export { SummarySectionsInner, SummarySections, SectionPane };

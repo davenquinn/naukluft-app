@@ -9,15 +9,28 @@ import { SettingsProvider } from "@macrostrat/column-components";
 
 import "~/shared/global-styles";
 import { defaultSettings } from "~/sections/summary-sections/settings";
+import { PlatformProvider } from "~/platform";
 
 export function Page() {
   return h(
     PrintArea,
     { filename: "stratigraphic-model.pdf" },
     h(
-      SettingsProvider,
-      { ...defaultSettings, interactive: false, isotopesPerSection: true },
-      h(SectionDataProvider, h(wrapWithSections(SummarySectionsInner))),
+      PlatformProvider,
+      h(
+        SettingsProvider,
+        {
+          ...defaultSettings,
+          interactive: false,
+          isotopesPerSection: true,
+          correctIsotopeRatios: true,
+          showLegend: true,
+        },
+        h(
+          SectionDataProvider,
+          h(wrapWithSections(SummarySectionsInner), { scrollable: false }),
+        ),
+      ),
     ),
   );
 }
