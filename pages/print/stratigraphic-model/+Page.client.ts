@@ -23,7 +23,8 @@ export function Page() {
           ...defaultSettings,
           interactive: false,
           isotopesPerSection: true,
-          correctIsotopeRatios: true,
+          correctIsotopeRatios: false,
+
           showLegend: true,
         },
         h(

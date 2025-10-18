@@ -119,18 +119,18 @@ const SectionPane = function (props) {
   return h("div.section-pane", { className }, [
     h(LegendInner, { className: "legend" }),
     h(SectionContainer, [
-      h(SectionLinkOverlay),
-      h(GeneralizedLithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        keySection: "Onis",
-        offset: 0,
-      }),
+      h(SectionLinkOverlay, {}),
       h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,
         simple: true,
         showLines: false,
         keySection: "Onis",
+      }),
+      h(GeneralizedLithostratKey, {
+        zoom: 0.1,
+        key: "key",
+        keySection: "Onis",
+        offset: 0,
       }),
       h(
         "div.generalized-sections",
@@ -151,7 +151,7 @@ const SectionPane = function (props) {
             id: key,
             zoom: 0.1,
             key,
-            triangleBarRightSide: false, //key === "Onis",
+            triangleBarRightSide: key === "Onis",
             offsetTop: offsets[key],
             start,
             end,

@@ -12,29 +12,9 @@ import { Notification } from "~/notify";
 import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.module.styl";
-import { SectionLinkPath } from "./path";
 import { useTargetEnvironment } from "~/platform";
 
 const h = hyperStyled(styles);
-
-const sectionSurfaceProps = function (surface) {
-  let stroke: string;
-  const { surface_type, surface_order } = surface;
-
-  if (surface_type === "mfs") {
-    stroke = "#ccc";
-  } else if (surface_type === "sb") {
-    stroke = "#fcc";
-  } else {
-    stroke = "#ccc";
-  }
-
-  let strokeWidth = 4 - Math.pow(surface_order, 1.5) * 1.5;
-  if (strokeWidth < 2) {
-    strokeWidth = 2;
-  }
-  return { stroke, strokeWidth, opacity: 0.5 };
-};
 
 const SectionPositionContext = createContext();
 const SectionObserverContext = createContext({});
@@ -274,7 +254,15 @@ const SectionLink = function (props) {
       d += linkLine;
 
       result.push(
-        h(__LinkPath, { d, certainty, stroke, strokeWidth, type, inferred }),
+        h(__LinkPath, {
+          d,
+          surface,
+          certainty,
+          stroke,
+          strokeWidth,
+          type,
+          inferred,
+        }),
       );
     }
     return result;
@@ -284,6 +272,7 @@ const SectionLink = function (props) {
     return h(__LinkPath, {
       d,
       certainty,
+      surface,
       strokeWidth,
       stroke,
       onClick,
@@ -298,6 +287,7 @@ const SectionLink = function (props) {
 function __LinkPath({
   stroke = "black",
   strokeWidth = 1,
+  surface,
   d,
   onClick,
   certainty,
@@ -313,21 +303,73 @@ function __LinkPath({
   inferred: boolean;
   className?: string;
   type?: string;
+  surface: any;
 }) {
-  const certaintyClassName = `certainty-${Math.round(certainty)}`;
+  // sequence strat
+  const { surface_type, surface_order } = surface;
+
+  let order_class = null;
+  if (surface_order != null) {
+    order_class = `order-${surface_order}`;
+  }
+
+  // lithostrat
+  const { unit_commonality } = surface;
+  if (unit_commonality != null) {
+    order_class = `commonality-${unit_commonality}`;
+  }
+
   return h(SectionLinkPath, {
     className: classNames(
       "section-link",
       type,
       className,
       { inferred },
-      certaintyClassName,
+      certaintyClassName(certainty),
+      order_class,
+      surface_type == "mfs" ? "maximum-flooding-surface" : null,
+      surface_type == "sb" ? "sequence-boundary" : null,
     ),
     stroke,
     strokeWidth,
     onClick,
     d,
     certainty,
+  });
+}
+
+function certaintyClassName(certainty: number | null) {
+  if (certainty == null) {
+    return `unknown-certainty`;
+  } else if (certainty == 10) {
+    return `certain`;
+  } else if (certainty >= 7) {
+    return `high-certainty`;
+  } else if (certainty >= 4) {
+    return `medium-certainty`;
+  } else {
+    return `low-certainty`;
+  }
+}
+
+const sectionSurfaceProps = function (surface) {
+  let stroke: string;
+  const { surface_type, surface_order } = surface;
+
+  return { stroke: "black", strokeWidth: 2, opacity: 0.5 };
+};
+
+function SectionLinkPath(props) {
+  let { onClick, certainty, style, ...rest } = props;
+
+  return h("path", {
+    onClick,
+    fill: "none",
+    style: {
+      cursor: onClick ? "pointer" : null,
+      ...style,
+    },
+    ...rest,
   });
 }
 
@@ -409,6 +451,8 @@ const SectionLinks = function (props) {
     ...props,
     sectionIndex,
   });
+
+  console.log("link data", surfacesNew);
 
   return h(
     "g.section-links",

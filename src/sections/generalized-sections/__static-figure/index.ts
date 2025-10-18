@@ -8,7 +8,7 @@ import { SettingsProvider } from "@macrostrat/column-components";
 import { SectionSurfacesProvider } from "~/sections/providers";
 import { Legend } from "../legend";
 
-import "../../__static-figure/fonts.css";
+import "../../summary-sections/__static-figure/fonts.css";
 import "./main.styl";
 
 const StaticSectionSettings = C(SettingsProvider, {
