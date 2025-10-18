@@ -46,7 +46,7 @@ const ColumnMain = function () {
     h.if(showFacies)(FaciesColumnInner),
     h.if(showFaciesTracts)(FaciesTractIntervals),
     h.if(showLithology)(SimplifiedLithologyColumn),
-    h(CoveredOverlay),
+    h(CoveredOverlay, { color: "white", patternSize: 9, strokeWidth: 4 }),
   ]);
 };
 
@@ -123,20 +123,20 @@ function ColumnIsotopes(props) {
     columnWidth = 40,
     showCarbonIsotopes = true,
     showOxygenIsotopes = true,
+    translateLeft = 120,
   } = props;
 
-  const left = 120;
   return h([
     h.if(showCarbonIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: `translate(${left})`,
+      transform: `translate(${translateLeft})`,
       system: "delta13c",
     }),
     h.if(showOxygenIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: `translate(${left + columnWidth})`,
+      transform: `translate(${translateLeft + columnWidth})`,
       system: "delta18o",
     }),
   ]);
@@ -165,6 +165,7 @@ const SVGSectionInner = function (props) {
     showWhiteUnderlay,
     offsetTop,
     absolutePosition,
+    isotopeColumnWidth = 60,
   } = props;
 
   const { inEditMode = false } = useContext(PlatformContext);
@@ -176,15 +177,18 @@ const SVGSectionInner = function (props) {
     useSettings();
 
   let overallWidth = 120;
+  const chemostratColumnStart = overallWidth;
+
   overallWidth += 42; // Symbol column
 
   let chemostratWidth = 0;
+  const chemostratColumnWidth = isotopeColumnWidth;
   if (isotopesPerSection) {
     if (showCarbonIsotopes) {
-      chemostratWidth += 40;
+      chemostratWidth += chemostratColumnWidth;
     }
     if (showOxygenIsotopes) {
-      chemostratWidth += 40;
+      chemostratWidth += chemostratColumnWidth;
     }
   }
   overallWidth += chemostratWidth;
@@ -295,9 +299,10 @@ const SVGSectionInner = function (props) {
                     }),
                     h.if(isotopesPerSection)(ColumnIsotopes, {
                       id,
-                      columnWidth: props.isotopeColumnWidth,
+                      columnWidth: isotopeColumnWidth,
                       showCarbonIsotopes,
                       showOxygenIsotopes,
+                      translateLeft: chemostratColumnStart,
                     }),
                   ]),
                   h(
@@ -329,7 +334,6 @@ SVGSectionInner.defaultProps = {
   axisComponent: ColumnSummaryAxis,
   zoom: 1,
   inEditMode: false,
-  isotopeColumnWidth: 40,
   offsetTop: null,
   marginTop: null,
   innerWidth: 100,

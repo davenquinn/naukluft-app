@@ -14,11 +14,11 @@ import { useIsotopes } from "~/sections/summary-sections/chemostrat/data-manager
 const h = hyperStyled(styles);
 
 function ChemostratigraphyGroup(props) {
-  const { range, children } = props;
+  const { range, children, title = "Correlated chemostratigraphy" } = props;
   return h(
     LayoutGroup,
     {
-      name: null,
+      name: title,
       className: "chemostratigraphy",
     },
     h(
@@ -33,7 +33,7 @@ function ChemostratigraphyGroup(props) {
 }
 
 export function SimpleChemostratigraphyColumn(props) {
-  const { sections, range, showLines, keySection, nTicks } = props;
+  const { sections, range, showLines, keySection, nTicks, title } = props;
   const correctIsotopeRatios = true;
 
   let row = sections[0];
@@ -94,7 +94,8 @@ export function SimpleChemostratigraphyColumn(props) {
 }
 
 function BaseChemostratigraphyColumn(props) {
-  const { sections, colorScheme, range, showLines, keySection, nTicks } = props;
+  const { sections, colorScheme, range, showLines, keySection, nTicks, title } =
+    props;
   const { correctIsotopeRatios, showCarbonIsotopes, showOxygenIsotopes } =
     useSettings();
 
@@ -115,6 +116,7 @@ function BaseChemostratigraphyColumn(props) {
     ChemostratigraphyGroup,
     {
       range,
+      title,
     },
     [
       h.if(showCarbonIsotopes)(IsotopesColumn, {
