@@ -16,11 +16,6 @@ import styles from "./base-section.module.sass";
 
 const h = hyper.styled(styles);
 
-// Patterns are included as static files in the storybook main.ts
-export const resolvePattern = (id) => {
-  return `/patterns/${id}.svg`;
-};
-
 interface IColumnProps {
   data: ColumnSurface[];
   pixelScale?: number;
@@ -147,7 +142,13 @@ export function MeasuredSection(
   return h(MeasuredSectionContainer, { className, children, ...rest }, [
     h(
       ColumnSVG,
-      { innerWidth: 200, padding: 30, paddingLeft: 0, paddingBottom: 30 },
+      {
+        innerWidth: 80,
+        padding: 30,
+        paddingLeft: 0,
+        paddingBottom: 30,
+        paddingRight: 10,
+      },
       [
         h(
           GrainsizeLayoutProvider,

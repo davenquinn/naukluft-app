@@ -1,9 +1,12 @@
 import { Component, createContext, useContext } from "react";
-import h from "@macrostrat/hyper";
+import hyper from "@macrostrat/hyper";
 import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 
 import update from "immutability-helper";
 import { GeologicPatternProvider } from "@macrostrat/column-components";
+import styles from "./platform.module.sass";
+
+const h = hyper.styled(styles);
 
 let global = globalThis;
 
@@ -80,13 +83,15 @@ class PlatformProvider extends Component<{
       serializedQueries = true;
     }
     const { children, ...rest } = this.props;
+
+    const environment = this.props.environment ?? TargetEnvironment.Interactive;
     const value = {
       ...rest,
       ...restState,
       serializedQueries,
       updateState,
       computePhotoPath,
-      environment: this.props.environment ?? TargetEnvironment.Interactive,
+      environment,
     };
 
     return h(DarkModeProvider, [
@@ -97,7 +102,15 @@ class PlatformProvider extends Component<{
             return `https://dev.macrostrat.org/assets/geologic-patterns/svg/${patternID}.svg`;
           },
         },
-        h(PlatformContext.Provider, { value }, children),
+        h(
+          PlatformContext.Provider,
+          { value },
+          h(
+            "div.environment-manager",
+            { className: "env-" + environment },
+            children,
+          ),
+        ),
       ),
     ]);
   }

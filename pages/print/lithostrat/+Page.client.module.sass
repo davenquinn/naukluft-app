@@ -11,8 +11,9 @@
       transform: rotate(-90deg) translate(8px, -12px)
 
   .timescale
-    color: white
+    color: black
     font-weight: 500
+    font-family: var(--main-font-family)
 
   g.lithology-column
     transform: translateX(1px)
@@ -21,3 +22,16 @@
       stroke-width: 1px
     use.frame
       stroke: white
+
+.columns
+  display: flex
+  flex-direction: row
+  gap: 2em
+  font-family: var(--main-font-family)
+  :global
+    span.label-text
+      font-size: 16px
+    .interval-label
+      transform: translateY(3px)
+      &.rotated
+        transform: translate(-6px,3px)

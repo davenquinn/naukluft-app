@@ -13,7 +13,8 @@ const h = hyper.styled(styles);
 
 import { MeasuredSection } from "./base-section";
 import { defaultResolveID } from "@macrostrat/column-components";
-import { PlatformProvider } from "~/platform";
+import { PlatformProvider, TargetEnvironment } from "~/platform";
+import { asChromaColor } from "@macrostrat/color-utils";
 
 type UnitDivision = ColumnDivision & BaseUnit;
 
@@ -35,13 +36,24 @@ function applyPatterns<T extends ColumnSurface>(
 }
 
 export function Page() {
-  return h(PlatformProvider, h("div", [h(ZebraRiverGroup), h(NamaGroup)]));
+  return h(
+    PlatformProvider,
+    { environment: TargetEnvironment.Print },
+    h("div.columns", [h(ZebraRiverGroup), h(NamaGroup)]),
+  );
+}
+
+const pixelScale = 0.7;
+
+function intervalStyle(interval) {
+  return {
+    backgroundColor: asChromaColor(interval.color)?.brighten(2).css(),
+  };
 }
 
 function ZebraRiverGroup() {
   const intervals = composeIntervals(zebraNappeIntervals, 700);
   const surfaces = applyPatterns(columnDataZN, intervals);
-  console.log(surfaces);
   return h(
     MeasuredSection,
     {
@@ -52,9 +64,10 @@ function ZebraRiverGroup() {
         levels: [0, 2],
         rootInterval: "zrg",
         borderColor: "#888",
+        intervalStyle,
       },
       range: [0, 700],
-      pixelScale: 0.7,
+      pixelScale,
     },
     h(ParameterIntervals, {
       parameter: "color",
@@ -103,7 +116,7 @@ function NamaGroup() {
         borderColor: "#888",
       },
       range: [0, 550],
-      pixelScale: 0.7,
+      pixelScale,
     },
     h(ParameterIntervals, {
       parameter: "color",

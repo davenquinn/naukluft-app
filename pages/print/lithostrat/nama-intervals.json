@@ -107,7 +107,7 @@
   },
   {
     "id": "urikos",
-    "name": "Urikos Formation",
+    "name": "Urikos",
     "short_name": null,
     "level": 3,
     "parent": "nama",
@@ -119,7 +119,7 @@
   },
   {
     "id": "urusis",
-    "name": "Urusis Formation",
+    "name": "Urusis",
     "short_name": null,
     "level": 3,
     "parent": "nama",
