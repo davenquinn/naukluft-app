@@ -1,0 +1,132 @@
+[
+  {
+    "id": "nama",
+    "name": "Nama Group",
+    "short_name": null,
+    "level": 2,
+    "parent": "lower-plate",
+    "color": "#aaa",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 0,
+    "top": 550
+  },
+  {
+    "id": "dabis",
+    "name": "Dabis",
+    "short_name": null,
+    "level": 3,
+    "parent": "nama",
+    "color": "#EAF3D0",
+    "symbol": "121-K",
+    "symbol_color": "#95a663",
+    "bottom": 0,
+    "top": 30
+  },
+  {
+    "id": "omkyk",
+    "name": "Omkyk",
+    "short_name": null,
+    "level": 3,
+    "parent": "nama",
+    "color": "#9BD0B5",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 30,
+    "top": 270
+  },
+  {
+    "id": "lower-omkyk",
+    "name": "Lower Omkyk",
+    "short_name": "Lower",
+    "level": 4,
+    "parent": "omkyk",
+    "color": "#4DB6AF",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 30,
+    "top": 135
+  },
+  {
+    "id": "middle-omkyk",
+    "name": "Middle Omkyk",
+    "short_name": "Middle",
+    "level": 4,
+    "parent": "omkyk",
+    "color": "#B5DAB8",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 135,
+    "top": 195
+  },
+  {
+    "id": "middle-omkyk-reef",
+    "name": "Middle Omkyk Reef",
+    "short_name": null,
+    "level": 6,
+    "parent": "middle-omkyk",
+    "color": "#B5DAB8",
+    "symbol": "232-K",
+    "symbol_color": "#099db3"
+  },
+  {
+    "id": "upper-omkyk",
+    "name": "Upper Omkyk",
+    "short_name": "Upper",
+    "level": 4,
+    "parent": "omkyk",
+    "color": "#099db3",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 195,
+    "top": 270
+  },
+  {
+    "id": "upper-omkyk-grainstone",
+    "name": "Upper Omkyk Grainstone",
+    "short_name": null,
+    "level": 5,
+    "parent": "upper-omkyk",
+    "color": "#099db3",
+    "symbol": "114-K",
+    "symbol_color": "#4DB6AF",
+    "bottom": 250,
+    "top": 270
+  },
+  {
+    "id": "hoogland",
+    "name": "Hoogland",
+    "short_name": null,
+    "level": 3,
+    "parent": "nama",
+    "color": "#9AB79A",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 270,
+    "top": 380
+  },
+  {
+    "id": "urikos",
+    "name": "Urikos Formation",
+    "short_name": null,
+    "level": 3,
+    "parent": "nama",
+    "color": "#b8c7b5",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 380,
+    "top": 500
+  },
+  {
+    "id": "urusis",
+    "name": "Urusis Formation",
+    "short_name": null,
+    "level": 3,
+    "parent": "nama",
+    "color": "#93988f",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 500,
+    "top": 550
+  }
+]

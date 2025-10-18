@@ -8325,6 +8325,7 @@ __metadata:
     "@macrostrat/hyper": "npm:^3.0.6"
     "@macrostrat/photo-viewer": "workspace:^"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
+    "@macrostrat/timescale": "npm:^2.2.1"
     "@macrostrat/ui-components": "npm:^4.4.6"
     "@macrostrat/vite-plugin-hyperstyles": "npm:^1.0.2"
     "@turf/polygonize": "npm:^5.1.5"
@@ -11219,7 +11220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supports-color@npm:*, supports-color@npm:^10.2.2":
+"supports-color@npm:^10.2.2":
   version: 10.2.2
   resolution: "supports-color@npm:10.2.2"
   checksum: 10c0/fb28dd7e0cdf80afb3f2a41df5e068d60c8b4f97f7140de2eaed5b42e075d82a0e980b20a2c0efd2b6d73cfacb55555285d8cc719fa0472220715aefeaa1da7c
