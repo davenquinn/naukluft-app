@@ -125,6 +125,7 @@ const SectionPane = function (props) {
       }),
       h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,
+        simple: true,
         showLines: false,
         keySection: "Onis",
       }),

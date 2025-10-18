@@ -28,9 +28,9 @@ import {
   FaciesColumnInner,
   ColumnContext,
   ColumnAxis,
-  SymbolColumn,
   ColumnProvider,
 } from "@macrostrat/column-components";
+import { SymbolColumn } from "~/sections/symbol-column";
 
 const h = hyperStyled(styles);
 

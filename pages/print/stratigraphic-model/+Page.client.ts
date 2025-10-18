@@ -16,7 +16,7 @@ export function Page() {
     { filename: "stratigraphic-model.pdf" },
     h(
       SettingsProvider,
-      { ...defaultSettings, interactive: false },
+      { ...defaultSettings, interactive: false, isotopesPerSection: true },
       h(SectionDataProvider, h(wrapWithSections(SummarySectionsInner))),
     ),
   );

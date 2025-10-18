@@ -4,7 +4,12 @@ import { useSurfaces } from "~/sections/providers";
 import { LayoutGroup } from "../layout";
 // Not sure if this one is really used
 import styles from "./main.module.styl";
-import { IsotopesColumn, MinimalIsotopesColumn } from "./carbon-isotopes";
+import {
+  IsotopesColumn,
+  IsotopesColumnSimple,
+  MinimalIsotopesColumn,
+} from "./carbon-isotopes";
+import { useIsotopes } from "~/sections/summary-sections/chemostrat/data-manager";
 
 const h = hyperStyled(styles);
 
@@ -24,6 +29,67 @@ function ChemostratigraphyGroup(props) {
       },
       children,
     ),
+  );
+}
+
+export function SimpleChemostratigraphyColumn(props) {
+  const { sections, colorScheme, range, showLines, keySection, nTicks } = props;
+  const correctIsotopeRatios = true;
+
+  let row = sections[0];
+  if (keySection != null) {
+    row = sections.find((d) => d.id === keySection);
+  }
+  const offset = row?.offset ?? props.offset ?? 0;
+  const { location, ...rest } = row ?? {};
+
+  const surfaces = useSurfaces();
+  let isotopes = useIsotopes();
+
+  const allIsotopes = Array.from(isotopes).filter(([k, v]) => {
+    return !["K", "W1", "L"].includes(k);
+  });
+
+  return h(
+    ChemostratigraphyGroup,
+    {
+      range,
+    },
+    [
+      h(IsotopesColumnSimple, {
+        isotopes: allIsotopes,
+        ...rest,
+        width: 60,
+        zoom: 0.1,
+        key: "carbon-isotopes",
+        system: "delta13c",
+        offset,
+        location: "",
+        surfaces,
+        showLines,
+        keySection,
+        tickValues: [-10, -5, 0, 5],
+        padding: { left: 10, top: 10, right: 5, bottom: 60 },
+      }),
+      h(IsotopesColumnSimple, {
+        isotopes: allIsotopes,
+        ...rest,
+        width: 60,
+        nTicks,
+        zoom: 0.1,
+        system: "delta18o",
+        label: "δ¹⁸O",
+        tickValues: [-15, -10, -5, 0],
+        domain: [-15, 2],
+        key: "oxygen-isotopes",
+        offset,
+        location: "",
+        surfaces,
+        showLines,
+        keySection,
+        padding: { left: 5, top: 10, right: 10, bottom: 60 },
+      }),
+    ],
   );
 }
 

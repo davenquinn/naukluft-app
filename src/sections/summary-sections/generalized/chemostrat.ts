@@ -1,6 +1,9 @@
 import h from "@macrostrat/hyper";
 import { useContext } from "react";
-import { BaseChemostratigraphyColumn } from "../chemostrat";
+import {
+  BaseChemostratigraphyColumn,
+  SimpleChemostratigraphyColumn,
+} from "../chemostrat";
 import { IsotopesDataContext } from "../chemostrat/data-manager";
 
 const IsotopeDataRescaler = ({ scale, children }) => {
@@ -31,7 +34,7 @@ IsotopeDataRescaler.defaultProps = {
 };
 
 export function GeneralizedChemostratigraphyColumn(props) {
-  const { sections, keySection, ...rest } = props;
+  const { sections, keySection, simple, ...rest } = props;
 
   let row = sections[0];
   if (keySection != null) {
@@ -48,10 +51,15 @@ export function GeneralizedChemostratigraphyColumn(props) {
   const offset = row.surfaces[1].original_bottom - row.surfaces[1].bottom;
   const scale = (d) => d - offset;
 
+  const component = simple
+    ? SimpleChemostratigraphyColumn
+    : BaseChemostratigraphyColumn;
+
   return h(IsotopeDataRescaler, { scale }, [
-    h(BaseChemostratigraphyColumn, {
+    h(component, {
       ...rest,
       keySection,
+      simple,
       sections,
       range,
     }),

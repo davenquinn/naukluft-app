@@ -20,7 +20,7 @@ export function Page() {
       PlatformProvider,
       h(
         SettingsProvider,
-        { ...defaultSettings, interactive: false },
+        { ...defaultSettings, interactive: false, correctIsotopeRatios: true },
         h(SectionDataProvider, h(wrapWithSections(GeneralizedSectionsInner))),
       ),
     ),
