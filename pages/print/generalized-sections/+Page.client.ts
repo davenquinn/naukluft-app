@@ -10,7 +10,7 @@ import {
   defaultSettings,
   SettingsProvider,
 } from "~/sections/summary-sections/settings";
-import { PlatformProvider } from "~/platform";
+import { PlatformProvider, TargetEnvironment } from "~/platform";
 
 export function Page() {
   return h(
@@ -18,6 +18,9 @@ export function Page() {
     { filename: "generalized-sections.pdf" },
     h(
       PlatformProvider,
+      {
+        environment: TargetEnvironment.Print,
+      },
       h(
         SettingsProvider,
         { ...defaultSettings, interactive: false, correctIsotopeRatios: true },

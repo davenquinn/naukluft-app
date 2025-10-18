@@ -1,10 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { ColumnContext, SVG, useSettings } from "@macrostrat/column-components";
 import { expandInnerSize, extractPadding } from "@macrostrat/ui-components";
 import { hyperStyled } from "@macrostrat/hyper";
@@ -20,6 +13,7 @@ import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.module.styl";
 import { SectionLinkPath } from "./path";
+import { useTargetEnvironment } from "~/platform";
 
 const h = hyperStyled(styles);
 
@@ -200,14 +194,9 @@ const buildLink = linkHorizontal()
   .y((d) => d.y);
 
 const SectionLink = function (props) {
-  let inferred, width, certainty, className, d;
+  let inferred, width, className, d;
   let { connectLines, surface, stroke, strokeWidth, onClick } = props;
-  if (stroke == null) {
-    stroke = "black";
-  }
-  if (strokeWidth == null) {
-    strokeWidth = 1;
-  }
+
   let { section_height, surface_id, unit_commonality, type, note } = surface;
 
   // CURRENTLY PRIVATE API to allow section gaps to be filled
@@ -218,9 +207,8 @@ const SectionLink = function (props) {
   const sectionIndex = useContext(SectionObserverContext);
 
   const heights = section_height.map(function (v) {
-    let globalScale, height, inDomain, section, x0;
-    ({ section, height, inferred, inDomain, certainty } = v);
-    ({ globalScale, x: x0, width } = sectionIndex[section]);
+    const { section, height, inferred, inDomain, certainty } = v;
+    const { globalScale, x: x0, width } = sectionIndex[section];
     return {
       x0,
       x1: x0 + width,
@@ -238,12 +226,9 @@ const SectionLink = function (props) {
     return null;
   }
 
-  const __LinkPath = (props) =>
-    h(SectionLinkPath, { className, stroke, strokeWidth, onClick, ...props });
-
   const pathData = pairs(heights, function (a, b) {
     inferred = a.inferred || b.inferred;
-    certainty = Math.min(a.certainty || 10, b.certainty || 10);
+    const certainty = Math.min(a.certainty || 10, b.certainty || 10);
     const source = { x: a.x1, y: a.y, section: a.section };
     const target = { x: b.x0, y: b.y, section: b.section };
     const { inDomain } = b;
@@ -252,7 +237,7 @@ const SectionLink = function (props) {
   });
 
   d = null;
-  certainty = 10;
+  let certainty = 10;
   const links = (() => {
     const result = [];
     for (let i = 0; i < pathData.length; i++) {
@@ -260,8 +245,8 @@ const SectionLink = function (props) {
       if (unit_commonality == null) {
         unit_commonality = 0;
       }
-      ({ inferred, width, certainty } = pair);
-      className = classNames("section-link", type, { inferred });
+      const { width } = pair;
+      ({ certainty, inferred } = pair);
       // First move to initial height
       const { x, y } = pair.source;
 
@@ -288,19 +273,63 @@ const SectionLink = function (props) {
       }
       d += linkLine;
 
-      const fill = "none";
-
-      result.push(h(__LinkPath, { d, certainty }));
+      result.push(
+        h(__LinkPath, { d, certainty, stroke, strokeWidth, type, inferred }),
+      );
     }
     return result;
   })();
 
   if (connectLines) {
-    return h(__LinkPath, { d, certainty });
+    return h(__LinkPath, {
+      d,
+      certainty,
+      strokeWidth,
+      stroke,
+      onClick,
+      type,
+      inferred,
+    });
   } else {
     return h("g", links);
   }
 };
+
+function __LinkPath({
+  stroke = "black",
+  strokeWidth = 1,
+  d,
+  onClick,
+  certainty,
+  inferred,
+  className,
+  type,
+}: {
+  stroke?: string;
+  strokeWidth?: number;
+  d: string;
+  onClick?: () => void;
+  certainty: number;
+  inferred: boolean;
+  className?: string;
+  type?: string;
+}) {
+  const certaintyClassName = `certainty-${Math.round(certainty)}`;
+  return h(SectionLinkPath, {
+    className: classNames(
+      "section-link",
+      type,
+      className,
+      { inferred },
+      certaintyClassName,
+    ),
+    stroke,
+    strokeWidth,
+    onClick,
+    d,
+    certainty,
+  });
+}
 
 SectionLink.propTypes = {
   connectLines: T.bool,
@@ -389,7 +418,7 @@ const SectionLinks = function (props) {
   );
 };
 
-const SectionLinkOverlay = function (props) {
+function SectionLinkOverlay(props) {
   let {
     showSectionTrackers,
     connectLines,
@@ -399,6 +428,7 @@ const SectionLinkOverlay = function (props) {
     ...rest
   } = props;
   const padding = extractPadding(rest);
+  const environment = useTargetEnvironment();
 
   // Get surfaces from context if unset
   if (surfaces == null) surfaces = useSurfaces();
@@ -416,7 +446,11 @@ const SectionLinkOverlay = function (props) {
     SVG,
     {
       // Shouldn't need ID but we apparently do
-      className: classNames("section-link-overlay", className),
+      className: classNames(
+        "section-link-overlay",
+        `env-${environment}`,
+        className,
+      ),
       innerRef,
       ...sz,
       ...rest,
@@ -426,7 +460,7 @@ const SectionLinkOverlay = function (props) {
       h(SectionLinks, { connectLines, surfaces }),
     ],
   );
-};
+}
 
 SectionLinkOverlay.propTypes = {};
 

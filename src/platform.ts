@@ -1,4 +1,4 @@
-import { Component, createContext } from "react";
+import { Component, createContext, useContext } from "react";
 import h from "@macrostrat/hyper";
 import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 
@@ -25,11 +25,27 @@ function join(...args: string[]): string {
   return args.join("/");
 }
 
-const PlatformContext = createContext({});
+export enum TargetEnvironment {
+  Print = "print",
+  Interactive = "interactive",
+}
+
+const PlatformContext = createContext({
+  environment: TargetEnvironment.Interactive,
+  platform: Platform.WEB,
+  editable: false,
+});
+
+export function useTargetEnvironment() {
+  return useContext(PlatformContext).environment;
+}
 
 const baseURL = "/";
 
-class PlatformProvider extends Component {
+class PlatformProvider extends Component<{
+  children: React.ReactNode;
+  environment?: TargetEnvironment;
+}> {
   constructor(props) {
     let editable = true;
     let platform = Platform.WEB;
@@ -70,6 +86,7 @@ class PlatformProvider extends Component {
       serializedQueries,
       updateState,
       computePhotoPath,
+      environment: this.props.environment ?? TargetEnvironment.Interactive,
     };
 
     return h(DarkModeProvider, [

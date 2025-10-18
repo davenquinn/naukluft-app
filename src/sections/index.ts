@@ -20,7 +20,6 @@ import { SectionDetailIndex } from "./section-details/integration";
 import { LithostratigraphicSummaryColumn } from "./lithostrat-summary";
 import { nest } from "d3";
 import { NavigationLayout } from "~/layouts";
-import { PrintArea } from "~/shared/print-area";
 
 const h = hyper.styled(styles);
 

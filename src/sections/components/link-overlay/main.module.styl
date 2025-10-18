@@ -9,9 +9,6 @@
   rect.section-tracker
     outline: 2px solid alpha(red, 0.2)
     fill: alpha(red, 0.05)
-  &.skeletal
-    outline: 2px solid alpha(red, 0.2)
-    background: alpha(red, 0.05)
 
   path.section-link
     pointer-events all
@@ -26,3 +23,20 @@
         stroke-dasharray: 4,10
     &.commonality-3
       stroke-width 2
+
+  &.env-print
+    path.section-link
+      &.inferred
+        stroke-dasharray: 2,5
+      &.commonality-0
+        stroke: black
+        stroke-width 1
+      &.commonality-1
+        stroke: #444
+        stroke-width 1
+      &.commonality-2
+        stroke-width 2.5
+        &.inferred
+          stroke-dasharray: 4,10
+      &.commonality-3
+        stroke-width 2
