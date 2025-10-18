@@ -1,6 +1,6 @@
 import h from "@macrostrat/hyper";
 import { PrintArea } from "~/shared/print-area";
-import { GeneralizedSectionsInner } from "~/sections/summary-sections/generalized";
+import { GeneralizedSectionsInner } from "~/sections/generalized-sections";
 import {
   SectionDataProvider,
   wrapWithSections,

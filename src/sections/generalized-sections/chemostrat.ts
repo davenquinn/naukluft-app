@@ -3,8 +3,8 @@ import { useContext } from "react";
 import {
   BaseChemostratigraphyColumn,
   SimpleChemostratigraphyColumn,
-} from "../chemostrat";
-import { IsotopesDataContext } from "../chemostrat/data-manager";
+} from "../summary-sections/chemostrat";
+import { IsotopesDataContext } from "../summary-sections/chemostrat/data-manager";
 
 const IsotopeDataRescaler = ({ scale, children }) => {
   /** Rescales isotope data for generalized section view

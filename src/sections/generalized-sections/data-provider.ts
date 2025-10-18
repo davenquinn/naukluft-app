@@ -1,14 +1,11 @@
 import h, { compose, C } from "@macrostrat/hyper";
 import { useQuery } from "naukluft-data-backend";
 import { useContext, createContext } from "react";
-import {
-  ColumnDivision,
-  ColumnDivisionsContext,
-} from "../../column/data-source";
-import { EditorProvider, EditorContext } from "../editor";
+import { ColumnDivision, ColumnDivisionsContext } from "../column/data-source";
+import { EditorProvider, EditorContext } from "../summary-sections/editor";
 import { SectionSurfacesContext } from "~/sections/providers";
-import { SectionDataContext } from "../../data-providers";
-import { SymbolContext } from "../../components/symbols";
+import { SectionDataContext } from "../data-providers";
+import { SymbolContext } from "../components/symbols";
 import { GeneralizedDivision } from "./types";
 import { group, pairs } from "d3-array";
 import { last } from "underscore";

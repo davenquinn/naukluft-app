@@ -1,5 +1,8 @@
-import { BaseSectionPage } from "../../components/base-page";
-import { SummarySectionsSettings, defaultSettings } from "../settings";
+import { BaseSectionPage } from "../components/base-page";
+import {
+  SummarySectionsSettings,
+  defaultSettings,
+} from "../summary-sections/settings";
 import { compose } from "@macrostrat/hyper";
 import { group } from "d3-array";
 
@@ -11,9 +14,9 @@ import {
   SectionContainer,
   SectionLinkOverlay,
   SectionPositionProvider,
-} from "../../components";
-import { SVGSectionInner } from "../column";
-import { LithostratigraphyColumn } from "../lithostrat-key";
+} from "../components";
+import { SVGSectionInner } from "../summary-sections/column";
+import { LithostratigraphyColumn } from "../summary-sections/lithostrat-key";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";
 import { GeneralizedChemostratigraphyColumn } from "./chemostrat";
 import {
