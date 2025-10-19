@@ -119,6 +119,41 @@ function MeasuredSectionContainer(
   ]);
 }
 
+export function StandaloneAxisScale(
+  props: IColumnProps & {
+    children: React.ReactNode;
+    timescaleIntervals: Interval[] | null;
+    timescaleLevels: number[];
+    className?: string;
+  },
+) {
+  // Section with "squishy" time scale
+  const { range, className } = props;
+  let { pixelScale = 1.3 } = props;
+
+  return h("div.measured-section.column.axis-scale", { className }, [
+    h(
+      ColumnProvider,
+      {
+        divisions: [],
+        range,
+        pixelsPerMeter: pixelScale,
+      },
+      h(
+        ColumnSVG,
+        {
+          innerWidth: 0,
+          padding: 30,
+          paddingLeft: 40,
+          paddingBottom: 30,
+          paddingRight: 1,
+        },
+        [h(ColumnAxis), h(ColumnAxisLabel)],
+      ),
+    ),
+  ]);
+}
+
 function ColumnAxisLabel() {
   const scale = useColumn().scale;
   const range = scale.range();
@@ -142,10 +177,11 @@ export function MeasuredSection(
     timescaleIntervals: Interval[] | null;
     timescaleLevels: number[];
     className?: string;
+    frame: any;
   },
 ) {
   // Section with "squishy" time scale
-  const { children, className, width = 250, ...rest } = props;
+  const { children, className, width = 250, frame, ...rest } = props;
 
   const grainsizeScaleStart = props.grainsizeScaleStart ?? 0.5 * width;
   // const unitData: UnitLong[] = useAPIResult("/units", params);
@@ -175,7 +211,7 @@ export function MeasuredSection(
             grainsizeScaleStart: 40,
           },
           [
-            h(GeneralizedSectionColumn, [
+            h(GeneralizedSectionColumn, { frame }, [
               children,
               h(LithologyBoxes, { resolveID: (d) => d.pattern }),
             ]),

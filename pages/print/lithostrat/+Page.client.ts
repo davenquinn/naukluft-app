@@ -3,6 +3,7 @@ import {
   ColumnDivision,
   ColumnSurface,
   ParameterIntervals,
+  GrainsizeFrame,
 } from "@macrostrat/column-components";
 import { BaseUnit } from "@macrostrat/api-types";
 import zebraNappeIntervals from "./naukluft-intervals.json";
@@ -11,7 +12,7 @@ import styles from "./+Page.client.module.sass";
 
 const h = hyper.styled(styles);
 
-import { MeasuredSection } from "./base-section";
+import { MeasuredSection, StandaloneAxisScale } from "./base-section";
 import { defaultResolveID } from "@macrostrat/column-components";
 import { PlatformProvider, TargetEnvironment } from "~/platform";
 import chroma from "chroma-js";
@@ -39,7 +40,11 @@ export function Page() {
   return h(
     PlatformProvider,
     { environment: TargetEnvironment.Print },
-    h("div.columns", [h(ZebraRiverGroup), h(NamaGroup)]),
+    h("div.columns", [
+      h(StandaloneAxisScale, { pixelScale, range: [0, 300] }),
+      h(ZebraRiverGroup, { showAxis: false }),
+      h(NamaGroup, { showAxis: false }),
+    ]),
   );
 }
 
@@ -55,7 +60,7 @@ function intervalStyle(interval) {
   };
 }
 
-function ZebraRiverGroup() {
+function ZebraRiverGroup(props) {
   const intervals = composeIntervals(zebraNappeIntervals, 700);
   const surfaces = applyPatterns(columnDataZN, intervals);
   return h(
@@ -72,6 +77,7 @@ function ZebraRiverGroup() {
       },
       range: [0, 700],
       pixelScale,
+      ...props,
     },
     h(ParameterIntervals, {
       parameter: "color",
@@ -105,19 +111,21 @@ const columnDataNama: ColumnSurface[] = [
   },
   {
     height: 600,
+    top_height: 800,
     pattern: 669,
     grainsize: "f",
   },
 ];
 
-function NamaGroup() {
-  const intervals = composeIntervals(namaIntervals, 550);
+function NamaGroup(props) {
+  const intervals = composeIntervals(namaIntervals, 650);
   const surfaces = applyPatterns(columnDataNama, intervals);
   return h(
     MeasuredSection,
     {
       data: surfaces,
       className: "zebra-nappe-section",
+      frame: GrainsizeFrameWithZigZagTop,
       timescaleProps: {
         intervals,
         levels: [-1, 2],
@@ -125,8 +133,9 @@ function NamaGroup() {
         borderColor: "#888",
         intervalStyle,
       },
-      range: [0, 650],
+      range: [0, 700],
       pixelScale,
+      ...props,
     },
     h(ParameterIntervals, {
       parameter: "color",
@@ -135,6 +144,13 @@ function NamaGroup() {
       },
     }),
   );
+}
+
+function GrainsizeFrameWithZigZagTop(props) {
+  return h(GrainsizeFrame, {
+    ...props,
+    zigZagTop: true,
+  });
 }
 
 const columnDataZN: ColumnSurface[] = [

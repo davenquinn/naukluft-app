@@ -9,7 +9,7 @@
     "symbol": null,
     "symbol_color": null,
     "bottom": 0,
-    "top": 650
+    "top": 700
   },
   {
     "id": "kuibis",
@@ -33,7 +33,7 @@
     "symbol": null,
     "symbol_color": null,
     "bottom": 500,
-    "top":  650
+    "top":  700
   },
   {
     "id": "dabis",
@@ -164,6 +164,6 @@
     "symbol": null,
     "symbol_color": null,
     "bottom": 600,
-    "top": 650
+    "top": 700
   }
 ]
