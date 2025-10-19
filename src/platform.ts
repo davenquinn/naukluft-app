@@ -1,4 +1,4 @@
-import { Component, createContext, useContext } from "react";
+import { Component, createContext, useContext, useEffect } from "react";
 import hyper from "@macrostrat/hyper";
 import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 
@@ -105,11 +105,10 @@ class PlatformProvider extends Component<{
         h(
           PlatformContext.Provider,
           { value },
-          h(
-            "div.environment-manager",
-            { className: "env-" + environment },
+          h("div.environment-manager", { className: "env-" + environment }, [
             children,
-          ),
+            h(EnvironmentBodyClassManager, { environment }),
+          ]),
         ),
       ),
     ]);
@@ -154,6 +153,17 @@ class PlatformProvider extends Component<{
       return this.storage.set({ inEditMode });
     }
   }
+}
+
+function EnvironmentBodyClassManager({ environment }) {
+  useEffect(() => {
+    const cls = `env-${environment}`;
+    document.body.classList.add(cls);
+    return () => {
+      document.body.classList.remove(cls);
+    };
+  }, [environment]);
+  return null;
 }
 
 export { PlatformContext, Platform, PlatformProvider };

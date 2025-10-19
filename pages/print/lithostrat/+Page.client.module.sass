@@ -23,6 +23,10 @@
     use.frame
       stroke: white
 
+:global
+  :root
+    --covered-interval-color: white
+
 .columns
   display: flex
   flex-direction: row
@@ -35,3 +39,11 @@
       transform: translateY(3px)
       &.rotated
         transform: translate(-6px,3px)
+
+    .column-axis-label
+      font-family: var(--label-font-family)
+      font-size: 14px
+      font-style: italic
+      fill: #888
+
+

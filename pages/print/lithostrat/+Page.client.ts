@@ -14,7 +14,7 @@ const h = hyper.styled(styles);
 import { MeasuredSection } from "./base-section";
 import { defaultResolveID } from "@macrostrat/column-components";
 import { PlatformProvider, TargetEnvironment } from "~/platform";
-import { asChromaColor } from "@macrostrat/color-utils";
+import chroma from "chroma-js";
 
 type UnitDivision = ColumnDivision & BaseUnit;
 
@@ -47,7 +47,11 @@ const pixelScale = 0.7;
 
 function intervalStyle(interval) {
   return {
-    backgroundColor: asChromaColor(interval.color)?.brighten(2).css(),
+    backgroundColor: chroma(interval.color)
+      .set("hsl.l", 0.9)
+      .set("hsl.s", 0.3)
+      .hex(),
+    color: chroma(interval.color).set("hsl.l", 0.2).css(),
   };
 }
 
@@ -97,6 +101,11 @@ const columnDataNama: ColumnSurface[] = [
   {
     height: 500,
     pattern: "sandstone",
+    grainsize: "m",
+  },
+  {
+    height: 600,
+    pattern: 669,
     grainsize: "f",
   },
 ];
@@ -111,11 +120,12 @@ function NamaGroup() {
       className: "zebra-nappe-section",
       timescaleProps: {
         intervals,
-        levels: [0, 2],
+        levels: [-1, 2],
         rootInterval: "nama",
         borderColor: "#888",
+        intervalStyle,
       },
-      range: [0, 550],
+      range: [0, 650],
       pixelScale,
     },
     h(ParameterIntervals, {

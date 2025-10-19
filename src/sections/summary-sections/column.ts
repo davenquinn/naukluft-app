@@ -20,10 +20,9 @@ import {
   useSettings,
 } from "@macrostrat/column-components";
 
-import { ManagedSymbolColumn } from "../components";
+import { ManagedSymbolColumn, ColumnTracker } from "../components";
 import { useSequenceStratSettings } from "../sequence-strat-context";
 import { SummaryColumnProvider } from "./data-provider";
-import { ColumnTracker } from "../components/link-overlay";
 import { PlatformContext } from "~/platform";
 import { MinimalIsotopesColumn } from "./chemostrat";
 import { FaciesTractIntervals } from "../column/facies-tracts";
@@ -46,7 +45,11 @@ const ColumnMain = function () {
     h.if(showFacies)(FaciesColumnInner),
     h.if(showFaciesTracts)(FaciesTractIntervals),
     h.if(showLithology)(SimplifiedLithologyColumn),
-    h(CoveredOverlay, { color: "white", patternSize: 9, strokeWidth: 4 }),
+    h(CoveredOverlay, {
+      color: "var(--covered-interval-color, rgba(0,0,0,0.2))",
+      patternSize: 9,
+      strokeWidth: 4,
+    }),
   ]);
 };
 

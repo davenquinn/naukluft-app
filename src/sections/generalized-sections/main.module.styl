@@ -18,7 +18,7 @@
   flex-grow 1
   margin-right 500px
   &:last-child
-    margin-right 4em
+    margin-right 0
 
 
 .section-column.Onis
@@ -63,6 +63,18 @@ width=1.5px
 
   .generalized-sections
     --section-header-height: 40px
+
+  :root
+    --covered-interval-color: #ffffffcc
+
+  g.lithology-column
+    rect.lithology
+      stroke: transparent
+      stroke-width: 0
+      &.definite
+        stroke: transparent
+    use.column-clip-frame
+      stroke-width: 1px
 
 
   div.figure-reference

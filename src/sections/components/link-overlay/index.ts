@@ -138,7 +138,6 @@ const ColumnTracker = function (props) {
     }
     // Run this code after render
     const rect = ref.current.getBoundingClientRect();
-    console.log(rect);
     return setPosition(id, scale, rect, rest);
   };
 
@@ -176,6 +175,8 @@ const buildLink = linkHorizontal()
 const SectionLink = function (props) {
   let inferred, width, className, d;
   let { connectLines, surface, stroke, strokeWidth, onClick } = props;
+
+  const { startX } = props;
 
   let { section_height, surface_id, unit_commonality, type, note } = surface;
 
@@ -235,7 +236,7 @@ const SectionLink = function (props) {
       }
 
       if (d == null) {
-        let initialX = x;
+        let initialX = startX != null ? startX : x;
         if (connectLines) {
           initialX -= width;
         } else if (fillSectionWidth) {
@@ -261,6 +262,7 @@ const SectionLink = function (props) {
           stroke,
           strokeWidth,
           type,
+          onClick,
           inferred,
         }),
       );
@@ -399,6 +401,7 @@ const FilteredSectionLink = function (props) {
   }
 
   const onClick = function () {
+    console.log("click", type, surface_id);
     const v =
       type === "lithostrat" ? "Lithostratigraphic" : "Sequence-stratigraphic";
     return Notification.show({
@@ -441,7 +444,7 @@ const useCanvasSize = function () {
 };
 
 const SectionLinks = function (props) {
-  const { surfaces, connectLines, innerRef } = props;
+  const { surfaces, connectLines, startX, innerRef } = props;
   if (!surfaces.length) {
     return null;
   }
@@ -452,23 +455,22 @@ const SectionLinks = function (props) {
     sectionIndex,
   });
 
-  console.log("link data", surfacesNew);
-
   return h(
     "g.section-links",
     surfacesNew.map((surface) =>
-      h(FilteredSectionLink, { surface, connectLines }),
+      h(FilteredSectionLink, { surface, connectLines, startX }),
     ),
   );
 };
 
 function SectionLinkOverlay(props) {
   let {
-    showSectionTrackers,
-    connectLines,
+    showSectionTrackers = false,
+    connectLines = true,
     innerRef,
     className,
     surfaces,
+    extendLinks = false,
     ...rest
   } = props;
   const padding = extractPadding(rest);
@@ -486,6 +488,11 @@ function SectionLinkOverlay(props) {
   const sectionIndex = useContext(SectionObserverContext);
   const sz = getSize(sectionIndex, padding);
 
+  let startX = null;
+  if (extendLinks) {
+    startX = padding.paddingLeft;
+  }
+
   return h(
     SVG,
     {
@@ -501,17 +508,10 @@ function SectionLinkOverlay(props) {
     },
     [
       h.if(showSectionTrackers)(SectionTrackerRects),
-      h(SectionLinks, { connectLines, surfaces }),
+      h(SectionLinks, { connectLines, surfaces, startX }),
     ],
   );
 }
-
-SectionLinkOverlay.propTypes = {};
-
-SectionLinkOverlay.defaultProps = {
-  connectLines: true,
-  showSectionTrackers: false,
-};
 
 export {
   ColumnTracker,

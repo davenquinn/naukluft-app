@@ -85,7 +85,7 @@ export function LegendInner({ className }) {
       h(FaciesLegend),
     ]),
     h("div.symbol-legend-container", [
-      h("h2", "Symbols"),
+      h("h2", "Structures"),
       h(SymbolLegend, { className: "symbol-legend" }),
       h(
         "p.note",

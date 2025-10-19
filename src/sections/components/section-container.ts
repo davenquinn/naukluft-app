@@ -6,14 +6,16 @@ const h = hyper.styled(styles);
 
 export function SectionContainer(props) {
   const { children, minHeight, className } = props;
-  return h(SectionPositionProvider, [
-    h(
-      "div.section-page-inner",
-      {
-        style: { zoom: 1, minHeight },
-        className,
-      },
-      children,
-    ),
+  return h("div.section-page-outer", [
+    h(SectionPositionProvider, [
+      h(
+        "div.section-page-inner",
+        {
+          style: { zoom: 1, minHeight },
+          className,
+        },
+        children,
+      ),
+    ]),
   ]);
 }

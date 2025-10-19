@@ -3,20 +3,44 @@
     "id": "nama",
     "name": "Nama Group",
     "short_name": null,
-    "level": 2,
+    "level": 1,
     "parent": "lower-plate",
     "color": "#aaa",
     "symbol": null,
     "symbol_color": null,
     "bottom": 0,
-    "top": 550
+    "top": 650
+  },
+  {
+    "id": "kuibis",
+    "name": "Kuibis Subgroup",
+    "short_name": null,
+    "level": 2,
+    "parent": "nama",
+    "color": "#aaa",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 0,
+    "top": 500
+  },
+  {
+    "id": "schwarzrand",
+    "name": "Schwarzrand",
+    "short_name": null,
+    "level": 2,
+    "parent": "nama",
+    "color": "#aaa",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 500,
+    "top":  650
   },
   {
     "id": "dabis",
     "name": "Dabis",
     "short_name": null,
     "level": 3,
-    "parent": "nama",
+    "parent": "kuibis",
     "color": "#EAF3D0",
     "symbol": "121-K",
     "symbol_color": "#95a663",
@@ -28,7 +52,7 @@
     "name": "Omkyk",
     "short_name": null,
     "level": 3,
-    "parent": "nama",
+    "parent": "kuibis",
     "color": "#9BD0B5",
     "symbol": null,
     "symbol_color": null,
@@ -98,7 +122,7 @@
     "name": "Hoogland",
     "short_name": null,
     "level": 3,
-    "parent": "nama",
+    "parent": "kuibis",
     "color": "#9AB79A",
     "symbol": null,
     "symbol_color": null,
@@ -110,7 +134,7 @@
     "name": "Urikos",
     "short_name": null,
     "level": 3,
-    "parent": "nama",
+    "parent": "kuibis",
     "color": "#b8c7b5",
     "symbol": null,
     "symbol_color": null,
@@ -118,15 +142,28 @@
     "top": 500
   },
   {
+    "id": "nudaus",
+    "name": "Nudaus",
+    "short_name": null,
+    "level": 3,
+    "parent": "schwarzrand",
+    "color": "#4D4D46",
+    "symbol": null,
+    "symbol_color": null,
+    "bottom": 500,
+    "top": 600
+  },
+
+  {
     "id": "urusis",
     "name": "Urusis",
     "short_name": null,
     "level": 3,
-    "parent": "nama",
+    "parent": "schwarzrand",
     "color": "#93988f",
     "symbol": null,
     "symbol_color": null,
-    "bottom": 500,
-    "top": 550
+    "bottom": 600,
+    "top": 650
   }
 ]

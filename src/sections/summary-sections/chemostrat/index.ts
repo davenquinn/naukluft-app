@@ -10,11 +10,17 @@ import {
   MinimalIsotopesColumn,
 } from "./carbon-isotopes";
 import { useIsotopes } from "~/sections/summary-sections/chemostrat/data-manager";
+import { ColumnTracker } from "~/sections/components";
 
 const h = hyperStyled(styles);
 
 function ChemostratigraphyGroup(props) {
-  const { range, children, title = "Correlated chemostratigraphy" } = props;
+  const {
+    range,
+    children,
+    title = "Correlated chemostratigraphy",
+    pixelsPerMeter,
+  } = props;
   return h(
     LayoutGroup,
     {
@@ -26,14 +32,23 @@ function ChemostratigraphyGroup(props) {
       {
         range,
         zoom: 0.1,
+        pixelsPerMeter,
       },
-      children,
+      [h(ColumnTracker, { id: "chemostratigraphy" }), children],
     ),
   );
 }
 
 export function SimpleChemostratigraphyColumn(props) {
-  const { sections, range, showLines, keySection, nTicks, title } = props;
+  const {
+    sections,
+    range,
+    showLines,
+    keySection,
+    nTicks,
+    pixelsPerMeter,
+    title,
+  } = props;
   const correctIsotopeRatios = true;
 
   let row = sections[0];
@@ -54,6 +69,7 @@ export function SimpleChemostratigraphyColumn(props) {
     ChemostratigraphyGroup,
     {
       range,
+      pixelsPerMeter,
     },
     [
       h(IsotopesColumnSimple, {
@@ -65,7 +81,7 @@ export function SimpleChemostratigraphyColumn(props) {
         system: "delta13c",
         offset,
         location: "",
-        surfaces: [],
+        surfaces,
         showLines,
         keySection,
         tickValues: [-10, -5, 0, 5],
@@ -84,7 +100,7 @@ export function SimpleChemostratigraphyColumn(props) {
         key: "oxygen-isotopes",
         offset,
         location: "",
-        surfaces: [],
+        surfaces,
         showLines,
         keySection,
         padding: { left: 5, top: 10, right: 10, bottom: 60 },

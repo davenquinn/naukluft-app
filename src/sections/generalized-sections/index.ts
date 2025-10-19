@@ -48,7 +48,7 @@ const rangeForDivisions = (divisions: ColumnDivision[]): [number, number] => {
   return [start, end];
 };
 
-const GeneralizedLithostratKey = (props) => {
+function GeneralizedLithostratKey(props) {
   let {
     padding = {
       left: 5,
@@ -58,6 +58,7 @@ const GeneralizedLithostratKey = (props) => {
     },
     innerWidth = 40,
     keySection = "Onis",
+    pixelsPerMeter,
   } = props;
   let { left, right } = padding;
 
@@ -75,7 +76,7 @@ const GeneralizedLithostratKey = (props) => {
         style: { minWidth },
       },
       [
-        h(ColumnProvider, { range, divisions, zoom: 0.1 }, [
+        h(ColumnProvider, { range, divisions, zoom: 0.1, pixelsPerMeter }, [
           h(ColumnSVG, { width: 50 }, [
             h("g.backdrop", { transform }, [
               h(LithostratigraphyColumn, { keySection }),
@@ -85,7 +86,7 @@ const GeneralizedLithostratKey = (props) => {
       ],
     ),
   ]);
-};
+}
 
 // Should allow switching between offset types
 const stratOffsets = {
@@ -100,7 +101,7 @@ const compactOffsets = {
   Tsams: 0,
 };
 
-const SectionPane = function (props) {
+function SectionPane(props) {
   const { className } = props;
   const { divisions } = useContext(ColumnDivisionsContext);
   const surfaceMap = group(divisions, (s) => s.section_id);
@@ -116,21 +117,27 @@ const SectionPane = function (props) {
 
   const showChemostrat = true;
 
+  const pixelsPerMeter = 12;
+
   return h("div.section-pane", { className }, [
     h(LegendInner, { className: "legend" }),
     h(SectionContainer, [
-      h(SectionLinkOverlay, {}),
+      h(SectionLinkOverlay, {
+        extendLinks: true,
+      }),
       h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,
         simple: true,
         showLines: false,
         keySection: "Onis",
+        pixelsPerMeter,
       }),
       h(GeneralizedLithostratKey, {
         zoom: 0.1,
         key: "key",
         keySection: "Onis",
         offset: 0,
+        pixelsPerMeter,
       }),
       h(
         "div.generalized-sections",
@@ -149,7 +156,7 @@ const SectionPane = function (props) {
 
           return h(GeneralizedSection, {
             id: key,
-            zoom: 0.1,
+            zoom: 1,
             key,
             triangleBarRightSide: key === "Onis",
             offsetTop: offsets[key],
@@ -158,15 +165,17 @@ const SectionPane = function (props) {
             range: [start, end],
             height: end - start,
             divisions: surfaces,
+            pixelsPerMeter,
           });
         }),
       ),
     ]),
   ]);
-};
+}
 
-const GeneralizedSection = function (props) {
-  const { range, height, divisions, zoom, offsetTop, ...rest } = props;
+function GeneralizedSection(props) {
+  const { range, height, divisions, zoom, offsetTop, pixelsPerMeter, ...rest } =
+    props;
   const { id } = rest;
   return h("div.section-column", { className: id }, [
     h(
@@ -176,7 +185,8 @@ const GeneralizedSection = function (props) {
         range,
         height,
         divisions,
-        zoom,
+        zoom: 0.1,
+        pixelsPerMeter,
       },
       [
         h(
@@ -195,7 +205,7 @@ const GeneralizedSection = function (props) {
       ],
     ),
   ]);
-};
+}
 
 function TriangleBarsLegend() {
   return h(

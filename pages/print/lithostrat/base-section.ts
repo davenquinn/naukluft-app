@@ -6,6 +6,7 @@ import {
   LithologyBoxes,
   GeneralizedSectionColumn,
   GrainsizeLayoutProvider,
+  useColumn,
 } from "@macrostrat/column-components";
 import {
   Timescale,
@@ -101,7 +102,7 @@ function MeasuredSectionContainer(
             paddingBottom: 30,
             paddingRight: 1,
           },
-          h(ColumnAxis),
+          [h(ColumnAxis), h(ColumnAxisLabel)],
         ),
         h.if(showTimescale)(Timescale, {
           orientation: TimescaleOrientation.VERTICAL,
@@ -116,6 +117,23 @@ function MeasuredSectionContainer(
       ],
     ),
   ]);
+}
+
+function ColumnAxisLabel() {
+  const scale = useColumn().scale;
+  const range = scale.range();
+  const pixelHeight = Math.abs(range[0] - range[1]);
+  return h(
+    "text.column-axis-label",
+    {
+      x: -25,
+      y: pixelHeight / 2,
+      transform: `rotate(-90, -25, ${pixelHeight / 2})`,
+      className: "axis-label",
+      textAnchor: "middle",
+    },
+    "Approx. thickness (m)",
+  );
 }
 
 export function MeasuredSection(

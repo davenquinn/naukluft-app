@@ -17,6 +17,8 @@ export default defineConfig({
       "@macrostrat/mapbox-react",
       "@macrostrat/map-interface",
       "@macrostrat/column-views",
+      "@macrostrat/color-utils",
+      "@macrostrat/stratigraphy-utils",
     ],
     alias: {
       "~": path.resolve("./src"),
