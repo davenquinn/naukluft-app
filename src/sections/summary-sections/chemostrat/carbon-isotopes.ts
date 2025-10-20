@@ -232,11 +232,7 @@ class IsotopesColumnInnerSimple extends Component {
             paddingRight: padding.right,
             paddingBottom: padding.bottom,
           },
-          [
-            renderAxisLines({ keySection, surfaces, scale }),
-            h(MinimalColumnScale, { system, tickValues }),
-            this.renderData(),
-          ],
+          [h(MinimalColumnScale, { system, tickValues }), this.renderData()],
         ),
       ]),
     ]);

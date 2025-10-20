@@ -1,10 +1,13 @@
-import h from "@macrostrat/hyper";
 import { useContext } from "react";
 import {
   BaseChemostratigraphyColumn,
   SimpleChemostratigraphyColumn,
 } from "../summary-sections/chemostrat";
 import { IsotopesDataContext } from "../summary-sections/chemostrat/data-manager";
+import hyper from "@macrostrat/hyper";
+
+import styles from "./main.module.styl";
+const h = hyper.styled(styles);
 
 const IsotopeDataRescaler = ({ scale, children }) => {
   /** Rescales isotope data for generalized section view

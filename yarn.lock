@@ -322,7 +322,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blueprintjs/colors@npm:^5.1.8":
+"@blueprintjs/colors@npm:^5.1.1, @blueprintjs/colors@npm:^5.1.8":
   version: 5.1.9
   resolution: "@blueprintjs/colors@npm:5.1.9"
   dependencies:
@@ -1551,6 +1551,18 @@ __metadata:
 "@macrostrat/stratigraphy-utils@portal:../../Macrostrat/Software/web-components/packages/stratigraphy-utils::locator=naukluft-app%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@macrostrat/stratigraphy-utils@portal:../../Macrostrat/Software/web-components/packages/stratigraphy-utils::locator=naukluft-app%40workspace%3A."
+  languageName: node
+  linkType: soft
+
+"@macrostrat/style-system@portal:../../Macrostrat/Software/web-components/packages/style-system::locator=naukluft-app%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@macrostrat/style-system@portal:../../Macrostrat/Software/web-components/packages/style-system::locator=naukluft-app%40workspace%3A."
+  dependencies:
+    "@blueprintjs/colors": "npm:^5.1.1"
+    "@blueprintjs/core": "npm:^5.10.2"
+  peerDependencies:
+    react: ^16.8.6||^17.0.0||^18.0.0||^19.0.0
+    react-dom: ^16.8.6||^17.0.0||^18.0.0||^19.0.0
   languageName: node
   linkType: soft
 
@@ -8326,6 +8338,7 @@ __metadata:
     "@macrostrat/hyper": "npm:^3.0.6"
     "@macrostrat/photo-viewer": "workspace:^"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
+    "@macrostrat/style-system": "npm:^0.2.3"
     "@macrostrat/timescale": "npm:^2.2.1"
     "@macrostrat/ui-components": "npm:^4.4.6"
     "@macrostrat/vite-plugin-hyperstyles": "npm:^1.0.2"

@@ -160,7 +160,31 @@ const ColumnUnderlay = function (props) {
   });
 };
 
-const SVGSectionInner = function (props) {
+interface SVGSectionInnerProps {
+  id: string;
+  padding: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+  };
+  innerWidth: number;
+  showWhiteUnderlay: boolean;
+  offsetTop: number | null;
+  absolutePosition: boolean;
+  isotopeColumnWidth?: number;
+  axisComponent?: any;
+  sequenceStratOrder?: [number, number] | null;
+  showFloodingSurfaces?: boolean;
+  showTriangleBars?: boolean;
+  showCarbonIsotopes?: boolean;
+  showOxygenIsotopes?: boolean;
+  isotopesPerSection?: boolean;
+  triangleBarRightSide?: boolean;
+  children?: React.ReactNode;
+}
+
+function SVGSectionInner(props: SVGSectionInnerProps) {
   let {
     id,
     padding,
@@ -173,11 +197,19 @@ const SVGSectionInner = function (props) {
 
   const { inEditMode = false } = useContext(PlatformContext);
 
-  const { sequenceStratOrder, showFloodingSurfaces, showTriangleBars } =
-    useSequenceStratSettings();
+  const {
+    sequenceStratOrder = [0, 1],
+    showFloodingSurfaces = false,
+    showTriangleBars = true,
+  } = props;
+  //  = useSequenceStratSettings();
 
-  const { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
-    useSettings();
+  const {
+    showCarbonIsotopes = true,
+    showOxygenIsotopes = true,
+    isotopesPerSection,
+  } = props;
+  //= useSettings();
 
   let overallWidth = 120;
   const chemostratColumnStart = overallWidth;
@@ -331,7 +363,7 @@ const SVGSectionInner = function (props) {
       ),
     ],
   );
-};
+}
 
 SVGSectionInner.defaultProps = {
   axisComponent: ColumnSummaryAxis,

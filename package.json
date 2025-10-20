@@ -39,6 +39,7 @@
     "@macrostrat/hyper": "^3.0.6",
     "@macrostrat/photo-viewer": "workspace:^",
     "@macrostrat/revision-info-webpack": "^1.0.0",
+    "@macrostrat/style-system": "^0.2.3",
     "@macrostrat/timescale": "^2.2.1",
     "@macrostrat/ui-components": "^4.4.6",
     "@turf/polygonize": "^5.1.5",

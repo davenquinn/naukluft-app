@@ -10,8 +10,12 @@
     font-size: 1em
     font-family: var(--main-font-family, sans-serif)
     font-weight: 500
+    color: var(--text-color)
+  background-color: var(--column-underlay-color, var(--background-color, white))
+
+
   .isotopes-column
-    margin-right 1em
+    padding-right 1em
     position relative
     g.scale
       g.tick
@@ -32,8 +36,8 @@
 
 .isotopes-column
   rect.underlay
-    fill var(--background-color, white)
+    fill transparent
 
   // TODO: this is needed to align the sections properly, unfortunately
-  .section-header
-    height: var(--section-header-height, 30px)
+  //.section-header
+  //  height: var(--section-header-height, 30px)

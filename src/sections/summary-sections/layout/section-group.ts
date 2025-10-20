@@ -7,6 +7,7 @@ import { sectionOffsets, stackGroups } from "../display-parameters";
 import { SectionData, SectionPositions } from "./defs";
 import { useSectionPositions } from "../../components/link-overlay";
 import { group } from "d3-array";
+import { useSequenceStratSettings } from "~/sections/sequence-strat-context";
 
 const h = hyperStyled(styles);
 
@@ -46,7 +47,14 @@ const SectionGroup = (props: SectionGroupProps) => {
 
   //let colWidth = positions[0]?.width ?? 150
 
-  const { showCarbonIsotopes, isotopesPerSection } = useSettings();
+  const { showTriangleBars, showFloodingSurfaces, sequenceStratOrder } =
+    useSequenceStratSettings();
+  let { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
+    useSettings();
+  if (!isotopesPerSection) {
+    showCarbonIsotopes = false;
+    showOxygenIsotopes = false;
+  }
 
   return h(
     LayoutGroup,
@@ -68,7 +76,6 @@ const SectionGroup = (props: SectionGroupProps) => {
       };
 
       const width = getWidth(sections);
-      //console.log(width)
       const style = { marginRight, height, width };
 
       return h(
@@ -88,6 +95,10 @@ const SectionGroup = (props: SectionGroupProps) => {
             key: id,
             triangleBarRightSide: id == "J",
             showCarbonIsotopes,
+            showOxygenIsotopes,
+            showFloodingSurfaces,
+            sequenceStratOrder,
+            showTriangleBars,
             isotopesPerSection,
             offsetTop: 670 - height - offset,
             range: [start, end],

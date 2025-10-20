@@ -11,6 +11,7 @@ import {
 } from "./carbon-isotopes";
 import { useIsotopes } from "~/sections/summary-sections/chemostrat/data-manager";
 import { ColumnTracker } from "~/sections/components";
+import classNames from "classnames";
 
 const h = hyperStyled(styles);
 
@@ -25,7 +26,7 @@ function ChemostratigraphyGroup(props) {
     LayoutGroup,
     {
       name: title,
-      className: "chemostratigraphy",
+      className: classNames("chemostratigraphy", props.className),
     },
     h(
       ColumnProvider,
