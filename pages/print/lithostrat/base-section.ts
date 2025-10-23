@@ -12,6 +12,7 @@ import {
   Timescale,
   TimescaleOrientation,
   IncreaseDirection,
+  Interval,
 } from "@macrostrat/timescale";
 import styles from "./base-section.module.sass";
 

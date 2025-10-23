@@ -1,9 +1,18 @@
-import h from "@macrostrat/hyper";
+import hyper from "@macrostrat/hyper";
 import { Component, useContext } from "react";
 import { useQuery } from "naukluft-data-backend";
 import { ColumnSVG, ColumnContext } from "@macrostrat/column-components";
 import { SummaryColumnProvider } from "./data-provider";
 import { useSurfaces } from "~/sections/providers";
+import styles from "./main.module.styl";
+import {
+  IncreaseDirection,
+  Timescale,
+  TimescaleOrientation,
+  Interval,
+} from "@macrostrat/timescale";
+
+const h = hyper.styled(styles);
 
 const LSLabel = (props) => {
   const { y, name, width, extend } = props;
@@ -29,65 +38,141 @@ const LSLabel = (props) => {
 
 LSLabel.defaultProps = { width: 20, extend: false };
 
-function LithostratigraphyColumn({ keySection = "J" }) {
+function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
+  let s1 = surfaces
+    .filter((d) => d.type === "lithostrat") // only lithostratigraphy
+    .map((d) => {
+      // Get the surface height in the proper section
+      const { section_height, ...rest } = d;
+      return {
+        height: section_height?.find((v) => v.section === keySection)?.height,
+        ...rest,
+      };
+    })
+    .filter((d) => d.height != null);
+
+  s1.sort((a, b) => a.height - b.height);
+
+  console.log(s1);
+
+  let formations = [];
+  let members = [];
+
+  let id = 1;
+  let parentID = null;
+  for (const d of s1) {
+    const surfaceData = names.find((v) => v.id === d.upper_unit);
+    if (surfaceData == null) {
+      continue;
+    }
+    const { height } = d;
+    const color = surfaceData.color;
+
+    // Commonality is how closely related the units are to each other.
+    if (surfaceData.level === 3) {
+      // If we have a formation but not a member, push that to formations only
+      formations.push({
+        height,
+        name: surfaceData.short_name,
+        id,
+        color,
+      });
+      id++;
+      continue;
+    }
+    if (d.commonality === 2) {
+      formations.push({
+        height,
+        name: surfaceData.formation_short_name,
+        id,
+        color,
+      });
+      parentID = id;
+      id++;
+    }
+    members.push({
+      height,
+      name: surfaceData.short_name,
+      parent: parentID,
+      id,
+      color,
+    });
+    id++;
+  }
+
+  console.log(formations, members);
+
+  // Iterate formations to add top heights
+  const intervals = [
+    {
+      oid: 0,
+      name: "Zebra River Group",
+      eag: 0,
+      lag: range[1],
+      lvl: 0,
+      col: "#CCCCCC",
+      pid: null,
+    },
+  ];
+  for (let i = 0; i < formations.length; i++) {
+    const current = formations[i];
+    const next = formations[i + 1];
+    intervals.push({
+      ...current,
+      oid: current.id,
+      nam: current.name,
+      eag: current.height,
+      lag: next?.height ?? range[1],
+      pid: 0,
+      lvl: 1,
+      col: current.color,
+    });
+  }
+
+  for (let i = 0; i < members.length; i++) {
+    const current = members[i];
+    const next = members[i + 1];
+    intervals.push({
+      ...current,
+      oid: current.id,
+      nam: current.name,
+      eag: current.height,
+      lag: next?.height ?? range[1],
+      pid: current.parent,
+      lvl: 2,
+      col: current.color,
+    });
+  }
+
+  return intervals;
+}
+
+export function LithostratigraphyColumn({ keySection = "J" }) {
   const names = useQuery("sections/summary/lithostratigraphy-names");
   let surfaces = useSurfaces();
-  const { scale } = useContext(ColumnContext);
+  const { scale, range, pixelsPerMeter } = useContext(ColumnContext);
 
   if (names == null) {
     return null;
   }
 
-  const findSurfaceHeight = (d) => {
-    const { section_height, ...rest } = d;
-    return {
-      height: section_height?.find((v) => v.section === keySection)?.height,
-      ...rest,
-    };
-  };
+  const intervals = buildTimescaleEntries(surfaces, names, keySection, range);
+  const length = (range[1] - range[0]) * pixelsPerMeter * 0.1;
 
-  surfaces = surfaces
-    .filter((d) => d.type === "lithostrat")
-    .map(findSurfaceHeight)
-    .filter((d) => d.height != null);
-
-  surfaces.sort((a, b) => a.height - b.height);
-
-  const formations = [];
-  const members = [];
-
-  for (const d of surfaces) {
-    const y = scale(d.height);
-    const transform = `translate(0,${y}) rotate(-90)`;
-    const surfaceData = names.find((v) => v.id === d.upper_unit);
-    if (surfaceData == null) {
-      continue;
-    }
-    if (surfaceData.level === 3) {
-      formations.push(
-        h(LSLabel, { y, name: surfaceData.short_name, extend: true }),
-      );
-      continue;
-    }
-    if (d.commonality === 2) {
-      formations.push(
-        h(LSLabel, { y, name: surfaceData.formation_short_name }),
-      );
-    }
-    members.push(h(LSLabel, { y, name: surfaceData.short_name }));
-  }
-
-  return h("g.lithostratigraphy", [
-    h("g.formations", { style: { fontSize: 20 } }, formations),
-    h(
-      "g.members",
-      {
-        transform: "translate(20)",
-        style: { fontSize: 14, fontStyle: "italic" },
-      },
-      members,
-    ),
-  ]);
+  return h(
+    "div.lithostrat-key",
+    h(Timescale, {
+      orientation: TimescaleOrientation.VERTICAL,
+      increaseDirection: IncreaseDirection.UP_RIGHT,
+      length,
+      absoluteAgeScale: true,
+      showAgeAxis: false,
+      ageRange: range,
+      intervals,
+      rootInterval: 0,
+      levels: [1, 2],
+    }),
+  );
 }
 
 const BaseSVGSectionComponent = (props) => {
@@ -108,11 +193,7 @@ const BaseSVGSectionComponent = (props) => {
     [
       h("div.section-outer", [
         h(SummaryColumnProvider, { id: "J" }, [
-          h(ColumnSVG, { width: 50 }, [
-            h("g.backdrop", { transform }, [
-              h(LithostratigraphyColumn, keySection),
-            ]),
-          ]),
+          h(ColumnSVG, { width: 50 }, h(LithostratigraphyColumn, keySection)),
         ]),
       ]),
     ],
@@ -143,12 +224,10 @@ BaseSVGSectionComponent.defaultProps = {
   },
 };
 
-class LithostratKey extends Component {
+export class LithostratKey extends Component {
   render() {
     return h("div.align-with-sections", [
       h(BaseSVGSectionComponent, this.props),
     ]);
   }
 }
-
-export { LithostratKey, LithostratigraphyColumn };

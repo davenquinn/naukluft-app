@@ -86,7 +86,7 @@ export function SimpleChemostratigraphyColumn(props) {
         showLines,
         keySection,
         tickValues: [-10, -5, 0, 5],
-        padding: { left: 10, top: 10, right: 5, bottom: 60 },
+        padding: { left: 5, top: 10, right: 5, bottom: 60 },
       }),
       h(IsotopesColumnSimple, {
         isotopes: allIsotopes,
@@ -104,7 +104,7 @@ export function SimpleChemostratigraphyColumn(props) {
         surfaces,
         showLines,
         keySection,
-        padding: { left: 5, top: 10, right: 10, bottom: 60 },
+        padding: { left: 5, top: 10, right: 5, bottom: 60 },
       }),
     ],
   );

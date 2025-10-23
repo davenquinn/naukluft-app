@@ -229,7 +229,7 @@ const columnDataZN: ColumnSurface[] = [
   },
 ];
 
-function composeIntervals(intervals, height) {
+function composeIntervals(intervals, height): TimescaleInterval[] {
   return intervals.map((d) => {
     return {
       ...d,

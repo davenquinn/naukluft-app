@@ -34,11 +34,11 @@ interface SectionBreakProps {
 }
 
 const SectionBreak = (props: SectionBreakProps) => {
-  const { scaleClamped } = useContext(ColumnContext);
-  const { division: d } = props;
-  const btm = scaleClamped(d.bottom);
-  const top = scaleClamped(d.top);
-  const height = btm - top;
+  const { scale } = useContext(ColumnContext);
+  const { division: d, extraHeight = 0 } = props;
+  const btm = scale(d.bottom);
+  const top = scale(d.top);
+  const height = btm - top + extraHeight;
   const heightM = d.top - d.bottom;
   const textPadding = props.textPadding ?? 10;
 
@@ -84,7 +84,13 @@ const GeneralizedBreaks = (props) => {
 
   return h(
     "div.generalized-breaks",
-    breaks.map((division) => h(SectionBreak, { division })),
+    breaks.map((division, i) =>
+      h(SectionBreak, {
+        division,
+        // This seems to be necessary to properly align the section ... not sure why
+        extraHeight: i == breaks.length - 1 ? 1.5 : 0,
+      }),
+    ),
   );
 };
 

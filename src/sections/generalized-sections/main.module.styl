@@ -24,26 +24,23 @@
 .section-column.Onis
   margin-right 200px
 
-width=1.5px
+$width=1.5px
 
 .generalized-breaks
   position absolute
+  box-sizing: content-box
   top 0
-  left -28px
+  left -20px
   // Not sure why we have to do this pixel transform
   transform translate(0,-0.5px)
-  width 28px
-  font-size: 20px
+  width 20px
+  font-size: 16px
   //border-top width solid black
   .section-break
     // Make sure we have pixel-perfect borders
-    padding-left 6px
     &:last-child
-      border-top width solid black
-      margin-top 1px
-      &:first-child
-        margin-bottom 1px
-    border-bottom width solid black
+      border-top $width solid black
+    border-bottom $width solid black
     // Make text vertical
     writing-mode vertical-lr
     transform: rotate(180deg)

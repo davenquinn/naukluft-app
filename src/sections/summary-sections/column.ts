@@ -154,7 +154,7 @@ const ColumnUnderlay = function (props) {
   return h("rect.underlay", {
     width,
     height: pixelHeight + 10,
-    x: -paddingLeft,
+    x: paddingLeft,
     y: -5,
     fill: "var(--background-color)",
   });
@@ -208,6 +208,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     showCarbonIsotopes = true,
     showOxygenIsotopes = true,
     isotopesPerSection,
+    triangleBarRightSide = false,
   } = props;
   //= useSettings();
 
@@ -231,8 +232,8 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
   let triangleBarTranslate = 0;
   let mainTranslate = 0;
 
-  let underlayPaddingLeft: number = padding.left;
-  let underlayWidth = 300;
+  let underlayPaddingLeft = -padding.left;
+  let underlayWidth = 210;
 
   let triangleBars: any = null;
 
@@ -245,16 +246,17 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     const triangleBarWidth = 20 * nOrders;
 
     overallWidth += triangleBarWidth;
-    if (props.triangleBarRightSide) {
+    if (triangleBarRightSide) {
       triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
-      underlayPaddingLeft = 0;
-      underlayWidth = 146 + chemostratWidth;
+      //underlayWidth = 146 + chemostratWidth;
       overallWidth += 6;
     } else {
       triangleBarTranslate = 20 * (nOrders - 2);
       mainTranslate = triangleBarWidth + 8;
-      underlayPaddingLeft -= 35 + triangleBarTranslate;
+      underlayPaddingLeft -= triangleBarTranslate;
     }
+
+    //underlayWidth -= 10;
 
     triangleBars = h(TriangleBars, {
       id,
@@ -293,6 +295,12 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
           className: "section-outer",
           id,
           paddingTop: 10,
+          adjustPosition(pos) {
+            // We need to track down why this is necessary
+            const x = pos.x + 65;
+            const y = pos.y + 5;
+            return new DOMRect(x, y, pos.width, pos.height);
+          },
         },
         [
           h(

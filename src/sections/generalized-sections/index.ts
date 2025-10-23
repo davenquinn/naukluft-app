@@ -56,7 +56,6 @@ function GeneralizedLithostratKey(props) {
       right: 5,
       bottom: 10,
     },
-    innerWidth = 40,
     keySection = "Onis",
     pixelsPerMeter,
   } = props;
@@ -65,26 +64,8 @@ function GeneralizedLithostratKey(props) {
   let divisions = useColumnDivisions(keySection);
   const range = rangeForDivisions(divisions);
 
-  // Set up number of ticks
-  const transform = `translate(${left} ${padding.top})`;
-  const minWidth = innerWidth + (left + right);
-
-  return h("div", { style: { marginLeft: 20 } }, [
-    h(
-      "div.section-container.lithostratigraphy-names",
-      {
-        style: { minWidth },
-      },
-      [
-        h(ColumnProvider, { range, divisions, zoom: 0.1, pixelsPerMeter }, [
-          h(ColumnSVG, { width: 50 }, [
-            h("g.backdrop", { transform }, [
-              h(LithostratigraphyColumn, { keySection }),
-            ]),
-          ]),
-        ]),
-      ],
-    ),
+  return h(ColumnProvider, { range, divisions, zoom: 0.1, pixelsPerMeter }, [
+    h(LithostratigraphyColumn, { keySection }),
   ]);
 }
 
@@ -124,6 +105,7 @@ function SectionPane(props) {
     h(SectionContainer, [
       h(SectionLinkOverlay, {
         extendLinks: true,
+        showSectionTrackers: true,
       }),
       h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,

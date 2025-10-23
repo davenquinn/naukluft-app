@@ -99,7 +99,7 @@ class SectionPositionProvider extends Component {
       "div.section-positioner",
       {
         ref: (ref) => {
-          return (this.container = ref);
+          this.container = ref;
         },
       },
       [
@@ -126,9 +126,10 @@ const ColumnTracker = function (props) {
   Tracks a column's position and reports
   it back to the SectionObserverContext.
   */
-  const { children, className, id, ...rest } = props;
+  const { children, className, id, adjustPosition, ...rest } = props;
   const setPosition = useContext(SectionPositionContext);
   const { scale } = useContext(ColumnContext);
+  const _adjustPosition = adjustPosition ?? ((d) => d);
 
   const ref = useRef();
 
@@ -138,7 +139,7 @@ const ColumnTracker = function (props) {
     }
     // Run this code after render
     const rect = ref.current.getBoundingClientRect();
-    return setPosition(id, scale, rect, rest);
+    return setPosition(id, scale, _adjustPosition(rect), rest);
   };
 
   useEffect(runPositioner);
