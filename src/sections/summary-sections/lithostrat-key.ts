@@ -11,6 +11,7 @@ import {
   TimescaleOrientation,
   Interval,
 } from "@macrostrat/timescale";
+import chroma from "chroma-js";
 
 const h = hyper.styled(styles);
 
@@ -171,8 +172,20 @@ export function LithostratigraphyColumn({ keySection = "J" }) {
       intervals,
       rootInterval: 0,
       levels: [1, 2],
+      intervalStyle,
     }),
   );
+}
+
+function intervalStyle(interval) {
+  console.log(interval);
+  return {
+    backgroundColor: chroma(interval.color)
+      .set("hsl.l", 0.9)
+      .set("hsl.s", 0.3)
+      .hex(),
+    color: chroma(interval.color).set("hsl.l", 0.2).css(),
+  };
 }
 
 const BaseSVGSectionComponent = (props) => {

@@ -21,7 +21,7 @@ const GeneralizedAxis = function (props) {
 
   return h(ColumnAxis, {
     ticks: height * zoom,
-    tickSize: 3,
+    tickSize: 4,
     showLabel(d) {
       return false;
     },

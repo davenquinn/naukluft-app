@@ -3,9 +3,9 @@ SELECT
   id,
   name,
   level,
-  color,
+  trim(color) color,
   fgdc_symbol symbol,
-  symbol_color,
+  trim(symbol_color) symbol_color,
   coalesce(u.short_name, name) short_name
 FROM mapping.unit u
 WHERE id = ANY(mapping.subunits('zebra-nappe'))

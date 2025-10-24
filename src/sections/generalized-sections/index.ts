@@ -105,7 +105,6 @@ function SectionPane(props) {
     h(SectionContainer, [
       h(SectionLinkOverlay, {
         extendLinks: true,
-        showSectionTrackers: true,
       }),
       h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,

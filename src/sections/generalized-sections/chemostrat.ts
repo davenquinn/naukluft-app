@@ -52,7 +52,9 @@ export function GeneralizedChemostratigraphyColumn(props) {
   ];
 
   const offset = row.surfaces[1].original_bottom - row.surfaces[1].bottom;
-  const scale = (d) => d - offset;
+
+  // Apparently we are subtracting the offset twice??
+  const scale = (d) => d - offset / 2;
 
   const component = simple
     ? SimpleChemostratigraphyColumn

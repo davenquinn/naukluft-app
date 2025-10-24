@@ -202,7 +202,6 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     showFloodingSurfaces = false,
     showTriangleBars = true,
   } = props;
-  //  = useSequenceStratSettings();
 
   const {
     showCarbonIsotopes = true,
@@ -210,7 +209,6 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     isotopesPerSection,
     triangleBarRightSide = false,
   } = props;
-  //= useSettings();
 
   let overallWidth = 120;
   const chemostratColumnStart = overallWidth;
@@ -245,6 +243,11 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     //40
     const triangleBarWidth = 20 * nOrders;
 
+    const paddingInner = 2;
+
+    const triangleUnderlayInset = triangleBarWidth - 10 + 2 * paddingInner;
+    underlayWidth -= triangleUnderlayInset;
+
     overallWidth += triangleBarWidth;
     if (triangleBarRightSide) {
       triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
@@ -253,10 +256,8 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     } else {
       triangleBarTranslate = 20 * (nOrders - 2);
       mainTranslate = triangleBarWidth + 8;
-      underlayPaddingLeft -= triangleBarTranslate;
+      underlayPaddingLeft += triangleUnderlayInset;
     }
-
-    //underlayWidth -= 10;
 
     triangleBars = h(TriangleBars, {
       id,
@@ -298,7 +299,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
           adjustPosition(pos) {
             // We need to track down why this is necessary
             const x = pos.x + 65;
-            const y = pos.y + 5;
+            const y = pos.y;
             return new DOMRect(x, y, pos.width, pos.height);
           },
         },
