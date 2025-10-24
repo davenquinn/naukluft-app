@@ -350,27 +350,13 @@ const MinimalColumnScale = function (props) {
       top: pixelHeight,
       tickLabelProps(tickValue, i) {
         // Compensate for negative sign
-        let dx;
-        if (tickValue < 0) {
-          dx = -2;
-        }
         return {
-          dy: "-1px",
-          dx,
-          fontSize: 10,
+          className: styles["isotope-axis-tick"],
           textAnchor: "middle",
-          fill: "#000",
         };
       },
       labelOffset: 0,
       label,
-      labelProps: {
-        style: {
-          fontFamily: "Merriweather",
-          fill: "#000",
-        },
-        fontSize: 20,
-      },
     }),
   ]);
 };

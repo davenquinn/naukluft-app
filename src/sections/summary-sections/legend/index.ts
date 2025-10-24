@@ -80,16 +80,16 @@ function KeyValue({ label, value }: { label: string; value: string }) {
 
 export function LegendInner({ className }) {
   return h("div.legend-inner", { className }, [
-    h("div.facies-description", [
-      h("h2", "Sedimentary facies"),
-      h(FaciesLegend),
-    ]),
-    h("div.symbol-legend-container", [
+    h("div.facies-description", [h("h2", "Facies"), h(FaciesLegend)]),
+    h("div.symbol-legend-container.section", [
       h("h2", "Structures"),
       h(SymbolLegend, { className: "symbol-legend" }),
+    ]),
+    h("div.sequence-strat.section", [
+      h("h2", "Correlations"),
       h(
         "p.note",
-        "Triangle bars represent variation in accomodation space at the parasequence set level",
+        "Triangle bars represent ~2nd order T-R cycles in relative sea level.",
       ),
     ]),
   ]);

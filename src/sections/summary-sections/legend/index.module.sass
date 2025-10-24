@@ -1,11 +1,6 @@
 .facies-description
   flex-grow: 2
 
-.facies-description-inner
-  display: flex
-  flex-direction: row
-  gap: 1em
-
 p.note
   font-style: italic
 
@@ -16,13 +11,8 @@ p.note
   top: 0
   h1, h2, h3
     line-height: inherit
-  .legend-inner
-    display: flex
-    flex-direction: row
-    &>div
-      flex: 1
-    &>div
-      margin-right: 1em
+    break-after: avoid
+
   margin-top: 0
   width: 50em
   z-index: 12
@@ -32,6 +22,14 @@ p.note
 
   h4
     margin-top: 0em
+
+.symbol-legend, .facies
+  line-height: 1.2
+
+.facies :global(.color-swatch)
+  width: 30px
+  height: 30px
+  border-radius: 4px
 
 .facies .header
   display: flex
@@ -52,16 +50,21 @@ p.note
       flex-grow: 1
       margin-left: 1em
 
+.section,.symbol-legend, p, h1, h2, h3, h4
+  background-color: var(--background-color)
+
 .legend-inner
-  display: flex
-  flex-direction: row
+  //display: flex
+  //flex-direction: row
+  .section
+    break-inside: avoid
+  column-count: 4
   margin-top: 0
   gap: 1em
   width: var(--legend-width, 40em)
   z-index: 12
   align-items: top
-  &>*>*
-    background-color: var(--background-color)
+
 
   h2
     font-size: 1.2em
@@ -73,7 +76,8 @@ p.note
     font-style: italic
 
 .facies-description
-  flex: 2
+  &>h2:first-child
+    margin-top: 0
 
 .symbol-legend-container
   flex: 1

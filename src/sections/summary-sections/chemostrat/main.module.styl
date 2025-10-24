@@ -1,16 +1,20 @@
 .isotope-scale-axis
   :global(.vx-line)
     stroke: #aaa
-  text
-    fill: #888
 
 .chemostratigraphy
   margin-right: 0
+  position: relative
   h1
+    position: absolute
+    top: 0.5em
+    width: 100%
     font-size: 1em
     font-family: var(--main-font-family, sans-serif)
     font-weight: 500
-    color: var(--text-color)
+    font-style: italic
+    color: var(--secondary-color)
+    text-align: center
   background-color: var(--column-underlay-color, var(--background-color, white))
 
 
@@ -41,3 +45,15 @@
   // TODO: this is needed to align the sections properly, unfortunately
   .section-header
     height: var(--section-header-height, 30px)
+
+.isotope-axis-tick
+  font-size: 12px
+  fill: var(--secondary-color, #888)
+  text-anchor: middle
+
+.isotopes-column :global(.vx-axis-label)
+  font-size: 16px
+  fill: var(--secondary-color, #888)
+  transform: translate(0, 8px)
+  font-weight: 500
+  text-anchor: middle

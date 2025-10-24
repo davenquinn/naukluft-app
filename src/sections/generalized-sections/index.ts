@@ -147,6 +147,7 @@ function SectionPane(props) {
             height: end - start,
             divisions: surfaces,
             pixelsPerMeter,
+            sequenceStratOrder: [1, 1],
           });
         }),
       ),

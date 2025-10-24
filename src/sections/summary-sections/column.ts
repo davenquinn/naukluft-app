@@ -251,6 +251,8 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     overallWidth += triangleBarWidth;
     if (triangleBarRightSide) {
       triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
+      // Compensate for triangle bar width
+      underlayWidth -= 20;
       //underlayWidth = 146 + chemostratWidth;
       overallWidth += 6;
     } else {
