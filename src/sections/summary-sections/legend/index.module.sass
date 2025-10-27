@@ -1,9 +1,6 @@
 .facies-description
   flex-grow: 2
 
-p.note
-  font-style: italic
-
 .summary-sections-legend
   position: absolute
   left: 800px
@@ -72,9 +69,6 @@ p.note
   h4
     margin-top: 0em
 
-  p.note
-    font-style: italic
-
 .facies-description
   &>h2:first-child
     margin-top: 0
@@ -104,3 +98,28 @@ p.explanation
     flex-grow: 1
     margin-left: 1em
 
+.sequence-stratigraphic-surfaces
+  text-anchor: start
+  text
+    transform: translate(35px, 0)
+    dominant-baseline: middle
+    fill: var(--text-color)
+    font-style: italic
+  line
+    stroke-width: 1px
+    stroke: var(--text-color)
+  .sequence-boundary
+    --text-color: #444
+  .maximum-flooding-surface
+    --text-color: #00aaff
+  &>:nth-child(1)
+    text
+      visibility: hidden
+
+.systems-tract
+  line-height: 1
+  text-anchor: start
+  transform: translate(15px, 0)
+  dominant-baseline: middle
+  fill: var(--secondary-color)
+  font-family: var(--heading-font-family)

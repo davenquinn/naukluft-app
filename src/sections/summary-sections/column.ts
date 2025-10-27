@@ -21,7 +21,6 @@ import {
 } from "@macrostrat/column-components";
 
 import { ManagedSymbolColumn, ColumnTracker } from "../components";
-import { useSequenceStratSettings } from "../sequence-strat-context";
 import { SummaryColumnProvider } from "./data-provider";
 import { PlatformContext } from "~/platform";
 import { MinimalIsotopesColumn } from "./chemostrat";

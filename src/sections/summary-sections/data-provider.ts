@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { useContext } from "react";
 import h from "@macrostrat/hyper";
 import { SectionDataContext } from "../data-providers";
 import { ColumnProvider } from "@macrostrat/column-components";
