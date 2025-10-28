@@ -28,6 +28,7 @@ export function Page() {
           isotopesPerSection: true,
           correctIsotopeRatios: false,
           showLegend: true,
+          sequenceStratOrder: [0, 3],
         },
         h(
           SectionDataProvider,

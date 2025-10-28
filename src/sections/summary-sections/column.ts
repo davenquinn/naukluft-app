@@ -168,7 +168,7 @@ interface SVGSectionInnerProps {
     bottom: number;
   };
   innerWidth: number;
-  showWhiteUnderlay: boolean;
+  showUnderlay: boolean;
   offsetTop: number | null;
   absolutePosition: boolean;
   isotopeColumnWidth?: number;
@@ -181,6 +181,10 @@ interface SVGSectionInnerProps {
   isotopesPerSection?: boolean;
   triangleBarRightSide?: boolean;
   children?: React.ReactNode;
+  trackerOffset?: {
+    x: number;
+    y: number;
+  };
 }
 
 function SVGSectionInner(props: SVGSectionInnerProps) {
@@ -188,7 +192,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     id,
     padding,
     innerWidth,
-    showWhiteUnderlay,
+    showUnderlay = true,
     offsetTop,
     absolutePosition,
     isotopeColumnWidth = 60,
@@ -212,6 +216,9 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
   let overallWidth = 120;
   const chemostratColumnStart = overallWidth;
 
+  let underlayPaddingLeft = -padding.left;
+  let underlayWidth = 210;
+
   overallWidth += 42; // Symbol column
 
   let chemostratWidth = 0;
@@ -225,12 +232,10 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     }
   }
   overallWidth += chemostratWidth;
+  underlayWidth += chemostratWidth;
 
   let triangleBarTranslate = 0;
   let mainTranslate = 0;
-
-  let underlayPaddingLeft = -padding.left;
-  let underlayWidth = 210;
 
   let triangleBars: any = null;
 
@@ -277,6 +282,8 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
 
   const grainsizeScaleStart = 40;
 
+  const offset = props.trackerOffset ?? { x: 0, y: 0 };
+
   return h(
     ColumnBox,
     {
@@ -288,19 +295,16 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
       absolutePosition,
     },
     [
-      h("div.section-header", [
-        h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, `${id}`),
-      ]),
+      h("div.section-header", h("h2.section-title", `${id}`)),
       h(
         ColumnTracker,
         {
           className: "section-outer",
           id,
-          paddingTop: 10,
           adjustPosition(pos) {
             // TODO: We need to track down why this is necessary
-            const x = pos.x + 65;
-            const y = pos.y;
+            const x = pos.x + offset.x;
+            const y = pos.y + offset.y + padding.top;
             return new DOMRect(x, y, pos.width, pos.height);
           },
         },
@@ -327,7 +331,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
                   paddingLeft: padding.left,
                 },
                 [
-                  h.if(showWhiteUnderlay)(ColumnUnderlay, {
+                  h.if(showUnderlay)(ColumnUnderlay, {
                     width: underlayWidth,
                     paddingLeft: underlayPaddingLeft,
                   }),
@@ -393,7 +397,7 @@ SVGSectionInner.defaultProps = {
     left: 30,
     top: 10,
     right: 20,
-    bottom: 28,
+    bottom: 35,
   },
 };
 

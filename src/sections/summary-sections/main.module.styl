@@ -36,6 +36,7 @@
 
 .section-header
   position: relative
+  z-index: -1
   height: var(--section-header-height)
   h2
     position: absolute
@@ -52,7 +53,7 @@
       font-size: 16px
 
 .summary-sections
-  --section-header-height: 45px
+  --section-header-height: 30px
   --section-padding-top: 10px
   // TODO: No idea why we need this to align keys properly
   --section-key-aligner: 12px
@@ -62,4 +63,8 @@
   --triangle-bars-stroke-color: #bbb
 
   :global(.chemostratigraphy)
-    --section-header-height: 57px
+    --section-header-height: calc(30px + 12px)
+
+  :global(.section-title)
+    &:before
+      content: "Section "

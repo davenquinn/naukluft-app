@@ -81,6 +81,7 @@ function SectionPane(props) {
     h(SectionContainer, [
       h(SectionLinkOverlay, {
         extendLinks: true,
+        showSectionTrackers: true,
       }),
       h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
         sections,
@@ -154,6 +155,7 @@ function GeneralizedSection(props) {
             offsetTop,
             absolutePosition: false,
             axisComponent: GeneralizedAxis,
+            trackerOffset: { x: 65, y: 0 },
           },
           [
             h(GeneralizedBreaks),

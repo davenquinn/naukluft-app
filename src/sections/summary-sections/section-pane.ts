@@ -57,6 +57,7 @@ export function SectionPane(props: SectionPaneProps) {
         connectLines: true,
         surfaces,
         extendLinks: true,
+        showSectionTrackers: true,
       }),
       h.if(showChemostrat)(ChemostratigraphyColumn, {
         sections,
@@ -71,16 +72,14 @@ export function SectionPane(props: SectionPaneProps) {
         offset,
         pixelsPerMeter,
       }),
-      h("div#section-container", [
-        h(ArrangedSections, {
-          sections,
-          groupMargin,
-          columnMargin,
-          columnWidth,
-          tightenSpacing,
-          pixelsPerMeter,
-        }),
-      ]),
+      h(ArrangedSections, {
+        sections,
+        groupMargin,
+        columnMargin,
+        columnWidth,
+        tightenSpacing,
+        pixelsPerMeter,
+      }),
     ]),
   ]);
 }

@@ -28,8 +28,16 @@ interface SectionGroupProps {
 }
 
 const SectionGroup = (props: SectionGroupProps) => {
-  const { sections, columnMargin, columnWidth, pixelsPerMeter, ...rest } =
-    props;
+  const {
+    sections,
+    columnMargin,
+    columnWidth,
+    pixelsPerMeter,
+    showTriangleBars,
+    showFloodingSurfaces,
+    sequenceStratOrder,
+    ...rest
+  } = props;
 
   // Sort into columns within this group, using `stackGroups` variable
   let columns = group(sections, (d) =>
@@ -49,8 +57,6 @@ const SectionGroup = (props: SectionGroupProps) => {
 
   //let colWidth = positions[0]?.width ?? 150
 
-  const { showTriangleBars, showFloodingSurfaces, sequenceStratOrder } =
-    useSequenceStratSettings();
   let { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
     useSettings();
   if (!isotopesPerSection) {
