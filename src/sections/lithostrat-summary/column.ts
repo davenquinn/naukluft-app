@@ -1,6 +1,5 @@
 import { hyperStyled } from "@macrostrat/hyper";
 import { SectionContainer } from "../components";
-import { LithostratKey } from "../summary-sections/lithostrat-key";
 import { LegendFull } from "../summary-sections/legend";
 import { group } from "d3-array";
 // This should be wrapped into a context
@@ -53,11 +52,6 @@ const SectionPane = function (props: SectionPaneProps) {
   return h("div#section-pane", { style: { overflow: "scroll" } }, [
     h.if(showLegend)(LegendFull),
     h(SectionContainer, [
-      h(LithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        offset,
-      }),
       h("div#section-container", [
         h(ArrangedSections, {
           groupMargin,

@@ -1,11 +1,7 @@
 import hyper from "@macrostrat/hyper";
-import { Component, useContext } from "react";
+import { useContext } from "react";
 import { useQuery } from "naukluft-data-backend";
-import {
-  ColumnSVG,
-  ColumnContext,
-  ColumnProvider,
-} from "@macrostrat/column-components";
+import { ColumnContext, ColumnProvider } from "@macrostrat/column-components";
 import { SummaryColumnProvider } from "./data-provider";
 import { useSurfaces } from "~/sections/providers";
 import styles from "./main.module.styl";
@@ -19,30 +15,6 @@ import chroma from "chroma-js";
 import { ColumnDivision, useColumnDivisions } from "~/sections/column";
 
 const h = hyper.styled(styles);
-
-const LSLabel = (props) => {
-  const { y, name, width, extend } = props;
-  const x2 = extend ? width : 0;
-  return h("g.label", { transform: `translate(${width},${y})` }, [
-    h("line", {
-      x1: -width,
-      x2,
-      y1: 0,
-      y2: 0,
-      stroke: "#888",
-      strokeWidth: 2,
-    }),
-    h(
-      "text",
-      {
-        transform: "rotate(-90) translate(5,-4)",
-      },
-      name,
-    ),
-  ]);
-};
-
-LSLabel.defaultProps = { width: 20, extend: false };
 
 function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
   let [minHeight, maxHeight] = range;
@@ -60,8 +32,6 @@ function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
     .filter((d) => d.height != null);
 
   s1.sort((a, b) => a.height - b.height);
-
-  console.log("Surfaces", s1);
 
   let formations = [];
   let members = [];
@@ -229,65 +199,4 @@ function intervalStyle(interval) {
       .hex(),
     color: chroma(interval.color).set("hsl.l", 0.2).css(),
   };
-}
-
-const BaseSVGSectionComponent = (props) => {
-  let { padding, innerWidth, keySection } = props;
-  let { left, right } = padding;
-
-  const outerWidth = innerWidth + (left + right);
-
-  // Set up number of ticks
-  const transform = `translate(${left} ${props.padding.top})`;
-
-  const minWidth = outerWidth;
-  return h(
-    "div.section-container.lithostratigraphy-names",
-    {
-      style: { minWidth },
-    },
-    [
-      h("div.section-outer", [
-        h(SummaryColumnProvider, { id: "J" }, [
-          h(
-            ColumnSVG,
-            { width: 50 },
-            h(LithostratigraphyColumn, { keySection }),
-          ),
-        ]),
-      ]),
-    ],
-  );
-};
-
-BaseSVGSectionComponent.defaultProps = {
-  zoom: 1,
-  pixelsPerMeter: 20,
-  skeletal: false,
-  offset: 0,
-  offsetTop: null,
-  useRelativePositioning: true,
-  showTriangleBars: false,
-  trackVisibility: false,
-  innerWidth: 40,
-  height: 100, // Section height in meters
-  lithologyWidth: 40,
-  showFacies: true,
-  showFloodingSurfaces: true,
-  onResize() {},
-  marginLeft: 0,
-  padding: {
-    left: 5,
-    top: 10,
-    right: 5,
-    bottom: 10,
-  },
-};
-
-export class LithostratKey extends Component {
-  render() {
-    return h("div.align-with-sections", [
-      h(BaseSVGSectionComponent, this.props),
-    ]);
-  }
 }
