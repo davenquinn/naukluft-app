@@ -408,8 +408,6 @@ class MinimalIsotopesColumnInner extends Component {
 
     const stroke = system === "delta13c" ? "dodgerblue" : "red";
 
-    console.log(system, isotopes);
-
     return h("g.isotopes-column", { transform }, [
       h(MinimalColumnScale, { system, tickValues: [-10, -5, 0] }),
       h(

@@ -1,7 +1,11 @@
 import hyper from "@macrostrat/hyper";
 import { Component, useContext } from "react";
 import { useQuery } from "naukluft-data-backend";
-import { ColumnSVG, ColumnContext } from "@macrostrat/column-components";
+import {
+  ColumnSVG,
+  ColumnContext,
+  ColumnProvider,
+} from "@macrostrat/column-components";
 import { SummaryColumnProvider } from "./data-provider";
 import { useSurfaces } from "~/sections/providers";
 import styles from "./main.module.styl";
@@ -12,6 +16,7 @@ import {
   Interval,
 } from "@macrostrat/timescale";
 import chroma from "chroma-js";
+import { ColumnDivision, useColumnDivisions } from "~/sections/column";
 
 const h = hyper.styled(styles);
 
@@ -40,6 +45,8 @@ const LSLabel = (props) => {
 LSLabel.defaultProps = { width: 20, extend: false };
 
 function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
+  let [minHeight, maxHeight] = range;
+
   let s1 = surfaces
     .filter((d) => d.type === "lithostrat") // only lithostratigraphy
     .map((d) => {
@@ -54,7 +61,7 @@ function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
 
   s1.sort((a, b) => a.height - b.height);
 
-  console.log(s1);
+  console.log("Surfaces", s1);
 
   let formations = [];
   let members = [];
@@ -68,7 +75,6 @@ function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
     }
     const { height } = d;
     const color = surfaceData.color;
-
     // Commonality is how closely related the units are to each other.
     if (surfaceData.level === 3) {
       // If we have a formation but not a member, push that to formations only
@@ -101,15 +107,17 @@ function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
     id++;
   }
 
-  console.log(formations, members);
+  minHeight = Math.max(minHeight, formations[0]?.height ?? minHeight);
+
+  // Adjust min and max height as necessary
 
   // Iterate formations to add top heights
   const intervals = [
     {
       oid: 0,
       name: "Zebra River Group",
-      eag: 0,
-      lag: range[1],
+      eag: minHeight,
+      lag: maxHeight,
       lvl: 0,
       col: "#CCCCCC",
       pid: null,
@@ -123,7 +131,7 @@ function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
       oid: current.id,
       nam: current.name,
       eag: current.height,
-      lag: next?.height ?? range[1],
+      lag: next?.height ?? maxHeight,
       pid: 0,
       lvl: 1,
       col: current.color,
@@ -151,34 +159,69 @@ function buildTimescaleEntries(surfaces, names, keySection, range): Interval[] {
 export function LithostratigraphyColumn({ keySection = "J" }) {
   const names = useQuery("sections/summary/lithostratigraphy-names");
   let surfaces = useSurfaces();
-  const { scale, range, pixelsPerMeter } = useContext(ColumnContext);
+  const { scale, range } = useContext(ColumnContext);
 
   if (names == null) {
     return null;
   }
 
   const intervals = buildTimescaleEntries(surfaces, names, keySection, range);
-  const length = (range[1] - range[0]) * pixelsPerMeter * 0.1;
 
   return h(
     "div.lithostrat-key",
     h(Timescale, {
       orientation: TimescaleOrientation.VERTICAL,
       increaseDirection: IncreaseDirection.UP_RIGHT,
-      length,
       absoluteAgeScale: true,
       showAgeAxis: false,
-      ageRange: range,
       intervals,
       rootInterval: 0,
       levels: [1, 2],
       intervalStyle,
+      scale,
     }),
   );
 }
 
+const rangeForDivisions = (divisions: ColumnDivision[]): [number, number] => {
+  if (divisions.length === 0) return [0, 0];
+
+  const start = divisions[0].bottom;
+  const end = divisions[divisions.length - 1].top;
+  return [start, end];
+};
+
+export function GeneralizedLithostratKey(props) {
+  let {
+    padding = {
+      left: 5,
+      top: 30,
+      right: 5,
+      bottom: 10,
+    },
+    keySection = "Onis",
+    pixelsPerMeter,
+  } = props;
+  let { left, right } = padding;
+
+  let divisions = useColumnDivisions(keySection);
+  const range = rangeForDivisions(divisions);
+
+  return h(ColumnProvider, { range, divisions, zoom: 0.1, pixelsPerMeter }, [
+    h(LithostratigraphyColumn, { keySection }),
+  ]);
+}
+
+export function SummaryLithostratigraphyKey({
+  keySection = "J",
+  pixelsPerMeter,
+}) {
+  return h(SummaryColumnProvider, { id: keySection, pixelsPerMeter }, [
+    h(LithostratigraphyColumn, { keySection }),
+  ]);
+}
+
 function intervalStyle(interval) {
-  console.log(interval);
   return {
     backgroundColor: chroma(interval.color)
       .set("hsl.l", 0.9)
@@ -206,7 +249,11 @@ const BaseSVGSectionComponent = (props) => {
     [
       h("div.section-outer", [
         h(SummaryColumnProvider, { id: "J" }, [
-          h(ColumnSVG, { width: 50 }, h(LithostratigraphyColumn, keySection)),
+          h(
+            ColumnSVG,
+            { width: 50 },
+            h(LithostratigraphyColumn, { keySection }),
+          ),
         ]),
       ]),
     ],

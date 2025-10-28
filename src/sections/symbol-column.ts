@@ -18,7 +18,6 @@ const symbolIndex = {
 };
 
 function resolveSymbol(sym) {
-  console.log("Resolving symbol", sym);
   if (sym == null) {
     return null;
   }

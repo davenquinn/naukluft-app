@@ -2,7 +2,11 @@ import { hyperStyled } from "@macrostrat/hyper";
 import { useSettings } from "@macrostrat/column-components";
 import { ChemostratigraphyColumn } from "./chemostrat";
 import { SectionLinkOverlay, SectionContainer } from "../components";
-import { LithostratKey } from "./lithostrat-key";
+import {
+  GeneralizedLithostratKey,
+  SummaryLithostratigraphyColumn,
+  SummaryLithostratigraphyKey,
+} from "./lithostrat-key";
 import { ArrangedSections } from "./layout";
 import { LegendFull } from "./legend";
 import { useSurfaces } from "~/sections/providers";
@@ -48,22 +52,28 @@ export function SectionPane(props: SectionPaneProps) {
   const showChemostrat = options.correlatedIsotopes;
   const overflow = scrollable ? "scroll" : "inherit";
 
+  const pixelsPerMeter = 20;
+
   return h("div.section-pane", { style: { overflow } }, [
     h.if(showLegend)(LegendFull),
     h(SectionContainer, [
       h(SectionLinkOverlay, {
-        connectLines: false,
+        connectLines: true,
         surfaces,
-      }),
-      h(LithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        offset,
+        extendLinks: true,
       }),
       h.if(showChemostrat)(ChemostratigraphyColumn, {
         sections,
         showLines: false,
         simple: true,
+        pixelsPerMeter,
+      }),
+      h(SummaryLithostratigraphyKey, {
+        zoom: 0.1,
+        key: "key",
+        keySection: "J",
+        offset,
+        pixelsPerMeter,
       }),
       h("div#section-container", [
         h(ArrangedSections, {
@@ -72,6 +82,7 @@ export function SectionPane(props: SectionPaneProps) {
           columnMargin,
           columnWidth,
           tightenSpacing,
+          pixelsPerMeter,
         }),
       ]),
     ]),

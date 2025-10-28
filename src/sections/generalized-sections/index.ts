@@ -16,7 +16,10 @@ import {
   SectionPositionProvider,
 } from "../components";
 import { SVGSectionInner } from "../summary-sections/column";
-import { LithostratigraphyColumn } from "../summary-sections/lithostrat-key";
+import {
+  GeneralizedLithostratKey,
+  LithostratigraphyColumn,
+} from "../summary-sections/lithostrat-key";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";
 import { GeneralizedChemostratigraphyColumn } from "./chemostrat";
 import {
@@ -40,33 +43,6 @@ export function GeneralizedSections(props) {
     },
     h(GeneralizedSectionsInner),
   );
-}
-
-const rangeForDivisions = (divisions: ColumnDivision[]): [number, number] => {
-  const start = divisions[0].bottom;
-  const end = divisions[divisions.length - 1].top;
-  return [start, end];
-};
-
-function GeneralizedLithostratKey(props) {
-  let {
-    padding = {
-      left: 5,
-      top: 30,
-      right: 5,
-      bottom: 10,
-    },
-    keySection = "Onis",
-    pixelsPerMeter,
-  } = props;
-  let { left, right } = padding;
-
-  let divisions = useColumnDivisions(keySection);
-  const range = rangeForDivisions(divisions);
-
-  return h(ColumnProvider, { range, divisions, zoom: 0.1, pixelsPerMeter }, [
-    h(LithostratigraphyColumn, { keySection }),
-  ]);
 }
 
 // Should allow switching between offset types

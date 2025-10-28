@@ -9,7 +9,7 @@ import { SettingsProvider } from "@macrostrat/column-components";
 
 import "~/shared/global-styles";
 import { defaultSettings } from "~/sections/summary-sections/settings";
-import { PlatformProvider } from "~/platform";
+import { PlatformProvider, TargetEnvironment } from "~/platform";
 
 export function Page() {
   return h(
@@ -17,6 +17,9 @@ export function Page() {
     { filename: "stratigraphic-model.pdf" },
     h(
       PlatformProvider,
+      {
+        environment: TargetEnvironment.Print,
+      },
       h(
         SettingsProvider,
         {

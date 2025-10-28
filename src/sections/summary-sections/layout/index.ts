@@ -26,6 +26,7 @@ interface ArrangedSectionsProps {
   sections: SectionData[];
   groupMargin: number;
   location: string;
+  pixelsPerMeter: number;
 }
 
 function ArrangedSections(props: ArrangedSectionsProps) {

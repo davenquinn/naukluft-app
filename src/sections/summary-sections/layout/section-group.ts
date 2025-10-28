@@ -24,10 +24,12 @@ interface SectionGroupProps {
   columnWidth: number;
   height: number;
   location: string;
+  pixelsPerMeter: number;
 }
 
 const SectionGroup = (props: SectionGroupProps) => {
-  const { sections, columnMargin, columnWidth, ...rest } = props;
+  const { sections, columnMargin, columnWidth, pixelsPerMeter, ...rest } =
+    props;
 
   // Sort into columns within this group, using `stackGroups` variable
   let columns = group(sections, (d) =>
@@ -92,6 +94,7 @@ const SectionGroup = (props: SectionGroupProps) => {
 
           return h(SVGSectionComponent, {
             zoom: 0.1,
+            pixelsPerMeter,
             key: id,
             triangleBarRightSide: id == "J",
             showCarbonIsotopes,

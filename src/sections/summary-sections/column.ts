@@ -298,7 +298,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
           id,
           paddingTop: 10,
           adjustPosition(pos) {
-            // We need to track down why this is necessary
+            // TODO: We need to track down why this is necessary
             const x = pos.x + 65;
             const y = pos.y;
             return new DOMRect(x, y, pos.width, pos.height);
@@ -405,8 +405,12 @@ SVGSectionInner.propTypes = {
 };
 
 const SVGSectionComponent = (props) => {
-  const { id } = props;
-  return h(SummaryColumnProvider, { id }, h(SVGSectionInner, props));
+  const { id, pixelsPerMeter, ...rest } = props;
+  return h(
+    SummaryColumnProvider,
+    { id, pixelsPerMeter },
+    h(SVGSectionInner, { id, ...rest }),
+  );
 };
 
 export { SVGSectionInner, SVGSectionComponent };
