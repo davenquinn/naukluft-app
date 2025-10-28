@@ -14,6 +14,7 @@ function SummarySections({
     BaseSectionPage,
     {
       id: "summary-sections",
+      className: "summary-sections",
       settingsPanel,
       defaultSettings,
     },

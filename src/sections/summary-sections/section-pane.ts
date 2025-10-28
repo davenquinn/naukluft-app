@@ -2,11 +2,7 @@ import { hyperStyled } from "@macrostrat/hyper";
 import { useSettings } from "@macrostrat/column-components";
 import { ChemostratigraphyColumn } from "./chemostrat";
 import { SectionLinkOverlay, SectionContainer } from "../components";
-import {
-  GeneralizedLithostratKey,
-  SummaryLithostratigraphyColumn,
-  SummaryLithostratigraphyKey,
-} from "./lithostrat-key";
+import { SummaryLithostratigraphyKey } from "./lithostrat-key";
 import { ArrangedSections } from "./layout";
 import { LegendFull } from "./legend";
 import { useSurfaces } from "~/sections/providers";
@@ -54,7 +50,7 @@ export function SectionPane(props: SectionPaneProps) {
 
   const pixelsPerMeter = 20;
 
-  return h("div.section-pane", { style: { overflow } }, [
+  return h("div.section-pane.summary-sections", { style: { overflow } }, [
     h.if(showLegend)(LegendFull),
     h(SectionContainer, [
       h(SectionLinkOverlay, {

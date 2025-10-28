@@ -27,7 +27,6 @@ export function Page() {
           interactive: false,
           isotopesPerSection: true,
           correctIsotopeRatios: false,
-
           showLegend: true,
         },
         h(

@@ -221,7 +221,6 @@ class IsotopesColumnInnerSimple extends Component {
     const { left, top, right, bottom } = padding;
 
     return h("div.isotopes-column", [
-      h("div.section-header.subtle", [h("h2", "")]),
       h("div.section-outer", [
         h(
           ColumnSVG,
@@ -309,9 +308,6 @@ function renderAxisLines({ keySection, surfaces, scale }) {
     }),
   );
 }
-
-const partialScale = (scale, domain) =>
-  scale.copy().domain(domain).range(domain.map(scale));
 
 const MinimalColumnScale = function (props) {
   const { system, ...rest } = props;

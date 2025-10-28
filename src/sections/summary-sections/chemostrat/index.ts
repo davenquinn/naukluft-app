@@ -22,22 +22,21 @@ function ChemostratigraphyGroup(props) {
     title = "Correlated chemostratigraphy",
     pixelsPerMeter,
   } = props;
-  return h(
-    LayoutGroup,
-    {
-      name: title,
-      className: classNames("chemostratigraphy", props.className),
-    },
+  return h("div.correlated-chemostratigraphy.chemostratigraphy", [
+    h("div.chemostratigraphy-header", [h("h2.chemostratigraphy-title", title)]),
     h(
-      ColumnProvider,
-      {
-        range,
-        zoom: 0.1,
-        pixelsPerMeter,
-      },
-      [h(ColumnTracker, { id: "chemostratigraphy" }), children],
+      "div.chemostratigraphy-body",
+      h(
+        ColumnProvider,
+        {
+          range,
+          zoom: 0.1,
+          pixelsPerMeter,
+        },
+        [h(ColumnTracker, { id: "chemostratigraphy" }), children],
+      ),
     ),
-  );
+  ]);
 }
 
 export function SimpleChemostratigraphyColumn(props) {
