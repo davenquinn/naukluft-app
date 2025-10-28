@@ -243,27 +243,25 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     // How many bars are we rendering
 
     const nOrders = sequenceStratOrder[1] - sequenceStratOrder[0] + 1;
-
-    //40
+    const paddingInner = 2;
     const triangleBarWidth = 20 * nOrders;
 
-    const paddingInner = 2;
-
     const triangleUnderlayInset = triangleBarWidth - 10 + 2 * paddingInner;
-    underlayWidth -= triangleUnderlayInset;
 
-    overallWidth += triangleBarWidth;
+    let triangleBarInset = 10;
+    let triangleBarPadding = 8;
+    triangleBarTranslate = 20 * (nOrders - 2);
+    underlayWidth -= triangleBarWidth - 10;
+
     if (triangleBarRightSide) {
-      triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
-      // Compensate for triangle bar width
-      underlayWidth -= 20;
-      //underlayWidth = 146 + chemostratWidth;
-      overallWidth += 6;
+      triangleBarPadding = 0;
+      triangleBarTranslate += overallWidth - triangleBarInset;
+      underlayWidth = overallWidth + 6;
     } else {
-      triangleBarTranslate = 20 * (nOrders - 2);
-      mainTranslate = triangleBarWidth + 8;
+      mainTranslate = triangleBarWidth + triangleBarPadding;
       underlayPaddingLeft += triangleUnderlayInset;
     }
+    overallWidth += triangleBarWidth + triangleBarPadding;
 
     triangleBars = h(TriangleBars, {
       id,

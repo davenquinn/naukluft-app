@@ -13,6 +13,7 @@ import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.module.styl";
 import { useTargetEnvironment } from "~/platform";
+import { ColumnSVG } from "@macrostrat/column-components";
 
 const h = hyperStyled(styles);
 
@@ -177,7 +178,8 @@ const SectionLink = function (props) {
   let inferred, width, className, d;
   let { connectLines, surface, stroke, strokeWidth, onClick } = props;
 
-  const { startX } = props;
+  //const { startX } = props;
+  const startX = null;
 
   let { section_height, surface_id, unit_commonality, type, note } = surface;
 
@@ -463,6 +465,12 @@ const SectionLinks = function (props) {
     ),
   );
 };
+
+export function ColumnSurfaces(props) {
+  const { surfaces = [], range } = props;
+
+  return h(ColumnSVG, { width: 300, padding: 0 }, []);
+}
 
 function SectionLinkOverlay(props) {
   let {

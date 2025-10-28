@@ -49,7 +49,6 @@ export function SimpleChemostratigraphyColumn(props) {
     pixelsPerMeter,
     title,
   } = props;
-  const correctIsotopeRatios = true;
 
   let row = sections[0];
   if (keySection != null) {
