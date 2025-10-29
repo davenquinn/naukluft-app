@@ -1,14 +1,20 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import h from "@macrostrat/hyper";
 import classNames from "classnames";
 import { ColumnContext, useUUID } from "@macrostrat/column-components";
+import {
+  forceSimulation,
+  forceY,
+  forceCollide,
+  SimulationNodeDatum,
+} from "d3-force";
 
 const columnPatterns = import.meta.glob("../../assets/column-patterns/*.svg", {
   eager: true,
   import: "default",
 });
 
-const symbolIndex = {
+const symbolIndex: Record<string, string> = {
   "Hummocky cross-stratified": "hcs.svg",
   "Trough cross-stratified": "tcs.svg",
   "Dessication cracks": "dessication-cracks.svg",
@@ -28,22 +34,26 @@ export interface Symbol {
   symbol: string;
 }
 
-function resolveSymbol(sym: string) {
+function resolveSymbol(sym: string | undefined | null) {
   if (sym == null) {
     return null;
   }
   let sym1 = sym;
-  // Just in case we are passing full names
   if (sym1.endsWith(".svg")) {
     sym1 = sym1.slice(0, -4);
   }
   return columnPatterns[`../../assets/column-patterns/${sym1}.svg`];
 }
 
-function SymbolImage(props) {
-  const { symbol, width, height, UUID } = props;
+function SymbolImage(props: {
+  symbol: string;
+  width: number;
+  height?: number;
+  UUID: string;
+}) {
+  const { symbol, width, UUID } = props;
   const id = `${UUID}-${symbol}`;
-  const symbolSize = { width };
+  const symbolSize = { width, height: width };
   const href = resolveSymbol(symbolIndex[symbol]);
 
   return h(
@@ -64,16 +74,14 @@ function SymbolImage(props) {
   );
 }
 
-// Approximate symbol height in pixels for 30px width
-// In the future, we could measure the SVG files and maintain an index
 const approxSymbolHeight = 18;
 
-function SymbolDefs(props) {
+function SymbolDefs(props: { patterns: any[]; width: number; UUID: string }) {
   const { patterns, ...rest } = props;
-  const ids = [];
+  const ids: string[] = [];
   return h(
     "defs",
-    patterns.map(function (sym) {
+    patterns.map(function (sym: any) {
       const { symbol } = sym;
       if (ids.includes(symbol)) {
         return null;
@@ -87,7 +95,7 @@ function SymbolDefs(props) {
 interface SymbolColumnProps {
   width: number;
   left: number;
-  symbols: any[];
+  symbols: Symbol[];
   maxShiftAmount?: number;
   condense?: boolean;
 }
@@ -99,7 +107,7 @@ export function SymbolColumn(props: SymbolColumnProps) {
     width = 30,
     symbols,
     condense = true,
-    maxShiftAmount = 3,
+    maxShiftAmount = 5,
   } = props;
   const patterns = symbols.filter((x, i, arr) => arr.indexOf(x) === i);
 
@@ -110,23 +118,27 @@ export function SymbolColumn(props: SymbolColumnProps) {
     transform = `translate(${left})`;
   }
 
-  const newSymbols = symbols.filter((d) => d.symbol_min_zoom < zoom);
+  const newSymbols = useMemo(() => {
+    const newSymbols = symbols.filter((d) => d.symbol_min_zoom < zoom);
+    const condensedSymbols = condense
+      ? condenseSymbols(newSymbols, scale, { maxShiftAmount })
+      : newSymbols;
+    return condensedSymbols;
+  }, [symbols, scale, condense, maxShiftAmount, zoom]);
 
-  const condensedSymbols = condense
-    ? condenseSymbols(newSymbols, scale, { maxShiftAmount })
-    : newSymbols;
+  const ph = pixelHeight ?? 0;
 
   return h("g.symbol-column", { transform }, [
     h(SymbolDefs, { width, patterns, UUID }),
-    h("rect.symbol-column-area", { width, height: pixelHeight }),
+    h("rect.symbol-column-area", { width, height: ph }),
     h(
       "g.symbols",
-      condensedSymbols.map((d) => {
+      newSymbols.map((d) => {
         const { symbol, id, height } = d;
         const className = classNames({ symbol }, "symbol");
 
         const y = scale(height) - width / 2;
-        if (y < 0 || y > pixelHeight) return null;
+        if (y < 0 || y > ph) return null;
 
         const href = `#${UUID}-${symbol}`;
         return h("use", {
@@ -150,44 +162,49 @@ interface SymbolGroup {
 
 interface CondenseSymbolOptions {
   maxIterations?: number;
-  maxShiftAmount: number;
+  maxShiftAmount?: number; // pixels
   checkSpacing?: (a: Symbol, b: Symbol, pixelDistance: number) => boolean;
+}
+
+/** Node type used in the force simulation */
+interface LabelNode extends SimulationNodeDatum {
+  i: number;
+  originalY: number;
+  y: number;
+  minY: number;
+  maxY: number;
+  radius: number;
+  symbolIndex?: number;
+  ref: Symbol;
 }
 
 function condenseSymbols(
   symbols: Symbol[],
-  scale,
+  scale: any,
   options: CondenseSymbolOptions = {},
 ): Symbol[] {
-  /** Condense symbols by scale that are too close together. Instances of the same symbol
-   * are removed while instances of different symbols are shifted apart (but not outside of their
-   * original range). Densely overlapping symbols are ranked, and the rank can be used to
-   * remove lower-priority symbols if desired.
-   */
-
   const {
-    maxIterations = 100,
-    maxShiftAmount = 0,
-    checkSpacing = defaultCheckSpacing,
+    maxIterations = 1000,
+    maxShiftAmount = 5, // pixels
+    collisionBuffer = 10, // pixels
   } = options;
 
-  symbols.sort((a, b) => a.start_height - b.start_height);
-  const result: Symbol[] = [];
+  if (!symbols || symbols.length === 0) return [];
 
-  // First, iterate through and merge identical symbols that are too close
-  for (let i = 0; i < symbols.length; i++) {
-    const current = symbols[i];
+  // Sort by data height
+  const sorted = [...symbols].sort((a, b) => a.start_height - b.start_height);
+
+  // Before simulation, remove duplicates of same symbol within spacing threshold
+  const result: Symbol[] = [];
+  for (const current of sorted) {
     if (result.length === 0) {
       result.push(current);
       continue;
     }
     const last = result[result.length - 1];
     const pixelDistance = Math.abs(scale(current.height) - scale(last.height));
-    if (
-      current.symbol === last.symbol &&
-      !checkSpacing(last, current, pixelDistance)
-    ) {
-      // Merge by averaging heights
+    if (current.symbol === last.symbol && pixelDistance < collisionBuffer) {
+      // merge by averaging heights
       last.end_height = current.end_height ?? current.height;
       last.height = (last.height + current.height) / 2;
     } else {
@@ -195,52 +212,61 @@ function condenseSymbols(
     }
   }
 
-  if (maxShiftAmount == 0) {
-    return result;
-  }
+  // Create nodes for simulation with pixel positions
+  const nodes: LabelNode[] = result.map((s, i) => {
+    const origY = scale(s.height);
+    const startPx = scale(s.start_height);
+    const endPx = s.end_height != null ? scale(s.end_height) : origY;
+    // Allow shift up to maxShiftAmount pixels beyond start/end
+    const minY = Math.min(startPx, origY) - maxShiftAmount;
+    const maxY = Math.max(endPx, origY) + maxShiftAmount;
+    return {
+      i,
+      fx: 0,
+      originalY: origY,
+      y: origY,
+      minY,
+      maxY,
+      radius: collisionBuffer,
+      ref: s,
+    } as LabelNode;
+  });
 
-  // Force layout to adjust positions of different symbols that are too close
-  // TODO: convert to actual D3 force simulation
-  let overlapping = true;
+  if (nodes.length <= 1) return sorted;
+
+  // Force simulation:
+  // - forceY attracts to originalY
+  // - forceCollide prevents overlap
+  // Clamp positions every tick to stay within minY/maxY
   let iteration = 0;
-  const _maxShiftAmount = Math.abs(
-    scale.invert(maxShiftAmount) - scale.invert(0),
-  );
-  const shiftIncrement = _maxShiftAmount / 10;
-  // Can shift any label
-  let canShiftAny = true;
-  while (overlapping && canShiftAny) {
+  const sim = forceSimulation<LabelNode>(nodes)
+    .alphaDecay(0.05)
+    .force("y", forceY<LabelNode>((d) => d.originalY).strength(2))
+    .force("collide", forceCollide<LabelNode>((d) => d.radius).iterations(2))
+    .stop();
+
+  // Run the simulation manually to enforce bounds and max iterations
+  while (sim.alpha() > 0.005 && iteration < maxIterations) {
+    sim.tick();
+    // clamp y values to allowed range after tick
+    for (const n of nodes) {
+      if (n.y < n.minY) n.y = n.minY;
+      if (n.y > n.maxY) n.y = n.maxY;
+    }
     iteration += 1;
-    if (iteration > maxIterations) {
-      console.warn("Max iterations reached in condenseSymbols");
-      break;
-    }
-    overlapping = false;
-    for (let i = 1; i < result.length; i++) {
-      const prev = result[i - 1];
-      const current = result[i];
-      const pixelDist = Math.abs(scale(current.height) - scale(prev.height));
-      if (checkSpacing(prev, current, pixelDist)) {
-        continue;
-      }
-      overlapping = true;
-      // Check if we can shift them apart
-      const canShiftPrev = prev.start_height - _maxShiftAmount < prev.height;
-      const canShiftCurrent =
-        (current.end_height ?? current.height) + _maxShiftAmount >
-        current.height;
-
-      if (canShiftPrev) {
-        prev.height -= shiftIncrement;
-      }
-      if (canShiftCurrent) {
-        current.height += shiftIncrement;
-      }
-      canShiftAny = canShiftAny && (canShiftPrev || canShiftCurrent);
-    }
   }
+  // Stop simulation and clean up
+  sim.stop();
 
-  return result;
+  // Map updated pixel y back to data heights using scale.invert if available
+  const hasInvert = typeof scale.invert === "function";
+  return nodes.map((n) => {
+    const newHeight = hasInvert ? scale.invert(n.y) : n.ref.height;
+    return {
+      ...n.ref,
+      height: newHeight,
+    };
+  });
 }
 
 function defaultCheckSpacing(
@@ -251,7 +277,7 @@ function defaultCheckSpacing(
   return pixelDistance > approxSymbolHeight * 0.8;
 }
 
-export function SymbolLegend({ className }) {
+export function SymbolLegend({ className }: { className?: string }) {
   const arr = [];
   for (let name in symbolIndex) {
     const symbol = symbolIndex[name];

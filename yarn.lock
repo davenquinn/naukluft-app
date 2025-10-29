@@ -2776,6 +2776,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/d3-force@npm:^3":
+  version: 3.0.10
+  resolution: "@types/d3-force@npm:3.0.10"
+  checksum: 10c0/c82b459079a106b50e346c9b79b141f599f2fc4f598985a5211e72c7a2e20d35bd5dc6e91f306b323c8bfa325c02c629b1645f5243f1c6a55bd51bc85cccfa92
+  languageName: node
+  linkType: hard
+
 "@types/d3-format@npm:3.0.1":
   version: 3.0.1
   resolution: "@types/d3-format@npm:3.0.1"
@@ -4806,6 +4813,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"d3-force@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "d3-force@npm:3.0.0"
+  dependencies:
+    d3-dispatch: "npm:1 - 3"
+    d3-quadtree: "npm:1 - 3"
+    d3-timer: "npm:1 - 3"
+  checksum: 10c0/220a16a1a1ac62ba56df61028896e4b52be89c81040d20229c876efc8852191482c233f8a52bb5a4e0875c321b8e5cb6413ef3dfa4d8fe79eeb7d52c587f52cf
+  languageName: node
+  linkType: hard
+
 "d3-format@npm:1":
   version: 1.4.5
   resolution: "d3-format@npm:1.4.5"
@@ -5001,6 +5019,13 @@ __metadata:
   version: 1.0.7
   resolution: "d3-quadtree@npm:1.0.7"
   checksum: 10c0/90571c7bfc7ee2db4bb3f80b1b06f3c653858c365644c31a0ecf0adec525c0d8a70c4eaa88bc8d364b1fa3c919ee55cc55cf82396f4729d2a4baec2b95832492
+  languageName: node
+  linkType: hard
+
+"d3-quadtree@npm:1 - 3":
+  version: 3.0.1
+  resolution: "d3-quadtree@npm:3.0.1"
+  checksum: 10c0/18302d2548bfecaef788152397edec95a76400fd97d9d7f42a089ceb68d910f685c96579d74e3712d57477ed042b056881b47cd836a521de683c66f47ce89090
   languageName: node
   linkType: hard
 
@@ -8270,6 +8295,7 @@ __metadata:
     "@turf/polygonize": "npm:^5.1.5"
     "@types/cors": "npm:^2.8.10"
     "@types/d3-array": "npm:^2.0.0"
+    "@types/d3-force": "npm:^3"
     "@types/d3-format": "npm:^1.3.1"
     "@types/d3-geo": "npm:^3"
     "@types/d3-hierarchy": "npm:^3.1.7"
@@ -8293,6 +8319,7 @@ __metadata:
     cross-env: "npm:^7.0.3"
     d3: "npm:^4.4.1"
     d3-array: "npm:^2.4.0"
+    d3-force: "npm:^3.0.0"
     d3-geo: "npm:^3.1.1"
     d3-hierarchy: "npm:^3.1.2"
     d3-jetpack: "npm:^2.0.13"
