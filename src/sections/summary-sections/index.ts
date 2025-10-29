@@ -12,6 +12,7 @@ import { LegendFull } from "./legend";
 import { useSurfaces } from "~/sections/providers";
 import { SectionData } from "./layout/defs";
 import styles from "./main.module.styl";
+import { SummarySectionsMap } from "./map";
 
 const h = hyperStyled(styles);
 
@@ -78,8 +79,14 @@ function SectionPane(props: SectionPaneProps) {
   const pixelsPerMeter = 20;
 
   return h("div.section-pane.summary-sections", { style: { overflow } }, [
-    h.if(showLegend)(LegendFull),
     h(SectionContainer, [
+      h.if(showLegend)(LegendFull, [
+        h(SummarySectionsMap, {
+          bounds: [16, -24.4, 16.32, -24.16],
+          className: "inset-map",
+          metersPerPixel: 90,
+        }),
+      ]),
       h(SectionLinkOverlay, {
         connectLines: true,
         surfaces,

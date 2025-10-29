@@ -12,6 +12,7 @@ import {
   useColumn,
 } from "@macrostrat/column-components";
 import { SectionLinkLegendLine } from "~/sections/components";
+import { SummarySectionsMap } from "~/sections/summary-sections/map";
 
 const h = hyper.styled(styles);
 
@@ -104,7 +105,7 @@ export function LegendInner({ className, standalone = false }) {
   ]);
 }
 
-function LegendFull() {
+function LegendFull({ children }) {
   return h("div.legend.summary-sections-legend", [
     h("div.title-block", [
       h("h1", ["Stratigraphic model of the ", h("strong", "Zebra Series")]),
@@ -126,6 +127,7 @@ function LegendFull() {
       ]),
     ]),
     h(LegendInner, { standalone: true }),
+    children,
   ]);
 }
 

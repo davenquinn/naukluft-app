@@ -15,7 +15,6 @@
   left 0
 
 :global
-
   div.section-page#generalized-sections svg
     margin-bottom 1em
 
@@ -25,6 +24,15 @@
       border 2px solid black
       z-index 20
 
+.inset-map
+  border: 1px solid black
+  border-radius: 4px
+  overflow: hidden
+  --scalebar-color: black
+  --scalebar-background: none
+  --scalebar-height: 8px
+  --scalebar-border-radius: 4px
+  --scalebar-interior-color: white
 
 // Groupings
 .grouped-sections
@@ -94,3 +102,4 @@
   :global(.section-title)
     &:before
       content: "Section "
+

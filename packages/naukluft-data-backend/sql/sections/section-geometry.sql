@@ -10,6 +10,7 @@ WITH sections AS (
     SELECT
         *,
         section_id NOT IN ('L') in_strat_model,
+        section_id NOT IN ('L', 'K') correlated,
         section_id NOT IN ('L', 'M', 'K') in_generalized
     FROM sections
 ),
@@ -25,6 +26,7 @@ all_sections AS (SELECT section_id,
                         location,
                         null composited_from,
                         in_strat_model,
+                        correlated,
                         in_generalized,
                         false is_generalized
                  FROM sections_ext
@@ -34,6 +36,7 @@ all_sections AS (SELECT section_id,
                         location,
                         composited_from,
                         true in_strat_model,
+                        true correlated,
                         true in_generalized,
                         true is_generalized
                  FROM composited_sections
@@ -43,6 +46,7 @@ SELECT
     ST_AsGeoJSON(ST_Transform((ST_MinimumBoundingRadius(geometry)).center, 4326))::json AS geometry,
     (ST_MinimumBoundingRadius(geometry)).radius AS radius,
     location,
+    correlated,
     in_strat_model,
     in_generalized,
     is_generalized

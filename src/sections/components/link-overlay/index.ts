@@ -580,6 +580,23 @@ export function SectionLinkLegendLine(props) {
   });
 }
 
+export function useSectionOrder(): string[] | null {
+  // Get an ordered list of section IDs from the SectionObserverContext
+  const sectionIndex = useContext(SectionObserverContext);
+  if (sectionIndex.length === 0) {
+    return null;
+  }
+  const sections = Object.values(sectionIndex);
+  // First sort by x position, then y
+  sections.sort((a, b) => {
+    if (a.x !== b.x) {
+      return a.x - b.x;
+    }
+    return a.y - b.y;
+  });
+  return sections.map((d) => d.id);
+}
+
 function SectionLinkOverlay(props) {
   let {
     showSectionTrackers = false,
