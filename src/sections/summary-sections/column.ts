@@ -108,7 +108,6 @@ const ColumnSummaryAxis = function (props) {
   const ratio = pixelsPerMeter * zoom;
 
   // Keep labels from inhabiting the top few pixels (to make space for section labels)
-  const topPadding = 30;
   return h(ColumnAxis, {
     ticks: (height * zoom) / 5,
   });

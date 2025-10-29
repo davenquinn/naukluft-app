@@ -13,21 +13,22 @@
   position: absolute
   left: 50rem
   top: var(--summary-sections-padding)
+  --legend-width: 50rem
 
+  display: flex
+  flex-direction: row
+  gap: 2rem
 
+  .title-block
+    max-width: 20rem
+
+.legend
   h1, h2, h3
     line-height: inherit
     break-after: avoid
 
-  margin-top: 0
-  width: 50em
-  z-index: 12
-  align-items: top
-  h2
-    font-size: 1.5em
-
-  h4
-    margin-top: 0em
+    &:first-child
+      margin-top: 0
 
 .symbol-legend, .facies
   line-height: 1.2
@@ -65,8 +66,8 @@
   .section
     break-inside: avoid
   column-count: 4
+  column-gap: 1em
   margin-top: 0
-  gap: 1em
   width: var(--legend-width, 40em)
   z-index: 12
   align-items: top
@@ -110,7 +111,6 @@ p.explanation
 .sequence-stratigraphic-surfaces
   text-anchor: start
   text
-    transform: translate(35px, 0)
     dominant-baseline: middle
     fill: var(--text-color)
     font-style: italic
@@ -128,7 +128,7 @@ p.explanation
 .systems-tract
   line-height: 1
   text-anchor: start
-  transform: translate(15px, 0)
+  transform: translate(20px, 0)
   dominant-baseline: middle
   fill: var(--secondary-color)
   font-family: var(--heading-font-family)

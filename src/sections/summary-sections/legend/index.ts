@@ -11,6 +11,7 @@ import {
   ColumnAxis,
   useColumn,
 } from "@macrostrat/column-components";
+import { SectionLinkLegendLine } from "~/sections/components";
 
 const h = hyper.styled(styles);
 
@@ -95,8 +96,8 @@ export function LegendInner({ className, standalone = false }) {
     h("div.sequence-strat.section", [
       h("h2", "Correlations"),
       h.if(standalone)("p.note", [
-        "Triangle bars represent higher ",
-        "order transgressive–regressive cycles",
+        "Triangle bars represent transgressive–regressive sea level cycles that ",
+        " can be correlated across the study area",
       ]),
       h(TriangleBarsLegend),
     ]),
@@ -142,7 +143,7 @@ function TriangleBarsLegend() {
       ],
       pixelsPerMeter: 30,
     },
-    h(ColumnSVG, { width: 90, padding: 10, paddingH: 2, paddingLeft: 8 }, [
+    h(ColumnSVG, { width: 200, padding: 10, paddingH: 2, paddingLeft: 8 }, [
       h(LegendSurfaces, { offsetLeft: 0 }),
       h(TriangleBars, {
         minOrder: 0,
@@ -203,15 +204,24 @@ function LegendSurfaces({ offsetLeft = 0 }) {
         "g.surface",
         { key: index, className, transform: `translate(0, ${height})` },
         [
-          h("line", {
-            x1: 5,
-            y1: 0,
-            x2: 30,
-            y2: 0,
-            className,
-            strokeWidth: 2,
-          }),
-          h("text.label", label),
+          h.if(index != 0)([
+            h("line", {
+              x1: 5,
+              y1: 0,
+              x2: 55,
+              y2: 0,
+              className,
+            }),
+            h("text.label", { transform: `translate(60 0)` }, label),
+          ]),
+          h.if(index === 0)(
+            SectionLinkLegendLine,
+            {
+              transform: "translate(5, 0)",
+              width: 100,
+            },
+            null,
+          ),
         ],
       );
     }),

@@ -547,6 +547,39 @@ interface SectionSurfaceInfo {
   certainty?: number;
 }
 
+function CompositeLegendLine(props) {
+  // A composite line made up of multiple segments that shows multiple levels of certainty
+  const { width, classes, ...rest } = props;
+  const eachWidth = width / classes.length;
+  return h(
+    "g.composite-legend-line",
+    rest,
+    classes.map((cls, index) => {
+      return h("line", {
+        className: cls,
+        x1: index * eachWidth,
+        y1: 0,
+        x2: (index + 1) * eachWidth,
+        y2: 0,
+      });
+    }),
+  );
+}
+
+export function SectionLinkLegendLine(props) {
+  const classes = [
+    "certain",
+    "high-certainty",
+    //"medium-certainty",
+    "low-certainty",
+  ].map((d) => styles[d] + " " + styles["section-link"]);
+  return h(CompositeLegendLine, {
+    ...props,
+    className: classNames(props.className, "section-links"),
+    classes,
+  });
+}
+
 function SectionLinkOverlay(props) {
   let {
     showSectionTrackers = false,
