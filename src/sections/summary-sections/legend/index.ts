@@ -97,7 +97,7 @@ export function LegendInner({ className, standalone = false }) {
       h("h2", "Correlations"),
       h.if(standalone)("p.note", [
         "Triangle bars represent transgressive–regressive sea level cycles that ",
-        " can be correlated across the study area",
+        " are traceable across the study area",
       ]),
       h(TriangleBarsLegend),
     ]),

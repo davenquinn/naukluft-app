@@ -9,6 +9,7 @@ import { SymbolContext } from "../components/symbols";
 import { GeneralizedDivision } from "./types";
 import { group, pairs } from "d3-array";
 import { last } from "underscore";
+import { Symbol } from "~/sections/symbol-column";
 
 interface SectionBreak {
   surface: number;
@@ -307,24 +308,45 @@ const GeneralizedEditorProvider = (props) => {
   );
 };
 
-// Symbols
-
 const GeneralizedSymbolProvider = (props) => {
   const symbols = useQuery("sections/symbols") ?? [];
   const { divisions } = useContext(ColumnDivisionsContext);
-  const generalizer = new SectionHeightGeneralizer(divisions);
 
-  let newSymbols: Symbol[] = [];
-  for (let s of symbols) {
+  const value = generalizeSymbols(symbols, divisions);
+
+  return h(SymbolContext.Provider, { value }, props.children);
+};
+
+export interface GeneralizedSymbol extends Symbol {
+  // section_id is now generalized
+  _section_id: string; // original section id
+}
+
+function generalizeSymbols(
+  symbols: Symbol[],
+  divisions: GeneralizedDivision[],
+): GeneralizedSymbol[] {
+  const generalizer = new SectionHeightGeneralizer(divisions);
+  let newSymbols: GeneralizedSymbol[] = [];
+  for (const s of symbols) {
     const div = generalizer.findMatchingInterval(s.section_id, s.height);
     if (div == null) continue;
     const height = generalizer._generalizeHeight(div, s.height);
     const section_id = div.section_id;
-    newSymbols.push({ ...s, height, section_id, _section_id: s.section_id });
+    newSymbols.push({
+      ...s,
+      height,
+      section_id,
+      _section_id: s.section_id,
+      start_height: generalizer._generalizeHeight(div, s.start_height),
+      end_height:
+        s.end_height != null
+          ? generalizer._generalizeHeight(div, s.end_height)
+          : null,
+    });
   }
-
-  return h(SymbolContext.Provider, { value: newSymbols }, props.children);
-};
+  return newSymbols;
+}
 
 const GeneralizedDataProvider = compose(
   EditorProvider,
