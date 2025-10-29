@@ -8401,6 +8401,7 @@ __metadata:
     "@macrostrat/column-components": "npm:^1.3.0"
     "@macrostrat/column-views": "npm:^2.1.4"
     "@macrostrat/hyper": "npm:^3.0.6"
+    "@macrostrat/mapbox-utils": "npm:^1.6.0"
     "@macrostrat/photo-viewer": "workspace:^"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
     "@macrostrat/static-map-utils": "npm:^1.0.0"

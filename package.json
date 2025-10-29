@@ -38,6 +38,7 @@
     "@macrostrat/column-components": "^1.3.0",
     "@macrostrat/column-views": "^2.1.4",
     "@macrostrat/hyper": "^3.0.6",
+    "@macrostrat/mapbox-utils": "^1.6.0",
     "@macrostrat/photo-viewer": "workspace:^",
     "@macrostrat/revision-info-webpack": "^1.0.0",
     "@macrostrat/static-map-utils": "^1.0.0",
