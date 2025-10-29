@@ -19,15 +19,35 @@
   div.section-page#generalized-sections svg
     margin-bottom 1em
 
-  div.grouped-sections
-    display flex
-    flex-direction row
-
   div.edit-overlay
     div.cursor
       position absolute
       border 2px solid black
       z-index 20
+
+
+// Groupings
+.grouped-sections
+  display flex
+  flex-direction row
+  z-index: 2
+
+.location-group
+  position: relative
+
+.location-group-title
+  position: absolute
+  font-size: 2em
+  color: #888
+  background-color: var(--background-color)
+  margin-top: 0
+  transform: translateY(calc((var(--summary-sections-padding) + var(--section-padding-top) + var(--section-header-height)) * -1))
+
+.location-group-body
+  display: flex
+  flex-grow: 1
+  flex-direction: row
+
 
 //.location-group
 //  position relative
@@ -38,10 +58,12 @@
   position: relative
   z-index: -1
   height: var(--section-header-height)
-  h2
+  h1, h2
     position: absolute
+    background-color: var(--background-color)
     top: 0
     margin-top: 0
+
 
 .lithostrat-key
   padding: 0 4px
@@ -55,12 +77,16 @@
 .summary-sections
   --section-header-height: 30px
   --section-padding-top: 10px
+  --summary-sections-padding: 3rem
   // TODO: No idea why we need this to align keys properly
   --section-key-aligner: 12px
   --covered-interval-color: #ffffffcc
-  --column-underlay-color:  #ffffffcc
+  --column-underlay-color:  var(--background-color, white)
   --triangle-bars-fill-color: #eee
   --triangle-bars-stroke-color: #bbb
+
+  padding: var(--summary-sections-padding) 0
+  font-size: 14px
 
   :global(.chemostratigraphy)
     --section-header-height: calc(30px + 12px)

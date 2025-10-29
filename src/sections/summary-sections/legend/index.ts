@@ -86,7 +86,7 @@ function KeyValue({ label, value }: { label: string; value: string }) {
 }
 
 export function LegendInner({ className, standalone = false }) {
-  return h("div.legend-inner", { className }, [
+  return h("div.legend.legend-inner", { className }, [
     h("div.facies-description", [h("h2", "Facies"), h(FaciesLegend)]),
     h("div.symbol-legend-container.section", [
       h("h2", "Structures"),
@@ -105,22 +105,24 @@ export function LegendInner({ className, standalone = false }) {
 
 function LegendFull() {
   return h("div.legend.summary-sections-legend", [
-    h("h1", ["Stratigraphic model of the ", h("strong", "Zebra Series")]),
-    h("h2.authors", "Daven Quinn"),
-    h("p.subtitle", [
-      "Preliminary version, accompanying the manuscript ",
-      h(
-        "em",
-        "Tectonostratigraphy of the Zebra Series and the tectonic evolution of the Naukluft Mountains, Namibia",
-      ),
-    ]),
-    h("p.compilation-date", [
-      "Compiled on ",
-      new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
+    h("div.title-block", [
+      h("h1", ["Stratigraphic model of the ", h("strong", "Zebra Series")]),
+      h("h2.authors", "Daven Quinn"),
+      h("p.subtitle", [
+        "Preliminary version, accompanying the manuscript ",
+        h(
+          "em",
+          "Tectonostratigraphy of the Zebra Series and the tectonic evolution of the Naukluft Mountains, Namibia",
+        ),
+      ]),
+      h("p.compilation-date", [
+        "Compiled on ",
+        new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+      ]),
     ]),
     h(LegendInner, { standalone: true }),
   ]);

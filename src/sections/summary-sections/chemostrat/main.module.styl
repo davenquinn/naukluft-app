@@ -1,6 +1,6 @@
 .isotope-scale-axis
-  :global(.vx-line)
-    stroke: #aaa
+  :global(.visx-line)
+    stroke: var(--secondary-color, #888)
 
 .correlated-chemostratigraphy
   .chemostratigraphy-title
@@ -62,8 +62,8 @@
 
 
 .isotopes-column
-  rect.underlay
-    fill transparent
+  .underlay
+    fill: var(--column-underlay-color, var(--background-color, white))
 
   // TODO: this is needed to align the sections properly, unfortunately
   .section-header
@@ -72,11 +72,14 @@
 .isotope-axis-tick
   font-size: 12px
   fill: var(--secondary-color, #888)
+  font-family: var(--main-font-family, sans-serif)
   text-anchor: middle
 
-.isotopes-column :global(.vx-axis-label)
+.isotopes-column :global(.visx-axis-label)
   font-size: 16px
   fill: var(--secondary-color, #888)
+  font-family: var(--main-font-family, sans-serif)
   transform: translate(0, 8px)
   font-weight: 500
   text-anchor: middle
+

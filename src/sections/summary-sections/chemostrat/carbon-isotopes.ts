@@ -1,5 +1,5 @@
 import hyper from "@macrostrat/hyper";
-import { AxisBottom } from "@vx/axis";
+import { AxisBottom } from "@visx/axis";
 import chroma from "chroma-js";
 import classNames from "classnames";
 import { format } from "d3-format";
@@ -7,7 +7,7 @@ import { schemeCategory10 } from "d3-scale-chromatic";
 import { Component, useContext } from "react";
 
 import { sectionSurfaceProps } from "../../components/link-overlay";
-import { sectionIsotopeScheme } from "../display-parameters";
+import { sectionIsotopeScheme } from "../layout/display-parameters";
 import {
   IsotopeDataLine,
   IsotopeDataPoint,

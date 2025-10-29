@@ -3,11 +3,11 @@ import { useSettings } from "@macrostrat/column-components";
 import { SVGSectionComponent } from "../column";
 import { LayoutGroup } from "./layout-group";
 import styles from "../main.module.styl";
-import { sectionOffsets, stackGroups } from "../display-parameters";
+import { sectionOffsets, stackGroups } from "./display-parameters";
+
 import { SectionData, SectionPositions } from "./defs";
 import { useSectionPositions } from "../../components/link-overlay";
 import { group } from "d3-array";
-import { useSequenceStratSettings } from "~/sections/sequence-strat-context";
 
 const h = hyperStyled(styles);
 
@@ -53,7 +53,7 @@ const SectionGroup = (props: SectionGroupProps) => {
   const positions = Object.values(pos).filter((d) => sectionIDs.includes(d.id));
   const top = Math.min(...positions.map((d) => d.y));
   const height = Math.max(...positions.map((d) => d.y + d.height));
-  const titleOffset = top - 120;
+  const titleOffset = top;
 
   //let colWidth = positions[0]?.width ?? 150
 

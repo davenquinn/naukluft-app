@@ -12,7 +12,6 @@ import { BaseSectionPage } from "../components";
 import { defaultSettings, SettingsPanel } from "./settings";
 import { useSettings } from "@macrostrat/column-components";
 
-import "../main.styl";
 import "./main.module.styl";
 
 const SectionMain = function (props) {

@@ -1,5 +1,5 @@
 import { hyperStyled } from "@macrostrat/hyper";
-import styles from "./layout-group.module.sass";
+import styles from "../main.module.styl";
 import Box from "ui-box";
 
 const h = hyperStyled(styles);

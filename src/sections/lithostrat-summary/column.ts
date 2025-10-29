@@ -3,18 +3,17 @@ import { SectionContainer } from "../components";
 import { LegendFull } from "../summary-sections/legend";
 import { group } from "d3-array";
 // This should be wrapped into a context
-import { groupOrder } from "../summary-sections/display-parameters";
+import { groupOrder } from "../summary-sections/layout/display-parameters";
 import { LayoutGroup } from "../summary-sections/layout/layout-group";
 import {
   sectionOffsets,
   stackGroups,
-} from "../summary-sections/display-parameters";
+} from "../summary-sections/layout/display-parameters";
 import { SectionPositions } from "../summary-sections/layout/defs";
 import { useSectionPositions } from "../components/link-overlay";
 import { useContext } from "react";
 import styles from "../summary-sections/main.module.styl";
 import { sectionData, sectionSurfaces, sectionSymbols } from "./data";
-import "../main.styl";
 
 import {
   GrainsizeLayoutProvider,

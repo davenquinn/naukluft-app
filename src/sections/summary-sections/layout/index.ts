@@ -3,7 +3,7 @@ import { hyperStyled } from "@macrostrat/hyper";
 import styles from "../main.module.styl";
 import { group } from "d3-array";
 // This should be wrapped into a context
-import { groupOrder } from "../display-parameters";
+import { groupOrder } from "./display-parameters";
 import { useSequenceStratSettings } from "~/sections/sequence-strat-context";
 
 const h = hyperStyled(styles);

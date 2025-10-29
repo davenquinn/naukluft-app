@@ -12,7 +12,6 @@ import { LegendFull } from "./legend";
 import { useSurfaces } from "~/sections/providers";
 import { SectionData } from "./layout/defs";
 import styles from "./main.module.styl";
-import "../main.styl";
 
 const h = hyperStyled(styles);
 
@@ -64,18 +63,15 @@ function SectionPane(props: SectionPaneProps) {
 
   const surfaces = useSurfaces();
   const { showLegend } = useSettings();
+  const options = useSettings();
 
-  if (sections == null) {
-    return null;
-  }
-  if (!(sections.length > 0)) {
+  if (sections == null || sections.length == 0) {
     return null;
   }
 
   const row = sections.find((d) => d.id === "J");
   let { offset } = row;
 
-  const options = useSettings();
   const showChemostrat = options.correlatedIsotopes;
   const overflow = scrollable ? "scroll" : "inherit";
 
@@ -93,6 +89,7 @@ function SectionPane(props: SectionPaneProps) {
         showLines: false,
         simple: true,
         pixelsPerMeter,
+        keySection: "J",
       }),
       h(SummaryLithostratigraphyKey, {
         zoom: 0.1,

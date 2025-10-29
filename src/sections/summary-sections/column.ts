@@ -109,13 +109,8 @@ const ColumnSummaryAxis = function (props) {
 
   // Keep labels from inhabiting the top few pixels (to make space for section labels)
   const topPadding = 30;
-  const maxVal = scale.domain()[1] - topPadding / ratio;
-
   return h(ColumnAxis, {
     ticks: (height * zoom) / 5,
-    showLabel(d) {
-      return d < maxVal;
-    },
   });
 };
 
@@ -196,6 +191,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     offsetTop,
     absolutePosition,
     isotopeColumnWidth = 60,
+    axisComponent = ColumnSummaryAxis,
   } = props;
 
   const { inEditMode = false } = useContext(PlatformContext);
@@ -338,7 +334,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
                       offsetLeft: -floodingSurfaceStart,
                       lineWidth: floodingSurfaceStart,
                     }),
-                    h(props.axisComponent),
+                    h(axisComponent),
                     h(ColumnMain),
                     h(ManagedSymbolColumn, {
                       left: 90,

@@ -1,11 +1,20 @@
 .facies-description
   flex-grow: 2
 
+.title-block
+  &>h1:first-child
+    margin-top: 0
+    margin-bottom: 0.2em
+  .authors
+    margin-top: 0.2em
+    font-weight: 500
+
 .summary-sections-legend
   position: absolute
-  left: 800px
-  padding: 1em
-  top: 0
+  left: 50rem
+  top: var(--summary-sections-padding)
+
+
   h1, h2, h3
     line-height: inherit
     break-after: avoid
