@@ -10,7 +10,7 @@ import {
   MinimalIsotopesColumn,
 } from "./carbon-isotopes";
 import { useIsotopes } from "~/sections/summary-sections/chemostrat/data-manager";
-import { ColumnTracker } from "~/sections/components";
+import { ColumnSurfaces, ColumnTracker } from "~/sections/components";
 import classNames from "classnames";
 
 const h = hyperStyled(styles);
@@ -103,6 +103,10 @@ export function SimpleChemostratigraphyColumn(props) {
         showLines,
         keySection,
         padding: { left: 5, top: 10, right: 5, bottom: 60 },
+      }),
+      h(ColumnSurfaces, {
+        keySection,
+        className: "column-surfaces",
       }),
     ],
   );

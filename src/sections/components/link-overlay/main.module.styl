@@ -71,7 +71,8 @@
 
 
 
-  &.env-print
+:global(.env-print)
+  .section-link-overlay
     .section-link
       &.inferred
         stroke-dasharray: 2,5
@@ -91,7 +92,7 @@
       stroke: black
       stroke-width: 1
 
-    .section-links
+    .section-links, .surfaces
       .sequence-boundary
         stroke: #444
       .maximum-flooding-surface

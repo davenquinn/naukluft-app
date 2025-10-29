@@ -7,13 +7,13 @@ import { linkHorizontal } from "d3-shape";
 import update from "immutability-helper";
 import T from "prop-types";
 import { Component, createContext, useContext, useEffect, useRef } from "react";
-import { debounce } from "underscore";
+import { any, debounce } from "underscore";
 import { Notification } from "~/notify";
 import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.module.styl";
 import { useTargetEnvironment } from "~/platform";
-import { ColumnSVG } from "@macrostrat/column-components";
+import { ColumnSVG, useColumn } from "@macrostrat/column-components";
 
 const h = hyperStyled(styles);
 
@@ -466,10 +466,85 @@ const SectionLinks = function (props) {
   );
 };
 
-export function ColumnSurfaces(props) {
-  const { surfaces = [], range } = props;
+export function ColumnSurfaces({
+  type = "sequence-strat",
+  keySection,
+  className,
+  padding,
+}: {
+  type: string;
+  keySection?: string;
+}) {
+  const surfaces = useSurfaces();
+  const { scale } = useColumn();
 
-  return h(ColumnSVG, { width: 300, padding: 0 }, []);
+  const filteredSurfaces = filterSectionSurfaces(surfaces, keySection, type);
+
+  return h(
+    ColumnSVG,
+    {
+      width: 300,
+      className: classNames(className, "section-link-overlay"),
+      padding,
+    },
+
+    [
+      h(
+        "g.surfaces",
+        filteredSurfaces.map((data) => {
+          const { height, certainty, surface, inferred } = data;
+
+          const y1 = scale(height);
+
+          const d = `M0,${y1} L300,${y1}`;
+
+          return h(__LinkPath, { surface, inferred, d, certainty });
+        }),
+      ),
+    ],
+  );
+}
+
+function filterSectionSurfaces(
+  surfaces: any[],
+  section: string,
+  type: string = "sequence-strat",
+): SectionSurfaceInfo[] {
+  const newSurfaces: SectionSurfaceInfo[] = [];
+  for (const surface of surfaces) {
+    if (surface.type !== type) {
+      continue;
+    }
+    const sectionData = surface.section_height.find(
+      (d) => d.section === section,
+    );
+
+    const inferred = any(surface.section_height, (d) => d.inferred === true);
+    const certainty = Math.min(
+      ...surface.section_height.map((d) => d.certainty || 10),
+    );
+
+    if (sectionData == null) {
+      continue;
+    }
+    const { height } = sectionData;
+    newSurfaces.push({
+      surface,
+      height,
+      section,
+      inferred,
+      certainty,
+    });
+  }
+  return newSurfaces;
+}
+
+interface SectionSurfaceInfo {
+  surface: any;
+  height: number;
+  section: string;
+  inferred?: boolean;
+  certainty?: number;
 }
 
 function SectionLinkOverlay(props) {
@@ -483,7 +558,6 @@ function SectionLinkOverlay(props) {
     ...rest
   } = props;
   const padding = extractPadding(rest);
-  const environment = useTargetEnvironment();
 
   // Get surfaces from context if unset
   if (surfaces == null) surfaces = useSurfaces();
@@ -506,11 +580,7 @@ function SectionLinkOverlay(props) {
     SVG,
     {
       // Shouldn't need ID but we apparently do
-      className: classNames(
-        "section-link-overlay",
-        `env-${environment}`,
-        className,
-      ),
+      className: classNames("section-link-overlay", className),
       innerRef,
       ...sz,
       ...rest,

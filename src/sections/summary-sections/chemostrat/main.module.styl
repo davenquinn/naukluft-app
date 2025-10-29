@@ -28,11 +28,14 @@
 .chemostratigraphy-body
   display: flex
   flex-direction: row
+  overflow-x: hidden
+  position: relative
 
   .isotopes-column
     --section-header-height: 0
     padding-right 1em
     position relative
+    z-index: 1
     g.scale
       g.tick
         line
@@ -48,6 +51,14 @@
           font-size 10px
           font-style italic
 
+  .column-surfaces
+    position: absolute
+    top: var(--section-padding-top, 10px)
+    left: 0
+    bottom: 0
+    right: 0
+    z-index: 0
+    opacity: 0.3
 
 
 .isotopes-column
