@@ -9,7 +9,7 @@ import { group } from "d3-array";
 import { ColumnProvider, ColumnSVG } from "@macrostrat/column-components";
 import { useContext } from "react";
 import { SectionSurfacesProvider } from "~/sections/providers";
-import { ColumnDivision, useColumnDivisions } from "~/sections/column";
+import { GeneralizedSectionsMap } from "./map";
 import {
   SectionContainer,
   SectionLinkOverlay,
@@ -96,6 +96,10 @@ function SectionPane(props) {
         keySection: "Onis",
         offset: 0,
         pixelsPerMeter,
+      }),
+      h(GeneralizedSectionsMap, {
+        bounds: [16, -24.42, 16.28, -24.18],
+        className: "inset-map",
       }),
       h(
         "div.generalized-sections",

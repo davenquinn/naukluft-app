@@ -35,14 +35,15 @@
     "@blueprintjs/select": "^5",
     "@loadable/component": "^5.15.2",
     "@macrostrat/color-utils": "^1.1.1",
-    "@macrostrat/column-components": "^1.2.0",
-    "@macrostrat/column-views": "^2.1.3",
+    "@macrostrat/column-components": "^1.3.0",
+    "@macrostrat/column-views": "^2.1.4",
     "@macrostrat/hyper": "^3.0.6",
     "@macrostrat/photo-viewer": "workspace:^",
     "@macrostrat/revision-info-webpack": "^1.0.0",
+    "@macrostrat/static-map-utils": "^1.0.0",
     "@macrostrat/style-system": "^0.2.3",
-    "@macrostrat/timescale": "^2.2.1",
-    "@macrostrat/ui-components": "^4.4.6",
+    "@macrostrat/timescale": "^2.2.2",
+    "@macrostrat/ui-components": "^4.5.0",
     "@turf/polygonize": "^5.1.5",
     "@types/cors": "^2.8.10",
     "@types/d3-array": "^2.0.0",
@@ -131,7 +132,6 @@
     "@macrostrat/svg-map-components": "portal:../../Macrostrat/Software/web-components/packages/svg-map-components",
     "@macrostrat/timescale": "portal:../../Macrostrat/Software/web-components/packages/timescale",
     "@macrostrat/ui-components": "portal:../../Macrostrat/Software/web-components/packages/ui-components",
-    "@macrostrat/hyperstyle-loader": "portal:../../Macrostrat/Software/web-components/toolchain/hyperstyle-loader",
-    "@macrostrat/vite-plugin-hyperstyles": "portal:../../Macrostrat/Software/web-components/toolchain/vite-plugin-hyperstyles"
+    "@macrostrat/hyperstyle-loader": "portal:../../Macrostrat/Software/web-components/toolchain/hyperstyle-loader"
   }
 }
