@@ -1,0 +1,112 @@
+.section-pane
+  overflow: inherit
+  height max-content
+  width max-content
+  display: flex
+  flex-direction: row
+  position: relative
+  --legend-width: 50em
+
+.generalized-sections
+  display: flex
+  flex-direction row
+  margin-left: 0
+
+
+.section-column
+  position: relative
+  flex-grow 1
+  margin-right 500px
+  &:last-child
+    margin-right 0
+
+
+.section-column.Onis
+  margin-right 200px
+
+$width=1.5px
+
+.generalized-breaks
+  position absolute
+  box-sizing: content-box
+  top 0
+  left -20px
+  // Not sure why we have to do this pixel transform
+  transform translate(0,-0.5px)
+  width 20px
+  font-size: 16px
+  //border-top width solid black
+  .section-break
+    // Make sure we have pixel-perfect borders
+    &:last-child
+      border-top $width solid black
+    border-bottom $width solid black
+    // Make text vertical
+    writing-mode vertical-lr
+    transform: rotate(180deg)
+    text-align: center
+  .section-break-title
+    font-weight 600
+    padding-bottom 0.5em
+
+.legend-positioner
+  position: relative
+
+.inset-map
+  position: absolute
+  bottom: 2rem
+  right: 18rem
+  border: 1px solid black
+
+
+:global
+  svg.section
+    g.axis .tick line
+      stroke-width 1.5px
+
+  :root
+    --covered-interval-color: #ffffffcc
+    --column-underlay-color:  #ffffffcc
+    --triangle-bars-fill-color: #eee
+    --triangle-bars-stroke-color: #bbb
+    --section-header-height: 30px
+    --section-padding-top: 10px
+
+  g.lithology-column
+    rect.lithology
+      stroke: transparent
+      stroke-width: 0
+    use.column-clip-frame
+      stroke-width: 1px
+
+
+  div.figure-reference
+    width 80px
+    position relative
+    left: 124px
+    .marker
+      height 100%
+      width 3px
+      background-color black
+      z-index 10
+    p.label
+      position absolute
+      margin-top 0
+      padding 2px 4px
+      left 3px
+      top 0px
+      font-size: 18px
+      font-weight 500
+      background-color white
+
+.legend
+  position: absolute
+  left: 32rem
+  top: 3rem
+  z-index: 10
+  gap: 1em
+  h1, h2, h3, h4
+    line-height: inherit
+    margin-bottom: 0.5em
+
+  font-size: 14px

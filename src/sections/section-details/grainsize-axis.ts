@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react";
 import h from "@macrostrat/hyper";
 import { ColumnLayoutContext } from "@macrostrat/column-components";
-import { AxisBottom } from "@vx/axis";
+import { AxisBottom } from "@visx/axis";
 
 export function GrainsizeAxis(props) {
   const ref = useRef();

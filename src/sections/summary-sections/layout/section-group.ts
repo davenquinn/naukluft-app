@@ -3,7 +3,8 @@ import { useSettings } from "@macrostrat/column-components";
 import { SVGSectionComponent } from "../column";
 import { LayoutGroup } from "./layout-group";
 import styles from "../main.module.styl";
-import { sectionOffsets, stackGroups } from "../display-parameters";
+import { sectionOffsets, stackGroups } from "./display-parameters";
+
 import { SectionData, SectionPositions } from "./defs";
 import { useSectionPositions } from "../../components/link-overlay";
 import { group } from "d3-array";
@@ -23,10 +24,20 @@ interface SectionGroupProps {
   columnWidth: number;
   height: number;
   location: string;
+  pixelsPerMeter: number;
 }
 
 const SectionGroup = (props: SectionGroupProps) => {
-  const { sections, columnMargin, columnWidth, ...rest } = props;
+  const {
+    sections,
+    columnMargin,
+    columnWidth,
+    pixelsPerMeter,
+    showTriangleBars,
+    showFloodingSurfaces,
+    sequenceStratOrder,
+    ...rest
+  } = props;
 
   // Sort into columns within this group, using `stackGroups` variable
   let columns = group(sections, (d) =>
@@ -42,11 +53,16 @@ const SectionGroup = (props: SectionGroupProps) => {
   const positions = Object.values(pos).filter((d) => sectionIDs.includes(d.id));
   const top = Math.min(...positions.map((d) => d.y));
   const height = Math.max(...positions.map((d) => d.y + d.height));
-  const titleOffset = top - 120;
+  const titleOffset = top;
 
   //let colWidth = positions[0]?.width ?? 150
 
-  const { showCarbonIsotopes, isotopesPerSection } = useSettings();
+  let { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
+    useSettings();
+  if (!isotopesPerSection) {
+    showCarbonIsotopes = false;
+    showOxygenIsotopes = false;
+  }
 
   return h(
     LayoutGroup,
@@ -68,7 +84,6 @@ const SectionGroup = (props: SectionGroupProps) => {
       };
 
       const width = getWidth(sections);
-      //console.log(width)
       const style = { marginRight, height, width };
 
       return h(
@@ -85,9 +100,14 @@ const SectionGroup = (props: SectionGroupProps) => {
 
           return h(SVGSectionComponent, {
             zoom: 0.1,
+            pixelsPerMeter,
             key: id,
             triangleBarRightSide: id == "J",
             showCarbonIsotopes,
+            showOxygenIsotopes,
+            showFloodingSurfaces,
+            sequenceStratOrder,
+            showTriangleBars,
             isotopesPerSection,
             offsetTop: 670 - height - offset,
             range: [start, end],

@@ -1,0 +1,15 @@
+.print-area-container
+  position: relative
+  width: fit-content
+  height: fit-content
+
+.controls
+  position: fixed
+  top: 5px
+  right: 5px
+  z-index: 10
+  // Don't show controls when printing
+
+@media print
+  .controls
+    display: none

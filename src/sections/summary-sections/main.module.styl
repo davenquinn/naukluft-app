@@ -1,26 +1,6 @@
-.location-group
-  position: relative
-
-.location-group-title
-  position absolute
-  font-size 2em
-  color #888
-  background-color var(--background-color)
-  padding-left 3px
-  padding-right 8px 
-
 .section-page.summary-sections
   .location-group#Tsams
     margin-right 0
-
-  --section-header-height: 23px
-
-  .section-header h2
-    margin-top 0
-    position absolute
-    left: 4px
-    top: 6px
-    text-align right
 
   .section-header.subtle h2
     font-weight: 400
@@ -35,16 +15,8 @@
   left 0
 
 :global
-
-  .section-page.summary-sections
-    --section-header-height: 45px
-
   div.section-page#generalized-sections svg
     margin-bottom 1em
-
-  div.grouped-sections
-    display flex
-    flex-direction row
 
   div.edit-overlay
     div.cursor
@@ -52,15 +24,82 @@
       border 2px solid black
       z-index 20
 
+.inset-map
+  border: 1px solid black
+  border-radius: 4px
+  overflow: hidden
+  --scalebar-color: black
+  --scalebar-background: none
+  --scalebar-height: 8px
+  --scalebar-border-radius: 4px
+  --scalebar-interior-color: white
+
+// Groupings
+.grouped-sections
+  display flex
+  flex-direction row
+  z-index: 2
+
+.location-group
+  position: relative
+
+.location-group-title
+  position: absolute
+  font-size: 2em
+  color: #888
+  background-color: var(--background-color)
+  margin-top: 0
+  transform: translateY(calc((var(--summary-sections-padding) + var(--section-padding-top) + var(--section-header-height)) * -1))
+
+.location-group-body
+  display: flex
+  flex-grow: 1
+  flex-direction: row
+
+
 //.location-group
 //  position relative
 //  &.chemostratigraphy
 //    margin 35px 0 0 0
 
 .section-header
-  height: 30px
+  position: relative
+  z-index: -1
+  height: var(--section-header-height)
+  h1, h2
+    position: absolute
+    background-color: var(--background-color)
+    top: 0
+    margin-top: 0
 
-.isotopes-column
-  margin-top -10px
-  .section-header
-    height 30px
+
+.lithostrat-key
+  padding: 0 4px
+  margin-top: calc(var(--section-header-height) + var(--section-padding-top) + var(--section-key-aligner, 0px))
+  background: var(--background-color)
+  z-index: 20
+  :global
+    .timescale .interval-label
+      font-size: 16px
+
+.summary-sections
+  --section-header-height: 30px
+  --section-padding-top: 10px
+  --summary-sections-padding: 3rem
+  // TODO: No idea why we need this to align keys properly
+  --section-key-aligner: 12px
+  --covered-interval-color: #ffffffcc
+  --column-underlay-color:  var(--background-color, white)
+  --triangle-bars-fill-color: #eee
+  --triangle-bars-stroke-color: #bbb
+
+  padding: var(--summary-sections-padding) 0
+  font-size: 14px
+
+  :global(.chemostratigraphy)
+    --section-header-height: calc(30px + 12px)
+
+  :global(.section-title)
+    &:before
+      content: "Section "
+

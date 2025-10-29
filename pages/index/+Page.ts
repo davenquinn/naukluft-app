@@ -3,8 +3,7 @@
 import { PlatformProvider } from "~/platform";
 import { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { FocusStyleManager } from "@blueprintjs/core";
-FocusStyleManager.onlyShowFocusOnTabs();
+import "~/shared/global-styles";
 
 import { NavigationList, NavLink } from "~/components";
 import { SectionIndex } from "~/sections";
@@ -15,10 +14,6 @@ import LateralVariation from "~/lateral-variation";
 import { MapView } from "~/map-viewer";
 //import Globe from "~/globe";
 import { HotkeysTarget, Hotkeys, Hotkey } from "@blueprintjs/core";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "@macrostrat/ui-components/dist/main.css";
-import "./style-system.sass";
 
 import h from "./+Page.module.sass";
 import { NavigationLayout } from "~/layouts";

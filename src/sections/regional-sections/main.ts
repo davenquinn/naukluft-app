@@ -1,6 +1,6 @@
 import { hyperStyled, compose } from "@macrostrat/hyper";
 import { group } from "d3-array";
-import { ColumnDivisionsContext } from "~/sections/summary-sections/generalized/data-provider";
+import { ColumnDivisionsContext } from "~/sections/generalized-sections/data-provider";
 import { useContext } from "react";
 import { useCanvasSize } from "../components/link-overlay";
 import { updateSectionE } from "./helpers";
@@ -8,11 +8,11 @@ import { SequenceCorrelations } from "./sequence";
 import {
   GeneralizedDivisionsProvider,
   GeneralizedSurfacesProvider,
-} from "~/sections/summary-sections/generalized/data-provider";
+} from "~/sections/generalized-sections/data-provider";
 import { SettingsProvider } from "../summary-sections/settings";
 
 import "../summary-sections/main.module.styl";
-import styles from "~/sections/summary-sections/generalized/main.module.styl";
+import styles from "~/sections/generalized-sections/main.module.styl";
 import styles2 from "./main.module.styl";
 const h = hyperStyled({ ...styles, ...styles2 });
 

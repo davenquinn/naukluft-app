@@ -1,62 +1,53 @@
 .facies-description
   flex-grow: 2
 
-.facies-description-inner
-  display: flex
-  flex-direction: row
-  margin: 0 -1em
-  &>div
-    margin: 0 1em
-
-
-.symbol-legend-container > :global(.symbol-legend)
-  img
-    width: 30px
-    height: 30px
-  &>div
-    display: flex
-    flex-direction: row
-    align-items: center
-    justify-content: middle
-    span
-      flex-grow: 1
-      display: block
-      margin-left: 1em
-
-p.note
-  font-style: italic
+.title-block
+  &>h1:first-child
+    margin-top: 0
+    margin-bottom: 0.2em
+  .authors
+    margin-top: 0.2em
+    font-weight: 500
 
 .summary-sections-legend
   position: absolute
-  left: 800px
-  padding: 1em
-  top: 0
+  z-index: 1000
+  left: 0
+  bottom: var(--summary-sections-padding)
+  --legend-width: 50rem
+
+  display: flex
+  flex-direction: row
+  gap: 2rem
+
+  .title-block
+    max-width: 20rem
+
+.legend
   h1, h2, h3
     line-height: inherit
-  .legend-inner
-    display: flex
-    flex-direction: row
-    &>div
-      flex: 1
-    &>div
-      margin-right: 1em
-  margin-top: 0
-  width: 50em
-  z-index: 12
-  align-items: top
-  background-color: var(--background-color)
-  h2
-    font-size: 1.5em
+    break-after: avoid
 
-  h4
-    margin-top: 0em
-  div.facies .header
-    display: flex
-    flex-direction: row
-    align-items: center
-    p.facies-name
-      margin: 0.2em 1em 0 0
-      flex-grow: 1
+    &:first-child
+      margin-top: 0
+
+.symbol-legend, .facies
+  line-height: 1.2
+
+.facies :global(.color-swatch)
+  width: 30px
+  height: 30px
+  border-radius: 4px
+
+.facies .header
+  display: flex
+  flex-direction: row-reverse
+  gap: 1em
+  align-items: center
+  margin: 0.2em 0 0.5em
+  p.facies-name
+    flex-grow: 1
+    margin: 0
 
   p.explanation
     display: flex
@@ -66,3 +57,79 @@ p.note
     span.description
       flex-grow: 1
       margin-left: 1em
+
+.section,.symbol-legend, p, h1, h2, h3, h4
+  background-color: var(--background-color)
+
+.legend-inner
+  //display: flex
+  //flex-direction: row
+  .section
+    break-inside: avoid
+  column-count: 4
+  column-gap: 1em
+  margin-top: 0
+  width: var(--legend-width, 40em)
+  z-index: 12
+  align-items: top
+
+
+  h2
+    font-size: 1.2em
+
+  h4
+    margin-top: 0em
+
+.facies-description
+  &>h2:first-child
+    margin-top: 0
+
+.symbol-legend-container
+  flex: 1
+
+.symbol-legend
+  img
+    width: 30px
+    height: 30px
+  &>div
+    display: flex
+    flex-direction: row
+    align-items: center
+    span
+      flex-grow: 1
+      display: block
+      margin-left: 1em
+
+p.explanation
+  display: flex
+  flex-direction: row
+  span.key
+    font-size: 1.5em
+  span.description
+    flex-grow: 1
+    margin-left: 1em
+
+.sequence-stratigraphic-surfaces
+  text-anchor: start
+  text
+    dominant-baseline: middle
+    fill: var(--text-color)
+    font-style: italic
+  line
+    stroke-width: 1px
+    stroke: var(--text-color)
+  .sequence-boundary
+    --text-color: #444
+  .maximum-flooding-surface
+    --text-color: #00aaff
+  &>:nth-child(1)
+    text
+      visibility: hidden
+
+.systems-tract
+  line-height: 1
+  text-anchor: start
+  transform: translate(20px, 0)
+  dominant-baseline: middle
+  fill: var(--secondary-color)
+  font-family: var(--heading-font-family)

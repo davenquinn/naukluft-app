@@ -1,3 +1,48 @@
+// if (surface_type === "mfs") {
+//   stroke = "#ccc";
+// } else if (surface_type === "sb") {
+//   stroke = "#fcc";
+// } else {
+//   stroke = "#ccc";
+// }
+//
+// let strokeWidth = 4 - Math.pow(surface_order, 1.5) * 1.5;
+// if (strokeWidth < 2) {
+//   strokeWidth = 2;
+// }
+
+// if (certainty == null) {
+//   certainty = 10;
+// }
+// dash array for certainty
+// let strokeDasharray = null;
+// if (certainty < 10) {
+//   strokeDasharray = `${certainty} ${14 - certainty}`;
+// }
+
+
+.section-link
+  stroke: #ccc
+  stroke-width: 2
+
+.section-links
+  .sequence-boundary
+    stroke: #fcc
+  .maximum-flooding-surface
+    stroke: #ccc
+
+  .high-certainty
+    stroke-dasharray: 8,6
+  .medium-certainty
+    stroke-dasharray: 4,10
+  .low-certainty
+    stroke-dasharray: 2,12
+
+  // Orders of sequence strat surfaces for stroke widths
+  .order-0
+    stroke-width: 5
+  .order-1
+    stroke-width: 2.5
 
 .section-link-overlay
   position: absolute
@@ -9,16 +54,13 @@
   rect.section-tracker
     outline: 2px solid alpha(red, 0.2)
     fill: alpha(red, 0.05)
-  &.skeletal
-    outline: 2px solid alpha(red, 0.2)
-    background: alpha(red, 0.05)
 
   path.section-link
     pointer-events all
     fill none
     &.inferred
       stroke-dasharray: 2,5
-    &.commonality-0
+    &.commonality-0, &.commonality-1
       stroke-width 4
     &.commonality-2
       stroke-width 2.5
@@ -26,3 +68,57 @@
         stroke-dasharray: 4,10
     &.commonality-3
       stroke-width 2
+
+
+
+:global(.env-print)
+  .section-link-overlay
+    .section-link
+      &.inferred
+        stroke-dasharray: 2,5
+      &.commonality-0
+        stroke: black
+        stroke-width 1
+      &.commonality-1
+        stroke: #444
+        stroke-width 1
+      &.commonality-2
+        stroke-width 2.5
+        &.inferred
+          stroke-dasharray: 4,10
+      &.commonality-3
+        stroke-width 2
+
+      stroke: black
+      stroke-width: 1
+
+    .section-links, .surfaces
+      .sequence-boundary
+        stroke: #444
+      .maximum-flooding-surface
+        stroke: #00aaff
+
+      .high-certainty
+        stroke-dasharray: 10,5
+      .medium-certainty
+        stroke-dasharray: 5,10
+        stroke-dashoffset: 5
+      .low-certainty
+        stroke-dasharray: 2,10
+        stroke-dashoffset: 6
+
+      //.high-certainty
+      //  stroke-dasharray: 6,2
+      //.medium-certainty
+      //  stroke-dasharray: 6,6
+      //.low-certainty
+      //  stroke-dasharray: 2,6
+      //
+      // Orders of sequence strat surfaces for stroke widths
+      .order-1
+        opacity: 0.5
+      .order-2
+        opacity: 0.25
+      .order-3
+        opacity: 0.1
+

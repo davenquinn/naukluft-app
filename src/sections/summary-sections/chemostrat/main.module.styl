@@ -1,14 +1,41 @@
 .isotope-scale-axis
-  :global(.vx-line)
-    stroke: #aaa
-  text
-    fill: #888
+  :global(.visx-line)
+    stroke: var(--secondary-color, #888)
 
-.location-group.chemostratigraphy
-  margin-right: 0
+.correlated-chemostratigraphy
+  .chemostratigraphy-title
+    position: absolute
+    padding: 0px 4px
+    bottom: 0px
+    margin-bottom: 0
+    margin-top: 0
+    width: 100%
+    font-size: 1em
+    font-family: var(--main-font-family, sans-serif)
+    font-weight: 500
+    font-style: italic
+    color: var(--secondary-color)
+    text-align: center
+  background-color: var(--column-underlay-color, var(--background-color, white))
+  z-index: 1
+
+
+.correlated-chemostratigraphy
+  .chemostratigraphy-header
+    height: var(--section-header-height, 30px)
+    position: relative
+
+.chemostratigraphy-body
+  display: flex
+  flex-direction: row
+  overflow-x: hidden
+  position: relative
+
   .isotopes-column
-    margin-right 1em
+    --section-header-height: 0
+    padding-right 1em
     position relative
+    z-index: 1
     g.scale
       g.tick
         line
@@ -17,19 +44,42 @@
         &.zero
           line
             stroke #ccc
-            stroke-width 2px
+            stroke-width 2p
         text
           text-anchor middle
           fill #888
           font-size 10px
           font-style italic
 
+  .column-surfaces
+    position: absolute
+    top: var(--section-padding-top, 10px)
+    left: 0
+    bottom: 0
+    right: 0
+    z-index: 0
+    opacity: 0.3
 
 
 .isotopes-column
-  rect.underlay
-    fill var(--background-color, white)
+  .underlay
+    fill: var(--column-underlay-color, var(--background-color, white))
 
   // TODO: this is needed to align the sections properly, unfortunately
   .section-header
     height: var(--section-header-height, 30px)
+
+.isotope-axis-tick
+  font-size: 12px
+  fill: var(--secondary-color, #888)
+  font-family: var(--main-font-family, sans-serif)
+  text-anchor: middle
+
+.isotopes-column :global(.visx-axis-label)
+  font-size: 16px
+  fill: var(--secondary-color, #888)
+  font-family: var(--main-font-family, sans-serif)
+  transform: translate(0, 8px)
+  font-weight: 500
+  text-anchor: middle
+

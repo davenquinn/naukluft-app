@@ -27,8 +27,6 @@ export const runQuery = async function (
   Generalized query that picks the best method for
   getting query variables
   */
-  console.log("Running query with key:", key);
-
   switch (currentPlatform) {
     case Platform.WEB:
       if (key.endsWith(".sql")) {
@@ -42,7 +40,6 @@ export const runQuery = async function (
         params["__qrm"] = resultMask;
       }
 
-      console.log(params);
       const res = await get(apiBaseURL + "/" + key, { params });
       if (res.status == 200) {
         let { data } = res;

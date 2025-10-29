@@ -1,14 +1,16 @@
 import { Component } from "react";
-import "./main.styl";
 import styles from "./main.module.sass";
-import "@macrostrat/column-components/dist/main.css";
 import hyper from "@macrostrat/hyper";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { NavigationList, NavLink } from "~/components/navigation";
-import { SectionDataProvider, SectionConsumer } from "./data-providers";
+import {
+  SectionDataProvider,
+  SectionConsumer,
+  wrapWithSections,
+} from "./data-providers";
 import SectionPage from "./single-section";
 import { SummarySections } from "./summary-sections";
-import { GeneralizedSections } from "./summary-sections/generalized";
+import { GeneralizedSections } from "./generalized-sections";
 import { SectionNavigationControl } from "~/components";
 import { FaciesDescriptionPage } from "./facies";
 import { RegionalSectionsPage } from "./regional-sections";
@@ -77,13 +79,6 @@ class SectionIndexPage extends Component {
     ]);
   }
 }
-
-const wrapWithSections = (component) => (props) => {
-  return h(SectionConsumer, null, (sections) => {
-    if (sections.length === 0) return null;
-    return h(component, { sections, ...props }, null);
-  });
-};
 
 const SectionIndex = ({ match }) =>
   h(SectionDataProvider, [

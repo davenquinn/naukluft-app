@@ -1,0 +1,23 @@
+:root
+  --main-font-family: 'Helvetica Neue', Arial, sans-serif
+  --heading-font-family: 'Helvetica Neue', Arial, sans-serif
+  --label-font-family: 'Helvetica Neue', Arial, sans-serif
+
+*
+  -webkit-font-smoothing: antialiased
+  // Ensure that intermediate font weights are rendered correctly
+
+body
+  font-family: var(--main-font-family)
+
+.environment-manager:global(.env-print)
+  --main-font-family: 'Chaparral Pro', Merriweather, serif
+  --heading-font-family: 'Montserrat', sans-serif
+
+  font-family: var(--main-font-family)
+
+h1, h2, h3, h4, h5, h6
+  font-family: var(--heading-font-family)
+  font-weight: 600
+  strong
+    font-weight: 800

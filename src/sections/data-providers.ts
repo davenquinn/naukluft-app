@@ -26,6 +26,11 @@ const sectionFilename = function (baseURL, fn) {
   return join(baseURL, "column-images", fn);
 };
 
+export function useRuntimeEnv(value: keyof NaukluftRuntimeEnv) {
+  const ctx = usePageContext();
+  return ctx.runtimeEnv?.[value] ?? null;
+}
+
 const getSectionData = async function (ctx: PageContext) {
   const config = fileInfo;
 
@@ -97,6 +102,13 @@ const SectionDataProvider = compose(
 );
 
 const SectionConsumer = SectionDataContext.Consumer;
+
+export const wrapWithSections = (component) => (props) => {
+  return h(SectionConsumer, null, (sections) => {
+    if (sections.length === 0) return null;
+    return h(component, { sections, ...props }, null);
+  });
+};
 
 export {
   getSectionData,

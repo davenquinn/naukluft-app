@@ -1,21 +1,19 @@
 import { hyperStyled } from "@macrostrat/hyper";
 import { SectionContainer } from "../components";
-import { LithostratKey } from "../summary-sections/lithostrat-key";
-import { Index } from "../summary-sections/legend";
+import { LegendFull } from "../summary-sections/legend";
 import { group } from "d3-array";
 // This should be wrapped into a context
-import { groupOrder } from "../summary-sections/display-parameters";
+import { groupOrder } from "../summary-sections/layout/display-parameters";
 import { LayoutGroup } from "../summary-sections/layout/layout-group";
 import {
   sectionOffsets,
   stackGroups,
-} from "../summary-sections/display-parameters";
+} from "../summary-sections/layout/display-parameters";
 import { SectionPositions } from "../summary-sections/layout/defs";
 import { useSectionPositions } from "../components/link-overlay";
 import { useContext } from "react";
 import styles from "../summary-sections/main.module.styl";
 import { sectionData, sectionSurfaces, sectionSymbols } from "./data";
-import "../main.styl";
 
 import {
   GrainsizeLayoutProvider,
@@ -28,9 +26,9 @@ import {
   FaciesColumnInner,
   ColumnContext,
   ColumnAxis,
-  SymbolColumn,
   ColumnProvider,
 } from "@macrostrat/column-components";
+import { SymbolColumn } from "~/sections/symbol-column";
 
 const h = hyperStyled(styles);
 
@@ -51,13 +49,8 @@ const SectionPane = function (props: SectionPaneProps) {
   let { offset } = sectionData;
 
   return h("div#section-pane", { style: { overflow: "scroll" } }, [
-    h.if(showLegend)(Index),
+    h.if(showLegend)(LegendFull),
     h(SectionContainer, [
-      h(LithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        offset,
-      }),
       h("div#section-container", [
         h(ArrangedSections, {
           groupMargin,

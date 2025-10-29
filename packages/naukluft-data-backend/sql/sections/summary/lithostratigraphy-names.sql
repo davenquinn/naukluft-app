@@ -3,6 +3,9 @@ SELECT
   id,
   name,
   level,
+  trim(color) color,
+  fgdc_symbol symbol,
+  trim(symbol_color) symbol_color,
   coalesce(u.short_name, name) short_name
 FROM mapping.unit u
 WHERE id = ANY(mapping.subunits('zebra-nappe'))
@@ -12,6 +15,9 @@ SELECT
   a.name::text,
   a.level,
   a.short_name::text,
+  a.color,
+  a.symbol,
+  a.symbol_color,
   null AS formation_id,
   null AS formation_name,
   null AS formation_short_name
@@ -23,6 +29,9 @@ SELECT
   a.name::text,
   a.level,
   a.short_name::text,
+  a.color,
+  a.symbol,
+    a.symbol_color,
   a1.id::text,
   a1.name::text,
   a1.short_name::text

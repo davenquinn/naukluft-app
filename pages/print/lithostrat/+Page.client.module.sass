@@ -1,0 +1,57 @@
+.zebra-nappe-section :global
+  font-weight: 500
+  .y.axis
+    font-size: 12px
+    text-align: center
+    position: sticky
+    transform: translateY(-1px)
+
+
+  .timescale
+    color: black
+    font-family: var(--main-font-family)
+
+  g.lithology-column
+    transform: translateX(1px)
+    rect.lithology
+      stroke: black
+      stroke-width: 1px
+    use.frame
+      stroke: black
+
+:global
+  :root
+    --covered-interval-color: white
+    --timescale-level-size: 24px
+    --column-font-weight: 500
+
+.columns
+  display: flex
+  flex-direction: row
+  align-items: end
+  gap: 1em
+  padding: 1em
+  font-family: var(--main-font-family)
+
+  :global
+    span.label-text
+      font-size: 14px
+    .interval-label
+      transform: translateY(3px)
+      &.rotated
+        transform: translate(-6px,3px)
+
+    .column-axis-label
+      font-family: var(--label-font-family)
+      font-size: 14px
+      font-style: italic
+      fill: #888
+
+    .tick text
+      text-anchor: middle
+      font-weight: 400
+      transform: rotate(-90deg) translate(8px, -12px)
+
+
+
+

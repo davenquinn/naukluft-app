@@ -1,30 +1,12 @@
-import { Component, createContext } from "react";
-import h from "@macrostrat/hyper";
+import { Component, createContext, useContext, useEffect } from "react";
+import hyper from "@macrostrat/hyper";
 import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 
 import update from "immutability-helper";
-import {
-  AssetPathProvider,
-  GeologicPatternProvider,
-} from "@macrostrat/column-components";
+import { GeologicPatternProvider } from "@macrostrat/column-components";
+import styles from "./platform.module.sass";
 
-// Vite glob imports of pattern
-const patternSVGs = import.meta.glob(
-  "../packages/geologic-patterns/assets/svg/*.svg",
-  { eager: true, import: "default" },
-);
-const patternPNGs = import.meta.glob(
-  "../packages/geologic-patterns/assets/png-compressed/*.png",
-  {
-    eager: true,
-    import: "default",
-  },
-);
-
-const columnPatterns = import.meta.glob("../assets/column-patterns/*.svg", {
-  eager: true,
-  import: "default",
-});
+const h = hyper.styled(styles);
 
 let global = globalThis;
 
@@ -46,11 +28,27 @@ function join(...args: string[]): string {
   return args.join("/");
 }
 
-const PlatformContext = createContext({});
+export enum TargetEnvironment {
+  Print = "print",
+  Interactive = "interactive",
+}
+
+const PlatformContext = createContext({
+  environment: TargetEnvironment.Interactive,
+  platform: Platform.WEB,
+  editable: false,
+});
+
+export function useTargetEnvironment() {
+  return useContext(PlatformContext).environment;
+}
 
 const baseURL = "/";
 
-class PlatformProvider extends Component {
+class PlatformProvider extends Component<{
+  children: React.ReactNode;
+  environment?: TargetEnvironment;
+}> {
   constructor(props) {
     let editable = true;
     let platform = Platform.WEB;
@@ -69,8 +67,6 @@ class PlatformProvider extends Component {
     this.path = this.path.bind(this);
     this.updateState = this.updateState.bind(this);
     this.computePhotoPath = this.computePhotoPath.bind(this);
-    this.resolveSymbol = this.resolveSymbol.bind(this);
-    this.resolveLithologySymbol = this.resolveLithologySymbol.bind(this);
 
     this.storage = new LocalStorage("edit-mode");
     const v = this.storage.get();
@@ -81,48 +77,39 @@ class PlatformProvider extends Component {
   }
 
   render() {
-    let {
-      computePhotoPath,
-      resolveSymbol,
-      resolveLithologySymbol,
-      updateState,
-    } = this;
+    let { computePhotoPath, updateState } = this;
     let { serializedQueries, ...restState } = this.state;
     if (this.state.platform === Platform.WEB) {
       serializedQueries = true;
     }
     const { children, ...rest } = this.props;
+
+    const environment = this.props.environment ?? TargetEnvironment.Interactive;
     const value = {
       ...rest,
       ...restState,
       serializedQueries,
       updateState,
       computePhotoPath,
-      resolveSymbol,
-      resolveLithologySymbol,
+      environment,
     };
 
-    ({ resolveSymbol } = this.props);
-    if (resolveSymbol == null) {
-      ({ resolveSymbol } = this);
-    }
-
-    const assetPathFunctions = { resolveSymbol, resolveLithologySymbol };
     return h(DarkModeProvider, [
       h(
         GeologicPatternProvider,
         {
-          resolvePattern: this.resolveLithologySymbol,
+          resolvePattern(patternID) {
+            return `https://dev.macrostrat.org/assets/geologic-patterns/svg/${patternID}.svg`;
+          },
         },
-        [
-          h(
-            AssetPathProvider,
-            {
-              resolveSymbol: this.resolveSymbol,
-            },
-            [h(PlatformContext.Provider, { value }, children)],
-          ),
-        ],
+        h(
+          PlatformContext.Provider,
+          { value },
+          h("div.environment-manager", { className: "env-" + environment }, [
+            children,
+            h(EnvironmentBodyClassManager, { environment }),
+          ]),
+        ),
       ),
     ]);
   }
@@ -155,32 +142,6 @@ class PlatformProvider extends Component {
     return photo.path;
   }
 
-  resolveSymbol(sym) {
-    if (sym == null) {
-      return null;
-    }
-    let sym1 = sym;
-    // Just in case we are passing full names
-    if (sym1.endsWith(".svg")) {
-      sym1 = sym1.slice(0, -4);
-    }
-    return columnPatterns[`../assets/column-patterns/${sym1}.svg`];
-  }
-
-  resolveLithologySymbol(id, opts = {}) {
-    const { svg = true } = opts;
-    if (id == null) {
-      return null;
-    }
-    if (svg) {
-      return patternSVGs[`../packages/geologic-patterns/assets/svg/${id}.svg`];
-    } else {
-      return patternPNGs[
-        `../packages/geologic-patterns/assets/png-compressed/${id}.png`
-      ];
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
     // Shim global state
     if (prevState.serializedQueries !== this.state.serializedQueries) {
@@ -192,6 +153,17 @@ class PlatformProvider extends Component {
       return this.storage.set({ inEditMode });
     }
   }
+}
+
+function EnvironmentBodyClassManager({ environment }) {
+  useEffect(() => {
+    const cls = `env-${environment}`;
+    document.body.classList.add(cls);
+    return () => {
+      document.body.classList.remove(cls);
+    };
+  }, [environment]);
+  return null;
 }
 
 export { PlatformContext, Platform, PlatformProvider };

@@ -20,11 +20,9 @@ import {
   useSettings,
 } from "@macrostrat/column-components";
 
-import { ManagedSymbolColumn } from "../components";
-import { useSequenceStratSettings } from "../sequence-strat-context";
+import { ManagedSymbolColumn, ColumnTracker } from "../components";
 import { SummaryColumnProvider } from "./data-provider";
-import { ColumnTracker } from "../components/link-overlay";
-import { PlatformContext } from "../../platform";
+import { PlatformContext } from "~/platform";
 import { MinimalIsotopesColumn } from "./chemostrat";
 import { FaciesTractIntervals } from "../column/facies-tracts";
 
@@ -46,7 +44,11 @@ const ColumnMain = function () {
     h.if(showFacies)(FaciesColumnInner),
     h.if(showFaciesTracts)(FaciesTractIntervals),
     h.if(showLithology)(SimplifiedLithologyColumn),
-    h(CoveredOverlay),
+    h(CoveredOverlay, {
+      color: "var(--covered-interval-color, rgba(0,0,0,0.2))",
+      patternSize: 9,
+      strokeWidth: 4,
+    }),
   ]);
 };
 
@@ -106,40 +108,35 @@ const ColumnSummaryAxis = function (props) {
   const ratio = pixelsPerMeter * zoom;
 
   // Keep labels from inhabiting the top few pixels (to make space for section labels)
-  const topPadding = 30;
-  const maxVal = scale.domain()[1] - topPadding / ratio;
-
   return h(ColumnAxis, {
     ticks: (height * zoom) / 5,
-    showLabel(d) {
-      return d < maxVal;
-    },
   });
 };
 
-const ColumnIsotopes = function (props) {
-  const opts = useSettings();
-  let { id, columnWidth } = props;
-  if (columnWidth == null) {
-    columnWidth = 40;
-  }
-  if (!opts.isotopesPerSection) {
-    return null;
-  }
+function ColumnIsotopes(props) {
+  let {
+    id,
+    columnWidth = 40,
+    showCarbonIsotopes = true,
+    showOxygenIsotopes = true,
+    translateLeft = 120,
+  } = props;
+
   return h([
-    h.if(opts.showCarbonIsotopes)(MinimalIsotopesColumn, {
+    h.if(showCarbonIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: "translate(120)",
+      transform: `translate(${translateLeft})`,
+      system: "delta13c",
     }),
-    h.if(opts.showOxygenIsotopes)(MinimalIsotopesColumn, {
+    h.if(showOxygenIsotopes)(MinimalIsotopesColumn, {
       width: columnWidth,
       section: id,
-      transform: "translate(160)",
+      transform: `translate(${translateLeft + columnWidth})`,
       system: "delta18o",
     }),
   ]);
-};
+}
 
 const ColumnUnderlay = function (props) {
   let { width, paddingLeft } = props;
@@ -150,49 +147,90 @@ const ColumnUnderlay = function (props) {
   return h("rect.underlay", {
     width,
     height: pixelHeight + 10,
-    x: -paddingLeft,
+    x: paddingLeft,
     y: -5,
     fill: "var(--background-color)",
   });
 };
 
-const SVGSectionInner = function (props) {
+interface SVGSectionInnerProps {
+  id: string;
+  padding: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+  };
+  innerWidth: number;
+  showUnderlay: boolean;
+  offsetTop: number | null;
+  absolutePosition: boolean;
+  isotopeColumnWidth?: number;
+  axisComponent?: any;
+  sequenceStratOrder?: [number, number] | null;
+  showFloodingSurfaces?: boolean;
+  showTriangleBars?: boolean;
+  showCarbonIsotopes?: boolean;
+  showOxygenIsotopes?: boolean;
+  isotopesPerSection?: boolean;
+  triangleBarRightSide?: boolean;
+  children?: React.ReactNode;
+  trackerOffset?: {
+    x: number;
+    y: number;
+  };
+}
+
+function SVGSectionInner(props: SVGSectionInnerProps) {
   let {
     id,
     padding,
     innerWidth,
-    showWhiteUnderlay,
+    showUnderlay = true,
     offsetTop,
     absolutePosition,
+    isotopeColumnWidth = 60,
+    axisComponent = ColumnSummaryAxis,
   } = props;
 
-  const { inEditMode } = useContext(PlatformContext);
+  const { inEditMode = false } = useContext(PlatformContext);
 
-  const { sequenceStratOrder, showFloodingSurfaces, showTriangleBars } =
-    useSequenceStratSettings();
+  const {
+    sequenceStratOrder = [0, 1],
+    showFloodingSurfaces = false,
+    showTriangleBars = true,
+  } = props;
 
-  const { showCarbonIsotopes, showOxygenIsotopes, isotopesPerSection } =
-    useSettings();
+  const {
+    showCarbonIsotopes = true,
+    showOxygenIsotopes = true,
+    isotopesPerSection,
+    triangleBarRightSide = false,
+  } = props;
 
   let overallWidth = 120;
+  const chemostratColumnStart = overallWidth;
+
+  let underlayPaddingLeft = -padding.left;
+  let underlayWidth = 210;
+
   overallWidth += 42; // Symbol column
 
   let chemostratWidth = 0;
+  const chemostratColumnWidth = isotopeColumnWidth;
   if (isotopesPerSection) {
     if (showCarbonIsotopes) {
-      chemostratWidth += 40;
+      chemostratWidth += chemostratColumnWidth;
     }
     if (showOxygenIsotopes) {
-      chemostratWidth += 40;
+      chemostratWidth += chemostratColumnWidth;
     }
   }
   overallWidth += chemostratWidth;
+  underlayWidth += chemostratWidth;
 
   let triangleBarTranslate = 0;
   let mainTranslate = 0;
-
-  let underlayPaddingLeft: number = padding.left;
-  let underlayWidth = 300;
 
   let triangleBars: any = null;
 
@@ -200,21 +238,25 @@ const SVGSectionInner = function (props) {
     // How many bars are we rendering
 
     const nOrders = sequenceStratOrder[1] - sequenceStratOrder[0] + 1;
-
-    //40
+    const paddingInner = 2;
     const triangleBarWidth = 20 * nOrders;
 
-    overallWidth += triangleBarWidth;
-    if (props.triangleBarRightSide) {
-      triangleBarTranslate = 120 + triangleBarWidth + chemostratWidth;
-      underlayPaddingLeft = 0;
-      underlayWidth = 146 + chemostratWidth;
-      overallWidth += 6;
+    const triangleUnderlayInset = triangleBarWidth - 10 + 2 * paddingInner;
+
+    let triangleBarInset = 10;
+    let triangleBarPadding = 8;
+    triangleBarTranslate = 20 * (nOrders - 2);
+    underlayWidth -= triangleBarWidth - 10;
+
+    if (triangleBarRightSide) {
+      triangleBarPadding = 0;
+      triangleBarTranslate += overallWidth - triangleBarInset;
+      underlayWidth = overallWidth + 6;
     } else {
-      triangleBarTranslate = 20 * (nOrders - 2);
-      mainTranslate = triangleBarWidth + 8;
-      underlayPaddingLeft -= 35 + triangleBarTranslate;
+      mainTranslate = triangleBarWidth + triangleBarPadding;
+      underlayPaddingLeft += triangleUnderlayInset;
     }
+    overallWidth += triangleBarWidth + triangleBarPadding;
 
     triangleBars = h(TriangleBars, {
       id,
@@ -233,6 +275,8 @@ const SVGSectionInner = function (props) {
 
   const grainsizeScaleStart = 40;
 
+  const offset = props.trackerOffset ?? { x: 0, y: 0 };
+
   return h(
     ColumnBox,
     {
@@ -244,15 +288,18 @@ const SVGSectionInner = function (props) {
       absolutePosition,
     },
     [
-      h("div.section-header", [
-        h("h2", { style: { zIndex: 20, marginLeft: mainTranslate } }, id),
-      ]),
+      h("div.section-header", h("h2.section-title", `${id}`)),
       h(
         ColumnTracker,
         {
           className: "section-outer",
           id,
-          paddingTop: 10,
+          adjustPosition(pos) {
+            // TODO: We need to track down why this is necessary
+            const x = pos.x + offset.x;
+            const y = pos.y + offset.y + padding.top;
+            return new DOMRect(x, y, pos.width, pos.height);
+          },
         },
         [
           h(
@@ -277,7 +324,7 @@ const SVGSectionInner = function (props) {
                   paddingLeft: padding.left,
                 },
                 [
-                  h.if(showWhiteUnderlay)(ColumnUnderlay, {
+                  h.if(showUnderlay)(ColumnUnderlay, {
                     width: underlayWidth,
                     paddingLeft: underlayPaddingLeft,
                   }),
@@ -286,15 +333,18 @@ const SVGSectionInner = function (props) {
                       offsetLeft: -floodingSurfaceStart,
                       lineWidth: floodingSurfaceStart,
                     }),
-                    h(props.axisComponent),
+                    h(axisComponent),
                     h(ColumnMain),
                     h(ManagedSymbolColumn, {
                       left: 90,
                       id,
                     }),
-                    h(ColumnIsotopes, {
+                    h.if(isotopesPerSection)(ColumnIsotopes, {
                       id,
-                      columnWidth: props.isotopeColumnWidth,
+                      columnWidth: isotopeColumnWidth,
+                      showCarbonIsotopes,
+                      showOxygenIsotopes,
+                      translateLeft: chemostratColumnStart,
                     }),
                   ]),
                   h(
@@ -320,13 +370,12 @@ const SVGSectionInner = function (props) {
       ),
     ],
   );
-};
+}
 
 SVGSectionInner.defaultProps = {
   axisComponent: ColumnSummaryAxis,
   zoom: 1,
   inEditMode: false,
-  isotopeColumnWidth: 40,
   offsetTop: null,
   marginTop: null,
   innerWidth: 100,
@@ -341,7 +390,7 @@ SVGSectionInner.defaultProps = {
     left: 30,
     top: 10,
     right: 20,
-    bottom: 28,
+    bottom: 35,
   },
 };
 
@@ -353,8 +402,12 @@ SVGSectionInner.propTypes = {
 };
 
 const SVGSectionComponent = (props) => {
-  const { id } = props;
-  return h(SummaryColumnProvider, { id }, h(SVGSectionInner, props));
+  const { id, pixelsPerMeter, ...rest } = props;
+  return h(
+    SummaryColumnProvider,
+    { id, pixelsPerMeter },
+    h(SVGSectionInner, { id, ...rest }),
+  );
 };
 
 export { SVGSectionInner, SVGSectionComponent };

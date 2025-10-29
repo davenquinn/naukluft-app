@@ -93,7 +93,7 @@ IsotopesDataArea.defaultProps = { clipY: false };
 
 const IsotopeDataPoint = function (props) {
   const { pointLocator } = useContext(IsotopesDataContext);
-  const { datum, strokeWidth, ...rest } = props;
+  const { datum, strokeWidth, adjustOpacity = false, ...rest } = props;
   //[x1,y1] = pointLocator(datum, -2)
   const loc = pointLocator(datum, 0);
   if (loc == null) return null;
@@ -105,6 +105,12 @@ const IsotopeDataPoint = function (props) {
     dx = 0;
   }
 
+  let opacity = 1;
+  if (adjustOpacity) {
+    // Make points with high stddev more transparent
+    opacity -= Math.min((x1 - x0) / 4, 0.5);
+  }
+
   return h("line", {
     key: datum.analysis_id,
     x1: x0 - dx,
@@ -113,6 +119,7 @@ const IsotopeDataPoint = function (props) {
     y2: y,
     strokeLinecap: "round",
     strokeWidth,
+    opacity,
     ...rest,
   });
 };

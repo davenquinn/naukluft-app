@@ -1,10 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 import { ColumnContext, SVG, useSettings } from "@macrostrat/column-components";
 import { expandInnerSize, extractPadding } from "@macrostrat/ui-components";
 import { hyperStyled } from "@macrostrat/hyper";
@@ -14,33 +7,15 @@ import { linkHorizontal } from "d3-shape";
 import update from "immutability-helper";
 import T from "prop-types";
 import { Component, createContext, useContext, useEffect, useRef } from "react";
-import { debounce } from "underscore";
+import { any, debounce } from "underscore";
 import { Notification } from "~/notify";
 import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.module.styl";
-import { SectionLinkPath } from "./path";
+import { useTargetEnvironment } from "~/platform";
+import { ColumnSVG, useColumn } from "@macrostrat/column-components";
 
 const h = hyperStyled(styles);
-
-const sectionSurfaceProps = function (surface) {
-  let stroke: string;
-  const { surface_type, surface_order } = surface;
-
-  if (surface_type === "mfs") {
-    stroke = "#ccc";
-  } else if (surface_type === "sb") {
-    stroke = "#fcc";
-  } else {
-    stroke = "#ccc";
-  }
-
-  let strokeWidth = 4 - Math.pow(surface_order, 1.5) * 1.5;
-  if (strokeWidth < 2) {
-    strokeWidth = 2;
-  }
-  return { stroke, strokeWidth, opacity: 0.5 };
-};
 
 const SectionPositionContext = createContext();
 const SectionObserverContext = createContext({});
@@ -125,7 +100,7 @@ class SectionPositionProvider extends Component {
       "div.section-positioner",
       {
         ref: (ref) => {
-          return (this.container = ref);
+          this.container = ref;
         },
       },
       [
@@ -152,9 +127,10 @@ const ColumnTracker = function (props) {
   Tracks a column's position and reports
   it back to the SectionObserverContext.
   */
-  const { children, className, id, ...rest } = props;
+  const { children, className, id, adjustPosition, ...rest } = props;
   const setPosition = useContext(SectionPositionContext);
   const { scale } = useContext(ColumnContext);
+  const _adjustPosition = adjustPosition ?? ((d) => d);
 
   const ref = useRef();
 
@@ -164,8 +140,7 @@ const ColumnTracker = function (props) {
     }
     // Run this code after render
     const rect = ref.current.getBoundingClientRect();
-    console.log(rect);
-    return setPosition(id, scale, rect, rest);
+    return setPosition(id, scale, _adjustPosition(rect), rest);
   };
 
   useEffect(runPositioner);
@@ -200,14 +175,12 @@ const buildLink = linkHorizontal()
   .y((d) => d.y);
 
 const SectionLink = function (props) {
-  let inferred, width, certainty, className, d;
+  let inferred, width, className, d;
   let { connectLines, surface, stroke, strokeWidth, onClick } = props;
-  if (stroke == null) {
-    stroke = "black";
-  }
-  if (strokeWidth == null) {
-    strokeWidth = 1;
-  }
+
+  //const { startX } = props;
+  const startX = null;
+
   let { section_height, surface_id, unit_commonality, type, note } = surface;
 
   // CURRENTLY PRIVATE API to allow section gaps to be filled
@@ -218,9 +191,8 @@ const SectionLink = function (props) {
   const sectionIndex = useContext(SectionObserverContext);
 
   const heights = section_height.map(function (v) {
-    let globalScale, height, inDomain, section, x0;
-    ({ section, height, inferred, inDomain, certainty } = v);
-    ({ globalScale, x: x0, width } = sectionIndex[section]);
+    const { section, height, inferred, inDomain, certainty } = v;
+    const { globalScale, x: x0, width } = sectionIndex[section];
     return {
       x0,
       x1: x0 + width,
@@ -238,12 +210,9 @@ const SectionLink = function (props) {
     return null;
   }
 
-  const __LinkPath = (props) =>
-    h(SectionLinkPath, { className, stroke, strokeWidth, onClick, ...props });
-
   const pathData = pairs(heights, function (a, b) {
     inferred = a.inferred || b.inferred;
-    certainty = Math.min(a.certainty || 10, b.certainty || 10);
+    const certainty = Math.min(a.certainty || 10, b.certainty || 10);
     const source = { x: a.x1, y: a.y, section: a.section };
     const target = { x: b.x0, y: b.y, section: b.section };
     const { inDomain } = b;
@@ -252,7 +221,7 @@ const SectionLink = function (props) {
   });
 
   d = null;
-  certainty = 10;
+  let certainty = 10;
   const links = (() => {
     const result = [];
     for (let i = 0; i < pathData.length; i++) {
@@ -260,8 +229,8 @@ const SectionLink = function (props) {
       if (unit_commonality == null) {
         unit_commonality = 0;
       }
-      ({ inferred, width, certainty } = pair);
-      className = classNames("section-link", type, { inferred });
+      const { width } = pair;
+      ({ certainty, inferred } = pair);
       // First move to initial height
       const { x, y } = pair.source;
 
@@ -270,7 +239,7 @@ const SectionLink = function (props) {
       }
 
       if (d == null) {
-        let initialX = x;
+        let initialX = startX != null ? startX : x;
         if (connectLines) {
           initialX -= width;
         } else if (fillSectionWidth) {
@@ -288,19 +257,126 @@ const SectionLink = function (props) {
       }
       d += linkLine;
 
-      const fill = "none";
-
-      result.push(h(__LinkPath, { d, certainty }));
+      result.push(
+        h(__LinkPath, {
+          d,
+          surface,
+          certainty,
+          stroke,
+          strokeWidth,
+          type,
+          onClick,
+          inferred,
+        }),
+      );
     }
     return result;
   })();
 
   if (connectLines) {
-    return h(__LinkPath, { d, certainty });
+    return h(__LinkPath, {
+      d,
+      certainty,
+      surface,
+      strokeWidth,
+      stroke,
+      onClick,
+      type,
+      inferred,
+    });
   } else {
     return h("g", links);
   }
 };
+
+function __LinkPath({
+  stroke = "black",
+  strokeWidth = 1,
+  surface,
+  d,
+  onClick,
+  certainty,
+  inferred,
+  className,
+  type,
+}: {
+  stroke?: string;
+  strokeWidth?: number;
+  d: string;
+  onClick?: () => void;
+  certainty: number;
+  inferred: boolean;
+  className?: string;
+  type?: string;
+  surface: any;
+}) {
+  // sequence strat
+  const { surface_type, surface_order } = surface;
+
+  let order_class = null;
+  if (surface_order != null) {
+    order_class = `order-${surface_order}`;
+  }
+
+  // lithostrat
+  const { unit_commonality } = surface;
+  if (unit_commonality != null) {
+    order_class = `commonality-${unit_commonality}`;
+  }
+
+  return h(SectionLinkPath, {
+    className: classNames(
+      "section-link",
+      type,
+      className,
+      { inferred },
+      certaintyClassName(certainty),
+      order_class,
+      surface_type == "mfs" ? "maximum-flooding-surface" : null,
+      surface_type == "sb" ? "sequence-boundary" : null,
+    ),
+    stroke,
+    strokeWidth,
+    onClick,
+    d,
+    certainty,
+  });
+}
+
+function certaintyClassName(certainty: number | null) {
+  if (certainty == null) {
+    return `unknown-certainty`;
+  } else if (certainty == 10) {
+    return `certain`;
+  } else if (certainty >= 7) {
+    return `high-certainty`;
+  } else if (certainty >= 4) {
+    return `medium-certainty`;
+  } else {
+    return `low-certainty`;
+  }
+}
+
+const sectionSurfaceProps = function (surface) {
+  let stroke: string;
+  const { surface_type, surface_order } = surface;
+
+  return { stroke: "black", strokeWidth: 2, opacity: 0.5 };
+};
+
+function SectionLinkPath(props) {
+  let { onClick, certainty, style, ...rest } = props;
+
+  return h("path", {
+    onClick,
+    fill: "none",
+    style: {
+      cursor: onClick ? "pointer" : null,
+      ...style,
+    },
+    ...rest,
+  });
+}
 
 SectionLink.propTypes = {
   connectLines: T.bool,
@@ -328,6 +404,7 @@ const FilteredSectionLink = function (props) {
   }
 
   const onClick = function () {
+    console.log("click", type, surface_id);
     const v =
       type === "lithostrat" ? "Lithostratigraphic" : "Sequence-stratigraphic";
     return Notification.show({
@@ -370,7 +447,7 @@ const useCanvasSize = function () {
 };
 
 const SectionLinks = function (props) {
-  const { surfaces, connectLines, innerRef } = props;
+  const { surfaces, connectLines, startX, innerRef } = props;
   if (!surfaces.length) {
     return null;
   }
@@ -384,18 +461,150 @@ const SectionLinks = function (props) {
   return h(
     "g.section-links",
     surfacesNew.map((surface) =>
-      h(FilteredSectionLink, { surface, connectLines }),
+      h(FilteredSectionLink, { surface, connectLines, startX }),
     ),
   );
 };
 
-const SectionLinkOverlay = function (props) {
+export function ColumnSurfaces({
+  type = "sequence-strat",
+  keySection,
+  className,
+  padding,
+}: {
+  type: string;
+  keySection?: string;
+}) {
+  const surfaces = useSurfaces();
+  const { scale } = useColumn();
+
+  const filteredSurfaces = filterSectionSurfaces(surfaces, keySection, type);
+
+  return h(
+    ColumnSVG,
+    {
+      width: 300,
+      className: classNames(className, "section-link-overlay"),
+      padding,
+    },
+
+    [
+      h(
+        "g.surfaces",
+        filteredSurfaces.map((data) => {
+          const { height, certainty, surface, inferred } = data;
+
+          const y1 = scale(height);
+
+          const d = `M0,${y1} L300,${y1}`;
+
+          return h(__LinkPath, { surface, inferred, d, certainty });
+        }),
+      ),
+    ],
+  );
+}
+
+function filterSectionSurfaces(
+  surfaces: any[],
+  section: string,
+  type: string = "sequence-strat",
+): SectionSurfaceInfo[] {
+  const newSurfaces: SectionSurfaceInfo[] = [];
+  for (const surface of surfaces) {
+    if (surface.type !== type) {
+      continue;
+    }
+    const sectionData = surface.section_height.find(
+      (d) => d.section === section,
+    );
+
+    const inferred = any(surface.section_height, (d) => d.inferred === true);
+    const certainty = Math.min(
+      ...surface.section_height.map((d) => d.certainty || 10),
+    );
+
+    if (sectionData == null) {
+      continue;
+    }
+    const { height } = sectionData;
+    newSurfaces.push({
+      surface,
+      height,
+      section,
+      inferred,
+      certainty,
+    });
+  }
+  return newSurfaces;
+}
+
+interface SectionSurfaceInfo {
+  surface: any;
+  height: number;
+  section: string;
+  inferred?: boolean;
+  certainty?: number;
+}
+
+function CompositeLegendLine(props) {
+  // A composite line made up of multiple segments that shows multiple levels of certainty
+  const { width, classes, ...rest } = props;
+  const eachWidth = width / classes.length;
+  return h(
+    "g.composite-legend-line",
+    rest,
+    classes.map((cls, index) => {
+      return h("line", {
+        className: cls,
+        x1: index * eachWidth,
+        y1: 0,
+        x2: (index + 1) * eachWidth,
+        y2: 0,
+      });
+    }),
+  );
+}
+
+export function SectionLinkLegendLine(props) {
+  const classes = [
+    "certain",
+    "high-certainty",
+    //"medium-certainty",
+    "low-certainty",
+  ].map((d) => styles[d] + " " + styles["section-link"]);
+  return h(CompositeLegendLine, {
+    ...props,
+    className: classNames(props.className, "section-links"),
+    classes,
+  });
+}
+
+export function useSectionOrder(): string[] | null {
+  // Get an ordered list of section IDs from the SectionObserverContext
+  const sectionIndex = useContext(SectionObserverContext);
+  if (sectionIndex.length === 0) {
+    return null;
+  }
+  const sections = Object.values(sectionIndex);
+  // First sort by x position, then y
+  sections.sort((a, b) => {
+    if (a.x !== b.x) {
+      return a.x - b.x;
+    }
+    return a.y - b.y;
+  });
+  return sections.map((d) => d.id);
+}
+
+function SectionLinkOverlay(props) {
   let {
-    showSectionTrackers,
-    connectLines,
+    showSectionTrackers = false,
+    connectLines = true,
     innerRef,
     className,
     surfaces,
+    extendLinks = false,
     ...rest
   } = props;
   const padding = extractPadding(rest);
@@ -412,6 +621,11 @@ const SectionLinkOverlay = function (props) {
   const sectionIndex = useContext(SectionObserverContext);
   const sz = getSize(sectionIndex, padding);
 
+  let startX = null;
+  if (extendLinks) {
+    startX = padding.paddingLeft;
+  }
+
   return h(
     SVG,
     {
@@ -423,17 +637,10 @@ const SectionLinkOverlay = function (props) {
     },
     [
       h.if(showSectionTrackers)(SectionTrackerRects),
-      h(SectionLinks, { connectLines, surfaces }),
+      h(SectionLinks, { connectLines, surfaces, startX }),
     ],
   );
-};
-
-SectionLinkOverlay.propTypes = {};
-
-SectionLinkOverlay.defaultProps = {
-  connectLines: true,
-  showSectionTrackers: false,
-};
+}
 
 export {
   ColumnTracker,

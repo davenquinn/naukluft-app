@@ -3,7 +3,8 @@ import { hyperStyled } from "@macrostrat/hyper";
 import styles from "../main.module.styl";
 import { group } from "d3-array";
 // This should be wrapped into a context
-import { groupOrder } from "../display-parameters";
+import { groupOrder } from "./display-parameters";
+import { useSequenceStratSettings } from "~/sections/sequence-strat-context";
 
 const h = hyperStyled(styles);
 
@@ -26,10 +27,14 @@ interface ArrangedSectionsProps {
   sections: SectionData[];
   groupMargin: number;
   location: string;
+  pixelsPerMeter: number;
 }
 
 function ArrangedSections(props: ArrangedSectionsProps) {
   const { sections, tightenSpacing, groupMargin, location, ...rest } = props;
+
+  const { showTriangleBars, showFloodingSurfaces, sequenceStratOrder } =
+    useSequenceStratSettings();
 
   // Divide sections into groups by location
   let groups = Array.from(group(sections, (d) => d.location));
@@ -74,6 +79,9 @@ function ArrangedSections(props: ArrangedSectionsProps) {
         location,
         style,
         sections,
+        showTriangleBars: showTriangleBars,
+        showFloodingSurfaces: showFloodingSurfaces,
+        sequenceStratOrder: [1, 1],
         ...rest,
       });
     }),

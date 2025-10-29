@@ -1,5 +1,5 @@
 import hyper from "@macrostrat/hyper";
-import { AxisBottom } from "@vx/axis";
+import { AxisBottom } from "@visx/axis";
 import chroma from "chroma-js";
 import classNames from "classnames";
 import { format } from "d3-format";
@@ -7,7 +7,7 @@ import { schemeCategory10 } from "d3-scale-chromatic";
 import { Component, useContext } from "react";
 
 import { sectionSurfaceProps } from "../../components/link-overlay";
-import { sectionIsotopeScheme } from "../display-parameters";
+import { sectionIsotopeScheme } from "../layout/display-parameters";
 import {
   IsotopeDataLine,
   IsotopeDataPoint,
@@ -73,42 +73,38 @@ ScaleLine.propTypes = {
 class IsotopesColumnInner extends Component {
   constructor(...args) {
     super(...args);
-    this.renderAxisLines = this.renderAxisLines.bind(this);
     this.renderData = this.renderData.bind(this);
   }
 
-  static initClass() {
-    this.contextType = ColumnLayoutContext;
-    this.defaultProps = {
-      visible: false,
-      corrected: false,
-      label: "δ¹³C",
-      system: "delta13c",
-      trackVisibility: true,
-      offsetTop: null,
-      showLines: false,
-      surfaces: null,
-      xRatio: 6,
-      height: 100, // Section height in meters
-      pixelsPerMeter: 2,
-      pixelOffset: 0, // This should be changed
-      domain: [-15, 8],
-      colorScheme: sectionIsotopeScheme,
-      keySection: "J",
-      padding: {
-        left: 10,
-        top: 10,
-        right: 10,
-        bottom: 60,
-      },
-    };
-    this.propTypes = {
-      isotopes: T.object.isRequired,
-    };
-  }
+  static contextType = ColumnLayoutContext;
+  static defaultProps = {
+    visible: false,
+    corrected: false,
+    label: "δ¹³C",
+    system: "delta13c",
+    trackVisibility: true,
+    offsetTop: null,
+    showLines: false,
+    surfaces: null,
+    xRatio: 6,
+    height: 100, // Section height in meters
+    pixelsPerMeter: 2,
+    pixelOffset: 0, // This should be changed
+    domain: [-15, 8],
+    colorScheme: sectionIsotopeScheme,
+    keySection: "J",
+    padding: {
+      left: 10,
+      top: 10,
+      right: 10,
+      bottom: 60,
+    },
+  };
+
   render() {
-    const { padding, label, system, tickValues } = this.props;
-    const { width: innerWidth } = this.context;
+    const { padding, label, system, tickValues, keySection, surfaces } =
+      this.props;
+    const { width: innerWidth, scale } = this.context;
     const { left, top, right, bottom } = padding;
 
     return h("div.isotopes-column", [
@@ -124,51 +120,13 @@ class IsotopesColumnInner extends Component {
             paddingBottom: padding.bottom,
           },
           [
-            this.renderAxisLines(),
+            renderAxisLines({ keySection, surfaces, scale }),
             h(MinimalColumnScale, { system, tickValues }),
             this.renderData(),
           ],
         ),
       ]),
     ]);
-  }
-
-  renderAxisLines() {
-    const { keySection } = this.props;
-    const getHeight = function (d) {
-      const { height } = d.section_height.find((v) => v.section === keySection);
-      return height;
-    };
-
-    let { surfaces } = this.props;
-    const { scale } = this.context;
-    if (surfaces == null) {
-      return null;
-    }
-    console.log(surfaces);
-    surfaces = surfaces.filter((d) => d.type === "sequence-strat");
-    return h(
-      "g.surfaces",
-      { style: { strokeOpacity: 0.3 } },
-      surfaces.map((d) => {
-        let height;
-        try {
-          height = getHeight(d);
-        } catch (error) {
-          // No height for section J. We should create a more
-          // robust solution to this problem in the SQL code.
-          return null;
-        }
-
-        const y = scale(height);
-        return h("line", {
-          x1: -500,
-          x2: 500,
-          transform: `translate(0, ${y})`,
-          ...sectionSurfaceProps(d),
-        });
-      }),
-    );
   }
 
   renderData() {
@@ -225,10 +183,131 @@ class IsotopesColumnInner extends Component {
     );
   }
 }
-IsotopesColumnInner.initClass();
 
-const partialScale = (scale, domain) =>
-  scale.copy().domain(domain).range(domain.map(scale));
+class IsotopesColumnInnerSimple extends Component {
+  constructor(...args) {
+    super(...args);
+    this.renderData = this.renderData.bind(this);
+  }
+
+  static contextType = ColumnLayoutContext;
+  static defaultProps = {
+    visible: false,
+    corrected: true,
+    label: "δ¹³C",
+    system: "delta13c",
+    trackVisibility: true,
+    offsetTop: null,
+    showLines: false,
+    surfaces: null,
+    xRatio: 6,
+    height: 100, // Section height in meters
+    pixelsPerMeter: 2,
+    pixelOffset: 0, // This should be changed
+    domain: [-15, 8],
+    keySection: "J",
+    padding: {
+      left: 10,
+      top: 10,
+      right: 10,
+      bottom: 60,
+    },
+  };
+
+  render() {
+    const { padding, label, system, tickValues, keySection, surfaces } =
+      this.props;
+    const { width: innerWidth, scale } = this.context;
+    const { left, top, right, bottom } = padding;
+
+    return h("div.isotopes-column", [
+      h("div.section-outer", [
+        h(
+          ColumnSVG,
+          {
+            innerWidth,
+            paddingTop: padding.top,
+            paddingLeft: padding.left,
+            paddingRight: padding.right,
+            paddingBottom: padding.bottom,
+          },
+          [h(MinimalColumnScale, { system, tickValues }), this.renderData()],
+        ),
+      ]),
+    ]);
+  }
+
+  renderData() {
+    const { system, corrected, isotopes } = this.props;
+    if (isotopes == null) {
+      return null;
+    }
+
+    return h(
+      IsotopesDataArea,
+      {
+        system,
+        corrected,
+        clipY: true,
+      },
+      isotopes.map(([key, values], i) => {
+        const stroke = system === "delta13c" ? "dodgerblue" : "red";
+        return h("g.section-data", { key }, [
+          h(
+            "g.data-points",
+            values.map((d) => {
+              let actualStroke = stroke;
+              if (!d.in_zebra_nappe) {
+                actualStroke = chroma(stroke).brighten(2).desaturate(2).css();
+              }
+
+              return h(IsotopeDataPoint, {
+                datum: d,
+                stroke: actualStroke,
+                strokeWidth: 4,
+                adjustOpacity: true,
+              });
+            }),
+          ),
+        ]);
+      }),
+    );
+  }
+}
+
+function renderAxisLines({ keySection, surfaces, scale }) {
+  const getHeight = function (d) {
+    const { height } = d.section_height.find((v) => v.section === keySection);
+    return height;
+  };
+
+  if (surfaces == null) {
+    return null;
+  }
+  surfaces = surfaces.filter((d) => d.type === "sequence-strat");
+  return h(
+    "g.surfaces",
+    { style: { strokeOpacity: 0.3 } },
+    surfaces.map((d) => {
+      let height;
+      try {
+        height = getHeight(d);
+      } catch (error) {
+        // No height for section J. We should create a more
+        // robust solution to this problem in the SQL code.
+        return null;
+      }
+
+      const y = scale(height);
+      return h("line", {
+        x1: -500,
+        x2: 500,
+        transform: `translate(0, ${y})`,
+        ...sectionSurfaceProps(d),
+      });
+    }),
+  );
+}
 
 const MinimalColumnScale = function (props) {
   const { system, ...rest } = props;
@@ -267,27 +346,13 @@ const MinimalColumnScale = function (props) {
       top: pixelHeight,
       tickLabelProps(tickValue, i) {
         // Compensate for negative sign
-        let dx;
-        if (tickValue < 0) {
-          dx = -2;
-        }
         return {
-          dy: "-1px",
-          dx,
-          fontSize: 10,
+          className: styles["isotope-axis-tick"],
           textAnchor: "middle",
-          fill: "#000",
         };
       },
       labelOffset: 0,
       label,
-      labelProps: {
-        style: {
-          fontFamily: "Merriweather",
-          fill: "#000",
-        },
-        fontSize: 20,
-      },
     }),
   ]);
 };
@@ -372,29 +437,40 @@ class MinimalIsotopesColumnInner extends Component {
 }
 MinimalIsotopesColumnInner.initClass();
 
-const IsotopesColumn = function (props) {
-  const { width, domain, preprocessData, ...rest } = props;
+function IsotopesColumn(props) {
+  const {
+    width = 120,
+    domain = [-14, 6],
+    nTicks = 6,
+    preprocessData,
+    ...rest
+  } = props;
   let isotopes = useIsotopes();
   return h(
     CrossAxisLayoutProvider,
     { width, domain },
-    h(IsotopesColumnInner, { isotopes, ...rest }),
+    h(IsotopesColumnInner, { isotopes, nTicks, ...rest }),
   );
-};
+}
 
-IsotopesColumn.propTypes = {
-  width: T.number.isRequired,
-  domain: T.arrayOf(T.number).isRequired,
-};
-
-IsotopesColumn.defaultProps = {
-  domain: [-14, 6],
-  width: 120,
-  nTicks: 6,
-};
+function IsotopesColumnSimple(props) {
+  const {
+    width = 120,
+    domain = [-14, 6],
+    nTicks = 6,
+    preprocessData,
+    ...rest
+  } = props;
+  return h(
+    CrossAxisLayoutProvider,
+    { width, domain },
+    h(IsotopesColumnInnerSimple, { nTicks, ...rest }),
+  );
+}
 
 const MinimalIsotopesColumn = function (props) {
-  const { width, domain, section, ...rest } = props;
+  const { width = 120, domain = [-14, 6], section, ...rest } = props;
+
   const { correctIsotopeRatios } = useSettings();
   const isotopes = useIsotopes();
   if (isotopes == null) {
@@ -418,4 +494,4 @@ const MinimalIsotopesColumn = function (props) {
 
 MinimalIsotopesColumn.defaultProps = IsotopesColumn.defaultProps;
 
-export { IsotopesColumn, MinimalIsotopesColumn };
+export { IsotopesColumn, IsotopesColumnSimple, MinimalIsotopesColumn };

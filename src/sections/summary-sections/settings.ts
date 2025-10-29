@@ -18,7 +18,7 @@ import {
   SERIALIZED_QUERIES,
 } from "../settings";
 
-const defaultSettings = {
+export const defaultSettings = {
   modes: [
     { value: "normal", label: "Normal" },
     { value: "skeleton", label: "Skeleton" },
@@ -108,5 +108,4 @@ export {
   useSettings,
   updateSettings,
   SummarySectionsSettings,
-  defaultSettings,
 };

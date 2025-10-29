@@ -5,7 +5,6 @@ const getJSON = async function (url) {
   let data;
   if (currentPlatform == Platform.WEB) {
     // We are using a web-like backend
-    console.log(`Requesting json at ${url}`);
     try {
       const { status, data } = await axios.get(url);
       return data;
