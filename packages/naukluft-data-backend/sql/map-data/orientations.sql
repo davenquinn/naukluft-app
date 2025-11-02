@@ -1,10 +1,10 @@
 SELECT
-  id::integer,
+  o.id::integer,
   strike,
   dip,
   trend,
   plunge,
-  ST_AsGeoJSON(ST_Transform(geometry, 4326))::json geometry,
+  ST_AsGeoJSON(ST_Transform(o.geometry, 4326))::json geometry,
   plane_type,
   notes::text,
   date,
@@ -22,7 +22,7 @@ SELECT
   fault,
   tectonic_unit,
   color
-FROM mapping.orientation
+FROM mapping.orientation o
 LEFT JOIN mapping.tectonic_domain d
   ON ST_Intersects(d.geometry, o.geometry)
-WHERE geometry IS NOT null;
+WHERE o.geometry IS NOT null;

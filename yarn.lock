@@ -1489,8 +1489,12 @@ __metadata:
   resolution: "@macrostrat/map-styles@portal:../../Macrostrat/Software/web-components/packages/map-styles::locator=naukluft-app%40workspace%3A."
   dependencies:
     "@macrostrat/color-utils": "workspace:*"
+    "@macrostrat/ui-components": "workspace:*"
+    "@types/d3-selection": "npm:^3.0.11"
     axios: "npm:^1.7.9"
+    d3-selection: "npm:^3.0.0"
     mapbox-gl: "npm:^2.15.0||^3.0.0"
+    textures: "npm:^1.2.3"
   languageName: node
   linkType: soft
 
@@ -1548,14 +1552,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@macrostrat/static-map-utils@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@macrostrat/static-map-utils@npm:1.0.0"
+"@macrostrat/static-map-utils@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@macrostrat/static-map-utils@npm:1.0.1"
   dependencies:
     "@macrostrat/hyper": "npm:^3.0.6"
     "@macrostrat/mapbox-react": "npm:^2.6.3"
     "@macrostrat/mapbox-utils": "npm:^1.6.0"
-    "@macrostrat/ui-components": "npm:^4.4.6"
+    "@macrostrat/ui-components": "npm:^4.5.1"
     "@mapbox/sphericalmercator": "npm:^2.0.2"
     "@turf/bbox": "npm:^7.2.0"
     "@turf/distance": "npm:^7.2.0"
@@ -1566,7 +1570,7 @@ __metadata:
     maplibregl-mapbox-request-transformer: "npm:^0.0.3"
     react: "npm:^18.0.0"
     underscore: "npm:^1.13.7"
-  checksum: 10c0/e9f46c7a30f99916aaf3559fab028171224bba94f3f7026d23b6508a9e6a7f8de6b6d1a77f2328472dc39732dc47590c6b630d0046280db1870e821e77cac4d4
+  checksum: 10c0/f4793750a88bac8948d293b62c36af9460dd0fceeee297f568a262eda5fd894244f852924d4dbd1ac37fd3438824f3e42788b2ddf4fd54f7c41bc59a69ee667d
   languageName: node
   linkType: hard
 
@@ -8401,13 +8405,14 @@ __metadata:
     "@macrostrat/column-components": "npm:^1.3.0"
     "@macrostrat/column-views": "npm:^2.1.4"
     "@macrostrat/hyper": "npm:^3.0.6"
+    "@macrostrat/map-styles": "npm:^1.2.3"
     "@macrostrat/mapbox-utils": "npm:^1.6.0"
     "@macrostrat/photo-viewer": "workspace:^"
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
-    "@macrostrat/static-map-utils": "npm:^1.0.0"
+    "@macrostrat/static-map-utils": "npm:^1.0.1"
     "@macrostrat/style-system": "npm:^0.2.3"
     "@macrostrat/timescale": "npm:^2.2.2"
-    "@macrostrat/ui-components": "npm:^4.5.0"
+    "@macrostrat/ui-components": "npm:^4.5.1"
     "@macrostrat/vite-plugin-hyperstyles": "npm:^1.0.2"
     "@turf/polygonize": "npm:^5.1.5"
     "@types/cors": "npm:^2.8.10"
@@ -11395,7 +11400,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"textures@npm:^1.2.0":
+"textures@npm:^1.2.0, textures@npm:^1.2.3":
   version: 1.2.3
   resolution: "textures@npm:1.2.3"
   checksum: 10c0/a2088599e6b95ed42fb96b3a38e5a2b67f2e3da0d4a8ba661bb9549e4ea249f97cb315c9ab2b2e0a3005db4f35702eeda57c3f06b3cb0d46639031c44b449f86

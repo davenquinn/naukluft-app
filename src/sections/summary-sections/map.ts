@@ -6,12 +6,17 @@ import {
   useInsetMapStyle,
   Scalebar,
 } from "@macrostrat/static-map-utils";
+import {
+  setupStyleImageManager,
+  defaultResolvers,
+} from "@macrostrat/map-styles";
 import { Map } from "maplibre-gl";
 import maplibre from "maplibre-gl";
 import { useQuery } from "naukluft-data-backend";
 import { mergeStyles } from "@macrostrat/mapbox-utils";
 import { useSectionOrder } from "~/sections/components";
 import styles from "./main.module.styl";
+import { buildTectonicPatternResolver } from "~/sections/summary-sections/tectonic-pattern-resolver";
 
 const h = hyper.styled(styles);
 
@@ -178,15 +183,17 @@ function useGeneralizedSectionsStyle(metersPerPixel) {
   return mergeStyles(style, sectionsStyle);
 }
 
-export function BaseSectionsMap({
+export function InsetMap({
   bounds,
   className,
   sections,
   metersPerPixel = 200,
   style,
+  scalebarWidth,
 }: {
   bounds: [number, number, number, number];
   initializeMap: any;
+  scalebarWidth?: number;
 }) {
   const tileBounds = computeTiledBoundsForMap(bounds, {
     metersPerPixel,
@@ -207,19 +214,25 @@ export function BaseSectionsMap({
         tileBounds: tileBounds,
         style,
         initializeMap(opts: maplibre.MapOptions) {
-          console.log("Styles", opts.style);
-          return new Map({
+          const map = new Map({
             ...opts,
             transformRequest,
             pixelRatio: 8,
           });
+          setupStyleImageManager(map, {
+            resolvers: {
+              ...defaultResolvers,
+              "tectonic-element": buildTectonicPatternResolver(),
+            },
+          });
+          return map;
         },
       },
       h(Scalebar, {
         className: "map-scalebar",
         labelPosition: "top",
         scale: tileBounds.realMetersPerPixel,
-        width: 100,
+        width: scalebarWidth ?? 100,
       }),
     ),
   );
@@ -228,14 +241,14 @@ export function BaseSectionsMap({
 export function GeneralizedSectionsMap({ metersPerPixel = 200, ...rest }) {
   const style = useGeneralizedSectionsStyle(metersPerPixel);
 
-  return h(BaseSectionsMap, { style, metersPerPixel, ...rest });
+  return h(InsetMap, { style, metersPerPixel, ...rest });
 }
 
 export function SummarySectionsMap({ metersPerPixel = 200, ...rest }) {
   const sectionIDs = useSectionOrder();
   const style = useSummarySectionsStyle(metersPerPixel, sectionIDs);
 
-  return h(BaseSectionsMap, { style, metersPerPixel, ...rest });
+  return h(InsetMap, { style, metersPerPixel, ...rest });
 }
 
 function useSummarySectionsStyle(metersPerPixel, sectionIDs) {
