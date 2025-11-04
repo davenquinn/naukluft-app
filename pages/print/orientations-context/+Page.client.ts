@@ -3,22 +3,30 @@ import { InsetMap } from "~/sections/summary-sections/map";
 import { useInsetMapStyle } from "@macrostrat/static-map-utils";
 import { useQuery } from "naukluft-data-backend";
 import { mergeStyles } from "@macrostrat/mapbox-utils";
+import { PrintArea } from "~/shared/print-area";
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_API_TOKEN;
 
 export function Page() {
-  const metersPerPixel = 100;
+  const metersPerPixel = 80;
   const style = useOrientationsStyle(metersPerPixel);
-  return h("div.sections-map", [
-    h(InsetMap, {
-      style,
-      metersPerPixel,
-      className: "orientations-map",
-      bounds: [16.06, -24.38, 16.25, -24.2],
-      scalebarWidth: 120,
-    }),
-  ]);
+  return h(
+    PrintArea,
+    { filename: "orientations-context.pdf" },
+    h("div.sections-map", [
+      h(InsetMap, {
+        style,
+        metersPerPixel,
+        className: "orientations-map",
+        bounds: [16.05, -24.38, 16.25, -24.2],
+        scalebarWidth: 150,
+      }),
+    ]),
+  );
 }
+
+const inNappeColor = "#02a";
+const outNappeColor = "#073";
 
 function useOrientationsStyle(metersPerPixel) {
   // Placeholder for style fetching logic
@@ -32,6 +40,15 @@ function useOrientationsStyle(metersPerPixel) {
 
   if (style == null || res == null || map == null || domains == null)
     return null;
+
+  const orientationFeatures = res.map((d: any) => {
+    const { geometry, type, ...properties } = d;
+    return {
+      type: "Feature",
+      geometry,
+      properties,
+    };
+  });
 
   // Build style for generalized sections
   const orientationsStyle = {
@@ -55,7 +72,7 @@ function useOrientationsStyle(metersPerPixel) {
         type: "geojson",
         data: {
           type: "FeatureCollection",
-          features: res,
+          features: orientationFeatures,
         },
       },
     },
@@ -88,6 +105,16 @@ function useOrientationsStyle(metersPerPixel) {
         filter: ["!=", ["get", "unit_id"], "nnc"],
       },
       {
+        id: "nnc-boundary",
+        type: "line",
+        source: "generalized",
+        paint: {
+          "line-color": "#000",
+          "line-width": 2,
+        },
+        filter: ["==", ["get", "unit_id"], "nnc"],
+      },
+      {
         id: "tectonic-domains",
         type: "line",
         source: "domains",
@@ -101,8 +128,16 @@ function useOrientationsStyle(metersPerPixel) {
         type: "circle",
         source: "orientations",
         paint: {
-          "circle-radius": 2,
-          "circle-color": "black",
+          "circle-radius": 3,
+          "circle-color": [
+            "case",
+            ["get", "in_nappe"],
+            inNappeColor,
+            outNappeColor,
+          ],
+        },
+        layout: {
+          "circle-sort-key": ["case", ["get", "in_nappe"], 1, 0],
         },
       },
     ],

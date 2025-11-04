@@ -1,9 +1,6 @@
 import chroma from "chroma-js";
 import textures from "textures";
-import {
-  renderTexturesPattern,
-  defaultResolvers,
-} from "@macrostrat/map-styles";
+import { renderTexturesPattern } from "@macrostrat/map-styles";
 import { toRGBAString } from "@macrostrat/color-utils";
 
 export function buildTectonicPatternResolver() {

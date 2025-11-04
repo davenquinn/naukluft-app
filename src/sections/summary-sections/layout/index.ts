@@ -81,7 +81,7 @@ function ArrangedSections(props: ArrangedSectionsProps) {
         sections,
         showTriangleBars: showTriangleBars,
         showFloodingSurfaces: showFloodingSurfaces,
-        sequenceStratOrder: [1, 1],
+        sequenceStratOrder: [0, 2],
         ...rest,
       });
     }),
