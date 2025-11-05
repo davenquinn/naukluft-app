@@ -72,7 +72,12 @@ function Unit(props) {
         h("h2", { id }, title),
         h.if(details)("p.details", details),
       ]),
-      h.if(showSwatch)(LegendSwatch, { id, width: 24, height: 18 }),
+      h.if(showSwatch)(LegendSwatch, {
+        id,
+        width: 24,
+        height: 18,
+        className: "legend-swatch",
+      }),
     ]),
     children,
   ]);

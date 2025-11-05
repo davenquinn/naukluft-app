@@ -26,25 +26,14 @@
     bottom 0
 
   div#legend
-    .subunit.bold>h2
-      margin-top 0
-      margin-bottom 0.5em
     position absolute
     font-size 12px
     top 0
     left 0
     bottom 0
     right 0
-    &>div>div.subunit
-      margin-bottom 0.4em
     div.subunit
       font-size 0.85em
-
-    div.swatch
-      svg
-        width: 30px
-        height 12px
-        margin-bottom 1px
 
     h4
       margin-bottom 0.5em
@@ -70,15 +59,22 @@
     font-weight: 800
     color: #888
   h1, h2, h3, h4, h5, h6
-    font-size: 1.2em
+    font-size: 1.1em
     margin 0.2em 0
 
-  .minor-unit
-    font-size 0.8em
-    font-family: var(--main-font-family)
+.minor-unit
+  font-size 0.8em
+  color: #888
+  font-style: italic
 
 .legend-swatch
-  border-radius: 4px
+    svg
+      width: 30px
+      height 12px
+      margin-bottom 1px
+      border-radius: 4px
+      overflow: hidden
+
 
 .legend-area
   width 140px
@@ -98,3 +94,6 @@
     color: #888
     font-style: italic
     margin: 0
+
+.tectonic-context-map
+  --scalebar-background: white

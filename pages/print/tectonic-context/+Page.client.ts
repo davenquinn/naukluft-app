@@ -1,5 +1,5 @@
 import hyper from "@macrostrat/hyper";
-import { InsetMap } from "~/sections/summary-sections/map";
+import { InsetMap, useSectionsStyle } from "~/sections/summary-sections/map";
 import { useInsetMapStyle } from "@macrostrat/static-map-utils";
 import { useQuery } from "naukluft-data-backend";
 import { mergeStyles } from "@macrostrat/mapbox-utils";
@@ -32,9 +32,10 @@ export function Page() {
           {
             style,
             metersPerPixel,
-            className: "orientations-map",
+            className: "tectonic-context-map",
             bounds,
             scalebarWidth: 150,
+            scalebarLabelPosition: "bottom",
           },
           h(Legend),
         ),
@@ -49,7 +50,9 @@ function useTectonicStyle(metersPerPixel) {
 
   const style = useInsetMapStyle(mapboxToken);
 
-  if (style == null || map == null) return null;
+  const sectionsStyle = useSectionsStyle({ metersPerPixel, color: "black" });
+
+  if (style == null || map == null || sectionsStyle == null) return null;
 
   // Build style for generalized sections
   const tectonicMapStyle = {
@@ -101,8 +104,23 @@ function useTectonicStyle(metersPerPixel) {
         },
         filter: ["==", ["get", "unit_id"], "nnc"],
       },
+      {
+        id: "nnc-boundary-symbols",
+        type: "symbol",
+        source: "generalized",
+        layout: {
+          "symbol-placement": "line",
+          "symbol-spacing": 20,
+          "icon-image": "line-symbol:thrust-fault:black",
+          "icon-size": 0.75,
+          "icon-rotation-alignment": "map",
+          "icon-allow-overlap": true,
+          d,
+        },
+        filter: ["==", ["get", "unit_id"], "nnc"],
+      },
     ],
   };
 
-  return mergeStyles(style, tectonicMapStyle);
+  return mergeStyles(style, tectonicMapStyle, sectionsStyle);
 }

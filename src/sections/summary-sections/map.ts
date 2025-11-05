@@ -256,18 +256,101 @@ export function SummarySectionsMap({ metersPerPixel = 200, ...rest }) {
   return h(InsetMap, { style, metersPerPixel, ...rest });
 }
 
+export function useSectionsStyle(opts) {
+  // Placeholder for style fetching logic
+
+  const { metersPerPixel = 5, color = "#444", scalar = 1 } = opts;
+  const res = useQuery("sections/section-geometry");
+
+  if (res == null) return null;
+
+  const features = res.map((d: any) => {
+    const { geometry, ...properties } = d;
+    return {
+      type: "Feature",
+      geometry,
+      properties: {
+        ...properties,
+        pixel_radius: d.radius / metersPerPixel + 5,
+      },
+    };
+  });
+
+  // Build style for generalized sections
+  const sectionsStyle = {
+    glyphs: "mapbox://fonts/openmaptiles/{fontstack}/{range}.pbf",
+    sources: {
+      sections: {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features,
+        },
+      },
+    },
+    layers: [
+      {
+        id: "sections-locations",
+        type: "circle",
+        paint: {
+          "circle-radius": 3,
+          "circle-color": color,
+        },
+        source: "sections",
+        filter: [
+          "all",
+          ["get", "in_strat_model"],
+          ["!", ["get", "is_generalized"]],
+        ],
+      },
+      {
+        id: "sections-labels",
+        type: "symbol",
+        source: "sections",
+        layout: {
+          "text-field": ["get", "section_id"],
+          "text-size": 14,
+          "text-font": ["PT Serif Bold"],
+          "text-variable-anchor": ["top", "bottom", "left", "right"],
+          "text-radial-offset": [
+            "+",
+            ["/", ["get", "pixel_radius"], 12 * scalar],
+            0.1,
+          ],
+        },
+        paint: {
+          "text-color": "black",
+          "text-halo-color": "#FFFFFF",
+          "text-halo-width": 1 * scalar,
+        },
+        filter: [
+          "all",
+          ["get", "in_strat_model"],
+          ["!", ["get", "is_generalized"]],
+        ],
+      },
+    ],
+  };
+  return sectionsStyle;
+}
+
 function useSummarySectionsStyle(metersPerPixel, sectionIDs) {
   // Placeholder for style fetching logic
   const res = useQuery("sections/section-geometry");
 
   const style = useInsetMapStyle(mapboxToken);
 
-  if (style == null || res == null) return null;
+  const sectionsStyle = useSectionsStyle({
+    metersPerPixel,
+  });
+
+  if (style == null || res == null || sectionsStyle == null) return null;
 
   if (
     sectionIDs == null ||
     sectionIDs.length == 0 ||
-    sectionIDs[0] != "chemostratigraphy"
+    sectionIDs[0] != "chemostratigraphy" ||
+    sectionsStyle?.layers.length == 0
   ) {
     return null;
   }
@@ -292,7 +375,7 @@ function useSummarySectionsStyle(metersPerPixel, sectionIDs) {
   );
 
   // Build style for generalized sections
-  const sectionsStyle = {
+  const generalizedSectionsStyle = {
     glyphs: "mapbox://fonts/openmaptiles/{fontstack}/{range}.pbf",
     sources: {
       sections: {
@@ -311,20 +394,6 @@ function useSummarySectionsStyle(metersPerPixel, sectionIDs) {
       },
     },
     layers: [
-      {
-        id: "sections-locations",
-        type: "circle",
-        paint: {
-          "circle-radius": 3,
-          "circle-color": "#444",
-        },
-        source: "sections",
-        filter: [
-          "all",
-          ["get", "in_strat_model"],
-          ["!", ["get", "is_generalized"]],
-        ],
-      },
       {
         id: "section-links",
         type: "line",
@@ -357,30 +426,8 @@ function useSummarySectionsStyle(metersPerPixel, sectionIDs) {
           ["==", ["get", "section_id"], "M"],
         ],
       },
-      {
-        id: "sections-labels",
-        type: "symbol",
-        source: "sections",
-        layout: {
-          "text-field": ["get", "section_id"],
-          "text-size": 14,
-          "text-font": ["PT Serif Bold"],
-          "text-variable-anchor": ["top", "bottom", "left", "right"],
-          "text-radial-offset": ["+", ["/", ["get", "pixel_radius"], 12], 0.1],
-        },
-        paint: {
-          "text-color": "black",
-          "text-halo-color": "#FFFFFF",
-          "text-halo-width": 2,
-        },
-        filter: [
-          "all",
-          ["get", "in_strat_model"],
-          ["!", ["get", "is_generalized"]],
-        ],
-      },
     ],
   };
 
-  return mergeStyles(style, sectionsStyle);
+  return mergeStyles(style, sectionsStyle, generalizedSectionsStyle);
 }
