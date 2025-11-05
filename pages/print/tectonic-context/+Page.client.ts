@@ -6,33 +6,40 @@ import { mergeStyles } from "@macrostrat/mapbox-utils";
 import { PrintArea } from "~/shared/print-area";
 import styles from "./main.module.styl";
 import { Legend } from "./legend";
+import { PlatformProvider } from "~/platform";
 
 const h = hyper.styled(styles);
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_API_TOKEN;
 
-const bounds = [15.945, -24.498, 16.572, -23.729];
+const bounds = [15.9, -24.48, 16.5, -23.78];
 //const bounds = [15.836, -24.564, 16.386, -24.126];
 
 export function Page() {
-  const metersPerPixel = 100;
+  const metersPerPixel = 140;
   const style = useTectonicStyle(metersPerPixel);
   return h(
-    PrintArea,
-    { filename: "orientations-context.pdf" },
-    h("div.sections-map", [
-      h(
-        InsetMap,
-        {
-          style,
-          metersPerPixel,
-          className: "orientations-map",
-          bounds,
-          scalebarWidth: 150,
-        },
-        h(Legend),
-      ),
-    ]),
+    PlatformProvider,
+    {
+      environment: "print",
+    },
+    h(
+      PrintArea,
+      { filename: "orientations-context.pdf" },
+      h("div.sections-map", [
+        h(
+          InsetMap,
+          {
+            style,
+            metersPerPixel,
+            className: "orientations-map",
+            bounds,
+            scalebarWidth: 150,
+          },
+          h(Legend),
+        ),
+      ]),
+    ),
   );
 }
 

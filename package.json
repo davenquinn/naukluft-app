@@ -81,6 +81,7 @@
     "express": "^4.19.2",
     "html2pdf.js": "^0.12.1",
     "immutability-helper": "^2.6.6",
+    "jotai": "^2.15.1",
     "labella": "^1.1.4",
     "mapbox-gl": "^0.44.1",
     "naukluft-data-backend": "workspace:*",

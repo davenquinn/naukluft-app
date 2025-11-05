@@ -7542,6 +7542,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai@npm:^2.15.1":
+  version: 2.15.1
+  resolution: "jotai@npm:2.15.1"
+  peerDependencies:
+    "@babel/core": ">=7.0.0"
+    "@babel/template": ">=7.0.0"
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@babel/template":
+      optional: true
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 10c0/8260ac9f36e14d2cedbc79f63bc1bcd82902d68a1ab1f3dfce6ffabccbedfd5fa54fffe93e53a09253d6b29a9c05fbc455108a280efc8d349fd5bfb965f7869b
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -8456,6 +8477,7 @@ __metadata:
     express: "npm:^4.19.2"
     html2pdf.js: "npm:^0.12.1"
     immutability-helper: "npm:^2.6.6"
+    jotai: "npm:^2.15.1"
     labella: "npm:^1.1.4"
     mapbox-gl: "npm:^0.44.1"
     naukluft-data-backend: "workspace:*"

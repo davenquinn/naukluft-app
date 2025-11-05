@@ -190,6 +190,7 @@ export function InsetMap({
   metersPerPixel = 200,
   style,
   scalebarWidth,
+  scalebarLabelPosition = "top",
   children,
 }: {
   bounds: [number, number, number, number];
@@ -232,7 +233,7 @@ export function InsetMap({
       [
         h(Scalebar, {
           className: "map-scalebar",
-          labelPosition: "top",
+          labelPosition: scalebarLabelPosition,
           scale: tileBounds.realMetersPerPixel,
           width: scalebarWidth ?? 100,
         }),

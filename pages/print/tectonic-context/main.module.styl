@@ -5,6 +5,11 @@
   div#container
     position absolute
 
+  svg.swatch
+    // Make them a bit transparent
+    rect
+      fill-opacity 0.5
+
   g.lithology
     path
       fill-opacity 1
@@ -13,33 +18,18 @@
       &.in_nappe
         stroke #444
 
-  path#complex-edge
-    fill none
-    stroke black
-
-  div#nnc,div#autochthon
-    width 110px
-    padding 0.2em
-    background-color white
 
   div#autochthon
     position absolute
     right 0
-    width 180px
+    width 200px
     bottom 0
 
   div#legend
-    height 600px
-    h1, .subunit.bold>h2
-      text-transform uppercase
-      font-size 0.6rem
+    .subunit.bold>h2
       margin-top 0
-      color #888888
-      font-weight 600
       margin-bottom 0.5em
     position absolute
-    font-family Gotham
-    font-weight 200
     font-size 12px
     top 0
     left 0
@@ -49,18 +39,7 @@
       margin-bottom 0.4em
     div.subunit
       font-size 0.85em
-    h2
-      font-size 1em
-      margin-top 0em
-      margin-bottom 0em
-      font-weight 400
-    h2#kudu,h2#zebra,h2#dassie,h2#pavian
-      font-weight 500
-    div.header
-      display flex
-      flex-direction row
-      align-items top
-      justify-content space-between
+
     div.swatch
       svg
         width: 30px
@@ -68,19 +47,54 @@
         margin-bottom 1px
 
     h4
-      font-size 0.6em
-      font-weight 300
-      text-transform uppercase
       margin-bottom 0.5em
       margin-top 0.2em
+      font-size: 0.8em
+      font-style: italic
       color #888888
 
-    div.subunit div.subunit div.subunit
-      div.swatch
-        svg
-          height 8px
+    hr
+      border: none
+      background-color: #ccc
+      color: #ccc
+      height: 1px
 
-    div.hr
-      border-top: 1px solid #888
-      height 0px
 
+.legend
+  position absolute
+  bottom 0.5em
+  right 0.5em
+  border 1px solid #888
+  h1
+    font-size 1.2em
+    font-weight: 800
+    color: #888
+  h1, h2, h3, h4, h5, h6
+    font-size: 1.2em
+    margin 0.2em 0
+
+  .minor-unit
+    font-size 0.8em
+    font-family: var(--main-font-family)
+
+.legend-swatch
+  border-radius: 4px
+
+.legend-area
+  width 140px
+  padding 0.5em
+  background-color white
+  :first-child
+    margin-top 0em
+
+.header
+  display flex
+  flex-direction row
+  align-items center
+  justify-content space-between
+  gap: 1em
+
+  .details
+    color: #888
+    font-style: italic
+    margin: 0
