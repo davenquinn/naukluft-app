@@ -40,6 +40,6 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/packages/geologic-patterns" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/new-app/my-app" vcs="Git" />
   </component>
 </project>

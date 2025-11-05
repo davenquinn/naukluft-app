@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/16c77b32-447a-4d96-86d1-727ea6f75a22/console.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+    <file url="file://$PROJECT_DIR$/packages/naukluft-data-backend/sql/map-data/generalized-map.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+    <file url="file://$PROJECT_DIR$/packages/naukluft-data-backend/sql/map-data/orientations.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+    <file url="file://$PROJECT_DIR$/packages/naukluft-data-backend/sql/map-data/tectonic-domains.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+    <file url="file://$PROJECT_DIR$/packages/naukluft-data-backend/sql/map-data/unit-data.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+    <file url="file://$PROJECT_DIR$/packages/naukluft-data-backend/sql/sections/section-geometry.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+    <file url="file://$PROJECT_DIR$/packages/naukluft-data-backend/sql/sections/sections.sql" value="16c77b32-447a-4d96-86d1-727ea6f75a22" />
+  </component>
+</project>

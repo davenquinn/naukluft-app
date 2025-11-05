@@ -1,0 +1,86 @@
+:global
+  path
+    stroke-linecap round
+
+  div#container
+    position absolute
+
+  g.lithology
+    path
+      fill-opacity 1
+      stroke #888
+      stroke-width 0.8
+      &.in_nappe
+        stroke #444
+
+  path#complex-edge
+    fill none
+    stroke black
+
+  div#nnc,div#autochthon
+    width 110px
+    padding 0.2em
+    background-color white
+
+  div#autochthon
+    position absolute
+    right 0
+    width 180px
+    bottom 0
+
+  div#legend
+    height 600px
+    h1, .subunit.bold>h2
+      text-transform uppercase
+      font-size 0.6rem
+      margin-top 0
+      color #888888
+      font-weight 600
+      margin-bottom 0.5em
+    position absolute
+    font-family Gotham
+    font-weight 200
+    font-size 12px
+    top 0
+    left 0
+    bottom 0
+    right 0
+    &>div>div.subunit
+      margin-bottom 0.4em
+    div.subunit
+      font-size 0.85em
+    h2
+      font-size 1em
+      margin-top 0em
+      margin-bottom 0em
+      font-weight 400
+    h2#kudu,h2#zebra,h2#dassie,h2#pavian
+      font-weight 500
+    div.header
+      display flex
+      flex-direction row
+      align-items top
+      justify-content space-between
+    div.swatch
+      svg
+        width: 30px
+        height 12px
+        margin-bottom 1px
+
+    h4
+      font-size 0.6em
+      font-weight 300
+      text-transform uppercase
+      margin-bottom 0.5em
+      margin-top 0.2em
+      color #888888
+
+    div.subunit div.subunit div.subunit
+      div.swatch
+        svg
+          height 8px
+
+    div.hr
+      border-top: 1px solid #888
+      height 0px
+

@@ -95,3 +95,7 @@ function createSolidColorImage(imgColor) {
   canvas.remove();
   return data;
 }
+
+function LegendSwatch({ className, resolver }) {
+  return h("div.legend-swatch", {});
+}

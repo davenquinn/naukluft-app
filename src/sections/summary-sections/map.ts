@@ -190,6 +190,7 @@ export function InsetMap({
   metersPerPixel = 200,
   style,
   scalebarWidth,
+  children,
 }: {
   bounds: [number, number, number, number];
   initializeMap: any;
@@ -228,12 +229,15 @@ export function InsetMap({
           return map;
         },
       },
-      h(Scalebar, {
-        className: "map-scalebar",
-        labelPosition: "top",
-        scale: tileBounds.realMetersPerPixel,
-        width: scalebarWidth ?? 100,
-      }),
+      [
+        h(Scalebar, {
+          className: "map-scalebar",
+          labelPosition: "top",
+          scale: tileBounds.realMetersPerPixel,
+          width: scalebarWidth ?? 100,
+        }),
+        children,
+      ],
     ),
   );
 }

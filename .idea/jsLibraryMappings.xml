@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/api/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/app/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/app2/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/cesium-viewer/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/column-components/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/map-panel/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/naukluft-data-backend/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/photo-viewer/package.json" />
-    <excludedPredefinedLibrary name="Dependencies from naukluft-app/frontend/packages/vector-tile-server/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/examples/strat-column/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/api-types/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/color-utils/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/column-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/column-creator/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/column-views/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/cross-section-utils/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/data-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/data-sheet/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/feedback-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/form-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/map-interface/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/map-styles/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/mapbox-react/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/mapbox-utils/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/static-map-utils/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/stratigraphy-utils/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/style-system/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/svg-map-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/timescale/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/packages/ui-components/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/toolchain/hyperstyle-loader/package.json" />
+    <excludedPredefinedLibrary name="Dependencies from ~/Projects/Macrostrat/Software/web-components/toolchain/vite-plugin-hyperstyles/package.json" />
   </component>
 </project>
