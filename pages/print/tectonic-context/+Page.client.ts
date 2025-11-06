@@ -25,7 +25,7 @@ export function Page() {
     },
     h(
       PrintArea,
-      { filename: "orientations-context.pdf" },
+      { filename: "tectonic-context.pdf" },
       h("div.sections-map", [
         h(
           InsetMap,
@@ -110,12 +110,12 @@ function useTectonicStyle(metersPerPixel) {
         source: "generalized",
         layout: {
           "symbol-placement": "line",
-          "symbol-spacing": 20,
+          "symbol-spacing": 15,
           "icon-image": "line-symbol:thrust-fault:black",
-          "icon-size": 0.75,
+          "icon-size": 0.8,
           "icon-rotation-alignment": "map",
           "icon-allow-overlap": true,
-          d,
+          "icon-rotate": 180,
         },
         filter: ["==", ["get", "unit_id"], "nnc"],
       },

@@ -111,7 +111,13 @@ function useUnitColors(): Map<string, string> | null {
   return useAtomValue(unitColorsAtom);
 }
 
-export function LegendSwatch({ id, width = 30, height = 30, scale = 1 }) {
+export function LegendSwatch({
+  id,
+  width = 30,
+  height = 30,
+  scale = 1,
+  className,
+}) {
   const unitColors = useUnitColors();
   const ref = useRef(null);
 
@@ -146,5 +152,9 @@ export function LegendSwatch({ id, width = 30, height = 30, scale = 1 }) {
       .attr("fill", fill);
   }, [id, unitColors, ref.current]);
 
-  return h("div.legend-swatch", [h("svg.swatch", { width, height, ref })]);
+  return h(
+    "div.legend-swatch",
+    { className },
+    h("svg.swatch", { width, height, ref }),
+  );
 }

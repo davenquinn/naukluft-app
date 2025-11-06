@@ -12,11 +12,11 @@ export function Legend() {
       h(Unit, {
         id: "reitoog-nappe",
         className: "minor-unit",
-        title: "Rietoog",
+        title: "Rietoog Nappe",
         details: "Parautochthonous",
       }),
       h("hr"),
-      h(UnitH, { id: "zebra", title: "Zebra" }, [
+      h(UnitH, { id: "zebra", title: "Zebra Series" }, [
         h(Unit, {
           id: "zebra-displaced-shale",
           title: "Shale wedge",
@@ -26,18 +26,18 @@ export function Legend() {
         h(Unit, { id: "lower-zebra-nappe", title: "Lower" }),
       ]),
 
-      h(UnitH, { id: "dassie", title: "Dassie" }, [
+      h(UnitH, { id: "dassie", title: "Dassie Series" }, [
         h(Unit, { id: "eastern-dassie-nappe", title: "Eastern" }),
         h(Unit, { id: "western-dassie-nappe", title: "Western" }),
       ]),
-      h(UnitH, { id: "pavian", title: "Pavian" }, [
+      h(UnitH, { id: "pavian", title: "Pavian Series" }, [
         h(Unit, { id: "northern-pavian", title: "Northern" }),
         h(UnitH, { id: "southern-pavian", title: "Southern" }, [
           h(Unit, { id: "arbeit-adelt-outlier", title: "Arbeit Adelt" }),
           h(Unit, { id: "bullsport-outlier", title: "Büllsport" }),
         ]),
       ]),
-      h(Unit, { id: "kudu-nappe", title: "Kudu" }),
+      h(Unit, { id: "kudu-nappe", title: "Kudu Series" }),
     ]),
     h("div#autochthon.legend-area", [
       h(
@@ -52,7 +52,7 @@ export function Legend() {
         UnitH,
         { id: "basement", className: "bold", title: "Pre-Damara basement" },
         [
-          h(Unit, { id: "newedam-group", title: "Newedam Group" }),
+          h(Unit, { id: "newedam-group", title: "Rehoboth Group" }),
           h(Unit, { id: "basement", title: "Igneous/Metamorphic" }),
         ],
       ),

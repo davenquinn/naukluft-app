@@ -321,7 +321,7 @@ export function useSectionsStyle(opts) {
         paint: {
           "text-color": "black",
           "text-halo-color": "#FFFFFF",
-          "text-halo-width": 1 * scalar,
+          "text-halo-width": scalar,
         },
         filter: [
           "all",
