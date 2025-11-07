@@ -13,7 +13,6 @@ const h = hyper.styled(styles);
 const mapboxToken = import.meta.env.VITE_MAPBOX_API_TOKEN;
 
 const bounds = [15.9, -24.48, 16.5, -23.78];
-//const bounds = [15.836, -24.564, 16.386, -24.126];
 
 export function Page() {
   const metersPerPixel = 140;
