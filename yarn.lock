@@ -1408,6 +1408,8 @@ __metadata:
     d3-path: "npm:^3.1.0"
     d3-scale: "npm:^4.0.2"
     d3-shape: "npm:^3.2.0"
+    jotai: "npm:^2.15.1"
+    jotai-scope: "npm:^0.9.7"
     mapbox-gl: "npm:^2.15.0||^3.0.0"
     react-spring: "npm:^9.7.5"
     topojson-client: "npm:^3.1.0"
@@ -1425,7 +1427,7 @@ __metadata:
   dependencies:
     "@macrostrat/color-utils": "workspace:^"
     "@macrostrat/hyper": "npm:^3.0.6"
-    "@macrostrat/map-interface": "workspace:^"
+    "@macrostrat/mapbox-utils": "workspace:^"
     "@macrostrat/stratigraphy-utils": "workspace:^"
     "@macrostrat/ui-components": "workspace:^"
     "@visx/axis": "npm:^3.12.0"
@@ -7542,6 +7544,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai-scope@npm:^0.9.7":
+  version: 0.9.7
+  resolution: "jotai-scope@npm:0.9.7"
+  peerDependencies:
+    jotai: ">=2.15.0"
+    react: ">=16.0.0"
+  checksum: 10c0/7ecaa7ce55ae51e6253450956eb2764148393883b16d7c254b9fea13931d38dc3875d2be8082271cba350d7f7915f08fa57e9164d9b4f3e076a581a201009137
+  languageName: node
+  linkType: hard
+
 "jotai@npm:^2.15.1":
   version: 2.15.1
   resolution: "jotai@npm:2.15.1"
@@ -8423,8 +8435,8 @@ __metadata:
     "@blueprintjs/select": "npm:^5"
     "@loadable/component": "npm:^5.15.2"
     "@macrostrat/color-utils": "npm:^1.1.1"
-    "@macrostrat/column-components": "npm:^1.3.0"
-    "@macrostrat/column-views": "npm:^2.1.4"
+    "@macrostrat/column-components": "npm:^1.4.0"
+    "@macrostrat/column-views": "npm:^2.3.1"
     "@macrostrat/hyper": "npm:^3.0.6"
     "@macrostrat/map-styles": "npm:^1.2.3"
     "@macrostrat/mapbox-utils": "npm:^1.6.0"
@@ -8432,7 +8444,7 @@ __metadata:
     "@macrostrat/revision-info-webpack": "npm:^1.0.0"
     "@macrostrat/static-map-utils": "npm:^1.0.1"
     "@macrostrat/style-system": "npm:^0.2.3"
-    "@macrostrat/timescale": "npm:^2.2.2"
+    "@macrostrat/timescale": "npm:^2.3.1"
     "@macrostrat/ui-components": "npm:^4.5.1"
     "@macrostrat/vite-plugin-hyperstyles": "npm:^1.0.2"
     "@turf/polygonize": "npm:^5.1.5"

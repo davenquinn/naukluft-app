@@ -1,8 +1,9 @@
 SELECT
  l.id,
- l.facies,
- l.facies_tract,
  l.section::text section_id,
+ l.bottom::double precision AS bottom,
+ COALESCE(lead(l.bottom) OVER (PARTITION BY l.section ORDER BY l.bottom), s."end")::double precision AS top,
+ l.facies,
  f.color AS facies_color,
  l.lithology,
  l.covered,
@@ -13,9 +14,7 @@ SELECT
  COALESCE(v.pattern, l.lithology) AS pattern,
  COALESCE(l.schematic, false) AS schematic,
  l.fgdc_pattern::text AS fgdc_pattern,
- l.bottom::double precision AS bottom,
- COALESCE(lead(l.bottom) OVER (PARTITION BY l.section ORDER BY l.bottom), s."end")::double precision AS top,
- t.tree,
+ t.tree lithology_hierarchy,
  l.grainsize,
  l.surface_type,
  l.surface_order,
@@ -27,4 +26,4 @@ FROM section.section_lithology l
   LEFT JOIN section.facies f ON l.facies = f.id
   LEFT JOIN section.lithology v ON l.lithology = v.id
   JOIN section.section s ON s.id = l.section
-ORDER BY bottom;
+ORDER BY section_id, bottom;
