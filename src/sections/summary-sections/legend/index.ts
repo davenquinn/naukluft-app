@@ -48,7 +48,7 @@ function Facies(props) {
 }
 
 export const paperTitle =
-  "Structure and stratigraphy of the Zebra Series and the tectonic evolution of the Naukluft Mountains, Namibia";
+  "Structure and stratigraphy of the Zebra Series and the tectonic evolution of the Naukluft Mountains";
 
 function FaciesLegend(props) {
   return h("div.facies-description-inner", [
