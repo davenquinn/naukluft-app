@@ -4,6 +4,7 @@ import { DarkModeProvider, LocalStorage } from "@macrostrat/ui-components";
 
 import update from "immutability-helper";
 import { GeologicPatternProvider } from "@macrostrat/column-components";
+import "./shared/style-system.sass";
 import styles from "./platform.module.sass";
 
 const h = hyper.styled(styles);

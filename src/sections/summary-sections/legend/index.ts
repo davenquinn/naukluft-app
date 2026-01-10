@@ -47,6 +47,9 @@ function Facies(props) {
   );
 }
 
+export const paperTitle =
+  "Structure and stratigraphy of the Zebra Series and the tectonic evolution of the Naukluft Mountains";
+
 function FaciesLegend(props) {
   return h("div.facies-description-inner", [
     h("div.section", [
@@ -112,10 +115,7 @@ function LegendFull({ children }) {
       h("h2.authors", "Daven Quinn"),
       h("p.subtitle", [
         "Preliminary version, accompanying the manuscript ",
-        h(
-          "em",
-          "Tectonostratigraphy of the Zebra Series and the tectonic evolution of the Naukluft Mountains, Namibia",
-        ),
+        h("em", paperTitle),
       ]),
       h("p.compilation-date", [
         "Compiled on ",

@@ -1,0 +1,92 @@
+:global
+  path
+    stroke-linecap round
+
+  div#container
+    position absolute
+
+  svg.swatch
+    // Make them a bit transparent
+    rect
+      fill-opacity 0.5
+
+  g.lithology
+    path
+      fill-opacity 1
+      stroke #888
+      stroke-width 0.8
+      &.in_nappe
+        stroke #444
+
+
+  div#autochthon
+    position absolute
+    right 0
+    width 200px
+    bottom 0
+
+  div#legend
+    position absolute
+    font-size 12px
+    top 0
+    left 0
+    bottom 0
+    right 0
+    div.subunit
+      font-size 0.85em
+
+    h4
+      margin-bottom 0.5em
+      margin-top 0.2em
+      font-size: 0.8em
+      font-style: italic
+      color #888888
+
+    hr
+      border: none
+      background-color: #ccc
+      color: #ccc
+      height: 1px
+
+
+.legend
+  position absolute
+  bottom 0.5em
+  right 0.5em
+  --heading-font-family: 'Montserrat', sans-serif
+  --main-font-family: 'Chaparral Pro', serif
+  h1
+    font-size 1.2em
+    font-weight: 800
+    color: #888
+  h1, h2, h3, h4, h5, h6
+    font-size: 1.1em
+    margin 0.2em 0
+
+.minor-unit
+  font-size 0.8em
+  color: #888
+  font-style: italic
+
+.legend-area
+  width 140px
+  padding 0.5em
+  background-color white
+  :first-child
+    margin-top 0em
+
+.header
+  display flex
+  flex-direction row
+  align-items center
+  justify-content space-between
+  gap: 1em
+
+  .details
+    color: #888
+    font-style: italic
+    margin: 0
+
+.tectonic-context-map
+  --scalebar-background: white
+  border: none

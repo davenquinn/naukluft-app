@@ -16,6 +16,7 @@ import { MeasuredSection, StandaloneAxisScale } from "./base-section";
 import { defaultResolveID } from "@macrostrat/column-components";
 import { PlatformProvider, TargetEnvironment } from "~/platform";
 import chroma from "chroma-js";
+import { PrintArea } from "~/shared/print-area";
 
 type UnitDivision = ColumnDivision & BaseUnit;
 
@@ -38,13 +39,17 @@ function applyPatterns<T extends ColumnSurface>(
 
 export function Page() {
   return h(
-    PlatformProvider,
-    { environment: TargetEnvironment.Print },
-    h("div.columns", [
-      h(StandaloneAxisScale, { pixelScale, range: [0, 300] }),
-      h(ZebraRiverGroup, { showAxis: false }),
-      h(NamaGroup, { showAxis: false }),
-    ]),
+    PrintArea,
+    { filename: "lithostratigraphy.pdf" },
+    h(
+      PlatformProvider,
+      { environment: TargetEnvironment.Print },
+      h("div.columns", [
+        h(StandaloneAxisScale, { pixelScale, range: [0, 300] }),
+        h(ZebraRiverGroup, { showAxis: false }),
+        h(NamaGroup, { showAxis: false }),
+      ]),
+    ),
   );
 }
 

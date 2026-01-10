@@ -40,6 +40,5 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/packages/geologic-patterns" vcs="Git" />
   </component>
 </project>
