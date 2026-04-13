@@ -16,17 +16,13 @@ import {
   SectionPositionProvider,
 } from "../components";
 import { SVGSectionInner } from "../summary-sections/column";
-import {
-  GeneralizedLithostratKey,
-  LithostratigraphyColumn,
-} from "../summary-sections/lithostrat-key";
+import { GeneralizedLithostratKey } from "../summary-sections/lithostrat-key";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";
 import { GeneralizedChemostratigraphyColumn } from "./chemostrat";
 import {
   ColumnDivisionsContext,
   GeneralizedDataProvider,
 } from "./data-provider";
-import { TriangleBars } from "@macrostrat/column-components";
 import { LegendInner } from "~/sections/summary-sections/legend";
 
 import { hyperStyled } from "@macrostrat/hyper";
@@ -145,7 +141,6 @@ function GeneralizedSection(props) {
     h(
       ColumnProvider,
       {
-        id,
         range,
         height,
         divisions,

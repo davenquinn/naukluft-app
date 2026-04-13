@@ -1,4 +1,3 @@
-import T from "prop-types";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { EditorContext } from "./editor";
@@ -308,6 +307,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
             {
               width: innerWidth,
               grainsizeScaleStart,
+              grainsizeScaleRange: [grainsizeScaleStart, innerWidth],
             },
             [
               h(EditOverlay, {
