@@ -1,10 +1,7 @@
 import h from "@macrostrat/hyper";
 import { PrintArea } from "~/shared/print-area";
 import { GeneralizedSectionsInner } from "~/sections/generalized-sections";
-import {
-  SectionDataProvider,
-  wrapWithSections,
-} from "~/sections/data-providers";
+import { SectionDataProvider } from "~/sections/data-providers";
 import "~/shared/global-styles";
 import {
   defaultSettings,
@@ -24,7 +21,7 @@ export function Page() {
       h(
         SettingsProvider,
         { ...defaultSettings, interactive: false, correctIsotopeRatios: true },
-        h(SectionDataProvider, h(wrapWithSections(GeneralizedSectionsInner))),
+        h(SectionDataProvider, h(GeneralizedSectionsInner)),
       ),
     ),
   );
