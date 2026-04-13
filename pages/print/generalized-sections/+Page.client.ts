@@ -23,7 +23,11 @@ export function Page() {
         { ...defaultSettings, interactive: false, correctIsotopeRatios: true },
         h(
           SectionDataProvider,
-          h(GeneralizedSectionsInner, { showChemostrat: true }),
+          /** We removed the correlated chemostratigraphy from the structure paper,
+           * as it was not important to the story presented. However, we keep the
+           * ability to turn it back on if desired.
+           */
+          h(GeneralizedSectionsInner, { showChemostrat: false }),
         ),
       ),
     ),

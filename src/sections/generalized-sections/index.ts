@@ -24,6 +24,7 @@ import {
   GeneralizedDataProvider,
 } from "./data-provider";
 import { LegendInner } from "~/sections/summary-sections/legend";
+import classNames from "classnames";
 
 import { hyperStyled } from "@macrostrat/hyper";
 import styles from "./main.module.styl";
@@ -70,65 +71,73 @@ function SectionPane(props) {
 
   const pixelsPerMeter = 12;
 
-  return h("div.section-pane", { className }, [
-    h(LegendInner, { className: "legend" }),
-    h(SectionContainer, [
-      h(SectionLinkOverlay, {
-        extendLinks: true,
-        showSectionTrackers: false,
+  return h(
+    "div.section-pane",
+    {
+      className: classNames(className, {
+        "with-chemostratigraphy": showChemostrat,
       }),
-      h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
-        sections,
-        simple: true,
-        showLines: false,
-        keySection: "Onis",
-        pixelsPerMeter,
-      }),
-      h(GeneralizedLithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        keySection: "Onis",
-        offset: 0,
-        pixelsPerMeter,
-      }),
-      h(GeneralizedSectionsMap, {
-        bounds: [16, -24.42, 16.28, -24.18],
-        className: "inset-map",
-        metersPerPixel: 140,
-      }),
-      h(
-        "div.generalized-sections",
-        sections.map(function ({ key, surfaces }) {
-          let start = 0;
-          // Bottom is the first division with an assigned facies
-          for (let d of Array.from(surfaces)) {
-            if (d.facies != null && d.facies !== "none") {
-              start = d.bottom;
-              break;
-            }
-          }
-          // Top of the last section is taken as the height
-          // at which to clip off errant facies
-          const end = parseFloat(surfaces[surfaces.length - 1].top);
-
-          return h(GeneralizedSection, {
-            id: key,
-            zoom: 1,
-            key,
-            triangleBarRightSide: key === "Onis",
-            offsetTop: offsets[key],
-            start,
-            end,
-            range: [start, end],
-            height: end - start,
-            divisions: surfaces,
-            pixelsPerMeter,
-            sequenceStratOrder: [1, 1],
-          });
+    },
+    [
+      h(LegendInner, { className: "legend" }),
+      h(SectionContainer, [
+        h(SectionLinkOverlay, {
+          extendLinks: true,
+          showSectionTrackers: false,
         }),
-      ),
-    ]),
-  ]);
+        h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
+          sections,
+          simple: true,
+          showLines: false,
+          keySection: "Onis",
+          pixelsPerMeter,
+        }),
+        h(GeneralizedLithostratKey, {
+          zoom: 0.1,
+          key: "key",
+          keySection: "Onis",
+          offset: 0,
+          pixelsPerMeter,
+        }),
+        h(GeneralizedSectionsMap, {
+          bounds: [16, -24.42, 16.28, -24.18],
+          className: "inset-map",
+          metersPerPixel: 140,
+        }),
+        h(
+          "div.generalized-sections",
+          sections.map(function ({ key, surfaces }) {
+            let start = 0;
+            // Bottom is the first division with an assigned facies
+            for (let d of Array.from(surfaces)) {
+              if (d.facies != null && d.facies !== "none") {
+                start = d.bottom;
+                break;
+              }
+            }
+            // Top of the last section is taken as the height
+            // at which to clip off errant facies
+            const end = parseFloat(surfaces[surfaces.length - 1].top);
+
+            return h(GeneralizedSection, {
+              id: key,
+              zoom: 1,
+              key,
+              triangleBarRightSide: key === "Onis",
+              offsetTop: offsets[key],
+              start,
+              end,
+              range: [start, end],
+              height: end - start,
+              divisions: surfaces,
+              pixelsPerMeter,
+              sequenceStratOrder: [1, 1],
+            });
+          }),
+        ),
+      ]),
+    ],
+  );
 }
 
 function GeneralizedSection(props) {
