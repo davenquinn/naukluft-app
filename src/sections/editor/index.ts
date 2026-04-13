@@ -356,10 +356,11 @@ const EditorInner = (props: EditorProps) => {
 interface ModalEditorProps extends EditorProps {
   closeDialog: () => void;
   isOpen: boolean;
+  showDetails: boolean;
 }
 
 const ModalEditor = (props: ModalEditorProps) => {
-  const { interval, isOpen, closeDialog, ...rest } = props;
+  const { interval, isOpen, closeDialog, showDetails = false, ...rest } = props;
 
   const { updateDivisions } = useContext(ColumnDivisionsContext);
 
@@ -374,6 +375,7 @@ const ModalEditor = (props: ModalEditorProps) => {
     [
       h(EditorInner, {
         interval,
+        showDetails,
         ...rest,
         onUpdate() {
           updateDivisions();
@@ -381,11 +383,6 @@ const ModalEditor = (props: ModalEditorProps) => {
       }),
     ],
   );
-};
-
-ModalEditor.defaultProps = {
-  onUpdate() {},
-  showDetails: false,
 };
 
 export { Direction, ModalEditor };

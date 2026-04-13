@@ -51,7 +51,7 @@ export const sectionSymbols = [
   {
     id: 580,
     section_id: "J",
-    symbol: "Dessication cracks",
+    symbol: "Desiccation cracks",
     start_height: "34.5",
     end_height: "36.5",
     symbol_min_zoom: 0,

@@ -8,11 +8,9 @@ import {
   ColumnProvider,
   ColumnSVG,
   TriangleBars,
-  ColumnAxis,
   useColumn,
 } from "@macrostrat/column-components";
 import { SectionLinkLegendLine } from "~/sections/components";
-import { SummarySectionsMap } from "~/sections/summary-sections/map";
 
 const h = hyper.styled(styles);
 
@@ -56,27 +54,35 @@ function FaciesLegend(props) {
       h("h4", "Siliciclastic"),
       h(
         Facies,
-        { id: "coarse-clastics" },
+        { id: "coarse-sandstone" },
         "Coarse sandstone and pebble conglomerate",
       ),
       h(
         Facies,
-        { id: "shallow-fine-clastics" },
+        { id: "fine-sandstone" },
         "Inner shoreface sandstone–siltstone",
       ),
-      h(Facies, { id: "fine-clastics" }, "Outer shoreface sandstone–mudstone"),
+      h(
+        Facies,
+        { id: "offshore-mudstone" },
+        "Outer shoreface sandstone–mudstone",
+      ),
     ]),
     h("div.section", [
       h("h4", "Carbonate"),
       h(
         Facies,
-        { id: "knobbly-stromatolites" },
+        { id: "digitate-stromatolites" },
         "Stromatolite-colonized reworking surface",
       ),
       h(Facies, { id: "carbonate-mudstone" }),
       h(Facies, { id: "intraclast-grainstone" }),
-      h(Facies, { id: "hcs-grainstone" }, "Cross-stratified grainstone"),
-      h(Facies, { id: "mixed-grainstone" }, "Wavy-bedded heterolithic"),
+      h(
+        Facies,
+        { id: "cross-strat-grainstone" },
+        "Cross-stratified grainstone",
+      ),
+      h(Facies, { id: "wavy-grainstone" }, "Wavy-bedded heterolithic"),
       h(Facies, { id: "intraclast-breccia" }, "Intraclast breccia"),
       // h('p.explanation', [
       //   h("span.key", "*"),
@@ -145,7 +151,7 @@ function TriangleBarsLegend() {
       ],
       pixelsPerMeter: 30,
     },
-    h(ColumnSVG, { width: 200, padding: 10, paddingH: 2, paddingLeft: 8 }, [
+    h(ColumnSVG, { width: 120, padding: 10, paddingH: 2, paddingLeft: 8 }, [
       h(LegendSurfaces, { offsetLeft: 0 }),
       h(TriangleBars, {
         minOrder: 0,

@@ -6,18 +6,24 @@ import { pairs } from "d3-array";
 import { linkHorizontal } from "d3-shape";
 import update from "immutability-helper";
 import T from "prop-types";
-import { Component, createContext, useContext, useEffect, useRef } from "react";
+import {
+  Component,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { any, debounce } from "underscore";
 import { Notification } from "~/notify";
 import { useSurfaces } from "~/sections/providers";
 import { prepareLinkData } from "./build-links";
 import styles from "./main.module.styl";
-import { useTargetEnvironment } from "~/platform";
 import { ColumnSVG, useColumn } from "@macrostrat/column-components";
 
 const h = hyperStyled(styles);
 
-const SectionPositionContext = createContext();
+const SectionPositionContext = createContext(null);
 const SectionObserverContext = createContext({});
 
 class SectionPositionProvider extends Component {
@@ -122,7 +128,15 @@ class SectionPositionProvider extends Component {
 
 const useSectionPositions = () => useContext(SectionObserverContext);
 
-const ColumnTracker = function (props) {
+interface ColumnTrackerProps {
+  width?: number;
+  id: string;
+  adjustPosition?: (d: any) => any;
+  className?: string;
+  children?: ReactNode;
+}
+
+function ColumnTracker(props: ColumnTrackerProps) {
   /*
   Tracks a column's position and reports
   it back to the SectionObserverContext.
@@ -146,12 +160,7 @@ const ColumnTracker = function (props) {
   useEffect(runPositioner);
 
   return h("div", { className, ref }, children);
-};
-
-ColumnTracker.propTypes = {
-  width: T.number,
-  id: T.string.isRequired,
-};
+}
 
 // https://www.particleincell.com/2012/bezier-splines/
 

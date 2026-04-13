@@ -19,11 +19,11 @@ global.SERIALIZED_QUERIES = true;
 global.BASE_URL = "/";
 console.log(`Running application on ${PLATFORM}`);
 
-const Platform = Object.freeze({
-  ELECTRON: 1,
-  WEB: 2,
-  PRINT: 3,
-});
+enum Platform {
+  ELECTRON = 1,
+  WEB = 2,
+  PRINT = 3,
+}
 
 function join(...args: string[]): string {
   return args.join("/");
@@ -34,10 +34,24 @@ export enum TargetEnvironment {
   Interactive = "interactive",
 }
 
-const PlatformContext = createContext({
+interface PlatformCtx {
+  environment: TargetEnvironment;
+  platform: Platform;
+  editable: boolean;
+  inEditMode: boolean;
+  serializedQueries: boolean;
+  updateState: (val: any) => void;
+  computePhotoPath: (photo) => string;
+}
+
+const PlatformContext = createContext<PlatformCtx>({
   environment: TargetEnvironment.Interactive,
   platform: Platform.WEB,
   editable: false,
+  inEditMode: false,
+  serializedQueries: false,
+  updateState: () => {},
+  computePhotoPath: () => "",
 });
 
 export function useTargetEnvironment() {
@@ -86,7 +100,7 @@ class PlatformProvider extends Component<{
     const { children, ...rest } = this.props;
 
     const environment = this.props.environment ?? TargetEnvironment.Interactive;
-    const value = {
+    const value: PlatformCtx = {
       ...rest,
       ...restState,
       serializedQueries,

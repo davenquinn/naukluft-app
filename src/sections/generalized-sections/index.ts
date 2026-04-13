@@ -16,18 +16,15 @@ import {
   SectionPositionProvider,
 } from "../components";
 import { SVGSectionInner } from "../summary-sections/column";
-import {
-  GeneralizedLithostratKey,
-  LithostratigraphyColumn,
-} from "../summary-sections/lithostrat-key";
+import { GeneralizedLithostratKey } from "../summary-sections/lithostrat-key";
 import { GeneralizedAxis, GeneralizedBreaks } from "./axis";
 import { GeneralizedChemostratigraphyColumn } from "./chemostrat";
 import {
   ColumnDivisionsContext,
   GeneralizedDataProvider,
 } from "./data-provider";
-import { TriangleBars } from "@macrostrat/column-components";
 import { LegendInner } from "~/sections/summary-sections/legend";
+import classNames from "classnames";
 
 import { hyperStyled } from "@macrostrat/hyper";
 import styles from "./main.module.styl";
@@ -41,7 +38,7 @@ export function GeneralizedSections(props) {
       settingsPanel: SummarySectionsSettings,
       defaultSettings,
     },
-    h(GeneralizedSectionsInner),
+    h(GeneralizedSectionsInner, { showChemostrat: true }),
   );
 }
 
@@ -59,7 +56,7 @@ const compactOffsets = {
 };
 
 function SectionPane(props) {
-  const { className } = props;
+  const { className, showChemostrat = true } = props;
   const { divisions } = useContext(ColumnDivisionsContext);
   const surfaceMap = group(divisions, (s) => s.section_id);
   const sections = Array.from(surfaceMap, function ([key, surfaces]) {
@@ -72,69 +69,75 @@ function SectionPane(props) {
 
   const offsets = compactOffsets;
 
-  const showChemostrat = true;
-
   const pixelsPerMeter = 12;
 
-  return h("div.section-pane", { className }, [
-    h(LegendInner, { className: "legend" }),
-    h(SectionContainer, [
-      h(SectionLinkOverlay, {
-        extendLinks: true,
-        showSectionTrackers: false,
+  return h(
+    "div.section-pane",
+    {
+      className: classNames(className, {
+        "with-chemostratigraphy": showChemostrat,
       }),
-      h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
-        sections,
-        simple: true,
-        showLines: false,
-        keySection: "Onis",
-        pixelsPerMeter,
-      }),
-      h(GeneralizedLithostratKey, {
-        zoom: 0.1,
-        key: "key",
-        keySection: "Onis",
-        offset: 0,
-        pixelsPerMeter,
-      }),
-      h(GeneralizedSectionsMap, {
-        bounds: [16, -24.42, 16.28, -24.18],
-        className: "inset-map",
-        metersPerPixel: 140,
-      }),
-      h(
-        "div.generalized-sections",
-        sections.map(function ({ key, surfaces }) {
-          let start = 0;
-          // Bottom is the first division with an assigned facies
-          for (let d of Array.from(surfaces)) {
-            if (d.facies != null && d.facies !== "none") {
-              start = d.bottom;
-              break;
-            }
-          }
-          // Top of the last section is taken as the height
-          // at which to clip off errant facies
-          const end = parseFloat(surfaces[surfaces.length - 1].top);
-
-          return h(GeneralizedSection, {
-            id: key,
-            zoom: 1,
-            key,
-            triangleBarRightSide: key === "Onis",
-            offsetTop: offsets[key],
-            start,
-            end,
-            range: [start, end],
-            height: end - start,
-            divisions: surfaces,
-            pixelsPerMeter,
-            sequenceStratOrder: [1, 1],
-          });
+    },
+    [
+      h(LegendInner, { className: "legend" }),
+      h(SectionContainer, [
+        h(SectionLinkOverlay, {
+          extendLinks: true,
+          showSectionTrackers: false,
         }),
-      ),
-    ]),
-  ]);
+        h.if(showChemostrat)(GeneralizedChemostratigraphyColumn, {
+          sections,
+          simple: true,
+          showLines: false,
+          keySection: "Onis",
+          pixelsPerMeter,
+        }),
+        h(GeneralizedLithostratKey, {
+          zoom: 0.1,
+          key: "key",
+          keySection: "Onis",
+          offset: 0,
+          pixelsPerMeter,
+        }),
+        h(GeneralizedSectionsMap, {
+          bounds: [16, -24.42, 16.28, -24.18],
+          className: "inset-map",
+          metersPerPixel: 140,
+        }),
+        h(
+          "div.generalized-sections",
+          sections.map(function ({ key, surfaces }) {
+            let start = 0;
+            // Bottom is the first division with an assigned facies
+            for (let d of Array.from(surfaces)) {
+              if (d.facies != null && d.facies !== "none") {
+                start = d.bottom;
+                break;
+              }
+            }
+            // Top of the last section is taken as the height
+            // at which to clip off errant facies
+            const end = parseFloat(surfaces[surfaces.length - 1].top);
+
+            return h(GeneralizedSection, {
+              id: key,
+              zoom: 1,
+              key,
+              triangleBarRightSide: key === "Onis",
+              offsetTop: offsets[key],
+              start,
+              end,
+              range: [start, end],
+              height: end - start,
+              divisions: surfaces,
+              pixelsPerMeter,
+              sequenceStratOrder: [1, 1],
+            });
+          }),
+        ),
+      ]),
+    ],
+  );
 }
 
 function GeneralizedSection(props) {
@@ -145,7 +148,6 @@ function GeneralizedSection(props) {
     h(
       ColumnProvider,
       {
-        id,
         range,
         height,
         divisions,
@@ -172,9 +174,13 @@ function GeneralizedSection(props) {
   ]);
 }
 
-export const GeneralizedSectionsInner = compose(
+const ProviderStack = compose(
   SectionSurfacesProvider,
   GeneralizedDataProvider,
   SectionPositionProvider,
-  SectionPane,
 );
+
+export function GeneralizedSectionsInner(props) {
+  const { showChemostrat = true } = props;
+  return h(ProviderStack, h(SectionPane, { showChemostrat }));
+}

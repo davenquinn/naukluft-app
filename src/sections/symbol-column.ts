@@ -17,7 +17,7 @@ const columnPatterns = import.meta.glob("../../assets/column-patterns/*.svg", {
 const symbolIndex: Record<string, string> = {
   "Hummocky cross-stratified": "hcs.svg",
   "Trough cross-stratified": "tcs.svg",
-  "Dessication cracks": "dessication-cracks.svg",
+  "Desiccation cracks": "dessication-cracks.svg",
   Ooids: "ooids.svg",
   "Domal stromatolites": "domal-stromatolites.svg",
   "Digitate stromatolites": "digitate-stromatolites.svg",
