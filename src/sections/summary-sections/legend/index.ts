@@ -8,11 +8,9 @@ import {
   ColumnProvider,
   ColumnSVG,
   TriangleBars,
-  ColumnAxis,
   useColumn,
 } from "@macrostrat/column-components";
 import { SectionLinkLegendLine } from "~/sections/components";
-import { SummarySectionsMap } from "~/sections/summary-sections/map";
 
 const h = hyper.styled(styles);
 
@@ -153,7 +151,7 @@ function TriangleBarsLegend() {
       ],
       pixelsPerMeter: 30,
     },
-    h(ColumnSVG, { width: 200, padding: 10, paddingH: 2, paddingLeft: 8 }, [
+    h(ColumnSVG, { width: 120, padding: 10, paddingH: 2, paddingLeft: 8 }, [
       h(LegendSurfaces, { offsetLeft: 0 }),
       h(TriangleBars, {
         minOrder: 0,

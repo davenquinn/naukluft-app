@@ -21,7 +21,10 @@ export function Page() {
       h(
         SettingsProvider,
         { ...defaultSettings, interactive: false, correctIsotopeRatios: true },
-        h(SectionDataProvider, h(GeneralizedSectionsInner)),
+        h(
+          SectionDataProvider,
+          h(GeneralizedSectionsInner, { showChemostrat: true }),
+        ),
       ),
     ),
   );

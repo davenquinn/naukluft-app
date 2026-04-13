@@ -98,6 +98,9 @@ const SectionGroup = (props: SectionGroupProps) => {
 
           const height = end - start;
 
+          const offsetTop = 670 - height - offset;
+          console.log(id, offsetTop);
+
           return h(SVGSectionComponent, {
             zoom: 0.1,
             pixelsPerMeter,
@@ -109,7 +112,7 @@ const SectionGroup = (props: SectionGroupProps) => {
             sequenceStratOrder,
             showTriangleBars,
             isotopesPerSection,
-            offsetTop: 670 - height - offset,
+            offsetTop,
             range: [start, end],
             height,
             start,

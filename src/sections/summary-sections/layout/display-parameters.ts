@@ -29,7 +29,7 @@ const sectionOffsets = {
   F: 200,
   G: -10,
   H: 310,
-  I: 30,
+  I: 20,
   J: -5,
   M: 180,
   K: 530,

@@ -194,7 +194,7 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     innerWidth = 100,
     showUnderlay = true,
     offsetTop,
-    absolutePosition,
+    absolutePosition = true,
     isotopeColumnWidth = 60,
     axisComponent = ColumnSummaryAxis,
     sequenceStratOrder = [0, 1],

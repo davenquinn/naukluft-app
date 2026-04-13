@@ -37,7 +37,7 @@ export function GeneralizedSections(props) {
       settingsPanel: SummarySectionsSettings,
       defaultSettings,
     },
-    h(GeneralizedSectionsInner),
+    h(GeneralizedSectionsInner, { showChemostrat: true }),
   );
 }
 
@@ -55,7 +55,7 @@ const compactOffsets = {
 };
 
 function SectionPane(props) {
-  const { className } = props;
+  const { className, showChemostrat = true } = props;
   const { divisions } = useContext(ColumnDivisionsContext);
   const surfaceMap = group(divisions, (s) => s.section_id);
   const sections = Array.from(surfaceMap, function ([key, surfaces]) {
@@ -67,8 +67,6 @@ function SectionPane(props) {
   sections.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
 
   const offsets = compactOffsets;
-
-  const showChemostrat = true;
 
   const pixelsPerMeter = 12;
 
@@ -167,9 +165,13 @@ function GeneralizedSection(props) {
   ]);
 }
 
-export const GeneralizedSectionsInner = compose(
+const ProviderStack = compose(
   SectionSurfacesProvider,
   GeneralizedDataProvider,
   SectionPositionProvider,
-  SectionPane,
 );
+
+export function GeneralizedSectionsInner(props) {
+  const { showChemostrat = true } = props;
+  return h(ProviderStack, h(SectionPane, { showChemostrat }));
+}
