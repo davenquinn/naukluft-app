@@ -181,32 +181,33 @@ interface SVGSectionInnerProps {
   };
 }
 
+const defaultPadding = {
+  left: 30,
+  top: 10,
+  right: 20,
+  bottom: 35,
+};
+
 function SVGSectionInner(props: SVGSectionInnerProps) {
   let {
     id,
-    padding,
-    innerWidth,
+    padding = defaultPadding,
+    innerWidth = 100,
     showUnderlay = true,
     offsetTop,
     absolutePosition,
     isotopeColumnWidth = 60,
     axisComponent = ColumnSummaryAxis,
-  } = props;
-
-  const { inEditMode = false } = useContext(PlatformContext);
-
-  const {
     sequenceStratOrder = [0, 1],
     showFloodingSurfaces = false,
     showTriangleBars = true,
-  } = props;
-
-  const {
     showCarbonIsotopes = true,
     showOxygenIsotopes = true,
     isotopesPerSection,
     triangleBarRightSide = false,
   } = props;
+
+  const { inEditMode = false } = useContext(PlatformContext);
 
   let overallWidth = 120;
   const chemostratColumnStart = overallWidth;
@@ -371,35 +372,6 @@ function SVGSectionInner(props: SVGSectionInnerProps) {
     ],
   );
 }
-
-SVGSectionInner.defaultProps = {
-  axisComponent: ColumnSummaryAxis,
-  zoom: 1,
-  inEditMode: false,
-  offsetTop: null,
-  marginTop: null,
-  innerWidth: 100,
-  height: 100, // Section height in meters
-  lithologyWidth: 40,
-  showWhiteUnderlay: true,
-  showFacies: true,
-  absolutePosition: true,
-  triangleBarRightSide: false,
-  marginLeft: -10,
-  padding: {
-    left: 30,
-    top: 10,
-    right: 20,
-    bottom: 35,
-  },
-};
-
-SVGSectionInner.propTypes = {
-  //inEditMode: T.bool
-  absolutePosition: T.bool,
-  isotopesPerSection: T.bool,
-  offsetTop: T.number,
-};
 
 const SVGSectionComponent = (props) => {
   const { id, pixelsPerMeter, ...rest } = props;
