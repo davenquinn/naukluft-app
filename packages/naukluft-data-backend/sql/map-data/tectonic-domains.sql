@@ -8,7 +8,7 @@ WITH nappe_complex AS (
     '#000000' AS color,
     FALSE AS in_nappe,
     NULL AS tectonic_unit
-  FROM mapping.generalized_face
+  FROM {{mapping}}.generalized_face
   WHERE
     tectonic_unit IS NOT NULL
 ),
@@ -16,12 +16,12 @@ base AS (
   SELECT
     st_union(st_intersection(mf.geometry, nnc.geometry)) geometry,
     mf.unit_id
-  FROM map_topology.map_face mf
+  FROM {{map_topo}}.map_face mf
          JOIN nappe_complex nnc ON st_intersects(mf.geometry, nnc.geometry)
   WHERE
     mf.map_layer = (
       SELECT id
-      FROM map_digitizer.map_layer
+      FROM {{map_data}}.map_layer
       WHERE name = 'Structural Domain'
     )
   GROUP BY mf.unit_id

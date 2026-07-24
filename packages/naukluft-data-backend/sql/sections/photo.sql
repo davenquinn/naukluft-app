@@ -5,10 +5,10 @@ SELECT
   geometry,
   coalesce(sn.edited_note, sn.note) caption,
   jpeg_path src
-FROM photo p
-LEFT JOIN section.section_note_photo s
+FROM {{base}}.photo p
+LEFT JOIN {{section}}.section_note_photo s
   ON p.id = s.photo_id
-LEFT JOIN section.section_note sn
+LEFT JOIN {{section}}.section_note sn
   ON s.note_id = sn.id
 WHERE geometry IS NOT null
-   OR p.id IN (SELECT photo_id FROM section.section_note_photo)
+   OR p.id IN (SELECT photo_id FROM {{section}}.section_note_photo)

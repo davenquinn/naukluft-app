@@ -7,8 +7,8 @@ SELECT
   fgdc_symbol symbol,
   trim(symbol_color) symbol_color,
   coalesce(u.short_name, name) short_name
-FROM mapping.unit u
-WHERE id = ANY(mapping.subunits('zebra-nappe'))
+FROM {{mapping}}.unit u
+WHERE id = ANY({{mapping}}.subunits('zebra-nappe'))
 )
 SELECT
   a.id::text,
@@ -37,6 +37,6 @@ SELECT
   a1.short_name::text
 FROM a
 JOIN a a1
-  ON a.id = ANY(mapping.subunits(a1.id))
+  ON a.id = ANY({{mapping}}.subunits(a1.id))
  AND a1.level = 3
 WHERE a.level = 4

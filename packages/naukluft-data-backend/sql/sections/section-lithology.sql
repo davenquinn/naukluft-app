@@ -20,10 +20,10 @@ SELECT
  l.surface_order,
  l.surface_certainty,
  COALESCE(COALESCE(l.fill_pattern, v.pattern), l.lithology) AS fill_pattern
-FROM section.section_lithology l
-  LEFT JOIN section.lithology_tree t ON l.lithology = t.id
-  LEFT JOIN section.surface ss ON l.surface = ss.id
-  LEFT JOIN section.facies f ON l.facies = f.id
-  LEFT JOIN section.lithology v ON l.lithology = v.id
-  JOIN section.section s ON s.id = l.section
+FROM {{section}}.section_lithology l
+  LEFT JOIN {{section}}.lithology_tree t ON l.lithology = t.id
+  LEFT JOIN {{section}}.surface ss ON l.surface = ss.id
+  LEFT JOIN {{section}}.facies f ON l.facies = f.id
+  LEFT JOIN {{section}}.lithology v ON l.lithology = v.id
+  JOIN {{section}}.section s ON s.id = l.section
 ORDER BY section_id, bottom;

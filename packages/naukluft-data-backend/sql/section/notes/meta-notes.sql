@@ -6,7 +6,7 @@ SELECT
   coalesce(end_height > start_height, false) has_span,
   note,
   photo
-FROM section.section_note
+FROM {{section}}.section_note
 WHERE type = 'note'
   AND section = $1
 ORDER BY start_height

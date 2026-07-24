@@ -22,7 +22,7 @@ SELECT
   fault,
   tectonic_unit,
   color
-FROM mapping.orientation o
-LEFT JOIN mapping.tectonic_domain d
+FROM {{mapping}}.orientation o
+LEFT JOIN {{mapping}}.tectonic_domain d
   ON ST_Intersects(d.geometry, o.geometry)
 WHERE o.geometry IS NOT null;

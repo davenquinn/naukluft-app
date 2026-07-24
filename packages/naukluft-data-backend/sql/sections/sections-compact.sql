@@ -7,6 +7,6 @@ SELECT
     0
   )::float AS offset,
   s.location
-FROM section.section s
-JOIN section.locality l ON s.location = l.name
+FROM {{section}}.section s
+JOIN {{section}}.locality l ON s.location = l.name
 ORDER BY l.display_order, s.id

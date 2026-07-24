@@ -4300,6 +4300,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"baseline-browser-mapping@npm:^2.11.1":
+  version: 2.11.1
+  resolution: "baseline-browser-mapping@npm:2.11.1"
+  bin:
+    baseline-browser-mapping: dist/cli.cjs
+  checksum: 10c0/15c07b1d9f1e6198cc12cd9061e97a2f17f5c138e5335cd92a4a50734cc326d159ab5d7bcef9de62c54bf546b3c77aa16a5927e625c3d1f6b0ce8b586639615c
+  languageName: node
+  linkType: hard
+
 "baseline-browser-mapping@npm:^2.8.9":
   version: 2.8.17
   resolution: "baseline-browser-mapping@npm:2.8.17"
@@ -8965,6 +8974,7 @@ __metadata:
     "@universal-middleware/express": "npm:^0.2.3"
     "@visx/axis": "npm:^3.12.0"
     "@vitejs/plugin-react": "npm:^5.0.4"
+    baseline-browser-mapping: "npm:^2.11.1"
     bezier-js: "npm:^2.3.1"
     bluebird: "npm:^3.5.0"
     cesium: "npm:^1.82.1"

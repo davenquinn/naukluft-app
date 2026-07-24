@@ -1,8 +1,8 @@
 WITH
 s AS (
-	SELECT * FROM section.inferred_surface i
-	JOIN section.section s ON s.id = i.section
-	JOIN section.locality l ON l.name = s.location
+	SELECT * FROM {{section}}.inferred_surface i
+	JOIN {{section}}.section s ON s.id = i.section
+	JOIN {{section}}.locality l ON l.name = s.location
 	ORDER BY l.display_order, s.id
 )
 SELECT

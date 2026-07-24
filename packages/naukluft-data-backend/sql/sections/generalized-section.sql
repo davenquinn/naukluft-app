@@ -1,1 +1,1 @@
-SELECT * FROM section.generalized_section_surface;
+SELECT * FROM {{section}}.generalized_section_surface;

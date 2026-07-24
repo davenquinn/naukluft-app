@@ -3,8 +3,8 @@ WITH sections AS (
         trim(s.id) section_id,
         s.location,
         geometry
-    FROM section.section s
-    JOIN section.section_location sl
+    FROM {{section}}.section s
+    JOIN {{section}}.section_location sl
     ON s.id = sl.section
 ), sections_ext AS (
     SELECT

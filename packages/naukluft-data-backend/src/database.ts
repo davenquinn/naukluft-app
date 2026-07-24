@@ -2,6 +2,7 @@ import { resolve, join } from "path";
 const PGPromise = require("pg-promise");
 const { readFileSync } = require("fs");
 import { queryResult } from "pg-promise";
+import { resolveSchemas } from "./project-schema";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -44,7 +45,8 @@ async function runBackendQuery(
     fn = resolve(join(__dirname, "..", "sql", key + ".sql"));
   }
   try {
-    return await db.query(storedProcedure(fn), params, resultMask);
+    const sql = resolveSchemas(storedProcedure(fn));
+    return await db.query(sql, params, resultMask);
   } catch (err) {
     console.error(err);
     throw new Error(`Query ${fn} failed to run`);

@@ -4,7 +4,7 @@ SELECT
   color::text,
   symbol,
   symbol_color,
-  topology
+  topological
 FROM
-  map_digitizer.polygon_type
+  {{map_data}}.polygon_type
 ORDER BY name;

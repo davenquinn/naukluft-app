@@ -8,7 +8,7 @@ SELECT
   )) section_height,
   lower_unit,
   upper_unit
-FROM section.section_surface
+FROM {{section}}.section_surface
 WHERE lower_unit IS NOT null
   AND upper_unit IS NOT null
   AND active
@@ -27,7 +27,7 @@ SELECT
   -- Legacy
   mode() WITHIN GROUP (ORDER BY flooding_surface_order) AS flooding_surface_order,
   surface surface_id
-FROM section.section_lithology l
+FROM {{section}}.section_lithology l
 GROUP BY (l.surface)
 )
 SELECT
@@ -45,7 +45,7 @@ SELECT
   null AS upper_unit,
   coalesce(s.correlative, true) correlative
 FROM sequence_strat ss
-JOIN section.surface s
+JOIN {{section}}.surface s
   ON ss.surface_id = s.id
 UNION ALL
 SELECT
@@ -56,7 +56,7 @@ SELECT
   null,
   null,
   coalesce(
-    mapping.unit_commonality(lower_unit,upper_unit),
+    {{mapping}}.unit_commonality(lower_unit,upper_unit),
     0
   ) unit_commonality,
   null,

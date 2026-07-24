@@ -2,8 +2,8 @@ WITH __photo_notes AS (
   SELECT
     note_id,
     array_agg(photo_id) AS photos
-  FROM section.section_note_photo sn
-  JOIN photo p ON p.id = sn.photo_id
+  FROM {{section}}.section_note_photo sn
+  JOIN {{base}}.photo p ON p.id = sn.photo_id
   WHERE p.image_id NOT LIKE 'IMGP%'
   GROUP BY note_id
 )
@@ -18,7 +18,7 @@ SELECT
   type,
   coalesce(edited_note, note) note,
   photos
-FROM section.section_note n
+FROM {{section}}.section_note n
 LEFT JOIN __photo_notes ON n.id = note_id
 WHERE section = $1
   AND coalesce(display_in_log, true)

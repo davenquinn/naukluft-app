@@ -3,5 +3,5 @@ SELECT
   "end",
   "offset",
   coalesce("clip_end","end") real_end
-FROM section.section WHERE id=$1;
+FROM {{section}}.section WHERE id=$1;
 

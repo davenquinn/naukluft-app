@@ -2,8 +2,8 @@ WITH uA AS (
     SELECT DISTINCT ON (unit_id)
         UNNEST(t.tree) unit_id
     FROM
-        map_topology.map_face f
-    JOIN mapping.unit_tree t ON f.unit_id = t.id
+        {{map_topo}}.map_face f
+    JOIN {{mapping}}.unit_tree t ON f.unit_id = t.id
     WHERE unit_id IS NOT NULL AND unit_id != 'unknown')
 SELECT
     unit_id::text,
@@ -20,7 +20,7 @@ SELECT
     u.is_map_unit,
     u.show_in_legend
 FROM uA
-         JOIN mapping.unit_tree t ON uA.unit_id = t.id
-         JOIN mapping.unit u ON u.id = uA.unit_id
-         LEFT JOIN mapping.unit_level l ON u.level = l.id;
+         JOIN {{mapping}}.unit_tree t ON uA.unit_id = t.id
+         JOIN {{mapping}}.unit u ON u.id = uA.unit_id
+         LEFT JOIN {{mapping}}.unit_level l ON u.level = l.id;
 
